@@ -1,0 +1,176 @@
+<!-- @format -->
+
+{% include 'base2.html' %} {% load static %}
+<body>
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Reports</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Datatables</h5>
+
+              <!-- Table with stripped rows -->
+              <div class="table-responsive">
+               <table class="table datatable" id="dataTable">
+                  <thead>
+                    <tr>
+                 
+                      <th>Trip_id</th>
+                
+                      <th>Tanker_No.</th>
+                      <th>Trip_Date</th>
+                    
+                      {% comment %} <th>Driver Name</th> {% endcomment %}
+                      <th>From_Address</th>
+                      <th>To_Address</th>
+                      <th>(From_via)_Address</th>
+                      <th>(To_via)_Address</th>
+                        <th>Date</th>
+                      <th>Trip_General_Expenses</th>
+                      <th>Food_Allowance</th>
+                      <th>Bhatta</th>
+                      <th>Washing_Charges_Tank</th>
+                      <th>Actual Shortage_Amount</th>
+                      <th>Total_Amount</th>
+                      <th>Toll_Name</th>
+                      <th>Toll Amount</th>
+                      <th>Paid_To</th>
+                      <th>Paid_By</th>
+                      <th>Amount_Given</th>
+                      <th>Diesel_Liters</th>
+                      <th>Diesel_Rate</th>
+                      <th>Diesel_Total</th>
+                      <th>Urea_Paid Date</th>
+                      <th>Urea_Bill Date</th>
+                      <th>Urea_Liters</th>
+                      <th>Urea_Rate</th>
+                      <th>Urea_Total</th>
+                      <th>Repair_Paid_Date</th>
+                      <th>Repair_Bill_Date</th>
+                      <th>Spare_Parts</th>
+                      <th>Part_Name</th>
+                      <th>Number_Piece</th>
+                      <th>Repair_Amount</th>
+
+                      <th>Total_Expense</th>
+                      <th>Bill_Amount</th>
+                      {% comment %} <th>Action</th> {% endcomment %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                     {% for trip, exp in combined %}
+                    <tr>
+                
+                      <td class="text-center">{{trip.trip_id}}</td>
+                      <td>{{trip.tanker}}</td>
+                      <td>{{trip.trip_date |date:"d/m/Y"}}</td>
+                      <td>{{trip.from_id | slice:"0:20"}}</td>
+                      <td>{{trip.To_id | slice:"0:20" }}</td>
+                      <td>{{exp.from_via }}</td>
+                      <td>{{exp.To_via}}</td>
+                      <td>{{exp.date |date:"d/m/Y"}}</td>
+                      {% comment %} <td>{{exp.drivername}}</td> {% endcomment %}
+                      
+                      <td>{{exp.trip_general_expenses|default_if_none:"0"}}</td>
+                      <td>{{exp.food_allowance|default_if_none:"0"}}</td>
+                      <td>{{exp.bhatta|default_if_none:"0"}}</td>
+                      <td>{{exp.washing_charges_tank|default_if_none:"0"}}</td>
+                      <td>{{exp.actual_amount|default_if_none:"0"}}</td>
+                      <td>{{exp.total_amount|default_if_none:"0"}}</td>
+                      <td>{{exp.toll_name}}</td>
+                      
+                      <td>{{exp.toll_amount|default_if_none:"0"}}</td>
+                      <td>{{exp.paid_to}}</td>
+                      <td>{{exp.subCategory}}</td>
+                      <td>{{exp.amount_given|default_if_none:"0" }}</td>
+                      <td>{{exp.liters|default_if_none:"0" }}</td>
+                      <td>{{exp.rate|default_if_none:"0"}}</td>
+                      <td>{{exp.total_diesel|default_if_none:"0"}}</td>
+                      <td>{{exp.paid_date|date:"d/m/Y" }}</td>
+                      <td>{{exp.bill_date |date:"d/m/Y" }}</td>
+                      <td>{{exp.urea_liter|default_if_none:"0"}}</td>
+                      <td>{{exp.urea_rate|default_if_none:"0"}}</td>
+                      <td>{{exp.urea_total|default_if_none:"0"}}</td>
+                      <td>{{exp.r_paid_date |date:"d/m/Y"}}</td>
+                      <td>{{exp.r_bill_date |date:"d/m/Y"}}</td>
+                      <td>{{exp.spare_part|default_if_none:"0"}}</td>
+                      <td>{{exp.r_amount|default_if_none:"0"}}</td>
+                      <td>{{exp.part_name|default_if_none:"0"}}</td>
+                      <td>{{exp.no_piece|default_if_none:"0"}}</td>
+                      {% comment %} <td>
+                  {% if trip.end_time %}
+                        {{ trip.end_time|date:"d-m-y" }}
+                    {% else %}
+                        <span class="badge text-bg-warning">Trip is Active</span>
+                    {% endif %} 
+                </td> {% endcomment %}
+                     <td class="text-center"><b>₹ {{trip.total_expense }}</b></td>
+                     <td class="text-center"><b>₹ {{trip.total_expense }}</b></td>
+                      
+                      {% comment %} <td class="text-center">
+                      <a
+                        href="#"
+                        class="text-danger"
+                        onclick="return confirmDelete()"
+                        ><i class="bi bi-trash3-fill fs-5"></i
+                      ></a>
+                     </td> {% endcomment %}
+                    </tr>
+
+                    {% endfor %}
+ 
+
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="33"><b>Grand Total:</b></td>
+                      <td class="text-center"><b>₹ {{ grand_total}}.00</b></td>
+                    </tr>
+                     <tr>
+                      <td colspan="34"><b>Bill Grand Total:</b></td>
+                      <td class="text-center"><b>₹ {{ grand_total}}.00</b></td>
+                    </tr>
+                    <tr>
+                      <td colspan="34"><b> Total Profit:</b></td>
+                      <td class="text-center"><b>₹ 0000.00</b></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- End Table with stripped rows -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong>. All Rights Reserved</strong>
+    </div>
+    <div class="credits">
+      Designed by <a href="#"><strong>J N Roadlines</strong></a>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <a
+    href="#"
+    class="back-to-top d-flex align-items-center justify-content-center"
+    ><i class="bi bi-arrow-up-short"></i
+  ></a>
+</body>

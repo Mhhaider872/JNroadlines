@@ -1,0 +1,138 @@
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Update Plans</h5>
+
+
+ <section class="main-sec">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form action="{% url 'do-updateplan' planupdate.id %}"  method="POST">
+          {% csrf_token %}
+          <div class="row">
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Vehicle No</label>
+             <input class="form-control" name="tankerno" list="datalistOptions" value="{{planupdate.tankerno}}" id="exampleDataList" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions" class="shadow-sm border-0" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{vehicle_name }}</option>
+                 {% endfor %}
+                </datalist> 
+          </div>
+            <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Driver Name</label>
+             <input class="form-control" list="datalistOptions3" name="drivername" value="{{planupdate.drivername}}" id="exampleDataList" placeholder="Search to driver ..." required>
+               <datalist id="datalistOptions3" class="shadow-sm border-0">
+                {% for d in dname %}
+                 <option value="{{d.drivername}}">{{d.drivername }}</option>
+                 {% endfor %}
+                </datalist>
+          </div> 
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
+             <input class="form-control" name="From_address" list="datalistOptions1" id="exampleDataList1"  value="{{planupdate.To_address}}" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions1" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+            
+  
+
+          <div class="col-lg-4 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">To Address</label>
+             <input class="form-control" name="To_address" list="datalistOptions2" id="exampleDataList2"  value= "{{planupdate.To_address}}"  placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}},{{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label6" class="form-label fw-bold"
+              >Tanker Capacity
+            </label>
+           <div class="input-group mb-3">
+                <select class="form-select shadow-sm border-0" name="tanker_capacity" id="lable2"  value={{planupdate.tanker_capacity}}>
+                <option value="30MT" {% if planupdate.tanker_capacity == '30MT' %}selected{% endif %}>30MT</option>
+                <option value="34MT" {% if planupdate.tanker_capacity == '34MT' %}selected{% endif %}>34MT</option>
+                <option value="28MT" {% if planupdate.tanker_capacity == '28MT' %}selected{% endif %}>28MT</option>
+                <option value="25MT" {% if planupdate.tanker_capacity == '25MT' %}selected{% endif %}>25MT</option>
+                </select>
+              </div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Dispatch Date</label
+            >
+            <input
+              type="date"
+              name="dispatch_Date"
+              class="form-control shadow-sm border-0"
+              id="label11" 
+             value="{{planupdate.dispatch_Date|date:'Y-m-d' }}"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+           <label for="id_status" class="form-label fw-bold">Status</label>
+           <select id="id_status" name="status" class="form-control shadow-sm border-0">
+            <option value="DISPATCH" selected>Dispatch</option>
+            <option value="ARRIVAL">Arrival</option>
+            <option value="REACHED">Reached</option>
+           </select>
+           </div> 
+
+          <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-primary px-4">Update</button>
+            {% comment %} <a href="{% url 'showplan' %}" class="btn btn-success px-4">View</a> {% endcomment %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+  </body>

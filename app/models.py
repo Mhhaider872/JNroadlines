@@ -1,0 +1,633 @@
+from django.db import models
+
+# Create your models here.
+
+
+    
+
+class TankerCapacity(models.Model):
+    name=models.CharField(max_length=200)
+
+
+    
+
+class companydetails(models.Model):
+     name=models.CharField(max_length=200)
+     area_name=models.CharField(max_length=200,blank=True,null=True)
+     city=models.CharField(max_length=200,blank=True,null=True)
+     state=models.CharField(max_length=200,blank=True,null=True)
+     pincode=models.IntegerField(blank=True,null=True)
+     
+     contact_no=models.IntegerField(blank=True,null=True)
+
+
+     def __str__(self):
+        return self.name
+    
+
+
+class plandetails(models.Model):
+  
+    tankerno = models.CharField(max_length=200)
+    drivername=models.CharField(max_length=200)
+    From_address=models.CharField(max_length=200)
+    To_address=models.CharField(max_length=200)
+    tanker_capacity=models.CharField(max_length=2)
+    dispatch_Date=models.DateField(null=True,blank=True)
+    status=models.CharField(max_length=100)
+
+
+
+class AddTrips(models.Model):
+    tankerno=models.CharField(max_length=100)
+    From_address=models.CharField(max_length=200)
+    To_address=models.CharField(max_length=200)
+    drivername=models.CharField(max_length=100)
+    tank_capacity=models.CharField(max_length=100)
+    arrival_time=models.DateTimeField(null=True, blank=True)
+    dispatch_time=models.DateTimeField(null=True, blank=True)
+    reach_time=models.DateTimeField(null=True, blank=True)
+    unload_time=models.DateTimeField(null=True, blank=True)
+    lr_num=models.IntegerField(null=True, blank=True)
+    lr_date=models.DateField(null=True, blank=True)
+    freight_bill=models.CharField(max_length=200, null=True, blank=True)
+    freight_date=models.DateField(null=True, blank=True)
+    loaded_qty=models.IntegerField(null=True, blank=True)
+    # percent=models.IntegerField(null=True, blank=True)
+    unload_qty=models.IntegerField(null=True, blank=True)
+    short_qty=models.IntegerField(null=True, blank=True)
+    short_allow=models.IntegerField(null=True, blank=True)
+    return_qty=models.IntegerField(null=True, blank=True)
+    remark=models.CharField(max_length=200, null=True, blank=True)
+
+
+class TripGemini(models.Model):
+    tankerno=models.CharField(max_length=100)
+    From_address=models.CharField(max_length=200)
+    To_address=models.CharField(max_length=200)
+    drivername=models.CharField(max_length=100)
+    tank_capacity=models.CharField(max_length=100)
+    arrival_time=models.DateTimeField(null=True, blank=True)
+    dispatch_time=models.DateTimeField(null=True, blank=True)
+    reach_time=models.DateTimeField(null=True, blank=True)
+    unload_time=models.DateTimeField(null=True, blank=True)
+    lr_num=models.IntegerField(null=True, blank=True)
+    lr_date=models.DateField(null=True, blank=True)
+    freight_bill=models.CharField(max_length=200, null=True, blank=True)
+    freight_date=models.DateField(null=True, blank=True)
+    loaded_qty=models.IntegerField(null=True, blank=True)
+    unload_qty=models.IntegerField(null=True, blank=True)
+    short_qty=models.IntegerField(null=True, blank=True)
+    short_allow=models.IntegerField(null=True, blank=True)
+    return_qty=models.IntegerField(null=True, blank=True)
+    remark=models.CharField(max_length=200)
+    
+
+class TripAdani(models.Model):
+    tankerno=models.CharField(max_length=100)
+    From_address=models.CharField(max_length=200)
+    To_address=models.CharField(max_length=200)
+    drivername=models.CharField(max_length=100)
+    tank_capacity=models.CharField(max_length=100)
+    arrival_time=models.DateTimeField(null=True, blank=True)
+    dispatch_time=models.DateTimeField(null=True, blank=True)
+    reach_time=models.DateTimeField(null=True, blank=True)
+    unload_time=models.DateTimeField(null=True, blank=True)
+    lr_num=models.IntegerField(null=True, blank=True)
+    lr_date=models.DateField(null=True, blank=True)
+    freight_bill=models.IntegerField(null=True, blank=True)
+    freight_date=models.DateField(null=True, blank=True)
+    loaded_qty=models.IntegerField(null=True, blank=True)
+    unload_qty=models.IntegerField(null=True, blank=True)
+    short_qty=models.IntegerField(null=True, blank=True)
+    short_allow=models.IntegerField(null=True, blank=True)
+    return_qty=models.IntegerField(null=True, blank=True)
+    remark=models.CharField(max_length=200, null=True, blank=True)
+
+
+class AakLocal(models.Model):
+    tankerno=models.CharField(max_length=100)
+    From_address=models.CharField(max_length=200)
+    To_address=models.CharField(max_length=200)
+    # drivername=models.CharField(max_length=100)
+    tank_capacity=models.CharField(max_length=100)
+    arrival_time=models.DateTimeField(null=True, blank=True)
+    dispatch_time=models.DateTimeField(null=True, blank=True)
+    reach_time=models.DateTimeField(null=True, blank=True)
+    # unload_time=models.DateTimeField(null=True, blank=True)
+    lr_num=models.IntegerField(null=True, blank=True)
+    lr_date=models.CharField(max_length=200, null=True, blank=True)
+    freight_bill=models.CharField(max_length=200, null=True, blank=True)
+    freight_date=models.DateField(null=True, blank=True)
+    loaded_qty=models.IntegerField(null=True, blank=True)
+    unload_qty=models.IntegerField(null=True, blank=True)
+    short_qty=models.IntegerField(null=True, blank=True)
+    short_allow=models.IntegerField(null=True, blank=True)
+    return_qty=models.IntegerField(null=True, blank=True)
+    remark=models.CharField(max_length=200, null=True, blank=True)
+    time_Loading=models.IntegerField(null=True, blank=True)
+    time_Loading_mama=models.IntegerField(null=True, blank=True)
+    unloading_ganesh=models.IntegerField(null=True, blank=True)
+    unloading_mama=models.IntegerField(null=True, blank=True)
+    returned=models.DateTimeField(null=True, blank=True)
+    trip_ganesh=models.IntegerField(null=True, blank=True)
+    trip_mama=models.IntegerField(null=True, blank=True)
+    
+
+
+class TripExpense(models.Model):
+    tankerno=models.CharField(max_length=100)
+    tripdate=models.DateField(null=True, blank=False)
+    tdate=models.DateField(null=True, blank=False)
+    drivername=models.CharField(max_length=100)
+    fromconsignor=models.CharField(max_length=200)
+    toconsignee=models.CharField(max_length=200)
+    trip_general_expenses=models.IntegerField(null=True)
+    food_allowance=models.IntegerField()
+    bhatta=models.IntegerField()
+    washing_charges_tank=models.IntegerField()
+    total_amount=models.IntegerField(null=False)
+    
+    def __str__(self):
+        return self.tankerno
+    
+
+
+class NewDriver_Details(models.Model):
+    name=models.CharField(max_length=200)
+    adharnumber=models.IntegerField(null=False,blank=False)
+    licencenumber=models.CharField(max_length=20,null=False,blank=False)
+    issuedates=models.DateField(null=False,blank=False)
+    trdates=models.DateField(null=False,blank=False)
+    # imguploads=models.FileField(upload_to='img/')
+    # imguploads= models.FileField(upload_to='pdfs/')
+    img= models.FileField(upload_to='img/',null=True)
+   
+   
+    def __str__(self):
+        return self.name
+    
+
+
+
+class Driver_salary(models.Model):
+    
+     tankerno=models.CharField(max_length=100)
+     salary_driver=models.CharField(max_length=100)
+     f_date =models.DateField(null=True, blank=True)
+     t_date =models.DateField(null=True, blank=True)
+     p_date =models.DateField(null=True, blank=True)
+     drivername=models.CharField(max_length=100)
+     amount = models.DecimalField(max_digits=10, decimal_places=2)
+   
+   
+     def __str__(self):
+        return self.drivername
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)  # Name of the category
+
+    def __str__(self):
+        return self.name
+
+
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)  # Foreign key to category
+    name = models.CharField(max_length=100)  # Name of the subcategory
+
+    def __str__(self):
+        return self.name
+    
+
+
+
+class Toll_Details(models.Model):
+    tankerno=models.CharField(max_length=200)
+    driver_names=models.CharField(max_length=200)
+    trip_date = models.DateField(null=True, blank=False)
+    date = models.DateField(null=True, blank=False,)
+    amount=models.DecimalField(max_digits=10,decimal_places=2)
+    toll_name=models.CharField(max_length=200)
+    From_address=models.CharField(max_length=200)
+    To_address=models.CharField(max_length=200)
+
+
+
+
+class Diesel_detail(models.Model):
+    tankerno_diesel=models.CharField(max_length=200)
+    tripdate_diesel=models.DateField(null=True,blank=False)
+    date_diesel=models.DateField(null=True,blank=False)
+    category=models.CharField(max_length=200)
+    subCategory=models.CharField(max_length=200)
+    paid_to=models.CharField(max_length=200)
+    given_amounts_diesel=models.DecimalField(max_digits=10, decimal_places=2)
+    liters=models.IntegerField()
+    rate=models.DecimalField(max_digits=10, decimal_places=2)
+    total_diesel=models.DecimalField(max_digits=10, decimal_places=2)
+
+
+
+
+
+class Add_Vehicle(models.Model):
+    vehicle_name=models.CharField(max_length=200)
+    owner_name=models.CharField(max_length=200)
+    making_year = models.DateField(null=True, blank=False)
+    chassise_no = models.CharField(max_length=200)
+    engine_no = models.CharField(max_length=200)
+    insurance_date = models.DateField(null=True, blank=False)
+    state_permit = models.DateField(null=True, blank=False)
+    national_permit = models.DateField(null=True, blank=False)
+    fitness_date = models.DateField(null=True, blank=False)
+    tax_date = models.DateField(null=True, blank=False)
+    puc_date = models.DateField(null=True, blank=False)
+    vehicle_img=models.FileField(upload_to='vehicle_image/')
+
+
+
+
+class Add_Urea(models.Model):
+    urea_tanker_no=models.CharField(max_length=200)
+    From_address=models.CharField(max_length=200)
+    To_address=models.CharField(max_length=200)
+    paid_date= models.DateField(null=True, blank=False)
+    bill_date= models.DateField(null=True, blank=False)
+    trip_urea_date= models.DateField(null=True, blank=False)
+    urea_liter=models.IntegerField()
+    urea_rate=models.DecimalField(max_digits=10, decimal_places=4)
+    urea_total=models.DecimalField(max_digits=10, decimal_places=4)
+
+
+
+
+
+
+class AddPetrolPump(models.Model):
+    name=models.CharField(max_length=200)
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Trip_Expense(models.Model):
+    trip_tanker=models.CharField(max_length=100, null=True, blank=True)
+    tripdate=models.DateField(null=True,blank=True)
+    tdate=models.DateField(null=True,blank=True)
+    drivername=models.CharField(max_length=100, null=True, blank=True)
+    From_address=models.CharField(max_length=200, null=True, blank=True)
+    To_address=models.CharField(max_length=200, null=True, blank=True)
+    trip_general_expenses=models.IntegerField(null=True, blank=True)
+    food_allowance=models.IntegerField(null=True, blank=True)
+    bhatta=models.IntegerField(null=True, blank=True)
+    washing_charges_tank=models.IntegerField(null=True, blank=True)
+    total_amount=models.IntegerField(null=True, blank=True)
+    date = models.DateField(null=True,blank=True)
+    amount=models.IntegerField(null=True, blank=True)
+    toll_name=models.CharField(max_length=200,null=True, blank=True)
+    category=models.CharField(max_length=200, null=True, blank=True)
+    subCategory=models.CharField(max_length=200, null=True, blank=True)
+    # paid_by=models.CharField(max_length=200)
+    paid_to=models.CharField(max_length=200 ,null=True, blank=True)
+    given_amounts_diesel=models.IntegerField(null=True, blank=True)
+    liters=models.IntegerField(null=True, blank=True)
+    rate=models.IntegerField(null=True, blank=True)
+    total_diesel=models.IntegerField(null=True, blank=True)
+    paid_date= models.DateField(null=True,blank=True)
+    bill_date= models.DateField(null=True,blank=True)
+    # trip_urea_date= models.DateField(null=True, blank=False)
+    urea_liter=models.IntegerField(null=True, blank=True)
+    urea_rate=models.IntegerField(null=True, blank=True)
+    urea_total=models.IntegerField(null=True, blank=True)
+    r_paid_date= models.DateField(null=True,blank=True)
+    r_bill_date= models.DateField(null=True,blank=True)
+    spare_part=models.IntegerField(null=True, blank=True)
+    r_amount=models.IntegerField(null=True, blank=True)
+    part_name=models.CharField(max_length=200, null=True, blank=True)
+    no_piece = models.IntegerField(null=True, blank=True)
+    end_date = models.DateField(null=True,blank=True)
+
+
+
+
+
+
+
+
+
+
+
+
+class End_Trip(models.Model):
+    tank_ends=models.CharField(max_length=200,null=True)
+    driver=models.CharField(max_length=200,null=True)
+    date=models.DateField(null=False, blank=False)
+    end_Date = models.DateField(null=True, blank=False)
+
+
+
+
+class Gemini(models.Model):
+     bill_no=models.CharField(max_length=100, unique=True)
+     date=models.DateField(null=True, blank=True)
+     company=models.CharField(max_length=300, null=True, blank=True)
+     gst=models.CharField(max_length=300, null=True, blank=True)
+     pan=models.CharField(max_length=300, null=True, blank=True)
+     tanker=models.CharField(max_length=200,null=True)
+     From_add=models.CharField(max_length=200,null=True)
+     To_add=models.CharField(max_length=200,null=True)
+     date_dis=models.DateField(null=True, blank=True)
+     bill_no=models.IntegerField(null=True, blank=True)
+     kg=models.DecimalField(max_digits=10, decimal_places=2)
+     rate=models.DecimalField(max_digits=10, decimal_places=2)
+     total_kg=models.DecimalField(max_digits=10, decimal_places=2)
+     lr_no=models.IntegerField(null=True, blank=True)
+     union_charge=models.IntegerField(null=True, blank=True)
+     
+
+
+
+
+class AAkIndia(models.Model):
+     bill_no=models.CharField(max_length=100, null=True, blank=True, unique=True)
+     date=models.DateField(null=True, blank=True)
+     company=models.CharField(max_length=300, null=True, blank=True)
+     gst=models.CharField(max_length=300, null=True, blank=True)
+     pan=models.CharField(max_length=300, null=True, blank=True)
+     tanker=models.CharField(max_length=200, null=True, blank=True)
+     tanker_cap=models.CharField(max_length=200, null=True, blank=True)
+     From_add=models.CharField(max_length=200, null=True, blank=True)
+     To_add=models.CharField(max_length=200,null=True, blank=True)
+     date_dis=models.DateField(null=True, blank=True)
+     load=models.IntegerField(null=True, blank=True)
+     rate_kg=models.IntegerField(null=True, blank=True)
+     unload=models.IntegerField(null=True, blank=True)
+     short=models.IntegerField(null=True, blank=True)
+     retn=models.IntegerField(null=True, blank=True)
+     total=models.DecimalField(max_digits=10, decimal_places=2)
+     lr_no=models.IntegerField(null=True, blank=True)
+     Fo_date=models.DateField(null=True, blank=True)
+     To_date=models.DateField(null=True, blank=True)
+     d_rate=models.IntegerField(null=True, blank=True)
+     par_day=models.IntegerField(null=True, blank=True)
+     total_d=models.IntegerField(null=True, blank=True)
+      
+
+
+class Ashland(models.Model):
+     bill_no=models.CharField(max_length=100, null=True, blank=True, unique=True)
+     date=models.DateField(null=True, blank=True)
+     company=models.CharField(max_length=300, null=True, blank=True)
+     gst=models.CharField(max_length=300, null=True, blank=True)
+     pan=models.CharField(max_length=300, null=True, blank=True)
+     tanker=models.CharField(max_length=200, null=True, blank=True)
+     tanker_cap=models.CharField(max_length=200, null=True, blank=True)
+     From_add=models.CharField(max_length=200, null=True, blank=True)
+     To_add=models.CharField(max_length=200,null=True, blank=True)
+     date_dis=models.DateField(null=True, blank=True)
+     kg=models.IntegerField(null=True, blank=True)
+     rate=models.IntegerField(null=True, blank=True)
+     total_kg = models.IntegerField(null=True, blank=True)
+     lr_no=models.IntegerField(null=True, blank=True)
+     Fo_date=models.DateField(null=True, blank=True)
+     To_date=models.DateField(null=True, blank=True)
+     d_rate=models.IntegerField(null=True, blank=True)
+     par_day=models.IntegerField(null=True, blank=True)
+     total_d=models.IntegerField(null=True, blank=True)
+     tank_c=models.IntegerField(null=True, blank=True)
+
+
+    
+
+
+
+
+class harkaran(models.Model):
+     bill=models.CharField(max_length=200, null=True, blank=True, unique=True)
+     date=models.DateField(null=True, blank=True)
+     company=models.CharField(max_length=300, null=True, blank=True)
+     gst=models.CharField(max_length=300, null=True, blank=True)
+     pan=models.CharField(max_length=300, null=True, blank=True)
+     tanker=models.CharField(max_length=200,null=True)
+     From_add=models.CharField(max_length=200,null=True)
+     To_add=models.CharField(max_length=200,null=True)
+     date_dis=models.DateField(null=True, blank=True)
+     kg=models.DecimalField(max_digits=10, decimal_places=2)
+     rate=models.DecimalField(max_digits=10, decimal_places=2)
+     total_kg=models.DecimalField(max_digits=10, decimal_places=2)
+     lr_no=models.IntegerField(null=True, blank=True)
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Trip(models.Model):
+    trip_id = models.CharField(max_length=50, unique=True)
+    tanker= models.CharField(max_length=50, null=True, blank=True)
+    trip_date=models.DateField(null=True, blank=True)
+    from_id = models.CharField(max_length=50, null=True, blank=True )
+    To_id = models.CharField(max_length=50, null=True, blank=True )
+    
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateField(null=True, blank=True)
+    total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"Trip {self.trip_id}"
+
+    def calculate_total_expense(self):
+        expenses = self.expenses.all()  # Use 'expenses' instead of 'expense_set'
+        self.total_expense = sum([expense.amount for expense in expenses])
+        self.save()
+
+class Expense(models.Model):
+    trip = models.ForeignKey(Trip, related_name="expenses", on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.CharField(max_length=255, null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
+    trip_general_expenses=models.IntegerField(null=True, blank=True)
+    food_allowance=models.IntegerField(null=True, blank=True)
+    bhatta=models.IntegerField(null=True, blank=True)
+    washing_charges_tank=models.IntegerField(null=True, blank=True)
+    actual_amount=models.IntegerField(null=True, blank=True)
+    total_amount=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    toll_date = models.DateField(null=True,blank=True)
+    toll_amount=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    toll_name=models.CharField(max_length=200,null=True, blank=True)
+    category=models.CharField(max_length=200, null=True, blank=True)
+    subCategory=models.CharField(max_length=200, null=True, blank=True)
+    # paid_by=models.CharField(max_length=200)
+    paid_to=models.CharField(max_length=200 ,null=True, blank=True)
+    amount_given=models.IntegerField(null=True, blank=True)
+    liters=models.IntegerField(null=True, blank=True)
+    rate=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    total_diesel=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    paid_date= models.DateField(null=True,blank=True)
+    bill_date= models.DateField(null=True,blank=True)
+    # trip_urea_date= models.DateField(null=True, blank=False)
+    urea_liter=models.IntegerField(null=True, blank=True)
+    urea_rate=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    urea_total=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    r_paid_date= models.DateField(null=True,blank=True)
+    r_bill_date= models.DateField(null=True,blank=True)
+    spare_part=models.IntegerField(null=True, blank=True)
+    r_amount=models.IntegerField(null=True, blank=True)
+    part_name=models.CharField(max_length=200, null=True, blank=True)
+    no_piece = models.IntegerField(null=True, blank=True)
+    from_via = models.CharField(max_length=50, null=True, blank=True )
+    To_via = models.CharField(max_length=50, null=True, blank=True )
+    end_date= models.DateField(null=True,blank=True)
+
+    def __str__(self):
+        return f"Expense {self.id} for Trip {self.trip.trip_id}"
+
+
+
+class Invoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    tanker_cap=models.CharField(max_length=200, null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    date_dis=models.DateField(null=True, blank=True)
+    # load=models.IntegerField(null=True, blank=True)
+    # rate_kg=models.IntegerField(null=True, blank=True)
+    unload=models.IntegerField(null=True, blank=True)
+    short=models.IntegerField(null=True, blank=True)
+    retn=models.IntegerField(null=True, blank=True)
+    lr_no=models.IntegerField(null=True, blank=True)
+    Fo_date=models.DateField(null=True, blank=True)
+    To_date=models.DateField(null=True, blank=True)
+    d_rate=models.IntegerField(null=True, blank=True)
+    par_day=models.IntegerField(null=True, blank=True)
+    total_d=models.IntegerField(null=True, blank=True) 
+
+    def __str__(self):
+        return self.invoice_number
+
+
+class Item(models.Model):
+    invoice = models.ForeignKey(Invoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
+    
+
+
+
+class Bill(models.Model):
+    date = models.DateField()
+    company = models.CharField(max_length=255)
+    gst = models.CharField(max_length=255)
+    pan = models.CharField(max_length=255)
+    # Other fields like static information
+
+class TankerDetail(models.Model):
+    bill = models.ForeignKey(Bill, related_name='tanker_details', on_delete=models.CASCADE)
+    tanker = models.CharField(max_length=255)
+    from_address = models.CharField(max_length=255)
+    to_address = models.CharField(max_length=255)
+    dispatch_date = models.DateField()
+    tanker_capacity = models.IntegerField()
+    lr_num = models.IntegerField()
+    loaded_qty = models.IntegerField()
+    rate_per_kg = models.DecimalField(max_digits=10, decimal_places=2)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+
+
+
+
+class  AddBank_Loan(models.Model):
+    name= models.CharField(max_length=255)
+    
+
+
+
+
+class Loan(models.Model):
+    principal_amount = models.DecimalField(max_digits=12, decimal_places=2)
+    annual_interest_rate = models.DecimalField(max_digits=5, decimal_places=2)
+    loan_tenure_months = models.IntegerField()
+
+    def __str__(self):
+        return f"Loan of {self.principal_amount} for {self.loan_tenure_months} months"
+
+
+
+
+
+class DriverLoan(models.Model):
+    tankerno=models.CharField(max_length=100)
+    From_address=models.CharField(max_length=200)
+    To_address=models.CharField(max_length=200)
+    drivername=models.CharField(max_length=100)
+    trip_date=models.DateField(null=True, blank=True)
+    date=models.DateField(null=True, blank=True)
+    load=models.IntegerField(null=True, blank=True)
+    unload=models.IntegerField(null=True, blank=True)
+    short_kg=models.IntegerField(null=True, blank=True)
+    allow_kg = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    actual_short = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    rate = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
+    short_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
+    previous_loan = models.IntegerField(null=True, blank=True)
+    loan_amount = models.IntegerField(null=True, blank=True)
+    total = models.IntegerField(null=True, blank=True)

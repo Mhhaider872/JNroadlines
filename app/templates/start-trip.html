@@ -1,0 +1,93 @@
+<!-- @format -->
+
+<!-- start_trip.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Start Tanker Trip</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        width: 40%;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      label {
+        font-size: 14px;
+        margin-bottom: 8px;
+        display: block;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      button {
+        padding: 10px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .close-modal {
+        background-color: #f44336;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Start Tanker Trip</h2>
+      <form id="startTripForm" method="POST" action="{% url 'start_trip' %}">
+        {% csrf_token %}
+
+        <label for="tanker_id">Select Tanker ID</label>
+        <select id="tanker_id" name="tanker_id" required>
+          <option value="">-- Select Tanker --</option>
+          {% for tanker in tankers %}
+          <option value="{{ tanker.id }}">{{ tanker.tanker_id }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="start_time">Start Time</label>
+        <input
+          type="datetime-local"
+          id="start_time"
+          name="start_time"
+          required
+        />
+
+        <button type="submit">Start Trip</button>
+      </form>
+    </div>
+  </body>
+</html>

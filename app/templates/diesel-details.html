@@ -1,0 +1,255 @@
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+<main id="main" class="main">
+      <div class="pagetitle">
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Form</h5>
+
+
+<section class="main-sec">
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form  method="POST">
+        {% csrf_token %}
+          <div class="row">
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
+             <input class="form-control" list="datalistOptions" name="tankerno_diesel"  placeholder="Search to vehicle no..." required>
+               <datalist id="datalistOptions" class="shadow-sm border-0">
+                 {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Trip Date</label
+            >
+            <input
+              type="date"
+              name="tripdate_diesel"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+          </div>
+
+        <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              > Date</label
+            >
+            <input
+              type="date"
+              name="date_diesel"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+
+      {% comment %} <div class="col-lg-4 mb-3">
+              <label for="diesle" class="form-label fw-bold"
+                >Diesel</label
+              >
+              <div class="input-group mb-3">
+                <select class="form-select shadow-sm border-0"  id="diesle" name="diesle" onchange="updateSubCategory()">
+               <option value="">Select Category</option>
+                {% for d in diesle %}
+               <option value="{{ d.id }}">{{ d.name }}</option>
+                 {% endfor %}
+                </select>
+              </div>
+      </div> {% endcomment %}
+        {% comment %} <div class="col-lg-4 mb-3">
+             <label for="paidby" class="form-label fw-bold"
+              >Paid By</label
+             >
+              <select id="paidby" name="paidby" class="form-select shadow-sm border-0">
+              <option value="">Select Subcategory</option>
+
+             </select>
+        
+        </div> {% endcomment %}
+        
+        <div class="col-lg-4 mb-3">
+         <label for="category" class="form-label fw-bold">Diesel</label>
+          <select id="category" name="category" onchange="updateSubCategory()" class="form-select shadow-sm border-0">
+        <option value="">Select</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        <!-- Populate categories dynamically -->
+        {% endfor %}
+      </select>
+</div>
+   <div class="col-lg-4 mb-3">
+      <label for="datalistOptions4" class="form-label fw-bold">Paid To</label>
+      <input class="form-control" list="datalistOptions4" name="paid_to"  placeholder="Search...">
+               <datalist id="datalistOptions4" class="shadow-sm border-0">
+    
+                 <option value="Cash">Cash</option>
+                 <option value="BanK">BanK</option>
+                  {% for p in petrol %}
+                 <option value="{{p.name}}">{{p.name }}</option>
+                 {% endfor %}
+                {% for d in dname %}
+                 <option value="{{d.name}}">{{d.name }}</option>
+                 {% endfor %}
+                </datalist>
+    </div>
+   <div class="col-lg-4 mb-3">
+      <label for="subCategory" class="form-label fw-bold">Paid By</label>
+      <select id="subCategory" name="subCategory" class="form-select shadow-sm border-0">
+        <option value="">Select</option>
+        <!-- Initial empty subcategory dropdown -->
+      </select>
+    </div>
+   
+        <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Amount Given</label
+             >
+             <input
+              type="number"
+              name="given_amounts_diesel"
+              class="form-control shadow-sm border-0"
+              id="given_amount"
+              oninput="calculateTotal()"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Liters</label
+             >
+             <input
+              type="number"
+              name="liters"
+              class="form-control shadow-sm border-0"
+              id="liter"
+              min="0"
+              oninput="calculateTotal()"
+            />
+        </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Rate </label
+             >
+            <input
+              type="number"
+              name="rate"
+               class="form-control shadow-sm border-0"
+               id="rate"
+               min="0"
+              oninput="calculateTotal()"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Total</label
+             >
+            <input
+              type="number"
+              name="total_diesel"
+              class="form-control shadow-sm border-0"
+              id="totalamount"
+              min="0"
+              oninput="calculateTotal()"
+            />
+          </div>
+          <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-danger px-4">Add</button>
+            <a href="{% url 'show-diesel' %}" class="btn btn-success px-4">View</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+
+    <script>
+       function calculateTotal() {
+       / Get the values of the input fields by their IDs
+       let liter = parseFloat(document.getElementById('liter').value) ;
+       let rate = parseFloat(document.getElementById('rate').value) ;
+       let given_amount = parseFloat(document.getElementById('given_amount').value) ;
+       
+
+       let total = liter * rate + given_amount;
+       document.getElementById('totalamount').value = total;
+      }
+
+    </script>
+ <script>
+      // This function is called when the category is selected
+      function updateSubCategory() {
+        var categoryId = document.getElementById("category").value; // Get selected category ID
+        var subCategoryDropdown = document.getElementById("subCategory");
+
+        // Clear previous subcategory options
+        subCategoryDropdown.innerHTML =
+          "<option value=''>Select</option>";
+
+        if (!categoryId) {
+          return; // Exit if no category is selected
+        }
+
+        // Fetch subcategories from Django backend using Fetch API
+        fetch(`/get_subcategories/${categoryId}/`)
+          .then((response) => response.json()) // Parse the JSON response
+          .then((data) => {
+            // Add subcategory options to the subcategory dropdown
+            data.forEach(function (subcategory) {
+              var option = document.createElement("option");
+              option.value = subcategory;
+              option.text = subcategory;
+              subCategoryDropdown.appendChild(option);
+            });
+          })
+          .catch((error) =>
+            console.error("Error fetching subcategories:", error)
+          );
+      }
+    </script>
+  </body>

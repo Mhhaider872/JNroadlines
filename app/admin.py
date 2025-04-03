@@ -1,0 +1,48 @@
+from django.contrib import admin
+from .models import *
+# Register your models here.
+admin.site.register(TankerCapacity)
+# admin.site.register(TripExpense)
+admin.site.register(NewDriver_Details)
+admin.site.register(Category)
+admin.site.register(SubCategory)
+# admin.site.register(Trip)
+# admin.site.register(TripDetails)
+admin.site.register(companydetails)
+admin.site.register(plandetails)
+admin.site.register(Toll_Details)
+admin.site.register(Diesel_detail)
+admin.site.register(Add_Vehicle)
+admin.site.register(AddPetrolPump)
+admin.site.register(Add_Urea)
+admin.site.register(AddTrips)
+admin.site.register(Trip_Expense)
+admin.site.register(End_Trip)
+admin.site.register(Driver_salary)
+admin.site.register(Item)
+admin.site.register(DriverLoan)
+
+
+
+
+
+##-------Bill ------------##
+admin.site.register(Gemini)
+admin.site.register(AAkIndia)
+admin.site.register(Ashland)
+admin.site.register(harkaran)
+
+# admin.site.register(Trip)
+
+admin.site.register(TripGemini)
+
+admin.site.register(Invoice)
+admin.site.register(Expense)
+admin.site.register(AddBank_Loan)
+
+
+admin.site.register(Trip)
+admin.site.register(TripAdani)
+admin.site.register(AakLocal)
+
+

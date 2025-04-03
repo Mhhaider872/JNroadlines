@@ -1,0 +1,411 @@
+<!-- @format -->
+{% include 'base.html' %}
+{% load static %}
+
+
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1 class="py-4">Update Trip Aak India Loacal </h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'addtrip' %}">Add Trip Page</a></li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body py-5">
+                {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
+<section class="main-sec">
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form action="{% url 'doLocal' Aak_u.id  %}"  method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-lg-4 mb-3">
+              <label for="lable1" class="form-label fw-bold"
+                >Vehicle No</label
+              >
+           
+               <input class="form-control"  name="tankerno" id="lable1" placeholder="Search to vehicle no..." value="{{Aak_u.tankerno}}" readonly>
+            </div>
+
+
+            <div class="col-lg-4 mb-3">
+              <label for="lable2" class="form-label fw-bold"
+                >From (Consignor)</label
+              >
+             
+                 <input
+              
+              class="form-control"
+              name="From_address"
+              min="0"
+              id="label2"
+             
+              value="{{Aak_u.From_address}}"
+               readonly
+            />
+              
+            </div>
+            <div class="col-lg-4 mb-3">
+              <label for="lable3" class="form-label fw-bold"
+                >TO (Consignee)</label
+              >
+               <input
+              
+              class="form-control"
+              name="To_address"
+              min="0"
+              id="label3"
+               value="{{Aak_u.To_address}}"
+              readonly
+            />
+            </div>
+          
+          <div class="col-lg-4 mb-3">
+            <label for="label4" class="form-label fw-bold"
+              >Arrival at Loading Point (Plant) Date & Time</label
+            >
+            <input
+              type="datetime-local"
+              name="arrival_time"
+              class="form-control"
+              id="label4"
+              value=" {{ Aak_u.arrival_time|date:'Y-m-d\TH:i' }} "
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >Dispatched date & time</label
+            >
+            <input
+              type="datetime-local"
+              name="dispatch_time"
+              class="form-control"
+              id="label5"
+              value="{{ Aak_u.dispatch_time|date:'Y-m-d\TH:i' }}"
+            />
+          </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label6" class="form-label fw-bold"
+              >Tanker Capacity</label
+            >
+             <input
+           
+              class="form-control"
+              name="tank_capacity"
+              min="0"
+              id="label6"
+              value="{{Aak_u.tank_capacity}}"
+              readonly
+            />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="loadganesh" class="form-label fw-bold"
+              >Vehicle Kilometer at 
+the time of Loading at AAK India, Khopoli plant (As Per Ganesh Sir )</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="time_Loading"
+              min="0"
+              id="loadganesh"
+              value="{{Aak_u.time_Loading}}"
+              oninput="calculateTotalShort()"
+              
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="loadmama" class="form-label fw-bold"
+              >Vehicle Kilometer at 
+the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              name="time_Loading_mama"
+              min="0"
+              id="loadmama"
+              value="{{Aak_u.time_Loading_mama}}"
+              oninput="calculateTotalShort()"
+            />
+          </div>
+         
+           <div class="col-lg-4 mb-3">
+            <label for="label9" class="form-label fw-bold"
+              >Reached date & time</label
+            >
+            <input
+              type="datetime-local"
+              name="reach_time"
+              class="form-control"
+              id="label9"
+              value="{{ Aak_u.reach_time|date:'Y-m-d\TH:i' }}"
+            />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="unloadganesh" class="form-label fw-bold">Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ganesh Sir )</label>
+            <input
+              type="number"
+              class="form-control"
+              name="unloading_ganesh"
+              min="0"
+              id="unloadganesh"
+              value="{{Aak_u.unloading_ganesh}}"
+              oninput="calculateTotalShort()"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ashok mama )</label
+            >
+            <input
+              type="number"
+              name="unloading_mama"
+              class="form-control"
+              id="unloadmama"
+              value="{{Aak_u.unloading_mama}}"
+              oninput="calculateTotalShort()"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label12" class="form-label fw-bold">Vehicle Date & Time when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  </label>
+            <input
+              type="datetime-local"
+              class="form-control"
+              name="returned"
+              min="0"
+              id="label2"
+              value="{{ Aak_u.returned|date:'Y-m-d\TH:i' }}"
+            />
+          </div>
+
+        <div class="col-lg-4 mb-3">
+            <label for="totalganesh" class="form-label fw-bold">Vehicle Kilometer 
+Per Trip (As per Ganesh Sir)</label>
+            <input
+              type="number"
+              class="form-control"
+              name="trip_ganesh"
+              min="0"
+              id="totalganesh"
+              value="{{Aak_u.trip_ganesh}}"
+       
+              oninput="calculateTotalShort()"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+            <label for="label4" class="form-label fw-bold">Vehicle Kilometer 
+Per Trip (As per Ashok Mama )</label>
+            <input
+              type="number"
+              class="form-control"
+              name="trip_mama"
+              min="0"
+              id="totalmama"
+              value="{{Aak_u.trip_mama}}"
+              
+              oninput="calculateTotalShort()"
+            />
+          </div>
+        
+        
+        <div class="col-lg-4 mb-3">
+            <label for="label15" class="form-label fw-bold">LR No</label>
+            <input
+              type="number"
+              class="form-control"
+              name="lr_num"
+              min="0"
+              id="label15"
+              value="{{Aak_u.lr_num}}"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label16" class="form-label fw-bold"
+              >LR Received Date</label
+            >
+            <input
+              type="text"
+              name="lr_date"
+              class="form-control"
+              id="label16"
+              value="{{Aak_u.lr_date}}"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+            <label for="label17" class="form-label fw-bold"
+              >Freight Bill no.</label
+            >
+            <input
+              type="text"
+              name="freight_bill"
+              class="form-control"
+              id="label17"
+               min="0"
+              value="{{Aak_u.freight_bill}}"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label18" class="form-label fw-bold"
+              >Freight Bill Date</label
+            >
+            <input
+              type="date"
+              class="form-control"
+              name="freight_date"
+              id="label18"
+              value="{{ Aak_u.freight_date|date:'Y-m-d' }}"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="disqty" class="form-label fw-bold">Loaded Qty</label>
+            <input type="number" class="form-control" id="disqty" name="loaded_qty" value="{{Aak_u.loaded_qty}}" oninput="calculateTotalShort()">
+        </div>
+          <div class="col-lg-4 mb-3">
+            <label for="unlodqty" class="form-label fw-bold">Unloaded Qty</label>
+            <input type="number" class="form-control" id="unlodqty" name="unload_qty" value="{{Aak_u.unload_qty}}" oninput="calculateTotalShort()">
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="totalshort" class="form-label fw-bold"
+              >Total Shortages Qty</label
+            >
+            <input type="number" class="form-control" id="totalshort" name="short_qty" value="{{Aak_u.short_qty}}" readonly>
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="shortQty" class="form-label fw-bold"
+              >Shortages allowed against loaded Qty</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="short_allow"
+              min="0"
+              id="shortQty"
+              value="{{Aak_u.short_allow}}"
+              
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label19" class="form-label fw-bold">Return Qty</label>
+            <input
+              type="number"
+              class="form-control"
+              name="return_qty"
+              min="0"
+              id="label19"
+              value="{{Aak_u.return_qty}}"
+            />
+        </div>
+         
+         
+          
+        <div class="col-lg-4 mb-3">
+            <label for="label20" class="form-label fw-bold"
+              >J. N. Roadlines Remarks</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="remark"
+              min="0"
+              id="label20"
+              value="{{Aak_u.remark}}"
+            />
+        </div>
+        <div class="btn-div text-center py-2">
+            {% comment %} <button type="submit" class="btn btn-success px-4 mx-2">Add</button> {% endcomment %}
+            <button type="submit" class="btn btn-primary px-4">Update</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+<script>
+    function calculateTotalShort() {
+        // Get the values of disqty and unlodqty from the form
+        var disqty = document.getElementById("disqty").value;
+        var unlodqty = document.getElementById("unlodqty").value;
+
+        var loadganesh = document.getElementById("loadganesh").value;
+        var unloadganesh = document.getElementById("unloadganesh").value;
+
+        var loadmama = document.getElementById("loadmama").value;
+        var unloadmama = document.getElementById("unloadmama").value;
+      
+        // Calculate totalshort only if both values are numbers
+        if (disqty && unlodqty) {
+            // Calculate totalshort
+            var totalshort = parseInt(disqty) - parseInt(unlodqty);
+
+            // Multiply disqty by 0.2 to get shortQty
+            var shortQty = disqty * 0.2 /100;
+
+            // Display totalshort and shortQty in the input fields
+            document.getElementById("totalshort").value = totalshort; // Display the total short value
+            document.getElementById("shortQty").value = shortQty; // Display the multiplied shortQty value
+        }
+        if (loadganesh && unloadganesh) {
+            // Calculate totalshort
+            var totalganesh = +parseInt(loadganesh) - parseInt(unloadganesh);
+
+            // Display totalshort and shortQty in the input fields
+            document.getElementById("totalganesh").value = totalganesh; // Display the total short value
+        }
+        if (loadmama && unloadmama) {
+            // Calculate totalshort
+            var totalmama = +parseInt(loadmama) - parseInt(unloadmama);
+
+            // Display totalshort and shortQty in the input fields
+            document.getElementById("totalmama").value = totalmama; // Display the total short value
+        }
+    }
+</script>
+
+  </body>
+</html>

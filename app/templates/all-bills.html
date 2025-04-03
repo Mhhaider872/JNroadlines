@@ -1,0 +1,64 @@
+<!-- @format -->
+{% include 'base.html' %}
+{% load static %}
+
+
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>All Bills</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">All Bills</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+     
+      <section class="section">
+        
+        <div class="card py-5">
+          <div class="row">
+               {% comment %} <div class="col-lg-3">
+                    <div class="card-body py-3">
+                    <a href="{% url 'aak-bills' %}" class="btn btn-primary">AAK India Pvt Ltd.</a>
+                     </div>
+              </div>
+                <div class="col-lg-3">
+                   <div class="card-body py-3">
+                   <a href="{% url 'gemini-bills' %}" class="btn btn-primary">Gemini Edibles</a>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                   <div class="card-body py-3">
+                   <a href="{% url 'gemini-bills' %}" class="btn btn-primary">Ashland India Pvt. Ltd</a>
+                    </div>
+                </div> {% endcomment %}
+                 
+<div class="col-lg-4">
+    <div class="card-body py-3">
+        <label for="company-select" class="form-label fw-bold">Select Company</label>
+        <select class="form-select" id="company-select" aria-label="Default select example">
+        <option value="#" selected>Select Company </option>
+            <option value="{% url 'aak-bills' %}">AAK India Pvt Ltd.</option>
+            <option value="{% url 'gemini-bills' %}">Gemini Edibles</option>
+            {% comment %} <option value="{%url 'ash-bills'%}">Ashland India Pvt. Ltd</option>
+            <option value="{%url 'cargill'%}">Cargil India Pvt Ltd.</option>
+            <option value="{%url 'harkaran'%}">HarakaranDass Ved Pal</option>
+            <option value="{%url 'vvf-india'%}">VVF ( INDIA ) Limited </option>
+      
+            
+
+            <option value="#">AKM International Master</option> {% endcomment %}
+        </select>
+    </div>
+</div>
+<script>
+    document.getElementById('company-select').addEventListener('change', function() {
+        var selectedUrl = this.value;  // Get the selected URL
+        window.location.href = selectedUrl;  // Redirect to the selected URL
+    });
+</script>
+  </body>
+

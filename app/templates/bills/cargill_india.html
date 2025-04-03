@@ -1,0 +1,403 @@
+<!-- @format -->
+{% include 'base.html' %}
+{% load static %}
+
+
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card py-3">
+              <div class="card-body">
+                </div>
+    <section class="main-sec">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+    <form  method="POST">
+    {% csrf_token %}
+          <div class="row">
+          <div class="col-lg-4 mb-3">
+            <label for="label1" class="form-label fw-bold">Bill No</label>
+            <input
+              type="number"
+              class="form-control"
+              name="bill_on"
+              min="0"
+              id="label1"
+              disabled
+            />
+         </div>
+
+        <div class="col-lg-4 mb-3">
+            <label for="label2" class="form-label fw-bold">Date</label>
+            <input
+              type="date"
+              class="form-control"
+              name="date"
+              min="0"
+              id="label2"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+            <label for="label3" class="form-label fw-bold">Company Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="company"
+              min="0"
+              id="label3"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label4" class="form-label fw-bold">GST No.</label>
+            <input
+              type="text"
+              class="form-control"
+              name="gst"
+              min="0"
+              id="label4"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold">PAN No.</label>
+            <input
+              type="text"
+              class="form-control"
+              name="pan"
+              min="0"
+              id="label5"
+            />
+        </div>
+            <div class="col-lg-4 mb-3">
+              <label for="lable6" class="form-label fw-bold"
+                >Vehicle No</label
+              >
+           
+               <input class="form-control" value="{{tankerno}}" name="tanker" id="exampleDataList" placeholder="Search to vehicle no...">
+            </div>
+
+
+            <div class="col-lg-4 mb-3">
+              <label for="lable7" class="form-label fw-bold"
+                >From Address</label
+              >
+              <div class="input-group mb-3">
+                 <input
+              
+              class="form-control"
+              name="From_add"
+              min="0"
+              id="label7"
+             
+              value="{{From_address}}"
+         
+            />
+              </div>
+            </div>
+            <div class="col-lg-4 mb-3">
+              <label for="lable8" class="form-label fw-bold"
+                >To Address</label
+              >
+      
+               <input
+              
+              class="form-control"
+              name="To_add"
+              min="0"
+              id="label8"
+              value="{{To_address}}"
+            
+            />
+            </div>
+            
+           <div class="col-lg-4 mb-3">
+            <label for="label9" class="form-label fw-bold"
+              >Dispatch date </label
+            >
+            <input
+              type="date"
+              name="date_dis"
+              class="form-control"
+              id="label9"
+            />
+          </div>
+        
+              <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold">LR No </label>
+            <input
+              type="number"
+              class="form-control"
+              name="lr_num"
+              min="0"
+              id="label11"
+              value="{{lr_num}}"
+            />
+        </div>
+
+           <div class="col-lg-4 mb-3">
+            <label for="label10" class="form-label fw-bold"
+              >Chargable Qty ( K.G )</label
+            >
+            <input
+           
+              class="form-control"
+              name="tanker_cap"
+              min="0"
+              id="label10"
+              value="{{tank_capacity}}"
+              
+            />
+          </div>
+        
+        
+   
+      
+         {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label19" class="form-label fw-bold"
+              >Freight Bill no.</label
+            >
+            <input
+              type="number"
+              name="freight_bill"
+              class="form-control"
+              id="label19"
+               min="0"
+            />
+        </div> {% endcomment %}
+      
+        <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Loaded Qty  ( K.G )</label>
+            <input type="number" class="form-control" id="disqty" name="load" value="{{loaded_qty}}" oninput="calculateTotalShort()">
+        </div>
+        {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Allow Percentage</label>
+            <input type="number" class="form-control" id="percente" name="percent" value="{{t.totalshort}}" oninput="calculateTotalShort()" step="0.01">
+        </div> {% endcomment %}
+          <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Unloaded Qty  ( K.G )</label>
+            <input type="number" class="form-control" id="unlodqty" name="unload" value="{{unload_qty}}" oninput="calculateTotalShort()">
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label14" class="form-label fw-bold"
+              >Total Shortages  ( K.G ) </label
+            >
+            <input type="number" class="form-control" id="totalshort" name="total" readonly>
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            <label for="label1" class="form-label fw-bold">Return Qty  ( K.G )</label>
+            <input
+              type="number"
+              class="form-control"
+              name="retn"
+              min="0"
+              id="label15"
+              value="{{return_qty}}"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+            <label for="label16" class="form-label fw-bold">Rate Per( K.G )</label>
+            <input
+              type="number"
+              class="form-control"
+              name="return_qty"
+              min="0"
+              id="rate_kg"
+              oninput="calculateTotal()"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label17" class="form-label fw-bold">Total</label>
+            <input
+              type="number"
+              class="form-control"
+              name="return_qty"
+              min="0"
+              id="totalamount"
+              oninput="calculateTotal()"
+            />
+        </div>
+        <hr>
+         
+          <h5>Detention Charge</h5>
+        <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >From </label
+            >
+            <input
+              type="date"
+              name="Fo_date"
+              class="form-control"
+              id="Fo_date"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >To</label
+            >
+            <input
+              type="date"
+              name="To_date"
+              class="form-control"
+              id="To_date"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+            <label for="label18" class="form-label fw-bold">Rate </label>
+            <input
+              type="number"
+              class="form-control"
+              name="d_rate"
+              min="0"
+              id="perrate"
+              oninput="Total()"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label19" class="form-label fw-bold"> Per Day</label>
+            <input
+              type="number"
+              class="form-control"
+              name="par_day"
+              min="0"
+              id="day"
+              oninput="Total()"
+            />
+        </div>
+     
+         <div class="col-lg-4 mb-3">
+            <label for="label20" class="form-label fw-bold"
+              >Total</label
+            >
+            <input
+              type="number"
+              name="total_d"
+              class="form-control"
+              id="totals"
+               
+               oninput="Total()"
+               min="0"
+               readonly
+            />
+        </div>
+      
+          
+       
+        <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-danger px-4 mx-2">Save</button>
+            <a href="#" class="btn btn-success px-4 mx-2">View</a>
+            <a href="{% url 'aak-bill' %}" class="btn btn-info text-white px-4 mx-2">Create Bill</a>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+{% comment %} <script>
+        function calculateTotalShort() {
+            // Get the values of disqty and unlodqty from the form
+            var disqty = document.getElementById("disqty").value;
+            var unlodqty = document.getElementById("unlodqty").value;
+
+
+            // Calculate totalshort only if both values are numbers
+            if (disqty && unlodqty) {
+                var totalshort = parseInt(disqty) - parseInt(unlodqty);
+                document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
+            }
+        }
+    </script> {% endcomment %}
+  <script>
+     function calculateTotalShort() {
+    // Get the values of disqty, unlodqty, and totalshort
+    var disqty = document.getElementById("disqty").value;
+    var unlodqty = document.getElementById("unlodqty").value;
+
+    
+    // Ensure values are numbers
+    if (disqty && unlodqty) {
+        // Calculate totalshort and update it
+        totalshort = parseInt(disqty) - parseInt(unlodqty);
+        document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
+    }
+    }
+  </script>
+  <script>
+      function calculateTotal() {
+    // Get the values of the input fields by their IDs
+    let disqty = parseFloat(document.getElementById('disqty').value);
+    let rate = parseFloat(document.getElementById('rate_kg').value);
+
+    // Check if both disqty and rate are numbers
+    if (!isNaN(disqty) && !isNaN(rate)) {
+        let total = disqty * rate;  // Calculate total
+        document.getElementById('totalamount').value = total;  // Display total in the input field
+    }
+  }
+
+
+  </script>
+  <script>
+    function Total() {
+        // Get the values of the input fields by their IDs
+        let perrate = parseFloat(document.getElementById('perrate').value);
+        let day = parseFloat(document.getElementById('day').value);
+
+        // If either kg or rate is NaN (not a number), don't calculate the total
+        if (isNaN(perrate) || isNaN( day)) {
+            document.getElementById('totals').value = ''; // Clear the total field if invalid input
+        } else {
+            let total = perrate * day;
+            document.getElementById('totals').value = total; // Display the total in the input field
+        }
+    }
+</script>
+  </body>
+

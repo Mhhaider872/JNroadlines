@@ -1,0 +1,193 @@
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+<main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body py-4">
+                {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
+
+
+<section class="main-sec">
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form  method="POST">
+          {% csrf_token %}
+          <div class="row">
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
+             <input class="form-control border-2" list="datalistOptions" id="exampleDataList" name="urea_tanker_no"   placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-4 mb-3">
+              <label for="lable2" class="form-label fw-bold"
+                >From Address</label
+              >
+              <div class="input-group mb-3">
+                <input class="form-control border-2" name="From_address" list="datalistOptions2" id="exampleDataList2" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions2">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+              </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+              <label for="lable2" class="form-label fw-bold"
+                >To Address</label
+              >
+              <div class="input-group mb-3">
+               <input class="form-control border-2" name="To_address" list="datalistOptions2" id="exampleDataList2" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions2" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+              </div>
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Paid Date</label
+             >
+             <input
+              type="date"
+              name="paid_date"
+              class="form-control border-2"
+              id="label11"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Bill Date</label
+             >
+             <input
+              type="date"
+              name="bill_date"
+              class="form-control border-2"
+              id="label11"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Trip Date</label
+             >
+             <input
+              type="date"
+              name="trip_urea_date"
+              class="form-control border-2"
+              id="label11"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Liters</label
+             >
+             <input
+              type="number"
+              name="urea_liter"
+              class="form-control border-2"
+              id="liter"
+              min="0"
+              oninput="calculateTotal2()"
+            />
+        </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Rate </label
+             >
+            <input
+              type="number"
+              name="urea_rate"
+               class="form-control border-2"
+               id="rate"
+               min="0"
+              oninput="calculateTotal2()"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Total</label
+             >
+            <input
+              type="number"
+              name="urea_total"
+              class="form-control border-2"
+              id="totalamount3"
+              min="0"
+              oninput="calculateTotal2()"
+            />
+          </div>
+          <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-danger px-4">Add</button>
+            <a href="{% url 'urea-details' %}" class="btn btn-success px-4">View</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+
+  <script>
+       function calculateTotal2() {
+    // Get the values of the input fields by their IDs
+       let liter = parseFloat(document.getElementById('liter').value) ;
+       let rate = parseFloat(document.getElementById('rate').value) ;
+       
+
+       let total = liter * rate;
+       document.getElementById('totalamount3').value = total;
+    }
+
+</script>
+  </body>

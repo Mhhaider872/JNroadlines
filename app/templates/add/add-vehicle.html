@@ -1,0 +1,192 @@
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+
+
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Add Vehicle</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body py-4">
+                {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
+
+
+<section class="main-sec">
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form  method="POST">
+        {% csrf_token %}
+          <div class="row">
+          <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Vehicle No</label>
+             <input input="text" class="form-control border-2" name="vehicle_name"  id="exampleDataList">
+               
+          </div>
+            <div class="col-lg-4 mb-3">
+              <label for="lable2" class="form-label fw-bold"
+                >Owner Name</label
+              >
+              <div class="input-group mb-3">
+                <select class="form-select border-2" name="owner_name" id="lable2">
+                <option>Select</option>
+                  <option value="Namrata Vijay Makhija">Namrata Vijay Makhija</option>
+                  <option value="Jay Vijay Makhija">Jay Vijay Makhija</option>
+                   <option value="J N Roadlines">J N Roadlines</option>
+                  
+                </select>
+              </div>
+            </div>
+          <div class="col-lg-4 mb-3">
+              <label for="lable3" class="form-label fw-bold"
+                >Making Year</label
+              >
+              <input
+              type="date"
+              name="making_year"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Chassis No.</label>
+             <input input="text" class="form-control border-2" name="chassise_no"  id="exampleDataList">
+               
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Engine No.</label>
+             <input input="text" class="form-control border-2" name="engine_no"  id="exampleDataList">
+               
+          </div>
+
+          
+          <div class="col-lg-4 mb-3">
+            <label for="label6" class="form-label fw-bold"
+              >Insurance Date
+            </label>
+           <input
+              type="date"
+              name="insurance_date"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label6" class="form-label fw-bold"
+              >State Permit
+            </label>
+           <input
+              type="date"
+              name="state_permit"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >National Permit</label
+            >
+            <input
+              type="date"
+              name="national_permit"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Fitness Date</label
+            >
+            <input
+              type="date"
+              name="fitness_date"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Tax Date</label
+            >
+            <input
+              type="date"
+              name="tax_date"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >PUC Date</label
+            >
+            <input
+              type="date"
+              name="puc_date"
+              class="form-control border-2" 
+              id="label11"
+            />
+          </div>
+             <div class="col-lg-4 mb-3">
+        <label for="lable3" class="form-label fw-bold"
+                >Upload Image</label
+              >
+        <input type="file" name="vehicle_img" class="form-control border-2" id="inputGroupFile01">
+      </div>
+
+          <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-danger px-4">Save</button>
+            <a href="{% url 'show-vehicle' %}" class="btn btn-success px-4">View</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+  </body>

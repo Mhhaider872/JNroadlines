@@ -1,0 +1,320 @@
+<!-- @format -->
+{% include 'base.html' %}
+{% load static %}
+
+
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Add Drivers Loan</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body py-4">
+               
+                
+    <section class="main-sec">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form  method="POST">
+        {% csrf_token %}
+          <div class="row">
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Vehicle No</label>
+             <input class="form-control border-2" name="tankerno" list="datalistOptions" id="exampleDataList" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+          </div>
+
+
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
+             <input class="form-control border-2" name="From_address" list="datalistOptions1" id="exampleDataList1" placeholder="Search...">
+               <datalist id="datalistOptions1" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+             <div class="col-lg-4 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">To Address</label>
+             <input class="form-control border-2" name="To_address" list="datalistOptions2" id="exampleDataList2" placeholder="Search...">
+               <datalist id="datalistOptions2">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+              <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
+             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers..." required>
+               <datalist id="driverslist">
+                  {% for d in dname %}
+                 <option value="{{d.name}}">{{d.name }}</option>
+                {% endfor %}
+                </datalist>
+             </div>
+           <div class="col-lg-4 mb-3">
+            <label for="label6" class="form-label fw-bold"
+              >Trip Date</label
+            >
+            <input
+              type="date"
+              class="form-control border-2"
+              name="trip_date"
+              min="0"
+              id="label6"
+      
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label7" class="form-label fw-bold"
+              >Date</label
+            >
+            <input
+              type="date"
+              class="form-control border-2"
+              name="date"
+              min="0"
+              id="label7"
+      
+            />
+          </div>
+          
+        <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Loaded Qty</label>
+            <input type="number" class="form-control border-2" id="disqty" name="load" value="{{t.totalshort}}" oninput="calculateTotalShort()">
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Unloaded Qty</label>
+            <input type="number" class="form-control border-2" id="unlodqty" name="unload" value="{{t.totalshort}}" oninput="calculateTotalShort()">
+        </div>
+  
+          
+        <div class="col-lg-4 mb-3">
+            <label for="label14" class="form-label fw-bold"
+              > Shortages In K.G</label
+            >
+            <input type="number" class="form-control border-2" id="totalshort" name="short_kg" step="0.01" readonly>
+        </div>
+           <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Allow Qty in K.G</label>
+            <input type="number" class="form-control border-2" id="shortallow" name="allow_kg" value="{{t.totalshort}}" oninput="calculateTotalShort()" step="0.01">
+        </div> 
+        <div class="col-lg-4 mb-3">
+            <label for="label15" class="form-label fw-bold"
+              >Actual Shortages Amount</label
+            >
+            <input
+              type="number"
+              class="form-control border-2"
+              name="actual_short"
+              min="0"
+              id="loadedQtyPercent" name="loadedQtyPercent" oninput="calculateTotalShort()" step="0.01" readonly
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label22" class="form-label fw-bold">Rate </label>
+            <input
+              type="number"
+              class="form-control border-2"
+              name="rate"
+              min="0"
+              id="label22"
+              oninput="calculateTotalShort()" step="0.01"
+            />
+        </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label16" class="form-label fw-bold">Shortage Amount </label>
+            <input
+              type="number"
+              class="form-control border-2"
+              name="short_amount"
+              min="0"
+              id="short_allow_rate"
+              oninput="calculateTotalShort()" step="0.01"
+            />
+        </div>
+         {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label16" class="form-label fw-bold">Shortage Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              name="shortage"
+              min="0"
+              id="label16"
+            />
+        </div> {% endcomment %}
+         
+          
+        <div class="col-lg-4 mb-3">
+            <label for="label21" class="form-label fw-bold"
+              >Previous Loan</label
+            >
+            <input
+              type="number"
+              class="form-control border-2"
+              name="previous_loan"
+              min="0"
+              id="pervious"
+             
+              oninput="calculateTotalShort()"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label21" class="form-label fw-bold"
+              >Trip Loan Amount</label
+            >
+            <input
+              type="number"
+              class="form-control border-2"
+              name="loan_amount"
+              min="0"
+              id="label21"
+              value={{shortage.actual_amount}}
+              oninput="calculateTotalShort()"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+            <label for="label22" class="form-label fw-bold"
+              >Total</label
+            >
+            <input
+              type="number"
+              class="form-control border-2"
+              name="total"
+              min="0"
+              id="total_loan"
+              oninput="calculateTotalShort()"
+            />
+        </div>
+        <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-danger px-4">Save</button>
+            <a href="{% url 'show-loan' %}" class="btn btn-success px-4">View</a>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+ {% comment %} <script>
+        function calculateTotalShort() {
+            // Get the values of disqty and unlodqty from the form
+            var disqty = document.getElementById("disqty").value;
+            var unlodqty = document.getElementById("unlodqty").value;
+
+
+            // Calculate totalshort only if both values are numbers
+            if (disqty && unlodqty) {
+                var totalshort = parseInt(disqty) - parseInt(unlodqty);
+                document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
+            }
+        }
+    </script> {% endcomment %}
+<script>
+    function calculateTotalShort() {
+     // Get the values of disqty, unlodqty, shortallow, and rate
+     var disqty = document.getElementById("disqty").value;
+     var unlodqty = document.getElementById("unlodqty").value;
+     var shortallow = document.getElementById("shortallow").value;
+     var rate = document.getElementById("label22").value;  // Add this line to fetch the rate
+     var short_allow_rate = document.getElementById("short_allow_rate").value;
+     var deductedLoan = document.getElementById("label21").value;
+     var pervious = document.getElementById("pervious").value;
+     var total_loan = document.getElementById("total_loan").value;
+            
+     
+     // Ensure values are numbers and disqty and unlodqty are available
+     // var loadedQtyPercent = (parseFloat(disqty) - parseFloat(shortallow));
+     if (disqty && unlodqty) {
+         // Calculate totalshort and update it
+         var totalshort = parseInt(disqty) - parseInt(unlodqty);
+         document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
+     }
+
+     // Ensure the Allow Percentage (shortallow) and Loaded Qty (disqty) are valid numbers
+     if (disqty && shortallow) {
+         // Calculate and update the shortages allowed (as percentage of loaded qty)
+         var loadedQtyPercent = (parseFloat(disqty) - parseFloat(shortallow));
+         document.getElementById("loadedQtyPercent").value = loadedQtyPercent; // Round to 2 decimal places 
+     }
+
+     // Ensure rate is a valid number
+     if (rate && loadedQtyPercent) {
+         // Calculate and update the shortage allowance rate
+         var short_allow_rate = (parseFloat(rate) * parseFloat(loadedQtyPercent));
+         document.getElementById("short_allow_rate").value = short_allow_rate.toFixed(2); // Round to 2 decimal places 
+     }
+     
+
+    // Check if the values are valid numbers before calculation
+    if (short_allow_rate && deductedLoan) {
+        var totalLoan = parseInt(short_allow_rate) - parseInt(deductedLoan);
+        // Display the calculated total loan in the total_loan input field
+        document.getElementById("total_loan").value = totalLoan; // Round to 2 decimal places
+    }
+    if (pervious && total_loan) {
+        var total_loan = parseInt(pervious) + parseInt(total_loan);
+        // Display the calculated total loan in the total_loan input field
+        document.getElementById("total_loan").value = total_loan; // Round to 2 decimal places
+    }
+ }
+
+</script>
+
+<script>
+    document.getElementById('company-select').addEventListener('change', function() {
+        var selectedUrl = this.value;  // Get the selected URL
+        window.location.href = selectedUrl;  // Redirect to the selected URL
+    });
+</script>
+  </body>
+

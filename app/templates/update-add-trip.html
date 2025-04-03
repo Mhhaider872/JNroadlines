@@ -1,0 +1,435 @@
+<!-- @format -->
+{% include 'base.html' %}
+{% load static %}
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+         <h1 class="py-4">Update Trip</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body py-3">
+                {% comment %} <a href="{% url 'aak-local' %}" class="btn btn-primary  float-end">AAK India Local</a> {% endcomment %}
+                </div>
+    <section class="main-sec">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form action="{% url 'updatetrip' uptrip.id %}" method="POST">
+
+         {% csrf_token %}
+          <div class="row">
+            <div class="col-lg-4 mb-3">
+              <label for="lable1" class="form-label fw-bold"
+                >Vehicle No</label
+              >
+           
+               <input class="form-control" value="{{uptrip.tankerno}}" name="tankerno" id="exampleDataList" placeholder="Search to vehicle no..." >
+            </div>
+
+
+            <div class="col-lg-4 mb-3">
+              <label for="lable2" class="form-label fw-bold"
+                >From Address</label
+              >
+              <div class="input-group mb-3">
+                 <input
+              
+              class="form-control"
+              name="From_address"
+              min="0"
+              id="label6"
+              value="{{uptrip.From_address}}"
+               
+            />
+              </div>
+            </div>
+            <div class="col-lg-4 mb-3">
+              <label for="lable3" class="form-label fw-bold"
+                >To Address</label
+              >
+      
+               <input
+              
+              class="form-control"
+              name="To_address"
+              min="0"
+              id="label6"
+               value="{{uptrip.To_address}}"
+              
+            />
+            </div>
+             <div class="col-lg-4 mb-3">
+            <label for="label" class="form-label fw-bold"
+              >Driver Name</label
+            >
+            <input
+           
+              class="form-control"
+              name="drivername"
+              min="0"
+              id="label"
+              value="{{uptrip.drivername}}"
+              
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+            <label for="label6" class="form-label fw-bold"
+              >Tanker Capacity</label
+            >
+            <input
+           
+              class="form-control"
+              name="tank_capacity"
+              min="0"
+              id="label6"
+              value="{{uptrip.tank_capacity}}"
+              
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label4" class="form-label fw-bold"
+              >Arrival at Loading Point (Plant) Date & Time</label
+            >
+            <input
+              type="datetime-local"
+              name="arrival_time"
+              class="form-control"
+              id="label4"
+              value="{{ uptrip.arrival_time|date:'Y-m-d\TH:i' }}"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >Dispatched date & time</label
+            >
+            <input
+              type="datetime-local"
+              name="dispatch_time"
+              class="form-control"
+              id="label5"
+             value="{{ uptrip.dispatch_time|date:'Y-m-d\TH:i' }}"
+            />
+          </div>
+         
+
+          {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ganesh Sir </label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="dispddate"
+              min="0"
+              id="label5"
+            />
+          </div> {% endcomment %}
+          {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label6" class="form-label fw-bold"
+              >Vehicle Kilometer at the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              name="tankcap"
+              min="0"
+              id="label6"
+            />
+          </div> {% endcomment %}
+          {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label7" class="form-label fw-bold">Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ganesh Sir )</label>
+           <input type="number" class="form-control " >
+          </div> {% endcomment %}
+           <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >Reached date & time</label
+            >
+            <input
+              type="datetime-local"
+              name="reach_time"
+              class="form-control"
+              id="label5"
+                 value="{{ uptrip.reach_time|date:'Y-m-d\TH:i' }}"
+            />
+          </div>
+{% comment %} 
+          <div class="col-lg-4 mb-3">
+            <label for="label8" class="form-label fw-bold">Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ashok mama )</label>
+            <input
+              type="text"
+              class="form-control"
+              name="product"
+              min="0"
+              id="label8"
+            />
+          </div> {% endcomment %}
+          {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >Vehicle Date & Time when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  </label
+            >
+            <input
+              type="datetime-local"
+              name="ardate"
+              class="form-control"
+              id="label5"
+            />
+          </div> {% endcomment %}
+          {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label9" class="form-label fw-bold">Vehicle Kilometer Per Trip (As per Ganesh Sir)  </label>
+            <input
+              type="number"
+              class="form-control"
+              name="traday"
+              min="0"
+              id="label9"
+            />
+          </div> {% endcomment %}
+
+        {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label9" class="form-label fw-bold">Vehicle Kilometer Per Trip (As per Ashok Mama )  </label>
+            <input
+              type="number"
+              class="form-control"
+              name="traday"
+              min="0"
+              id="label9"
+            />
+          </div> {% endcomment %}
+        
+          <div class="col-lg-4 mb-3">
+            <label for="label12" class="form-label fw-bold"
+              >Unloading date & time</label
+            >
+            <input
+              type="datetime-local"
+              name="unload_time"
+              class="form-control shadow-sm border-0"
+              id="label12"
+               value="{{ uptrip.unload_time|date:'Y-m-d\TH:i' }}"
+            />
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            <label for="label17" class="form-label fw-bold">LR No</label>
+            <input
+              type="number"
+              class="form-control"
+              name="lr_num"
+              min="0"
+              id="label17"
+               value="{{uptrip.lr_num}}"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label18" class="form-label fw-bold"
+              >LR Received Date</label
+            >
+            <input
+              type="date"
+              name="lr_date"
+              class="form-control"
+              id="label18"
+            value="{{ uptrip.lr_date|date:'Y-m-d' }}"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+            <label for="label19" class="form-label fw-bold"
+              >Freight Bill no.</label
+            >
+            <input
+              type="text"
+              name="freight_bill"
+              class="form-control"
+              id="label19"
+               min="0"
+               value="{{uptrip.freight_bill}}"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label20" class="form-label fw-bold"
+              >Freight Bill Date</label
+            >
+            <input
+              type="date"
+              class="form-control"
+              name="freight_date"
+              id="label20"
+                  value="{{ uptrip.freight_date|date:'Y-m-d' }}"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Loaded Qty</label>
+            <input type="number" class="form-control" id="disqty" name="loaded_qty"  oninput="calculateTotalShort()" value="{{uptrip.loaded_qty}}">
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Allow Percentage</label>
+            <input type="number" class="form-control" id="percente" name="percent"  oninput="calculateTotalShort()"  step="0.01" value="{{uptrip.percent}}" >
+        </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Unloaded Qty</label>
+            <input type="number" class="form-control" id="unlodqty" name="unload_qty" oninput="calculateTotalShort()" value="{{uptrip.unload_qty}}">
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label14" class="form-label fw-bold"
+              >Total Shortages Qty</label
+            >
+            <input type="number" class="form-control" id="totalshort" name="short_qty" value="{{uptrip.short_qty}}"  readonly>
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label15" class="form-label fw-bold"
+              >Shortages allowed against loaded Qty</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="short_allow"
+              min="0"
+              id="loadedQtyPercent" value="{{uptrip.short_allow}}"  readonly
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label16" class="form-label fw-bold">Return Qty</label>
+            <input
+              type="number"
+              class="form-control"
+              name="return_qty"
+              min="0"
+              id="label16"    
+              value="{{uptrip.return_qty}}"
+            />
+        </div>
+         
+         
+          
+        <div class="col-lg-4 mb-3">
+            <label for="label21" class="form-label fw-bold"
+              >J. N. Roadlines Remarks</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="remark"
+              min="0"
+              id="label21"
+              value="{{uptrip.remark}}"
+            />
+        </div>
+        <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-primary px-4">Update</button>
+            {% comment %} <a href="{% url 'showtrip' %}" class="btn btn-success px-4">View</a> {% endcomment %}
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+{% comment %} <script>
+        function calculateTotalShort() {
+            // Get the values of disqty and unlodqty from the form
+            var disqty = document.getElementById("disqty").value;
+            var unlodqty = document.getElementById("unlodqty").value;
+
+
+            // Calculate totalshort only if both values are numbers
+            if (disqty && unlodqty) {
+                var totalshort = parseInt(disqty) - parseInt(unlodqty);
+                document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
+            }
+        }
+    </script> {% endcomment %}
+  <script>
+     {% comment %} function calculateTotalShort() {
+    // Get the values of disqty, unlodqty, and totalshort
+    var disqty = document.getElementById("disqty").value;
+    var unlodqty = document.getElementById("unlodqty").value;
+    var percente = document.getElementById("percente").value;
+    
+    // Ensure values are numbers
+    if (disqty && unlodqty) {
+        // Calculate totalshort and update it
+        totalshort = parseInt(disqty) - parseInt(unlodqty);
+        document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
+    }
+    
+    // Calculate and update the Loaded Qty Percent
+    if (percente && disqty) {
+        var loadedQtyPercent = (parseInt(disqty) * parseFloat(percente)) / 100;
+        var result = parseInt(loadedQtyPercent * 100);
+
+    
+        document.getElementById("loadedQtyPercent").value = result;
+    }
+    } {% endcomment %}
+    function calculateTotalShort() {
+    // Get the values of disqty, unlodqty, and percent
+    var disqty = document.getElementById("disqty").value;
+    var unlodqty = document.getElementById("unlodqty").value;
+    var percente = document.getElementById("percente").value;
+    
+    // Ensure values are numbers and check if unload_qty is 0
+    if (unlodqty === 0) {
+        // If unload_qty is 0, set totalshort to 0
+        document.getElementById("totalshort").value = 0;
+    } else if (disqty && unlodqty) {
+        // Otherwise, calculate totalshort normally
+        var totalshort = parseInt(disqty) - parseInt(unlodqty);
+        document.getElementById("totalshort").value = totalshort;
+    }
+
+    // Calculate and update the Loaded Qty Percent
+    if (percente && disqty) {
+        var loadedQtyPercent = (parseInt(disqty) * parseFloat(percente)) / 100;
+        var result = parseInt(loadedQtyPercent * 100);
+
+        document.getElementById("loadedQtyPercent").value = result;
+    }
+}
+
+</script>
+  </body>
+

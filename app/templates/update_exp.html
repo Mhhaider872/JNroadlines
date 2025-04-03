@@ -1,0 +1,651 @@
+{% comment %} <!-- add_expense.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expense for Trip {{ trip.trip_id }}</title>
+</head>
+<body>
+    <h1>Add Expense for Trip {{ trip.trip_id }}</h1>
+
+    <!-- Form to add new expense -->
+    <form method="POST">
+        {% csrf_token %}
+        <label for="amount">Amount:</label>
+        <input type="number" step="0.01" id="amount" name="amount" required>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required>
+        <button type="submit">Add Expense</button>
+    </form>
+
+    <!-- Show expenses table -->
+    <h2>Expenses</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.amount }}</td>
+                <td>{{ expense.description }}</td>
+                <td>{{ expense.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>Total Expense: {{ trip.total_expense }}</p>
+
+    <a href="{% url 'end_trip' trip_id=trip.trip_id %}">End Trip</a>
+    <a href="{% url 'start_trip'  %}">Home</a>
+</body>
+</html> {% endcomment %}
+{% include 'base.html' %}
+{% load static %}
+  <body>
+<main id="main" class="main">
+      <div class="pagetitle">
+         <h1>Add Expense</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Trip Expense Sr. No. -:  {{exp.id}} </h5>
+<section class="main-sec">
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+         
+      <h1></h1>
+
+    <!-- Form to add new expense -->
+    <form  action="{% url 'do-exp-update' exp.id %}" method="POST">
+     {% csrf_token %}
+       <div class="row">
+        <h5 class="card-title">General Expense</h5>
+
+       <div class="col-lg-3 mb-3">
+            <label for="allowance1" class="form-label fw-bold"
+              >Trip General Expenses</label
+            >
+            <input
+              type="number"
+              name="trip_general_expenses"
+              class="form-control border-2"
+              id="allowance1"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.trip_general_expenses}}"
+            />
+          </div>
+           <div class="col-lg-3 mb-3">
+            <label for="allowance2" class="form-label fw-bold"
+              >Food Allowances</label
+            >
+            <input
+              type="number"
+              name="food_allowance"
+              class="form-control border-2"
+              id="allowance2"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.food_allowance}}"
+            />
+           </div>
+           <div class="col-lg-3 mb-3">
+            <label for="allowance3" class="form-label fw-bold"
+              >Bhatta</label
+            >
+            <input
+              type="number"
+              name="bhatta"
+              class="form-control border-2"
+              id="allowance3"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.bhatta}}"
+            />
+            </div>
+           <div class="col-lg-3 mb-3">
+            <label for="allowance4" class="form-label fw-bold"
+              >Washing Charges Tank </label
+            >
+            <input
+              type="number"
+              name="washing_charges_tank"
+              class="form-control border-2"
+              id="allowance4"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.washing_charges_tank}}"
+            
+            />
+           </div>
+           <div class="col-lg-3 mb-3">
+            <label for="totalamount" class="form-label fw-bold"
+              >Loan Amount</label
+            >
+            <input
+              type="number"
+              name="actual_amount"
+              class="form-control border-2"
+              id="loanamount"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.actual_amount}}"
+              {% comment %} oninput="calculateTotal1()" {% endcomment %}
+            />
+            </div>
+           <div class="col-lg-3 mb-3">
+            <label for="totalamount" class="form-label fw-bold"
+              >Amount </label
+            >
+            <input
+              type="number"
+              name="total_amount"
+              class="form-control border-2"
+              id="totalAllowance"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.total_amount}}"
+            />
+            </div>
+
+           <h5 class="card-title">Tolls Details</h5>
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              > Date</label
+            >
+            <input
+              type="date"
+              name="toll_date"
+              class="form-control  border-2"
+              id="label11"
+            />
+          </div> {% endcomment %}
+            
+           <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Toll Name</label
+             >
+            <input
+              type="text"
+              name="toll_name"
+              class="form-control border-2"
+              id="label11"
+              value="{{exp.toll_name}}"
+            />
+          </div>
+          <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Amount</label
+             >
+            <input
+              type="number"
+              name="toll_amount"
+              class="form-control border-2"
+              id="label11"
+              value="{{exp.toll_amount}}"
+            />
+          </div>
+        <h5 class="card-title">Diesel Details</h5>
+        
+ 
+      <div class="col-lg-3 mb-3">
+         <label for="category" class="form-label fw-bold">Diesel</label>
+          <select id="category" name="category" onchange="updateSubCategory()" class="form-select border-2" value="{{exp.toll_amount}}">
+         <option value="">Select</option>
+         {% for category in categories %}
+         <option value="{{ category.name }}">{{ category.name }}</option>
+         <!-- Populate categories dynamically -->
+        {% endfor %}
+        </select>
+      </div>
+       <div class="col-lg-3 mb-3">
+         <label for="datalistOptions4" class="form-label fw-bold">Paid To</label>
+         <input class="form-control border-2" list="datalistOptions4" name="paid_to"  placeholder="Search...">
+               <datalist id="datalistOptions4">
+    
+                 <option value="Cash">Cash</option>
+                 <option value="BanK">BanK</option>
+                  {% for p in petrol %}
+                 <option value="{{p.name}}">{{p.name }}</option>
+                 {% endfor %}
+                {% for d in dname %}
+                 <option value="{{d.name}}">{{d.name }}</option>
+                 {% endfor %}
+                </datalist>
+    </div>
+    <div class="col-lg-3 mb-3">
+      <label for="subCategory" class="form-label fw-bold">Paid By</label>
+      <select id="subCategory" name="subCategory" class="form-select border-2">
+        <option value="">Select</option>
+        <!-- Initial empty subcategory dropdown -->
+      </select>
+    </div>
+   
+        <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Amount Given</label
+             >
+             <input
+              type="number"
+              name="amount_given"
+              class="form-control border-2"
+              id="additionalAmount"
+              oninput="calculateTotal()"
+              value="{{exp.amount_given}}"
+            />
+        </div>
+         <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Liters</label
+             >
+             <input
+              type="number"
+              name="liters"
+              class="form-control border-2"
+              id="liter"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.liters }}"
+            />
+        </div>
+           <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Rate </label
+             >
+            <input
+              type="number"
+              name="rate"
+               class="form-control border-2"
+               id="rate"
+               min="0"
+              oninput="calculateTotal()"
+              value="{{exp.rate}}"
+            />
+          </div>
+           <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Total</label
+             >
+            <input
+              type="number"
+              name="total_diesel"
+              class="form-control border-2"
+              id="totalDiesel"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.total_diesel}}"
+            />
+          </div>
+
+      </div>
+      <h5 class="card-title">Urea Details</h5>
+      <div class="row">
+          <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Paid Date</label
+             >
+             <input
+              type="date"
+              name="paid_date"
+              class="form-control border-2"
+              id="label11"
+            />
+        </div> 
+        <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Bill Date</label
+             >
+             <input
+              type="date"
+              name="bill_date"
+              class="form-control border-2"
+              id="label11"
+            />
+        </div>
+      
+         <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Liters</label
+             >
+             <input
+              type="number"
+              name="urea_liter"
+              class="form-control border-2"
+              id="Uliter"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.urea_liter}}"
+            />
+        </div>
+           <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Rate </label
+             >
+            <input
+              type="number"
+              name="urea_rate"
+               class="form-control border-2"
+               id="Urate"
+               min="0"
+              oninput="calculateTotal()"
+              value="{{exp.urea_rate}}"
+            />
+          </div>
+           <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Total</label
+             >
+            <input
+              type="number"
+              name="urea_total"
+              class="form-control border-2"
+              id="totalUrea"
+              min="0"
+              oninput="calculateTotal()"
+              value="{{exp.urea_total}}"
+            />
+          </div>
+          <h5 class="card-title">Repairs Details</h5>
+          <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Paid Date</label
+             >
+             <input
+              type="date"
+              name="r_paid_date"
+              class="form-control border-2"
+              id="label11"
+            />
+        </div>
+      
+        <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Bill Date</label
+             >
+             <input
+              type="date"
+              name="r_bill_date"
+              class="form-control border-2"
+              id="label11"
+            />
+        </div>
+         {% comment %} <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Trip Date</label
+             >
+             <input
+              type="date"
+              name="amount"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div> {% endcomment %}
+         <div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Spare Parts</label
+             >
+             <input
+              type="text"
+              name="spare_part"
+              class="form-control border-2"
+              id="label11"
+              value="{{exp.spare_part}}"
+            />
+        </div>
+           
+           <div class="col-lg-3 mb-3">
+             <label for="label12" class="form-label fw-bold"
+              >Part Name</label
+             >
+            <input
+              type="text"
+              name="part_name"
+              class="form-control border-2"
+              id="label12"
+              min="0"
+              value="{{exp.part_name}}"
+            />
+          </div>
+           <div class="col-lg-3 mb-3">
+             <label for="label13" class="form-label fw-bold"
+              >Number Of Piece</label
+             >
+            <input
+              type="number"
+              name="no_piece"
+              class="form-control border-2"
+              id="label13"
+              min="0"
+              value="{{exp.no_piece}}"
+            />
+          </div>
+<div class="col-lg-3 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Amount </label
+             >
+            <input
+               ype="number"
+               name="r_amount"
+               class="form-control border-2"
+               id="totalamount"
+               min="0"
+               oninput="calculateTotal()"
+               value="{{exp.r_amount}}"
+            />
+          </div>
+<hr>
+<div class="col-lg-3 mb-3">
+        <label for="amount" class="form-label fw-bold"> Date :</label>
+        <input type="date" class="form-control border-2"  id="date" name="date">
+       </div>
+<div class="col-lg-3 mb-3">
+        <label for="amount" class="form-label fw-bold">Amount :</label>
+        <input type="number" class="form-control border-2" step="0.01" id="total" name="amount" oninput="calculateTotal()" value="{{ exp.amount }}"  required>
+       </div>
+       
+<div class="col-lg-3 mb-3">
+            <label for="exampleDataList3" class="form-label fw-bold">( From via) Address </label>
+             <input class="form-control border-2" name="from_via" list="datalistOptions3" id="exampleDataList3" placeholder="Search to...">
+               <datalist id="datalistOptions3">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">( To via ) Address </label>
+             <input class="form-control border-2" name="To_via" list="datalistOptions" id="exampleDataList" placeholder="Search to...">
+               <datalist id="datalistOptions">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div> 
+
+      </div>
+      <div class="text-center">
+        <button  type="submit" class="btn btn-primary my-3">Update</button>
+        </div>
+    </form>
+    {% comment %} <p><strong>Total Expense: {{ trip.total_expense }}</strong></p> {% endcomment %}
+ 
+    {% comment %} <a  class="btn btn-warning mx-2" href="{% url 'trip'  %}">View</a> {% endcomment %}
+    {% comment %} <a  class="btn btn-danger mx-2" href="{% url 'end_trip' trip_id=trip.trip_id %}">End Trip</a> {% endcomment %}
+    {% comment %} <a  class="btn btn-warning mx-2 text-white"  data-bs-toggle="modal" data-bs-target="#exampleModal">End Trip</a> {% endcomment %}
+    <!-- Modal -->
+
+</body>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+{% comment %} <script>
+        function calculateTotal1() {
+     // Get the values of the input fields by their IDs
+       let allowance1 = parseFloat(document.getElementById('allowance1').value) || 0;
+       let allowance2 = parseFloat(document.getElementById('allowance2').value) || 0;
+       let allowance3 = parseFloat(document.getElementById('allowance3').value) || 0;
+       let allowance4 = parseFloat(document.getElementById('allowance4').value) || 0;
+
+       let total = allowance1 + allowance2 + allowance3 + allowance4;
+       document.getElementById('totalamount1').value = total;
+      }
+    </script>
+<script>
+       function calculate_Total() {
+    // Get the values of the input fields by their IDs
+       let liters = parseFloat(document.getElementById('liter').value) ;
+       let rates = parseFloat(document.getElementById('rate').value) ;
+       
+
+       let total2 = liters * rates;
+       document.getElementById('totalamount2').value = total2;
+    }
+
+</script>
+
+
+
+  <script>
+       function calculateTotal(){
+       // Get the values of the input fields by their IDs
+       let liter = parseFloat(document.getElementById('Uliter').value) ;
+       let rates = parseFloat(document.getElementById('Urate').value) ;
+
+       
+
+       let totals = liter * rates;
+       document.getElementById('Utotal_amount').value = totals;
+
+           // Sum up all the totals
+       let total = totalAllowance + totalDiesel + totalUrea + totalAmount;
+
+       // Display the total expense in the respective field or section
+       document.getElementById('totalExpenseDisplay').textContent = "Total Expense: ₹" + total.toFixed(2);
+    }
+
+  </script> {% endcomment %}
+  <script>
+  function calculateTotal() {
+    // Get the values from all input fields and calculate their sum.
+    let allowance1 = parseFloat(document.getElementById('allowance1').value) || 0;
+    let allowance2 = parseFloat(document.getElementById('allowance2').value) || 0;
+    let allowance3 = parseFloat(document.getElementById('allowance3').value) || 0;
+    let allowance4 = parseFloat(document.getElementById('allowance4').value) || 0;
+    let loanamount = parseFloat(document.getElementById('loanamount').value) || 0;
+    
+    // Calculate total allowance
+    let totalAllowance = allowance1 + allowance2 + allowance3 + allowance4 + loanamount;
+
+    // Get diesel details
+    let liter = parseFloat(document.getElementById('liter').value) || 0; // Diesel Liters
+    let rate = parseFloat(document.getElementById('rate').value) || 0; // Diesel Rate
+    let additionalAmount = parseFloat(document.getElementById('additionalAmount').value) || 0;
+    let totalDiesel = (liter * rate) + additionalAmount;  
+
+    // Get urea details
+    let ureaLiter = parseFloat(document.getElementById('Uliter').value) || 0;
+    let ureaRate = parseFloat(document.getElementById('Urate').value) || 0;
+    let totalUrea = ureaLiter * ureaRate;
+
+    // Get actual shortage amount
+    let totalAmount = parseFloat(document.getElementById('totalamount').value) || 0;
+    
+    // Sum up all the totals
+    let total = totalAllowance + totalDiesel + totalUrea + totalAmount;
+
+    // Display the total value
+    document.getElementById('totalAllowance').value = totalAllowance.toFixed(2);
+    document.getElementById('totalDiesel').value = totalDiesel.toFixed(2);
+    document.getElementById('totalUrea').value = totalUrea.toFixed(2);
+    
+    
+    
+
+    // Display the total expense in the respective field or section
+    document.getElementById('total').value = total.toFixed(2);
+}
+
+
+
+
+  </script>
+   <script>
+      // This function is called when the category is selected
+      function updateSubCategory() {
+        var categoryId = document.getElementById("category").value; // Get selected category ID
+        var subCategoryDropdown = document.getElementById("subCategory");
+
+        // Clear previous subcategory options
+        subCategoryDropdown.innerHTML =
+          "<option value=''>Select</option>";
+
+        if (!categoryId) {
+          return; // Exit if no category is selected
+        }
+
+        // Fetch subcategories from Django backend using Fetch API
+        fetch(`/get_subcategories/${categoryId}/`)
+          .then((response) => response.json()) // Parse the JSON response
+          .then((data) => {
+            // Add subcategory options to the subcategory dropdown
+            data.forEach(function (subcategory) {
+              var option = document.createElement("option");
+              option.value = subcategory;
+              option.text = subcategory;
+              subCategoryDropdown.appendChild(option);
+            });
+          })
+          .catch((error) =>
+            console.error("Error fetching subcategories:", error)
+          );
+      }
+    </script>
+  </body>

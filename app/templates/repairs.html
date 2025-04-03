@@ -1,0 +1,192 @@
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+<main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Form</h5>
+
+
+<section class="main-sec">
+  {% if success %}
+
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <h5 class="text-center">Trip Add <strong>Successfully !</strong></h5>
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  {%endif%}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form  method="POST">
+          {% csrf_token %}
+          <div class="row">
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
+             <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions" class="shadow-sm border-0">
+                {% for t in tankerno %}
+                 <option value="{{t.tankerno}}">{{t.tankerno }}</option>
+                 {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Driver Name</label>
+             <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions" class="shadow-sm border-0">
+                {% for t in tankerno %}
+                 <option value="{{t.tankerno}}">{{t.tankerno }}</option>
+                 {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-4 mb-3">
+              <label for="lable2" class="form-label fw-bold"
+                >From Address</label
+              >
+              <div class="input-group mb-3">
+                <select class="form-select shadow-sm border-0" name=" vnform" id="lable2">
+                <option value=" AAK INDIA PVT LTD"> AAK INDIA PVT LTD</option>
+                  <option value="A P ORGANICS LTD.">A P ORGANICS LTD.</option>
+                  <option value="ADANI WILMAR LTD">ADANI WILMAR LTD</option>
+                </select>
+              </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+              <label for="lable2" class="form-label fw-bold"
+                >To Address</label
+              >
+              <div class="input-group mb-3">
+                <select class="form-select shadow-sm border-0" name=" vnform" id="lable2">
+                <option value=" AAK INDIA PVT LTD"> AAK INDIA PVT LTD</option>
+                  <option value="A P ORGANICS LTD.">A P ORGANICS LTD.</option>
+                  <option value="ADANI WILMAR LTD">ADANI WILMAR LTD</option>
+                </select>
+              </div>
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Paid Date</label
+             >
+             <input
+              type="date"
+              name="amount"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Bill Date</label
+             >
+             <input
+              type="date"
+              name="amount"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Trip Date</label
+             >
+             <input
+              type="date"
+              name="amount"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Spare Parts</label
+             >
+             <input
+              type="text"
+              name="amount"
+              class="form-control shadow-sm border-0"
+              id="liter"
+            />
+        </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Amount </label
+             >
+            <input
+              type="number"
+              name="tollname"
+               class="form-control shadow-sm border-0"
+               id="rate"
+               min="0"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Part Name</label
+             >
+            <input
+              type="text"
+              name="tollname"
+              class="form-control shadow-sm border-0"
+              id="totalamount"
+              min="0"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Number Of Piece</label
+             >
+            <input
+              type="number"
+              name="tollname"
+              class="form-control shadow-sm border-0"
+              id="totalamount"
+              min="0"
+            />
+          </div>
+          <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-danger px-4">Add</button>
+            <a href="#" class="btn btn-success px-4">View</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+  </body>

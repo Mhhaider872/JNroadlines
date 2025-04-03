@@ -1,0 +1,112 @@
+<!-- @format -->
+
+{% include 'base2.html' %} {% load static %}
+
+<body>
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <h5 class="card-title">Datatables</h5>
+                <!-- Table with stripped rows -->
+                <table class="table datatable">
+                  <thead>
+                    <tr>
+                      <th>Sr_No</th>
+                      <th>Tanker_No.</th>
+                      <th>Owner_Name</th>
+                      <th>Making_Date</th>
+                      <th>Chassise_No</th>
+                      <th>Engine_No</th>
+                      <th>Insurance_Date</th>
+                      <th>State_Permit</th>
+                      <th>National_Permit</th>
+                      <th>Fitness</th>
+                      <th>Tax_Date</th>
+                      <th>PUC_Date</th>
+                      <th>Vehicle_Image</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for v in showvehicle %}
+                    <tr>
+                      <td>{{forloop.counter }}</td>
+                      <td>{{v.vehicle_name }}</td>
+                      <td>{{v.owner_name }}</td>
+                      <td>{{v.making_year |date:"d/m/Y" }}</td>
+                      <td>{{v.chassise_no }}</td>
+                      <td>{{v.engine_no }}</td>
+                      <td>{{v.insurance_date |date:"d/m/Y" }}</td>
+                      <td>{{v.state_permit |date:"d/m/Y" }}</td>
+                      <td>{{v.national_permit |date:"d/m/Y" }}</td>
+                      <td>{{v.fitness_date |date:"d/m/Y" }}</td>
+                      <td>{{v.tax_date |date:"d/m/Y" }}</td>
+                      <td>{{v.puc_date |date:"d/m/Y" }}</td>
+                     
+                    <td>
+                       {% if v.vehicle_img %}
+                      <!-- Image exists -->
+                      <img src="{{ v.vehicle_img.url }}" alt="Vehicle Image" width="100">
+                      <a href="{{ v.vehicle_img.url }}" download>Download</a>
+                      {% else %}
+                     <!-- No image available -->
+                     <p>No image available</p>
+                     {% endif %}
+                    </td>
+
+                      
+               
+
+                      <td>
+                        <a href="#" class="text-success"
+                          ><i class="bi bi-pencil-square fs-5"></i
+                        ></a>
+                        <a href="#" class="text-danger"
+                          ><i class="bi bi-trash fs-5"></i
+                        ></a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong>. All Rights Reserved</strong>
+    </div>
+    <div class="credits">
+      Designed by <a href="#"><strong>J N Roadlines</strong></a>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <a
+    href="#"
+    class="back-to-top d-flex align-items-center justify-content-center"
+    ><i class="bi bi-arrow-up-short"></i
+  ></a>
+</body>

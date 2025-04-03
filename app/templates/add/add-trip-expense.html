@@ -1,0 +1,232 @@
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Add Trip Expenses</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body py-4">
+                {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
+
+              <section class="main-sec">
+               {% if messages %}
+   <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+<div class="container">
+  <div class="row">
+   <div class="col-lg-12 ">
+    <form  method="POST">
+    {% csrf_token %}
+        <div class="row">
+         <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
+             <input class="form-control border-2" list="datalistOptions" id="exampleDataList" name="tankerno" placeholder="Search to vehicle no..." required>
+               <datalist id="datalistOptions" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                {% endfor %}
+                </datalist>
+              </div>
+            <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Trip Date</label
+            >
+            <input
+              type="date"
+              name="tripdate"
+              class="form-control border-2"
+              id="label11"
+            />
+         </div>
+         <div class="col-lg-4 mb-3">
+            <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
+             <input class="form-control border-2" name="fromconsignor" list="datalistOptions1" id="exampleDataList1" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions1">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+<div class="col-lg-4 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">To Address</label>
+             <input class="form-control border-2" name="toconsignee" list="datalistOptions2" id="exampleDataList2" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions2">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+
+
+         <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Date</label
+            >
+            <input
+              type="date"
+              name="tdate"
+              class="form-control border-2"
+              id="label11"
+            />
+           </div>
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
+             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
+               <datalist id="driverslist">
+                  {% for d in dname %}
+                 <option value="{{d.name}}">{{d.name }}</option>
+                {% endfor %}
+                </datalist>
+             </div>
+            {% comment %} <div class="col-lg-4 mb-3">
+              <label for="lable2" class="form-label fw-bold"
+                >From Address</label
+              >
+              <div class="input-group mb-3">
+                <select class="form-select shadow-sm border-0" name="fromconsignor" id="lable2">
+                 {% for c in company %}
+                 <option value="{{c.name}},{{c.city}}"></option>
+                 {% endfor %}
+                </select>
+              </div>
+            </div> {% endcomment %}
+            
+            {% comment %} <div class="col-lg-4 mb-3">
+              <label for="lable3" class="form-label fw-bold"
+                >To Address</label
+              >
+              <select class="form-select shadow-sm border-0" name="toconsignee" id="lable3">
+             {% for c in company %}
+                <option value="{{c.name}},{{c.city}}"></option>
+                 {% endfor %}
+              </select>
+            </div> {% endcomment %}
+             
+            <div class="col-lg-4 mb-3">
+            <label for="allowance1" class="form-label fw-bold"
+              >Trip General Expenses</label
+            >
+            <input
+              type="number"
+              name="trip_general_expenses"
+              class="form-control border-2"
+              id="allowance1"
+              min="0"
+              oninput="calculateTotal()"
+            />
+            </div>
+           <div class="col-lg-4 mb-3">
+            <label for="allowance2" class="form-label fw-bold"
+              >Food Allowances</label
+            >
+            <input
+              type="number"
+              name="food_allowance"
+              class="form-control border-2"
+              id="allowance2"
+              min="0"
+              oninput="calculateTotal()"
+            />
+           </div>
+           <div class="col-lg-4 mb-3">
+            <label for="allowance3" class="form-label fw-bold"
+              >Bhatta</label
+            >
+            <input
+              type="number"
+              name="bhatta"
+              class="form-control border-2"
+              id="allowance3"
+              min="0"
+              oninput="calculateTotal()"
+            />
+            </div>
+           <div class="col-lg-4 mb-3">
+            <label for="allowance4" class="form-label fw-bold"
+              >Washing Charges Tank </label
+            >
+            <input
+              type="number"
+              name="washing_charges_tank"
+              class="form-control border-2"
+              id="allowance4"
+              min="0"
+              oninput="calculateTotal()"
+            />
+           </div>
+           <div class="col-lg-4 mb-3">
+            <label for="totalamount" class="form-label fw-bold"
+              >Amount </label
+            >
+            <input
+              type="number"
+              name="total_amount"
+              class="form-control border-2"
+              id="totalamount"
+              min="0"
+              oninput="calculateTotal()"
+            />
+            </div>
+           <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-danger px-4">Add</button>
+             <a href="{% url 'show-expense' %}" class="btn btn-success px-4">View</a>
+          </div>
+    </form>
+       </div>
+     </div>
+  </div>
+</section>
+</main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <script>
+       function calculateTotal() {
+    // Get the values of the input fields by their IDs
+       let allowance1 = parseFloat(document.getElementById('allowance1').value) || 0;
+       let allowance2 = parseFloat(document.getElementById('allowance2').value) || 0;
+       let allowance3 = parseFloat(document.getElementById('allowance3').value) || 0;
+       let allowance4 = parseFloat(document.getElementById('allowance4').value) || 0;
+
+       let total = allowance1 + allowance2 + allowance3 + allowance4;
+       document.getElementById('totalamount').value = total;
+    }
+
+</script>
+
+

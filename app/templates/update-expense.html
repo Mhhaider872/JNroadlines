@@ -1,0 +1,581 @@
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Trip Expenses</h5>
+
+              <section class="main-sec">
+               {% if messages %}
+   <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+<div class="container">
+  <div class="row">
+   <div class="col-lg-12 ">
+    <form  method="POST">
+     {% csrf_token %}
+        <div class="row">
+         <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
+             <input class="form-control" list="datalistOptions" id="exampleDataList" name="trip_tanker" value="{{Exp_up.trip_tanker}}" placeholder="Search to vehicle no..." required>
+               <datalist id="datalistOptions" class="shadow-sm border-0">
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                {% endfor %}
+                </datalist>
+              </div>
+            <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Trip Date</label
+            >
+            <input
+              type="date"
+              name="tripdate"
+              
+              class="form-control shadow-sm border-0"
+              id="label11"
+              value="{{Exp_up.tripdate |date:'d/m/Y'}}"
+            />
+         </div>
+         <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Date</label
+            >
+            <input
+              type="date"
+              name="tdate"
+              class="form-control shadow-sm border-0"
+              id="label11"
+              value="{{Exp_up.tdate}}"
+            />
+         </div>
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
+             <input class="form-control" list="driverslist" id="exampleDataList" name="drivername" value="{{Exp_up.drivername}}" placeholder="Search to drivers...">
+               <datalist id="driverslist" class="shadow-sm border-0" >
+                  {% for d in dname %}
+                 <option value="{{d.name}}">{{d.name }}</option>
+                {% endfor %}
+                </datalist>
+             </div>
+            {% comment %} <div class="col-lg-4 mb-3">
+              <label for="lable2" class="form-label fw-bold"
+                >From Address</label
+              >
+              <div class="input-group mb-3">
+                <select class="form-select shadow-sm border-0" name="fromconsignor" id="lable2">
+                 {% for c in company %}
+                 <option value="{{c.name}},{{c.city}}"></option>
+                 {% endfor %}
+                </select>
+              </div>
+            </div> {% endcomment %}
+            <div class="col-lg-4 mb-3">
+            <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
+             <input class="form-control" name="From_address"  value="{{Exp_up.From_address}}" list="datalistOptions1"  id="exampleDataList1" placeholder="Search Company...">
+               <datalist id="datalistOptions1" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}},{{c.city}}"></option>
+                {% endfor %}
+                </datalist>
+          </div>
+            {% comment %} <div class="col-lg-4 mb-3">
+              <label for="lable3" class="form-label fw-bold"
+                >To Address</label
+              >
+              <select class="form-select shadow-sm border-0" name="toconsignee" id="lable3">
+             {% for c in company %}
+                <option value="{{c.name}},{{c.city}}"></option>
+                 {% endfor %}
+              </select>
+            </div> {% endcomment %}
+             <div class="col-lg-4 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">To Address</label>
+             <input class="form-control" name="To_address"  value="{{Exp_up.To_address}}" list="datalistOptions2" id="exampleDataList2" placeholder="Search Company...">
+               <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="allowance1" class="form-label fw-bold"
+              >Trip General Expenses</label
+            >
+            <input
+              type="number"
+              name="trip_general_expenses"
+              class="form-control shadow-sm border-0"
+              id="allowance1"
+              min="0"
+              oninput="calculateTotal1()"
+              value="{{Exp_up.trip_general_expenses}}"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+            <label for="allowance2" class="form-label fw-bold"
+              >Food Allowances</label
+            >
+            <input
+              type="number"
+              name="food_allowance"
+              class="form-control shadow-sm border-0"
+              id="allowance2"
+              min="0"
+              oninput="calculateTotal1()"
+              value="{{Exp_up.food_allowance}}"
+            />
+           </div>
+           <div class="col-lg-4 mb-3">
+            <label for="allowance3" class="form-label fw-bold"
+              >Bhatta</label
+            >
+            <input
+              type="number"
+              name="bhatta"
+              class="form-control shadow-sm border-0"
+              id="allowance3"
+              min="0"
+              oninput="calculateTotal1()"
+               value="{{Exp_up.bhatta}}"
+            />
+            </div>
+           <div class="col-lg-4 mb-3">
+            <label for="allowance4" class="form-label fw-bold"
+              >Washing Charges Tank </label
+            >
+            <input
+              type="number"
+              name="washing_charges_tank"
+              class="form-control shadow-sm border-0"
+              id="allowance4"
+              min="0"
+              oninput="calculateTotal1()"
+              value="{{Exp_up.washing_charges_tank}}"
+            />
+           </div>
+           <div class="col-lg-4 mb-3">
+            <label for="totalamount" class="form-label fw-bold"
+              >Amount </label
+            >
+            <input
+              type="number"
+              name="total_amount"
+              class="form-control shadow-sm border-0"
+              id="totalamount1"
+              min="0"
+              oninput="calculateTotal1()"
+              readonly
+            />
+            </div>
+
+
+            <h5 class="card-title">Toll Details</h5>
+
+
+            <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              > Date</label
+            >
+            <input
+              type="date"
+              name="date"
+              class="form-control shadow-sm border-0"
+              id="label11"
+               value="{{Exp_up.date}}"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Amount</label
+             >
+            <input
+              type="number"
+              name="amount"
+              class="form-control shadow-sm border-0"
+              id="label11"
+               value="{{Exp_up.amount}}"
+              
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Toll Name</label
+             >
+             <input
+              type="text"
+              name="toll_name"
+              class="form-control shadow-sm border-0"
+              id="label11"
+              value="{{Exp_up.toll_name}}"
+            />
+          </div>
+        
+          
+      <h5 class="card-title">Diesel Details</h5>
+        
+ 
+      <div class="col-lg-4 mb-3">
+         <label for="category" class="form-label fw-bold">Diesel</label>
+          <select id="category" name="category" onchange="updateSubCategory()" class="form-select shadow-sm border-0">
+         <option value="">Select</option>
+         {% for category in categories %}
+         <option value="{{ category.id }}">{{ category.name }}</option>
+         <!-- Populate categories dynamically -->
+        {% endfor %}
+        </select>
+      </div>
+       <div class="col-lg-4 mb-3">
+         <label for="datalistOptions4" class="form-label fw-bold">Paid To</label>
+         <input class="form-control" list="datalistOptions4" name="paid_to"  placeholder="Search...">
+               <datalist id="datalistOptions4" class="shadow-sm border-0">
+    
+                 <option value="Cash">Cash</option>
+                 <option value="BanK">BanK</option>
+                  {% for p in petrol %}
+                 <option value="{{p.name}}">{{p.name }}</option>
+                 {% endfor %}
+                {% for d in dname %}
+                 <option value="{{d.name}}">{{d.name }}</option>
+                 {% endfor %}
+                </datalist>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <label for="subCategory" class="form-label fw-bold">Paid By</label>
+      <select id="subCategory" name="subCategory" class="form-select shadow-sm border-0">
+        <option value="">Select</option>
+        <!-- Initial empty subcategory dropdown -->
+      </select>
+    </div>
+   
+        <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Amount Given</label
+             >
+             <input
+              type="number"
+              name="given_amounts_diesel"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Liters</label
+             >
+             <input
+              type="number"
+              name="liters"
+              class="form-control shadow-sm border-0"
+              id="liter"
+              min="0"
+              oninput="calculate_Total()"
+            />
+        </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Rate </label
+             >
+            <input
+              type="number"
+              name="rate"
+               class="form-control shadow-sm border-0"
+               id="rate"
+               min="0"
+              oninput="calculate_Total()"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Total</label
+             >
+            <input
+              type="number"
+              name="total_diesel"
+              class="form-control shadow-sm border-0"
+              id="totalamount2"
+              min="0"
+              oninput="calculate_Total()"
+            />
+          </div>
+
+
+<h5 class="card-title">Urea Details</h5>
+
+         <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Paid Date</label
+             >
+             <input
+              type="date"
+              name="paid_date"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Bill Date</label
+             >
+             <input
+              type="date"
+              name="bill_date"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+      
+         <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Liters</label
+             >
+             <input
+              type="number"
+              name="urea_liter"
+              class="form-control shadow-sm border-0"
+              id="Uliter"
+              min="0"
+              oninput="calculateTotal()"
+            />
+        </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Rate </label
+             >
+            <input
+              type="number"
+              name="urea_rate"
+               class="form-control shadow-sm border-0"
+               id="Urate"
+               min="0"
+              oninput="calculateTotal()"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Total</label
+             >
+            <input
+              type="number"
+              name="urea_total"
+              class="form-control shadow-sm border-0"
+              id="Utotal_amount"
+              min="0"
+              oninput="calculateTotal()"
+            />
+          </div>
+
+
+ <h5 class="card-title">Repairs Details</h5>
+        <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Paid Date</label
+             >
+             <input
+              type="date"
+              name="r_paid_date"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Bill Date</label
+             >
+             <input
+              type="date"
+              name="r_bill_date"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+         {% comment %} <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Trip Date</label
+             >
+             <input
+              type="date"
+              name="amount"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div> {% endcomment %}
+         <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Spare Parts</label
+             >
+             <input
+              type="text"
+              name="spare_part"
+              class="form-control shadow-sm border-0"
+              id="liter"
+            />
+        </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Amount </label
+             >
+            <input
+              type="number"
+              name="r_amount"
+               class="form-control shadow-sm border-0"
+               id="rate"
+               min="0"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Part Name</label
+             >
+            <input
+              type="text"
+              name="part_name"
+              class="form-control shadow-sm border-0"
+              id="totalamount"
+              min="0"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Number Of Piece</label
+             >
+            <input
+              type="number"
+              name="no_piece"
+              class="form-control shadow-sm border-0"
+              id="totalamount"
+              min="0"
+            />
+          </div>
+             <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >End Trip Date</label
+             >
+             <input
+              type="date"
+              name="trip_end"
+              class="form-control shadow-sm border-0"
+              id="label11"
+            />
+        </div>
+           <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-warning px-4">Update</button>
+             {% comment %} <a href="{% url 'all-expense' %}" class="btn btn-success px-4">View</a> {% endcomment %}
+          </div>
+    </form>
+       </div>
+     </div>
+  </div>
+</section>
+</main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <script>
+        function calculateTotal1() {
+     // Get the values of the input fields by their IDs
+       let allowance1 = parseFloat(document.getElementById('allowance1').value) || 0;
+       let allowance2 = parseFloat(document.getElementById('allowance2').value) || 0;
+       let allowance3 = parseFloat(document.getElementById('allowance3').value) || 0;
+       let allowance4 = parseFloat(document.getElementById('allowance4').value) || 0;
+
+       let total = allowance1 + allowance2 + allowance3 + allowance4;
+       document.getElementById('totalamount1').value = total;
+      }
+    </script>
+     <script>
+       function calculate_Total() {
+    // Get the values of the input fields by their IDs
+       let liters = parseFloat(document.getElementById('liter').value) ;
+       let rates = parseFloat(document.getElementById('rate').value) ;
+       
+
+       let total2 = liters * rates;
+       document.getElementById('totalamount2').value = total2;
+    }
+
+</script>
+ <script>
+      // This function is called when the category is selected
+      function updateSubCategory() {
+        var categoryId = document.getElementById("category").value; // Get selected category ID
+        var subCategoryDropdown = document.getElementById("subCategory");
+
+        // Clear previous subcategory options
+        subCategoryDropdown.innerHTML =
+          "<option value=''>Select</option>";
+
+        if (!categoryId) {
+          return; // Exit if no category is selected
+        }
+
+        // Fetch subcategories from Django backend using Fetch API
+        fetch(`/get_subcategories/${categoryId}/`)
+          .then((response) => response.json()) // Parse the JSON response
+          .then((data) => {
+            // Add subcategory options to the subcategory dropdown
+            data.forEach(function (subcategory) {
+              var option = document.createElement("option");
+              option.value = subcategory;
+              option.text = subcategory;
+              subCategoryDropdown.appendChild(option);
+            });
+          })
+          .catch((error) =>
+            console.error("Error fetching subcategories:", error)
+          );
+      }
+    </script>
+
+
+  <script>
+       function calculateTotal(){
+       // Get the values of the input fields by their IDs
+       let liter = parseFloat(document.getElementById('Uliter').value) ;
+       let rates = parseFloat(document.getElementById('Urate').value) ;
+
+       
+
+       let totals = liter * rates;
+       document.getElementById('Utotal_amount').value = totals;
+    }
+
+  </script>

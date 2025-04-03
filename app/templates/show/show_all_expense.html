@@ -1,0 +1,279 @@
+<!-- @format -->
+
+{% include 'base2.html' %} {% load static %}
+
+<body>
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="table-responsive">
+              <div class="card-body">
+                <h5 class="card-title">Datatables</h5>
+                <!-- Date Filters -->
+                <div class="row mb-3">
+                  <div class="col-md-2">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" class="form-control" />
+                  </div>
+                  <div class="col-md-2">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" class="form-control" />
+                  </div>
+                  <div class="col-md-1 d-flex align-items-end">
+                    <button class="btn btn-primary" onclick="filterByDate()">
+                      Filter
+                    </button>
+                  </div>
+                  <!-- Export Button -->
+                  <div class="col-md-7 d-flex align-items-end">
+                    <button class="btn btn-success" onclick="exportToExcel()">
+                      Export to Excel
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Table with stripped rows -->
+
+                <table class="table datatable" id="dataTable">
+                  <thead>
+                    <tr>
+                      {% comment %}
+                      <th>Sr No.</th>
+                      {% endcomment %}
+                      <th>Tanker No.</th>
+                      <th>Trip Date</th>
+                      <th>Date</th>
+                      <th>Driver Name</th>
+                      <th>From Consignor</th>
+                      <th>To Consignee</th>
+                      <th>Trip General Expenses</th>
+                      <th>Food Allowance</th>
+                      <th>Bhatta</th>
+                      <th>Washing Charges Tank</th>
+                      <th>Total Amount</th>
+                      <th>Toll Name</th>
+                      <th>Date</th>
+                      <th>Amount</th>
+                      <th>Paid To</th>
+                      <th>Paid By</th>
+                      <th>Amount Given</th>
+                      <th>Diesel Liters</th>
+                      <th>Diesel Rate</th>
+                      <th>Diesel Total</th>
+                      <th>Urea Paid Date</th>
+                      <th>Urea Bill Date</th>
+                      <th>Urea Liters</th>
+                      <th>Urea Rate</th>
+                      <th>Urea Total</th>
+                      <th>Repair Paid Date</th>
+                      <th>Repair Bill Date</th>
+                      <th>Spare Parts</th>
+                      <th>Amount</th>
+                      <th>Part Name</th>
+                      <th>Number Piece</th>
+                      <th>End Trip Date</th>
+
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for exp in allExp %}
+                    <tr>
+                      {% comment %}
+                      <td>{{ forloop.counter }}</td>
+                      {% endcomment %}
+                      <td>{{exp.trip_tanker}}</td>
+                      <td>{{exp.tripdate |date:"d/m/Y"}}</td>
+                      <td>{{exp.tdate |date:"d/m/Y"}}</td>
+                      <td>{{exp.drivername}}</td>
+                      <td>{{exp.From_address | slice:"0:20"}}</td>
+                      <td>{{exp.To_address | slice:"0:20" }}</td>
+                      <td>{{exp.trip_general_expenses}}</td>
+                      <td>{{exp.food_allowance}}</td>
+                      <td>{{exp.bhatta}}</td>
+                      <td>{{exp.washing_charges_tank}}</td>
+                      <td>{{exp.total_amount}}</td>
+                      <td>{{exp.toll_name}}</td>
+                      <td>{{exp.date |date:"d/m/Y" }}</td>
+                      <td>{{exp.amount}}</td>
+                      <td>{{exp.paid_to }}</td>
+                      <td>{{exp.subCategory }}</td>
+                      <td>{{exp.given_amounts_diesel }}</td>
+                      <td>{{exp.liters }}</td>
+                      <td>{{exp.rate }}</td>
+                      <td>{{exp.total_diesel}}</td>
+                      <td>{{exp.paid_date|date:"d/m/Y" }}</td>
+                      <td>{{exp.bill_date |date:"d/m/Y" }}</td>
+                      <td>{{exp.urea_liter}}</td>
+                      <td>{{exp.urea_rate}}</td>
+                      <td>{{exp.urea_total}}</td>
+                      <td>{{exp.r_paid_date |date:"d/m/Y"}}</td>
+                      <td>{{exp.r_bill_date |date:"d/m/Y"}}</td>
+                      <td>{{exp.spare_part}}</td>
+                      <td>{{exp.r_amount}}</td>
+                      <td>{{exp.part_name}}</td>
+                      <td>{{exp.no_piece}}</td>
+                      <td>{{exp.end_date |date:"d/m/Y" }}</td>
+                      <td>
+                        <a
+                          href="{% url 'update-expense' exp.id %}"
+                          class="text-success mx-2"
+                          ><i class="bi bi-pencil-square fs-5"></i
+                        ></a>
+                        <a
+                          href="{% url 'del-expense' exp.id %}"
+                          class="text-danger"
+                          onclick="return confirmDelete()"
+                          ><i class="bi bi-trash fs-5"></i
+                        ></a>
+                      </td>
+                    </tr>
+
+                    {% endfor %}
+                    <tr><td colspan="35"></td></tr>
+                    <tr><td colspan="35"></td></tr>
+                    <tr><td colspan="35"></td></tr>
+
+                    <tr>
+  <td colspan="10"><b>Total: </b></td>
+   {% comment %} <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td> {% endcomment %}
+
+  <td colspan="3"><b id="tSum">{{ t_sum }}</b></td>  <!-- Total Amount -->
+  
+
+  <td colspan="6"><b id="aSum">{{ a_sum }}</b></td> <!-- Amount -->
+  
+ 
+  <td colspan="5"><b id="dSum">{{ d_sum }}</b></td> <!-- Diesel Total -->
+  
+
+  <td colspan="4"><b>{{ u_sum }}</b></td> <!-- Urea Total -->
+
+  <td colspan="10"><b id="allSum">{{ all_sum }}</b></td> <!-- All Expenses Total -->
+</tr>
+
+<tr>
+
+  <td colspan="35" ><b>Grand Total: <span>{{ total_sum }}</span></b></td>
+    <td></td>
+
+</tr>
+
+                  </tbody>
+                </table>
+
+                <!-- End Table with stripped rows -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong>. All Rights Reserved</strong>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <a
+    href="#"
+    class="back-to-top d-flex align-items-center justify-content-center"
+    ><i class="bi bi-arrow-up-short"></i
+  ></a>
+
+  <script type="text/javascript">
+    function confirmDelete() {
+      var result = confirm("Are you sure you want to delete this data ?");
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  </script>
+  <script type="text/javascript">
+    function filterByDate() {
+      // Get the start and end dates from the input fields
+      var startDate = document.getElementById("startDate").value;
+      var endDate = document.getElementById("endDate").value;
+
+      // Convert the dates to Date objects for comparison
+      var startDateObj = new Date(startDate);
+      var endDateObj = new Date(endDate);
+
+      // Get all table rows
+      var rows = document.querySelectorAll(".datatable tbody tr");
+
+      rows.forEach(function (row) {
+        // Get the trip date and end trip date from each row
+        var tripDate = row.cells[1].textContent.trim(); // assuming trip date is in the second column (index 1)
+        var endTripDate = row.cells[31].textContent.trim(); // assuming end trip date is in the 32nd column (index 31)
+
+        // Convert the date strings to Date objects
+        var tripDateObj = new Date(tripDate.split("/").reverse().join("-")); // assuming date format is dd/mm/yyyy
+        var endTripDateObj = new Date(
+          endTripDate.split("/").reverse().join("-")
+        );
+
+        // Check if the trip date is within the range
+        if (
+          (startDate &&
+            endDate &&
+            tripDateObj >= startDateObj &&
+            tripDateObj <= endDateObj) ||
+          (startDate && !endDate && tripDateObj >= startDateObj) ||
+          (!startDate && endDate && tripDateObj <= endDateObj)
+        ) {
+          row.style.display = ""; // Show the row
+        } else {
+          row.style.display = "none"; // Hide the row
+        }
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+  <script>
+    function exportToExcel() {
+      // Get table data
+      var table = document.getElementById("dataTable");
+      var wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+      // Generate Excel file
+      XLSX.writeFile(wb, "All_Expenses.xlsx");
+    }
+
+    function confirmDelete() {
+      var result = confirm("Are you sure you want to delete this data?");
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  </script>
+</body>
