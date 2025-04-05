@@ -1,0 +1,197 @@
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Company Details Page</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body py-4">
+                {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
+
+
+ <section class="main-sec">
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form  method="POST">
+          {% csrf_token %}
+          <div class="row">
+           
+          <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Company Name</label
+            >
+            <input
+              type="text"
+              name="name"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Company Address</label
+            >
+            <input
+              type="text"
+              name="area_name"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+       
+            <div class="col-lg-4 mb-3">      
+              <label for="state" class="form-label fw-bold" >Select State:</label>
+               <select id="state" onchange="updateCities()" name="state" class="form-select" aria-label="Default select example">
+               <option value="">Select State</option>
+               <option value="Maharashtra">Maharashtra</option>
+               <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Karnataka">Karnataka</option>
+               <option value="Delhi">Delhi</option>
+             </select>
+           </div>
+
+
+           <div class="col-lg-4 mb-3"> 
+          <label for="city" class="form-label fw-bold">Select City:</label>
+          <select id="city" name="city" class="form-select" aria-label="Default select example">
+           <option value="">Select City</option>
+           </select>
+           </div>
+  
+
+          
+          
+ 
+          <div class="col-lg-4 mb-3">
+            <label for="label12" class="form-label fw-bold"
+              >Pin Code</label
+            >
+            <input
+              type="number"
+              name="pincode"
+              class="form-control border-2"
+              id="label12"
+            />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold"
+              >GST No</label
+            >
+            <input
+              type="text"
+              name="gst"
+              class="form-control border-2"
+              id="label13"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold"
+              >PAN No</label
+            >
+            <input
+              type="text"
+              name="pan"
+              class="form-control border-2"
+              id="label13"
+            />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="label15" class="form-label fw-bold"
+              >Contact No</label
+            >
+            <input
+              type="number"
+              name="contact_no"
+              class="form-control border-2"
+              id="label15"
+            />
+          </div>
+          
+
+          <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-success px-4">Add</button>
+            <a href="{% url 's-company' %}" class="btn btn-info px-4">View</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+   <script>
+    const cityOptions = {
+      "Maharashtra": ["Mumbai"],
+      "Uttar Pradesh": ["Lucknow"],
+      "Karnataka": ["Bengaluru"],
+      "Delhi": ["New Delhi"]
+      
+    };
+
+    function updateCities() {
+      const stateSelect = document.getElementById("state");
+      const citySelect = document.getElementById("city");
+      const selectedState = stateSelect.value;
+
+      // Clear previous city options
+      citySelect.innerHTML = '<option value="">Select City</option>';
+
+      if (selectedState && cityOptions[selectedState]) {
+        cityOptions[selectedState].forEach(function(city) {
+          const option = document.createElement("option");
+          option.value = city;
+          option.text = city;
+          citySelect.appendChild(option);
+        });
+      }
+    }
+  </script>
+  </body>

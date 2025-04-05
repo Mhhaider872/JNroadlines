@@ -17,6 +17,8 @@ class companydetails(models.Model):
      city=models.CharField(max_length=200,blank=True,null=True)
      state=models.CharField(max_length=200,blank=True,null=True)
      pincode=models.IntegerField(blank=True,null=True)
+     gst=models.CharField(max_length=200,blank=True,null=True)
+     pan=models.CharField(max_length=200,blank=True,null=True)
      
      contact_no=models.IntegerField(blank=True,null=True)
 
@@ -32,7 +34,7 @@ class plandetails(models.Model):
     drivername=models.CharField(max_length=200)
     From_address=models.CharField(max_length=200)
     To_address=models.CharField(max_length=200)
-    tanker_capacity=models.CharField(max_length=2)
+    tanker_capacity=models.CharField(max_length=200)
     dispatch_Date=models.DateField(null=True,blank=True)
     status=models.CharField(max_length=100)
 
@@ -155,7 +157,7 @@ class TripExpense(models.Model):
 
 class NewDriver_Details(models.Model):
     name=models.CharField(max_length=200)
-    adharnumber=models.IntegerField(null=False,blank=False)
+    adharnumber=models.BigIntegerField(null=False,blank=False)
     licencenumber=models.CharField(max_length=20,null=False,blank=False)
     issuedates=models.DateField(null=False,blank=False)
     trdates=models.DateField(null=False,blank=False)
@@ -631,3 +633,14 @@ class DriverLoan(models.Model):
     previous_loan = models.IntegerField(null=True, blank=True)
     loan_amount = models.IntegerField(null=True, blank=True)
     total = models.IntegerField(null=True, blank=True)
+
+
+
+class Tracking(models.Model):
+    tanker_no = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+    date = models.DateTimeField(max_length=15)
+    tdate = models.DateField(max_length=255)
+    destination = models.CharField(max_length=255)
+    vehicle_status = models.CharField(max_length=100, null=True,blank=True)
+       

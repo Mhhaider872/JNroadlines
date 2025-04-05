@@ -635,11 +635,6 @@ def tripexpense(request):
 
 
 
-#  if tripexpense.is_valid(): 
-#        res=TripExpense(tankerno=tankerno,tripdate=tripdate,tdate=tdate,drivername=drivername,fromconsignor=fromconsignor,toconsignee=toconsignee,trip_general_expenses=trip_general_expenses,food_allowance=food_allowance,bhatta=bhatta,washing_charges_tank=washing_charges_tank,total_amount=total_amount)
-#        res.save()
-#       else:
-#           return redirect('trip-expense.html')
 
 
 def  showtripexpense(request):
@@ -831,8 +826,32 @@ def show_vehicledetails(request):
 
 
 
+def company_details(request):
+    if request.method =="POST":
+      name  = request.POST['name']
+      area_name = request.POST['area_name']
+      state = request.POST['state']
+      city = request.POST['city']
+      pincode = request.POST['pincode']
+      gst = request.POST['gst']
+      pan = request.POST['pan']
+      contact_no = request.POST['contact_no']
+
+      if  companydetails.objects.filter(name=name,area_name=area_name).exists():
+          messages.error(request, 'Company already exists !!')
+          return redirect('company-details')
+      else:
+          cname=companydetails(name=name,area_name=area_name,state=state,city=city,pincode=pincode,gst=gst,pan=pan,contact_no=contact_no)
+          cname.save()
+          messages.success(request, 'Company details added successfully !!') 
+    
+    return render(request,'add/add_company.html')
 
 
+def show_company(request):
+    cshow=companydetails.objects.all()
+    context={'cshow':cshow}
+    return render(request,'show/show_company.html',context)
 
 def all_trip(request):
     if request.method == "POST":
@@ -2101,3 +2120,40 @@ def generate_bill(request):
 
     # Pass the bill object to the template
     return render(request, "invoice_template.html", {"bill": bill})
+
+
+
+
+def tracking(request):
+    if request.method == 'POST':
+        tanker_no = request.POST['tanker_no']
+        location = request.POST['location']
+        date = request.POST['date']
+        tdate = request.POST['tdate']
+        destination = request.POST['destination']
+        vehicle_status= request.POST['vehicle_status']
+        
+        if  Tracking.objects.filter(tanker_no=tanker_no,tdate=tdate).exists():
+            messages.error(request, 'Vehicle status already exists !!')
+            return redirect('vehicle-track')
+        else:
+             Tracking.objects.create(
+             tanker_no= tanker_no,
+             location=location,
+             date=date,
+             tdate=tdate,
+             destination=destination,
+             vehicle_status=vehicle_status,)
+             messages.success(request, 'Status added successfully !!') 
+        # return redirect('vehicle_list')  # ya jo bhi aapka page ho
+        
+    vehicle=Add_Vehicle.objects.all()
+    context={'vehicle':vehicle}
+    return render(request, 'add/vehicle_tracking.html',context)
+
+
+
+def showtrack(request):
+    track=Tracking.objects.all()
+    context={'track':track}
+    return render(request,'show/show_track.html',context)

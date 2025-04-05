@@ -15,6 +15,9 @@ urlpatterns =[
     path('add_trip/',views.addtrip,name='addtrip'),
     path('add_trip_adani/',views.Trip_Adani,name='trip-adani'),
     path('show_adani_trip/',views.ShowAdani,name='show-adani'),
+
+    path('add_track/',views.tracking,name='vehicle-track'),
+    path('show_track/',views.showtrack,name='show-track'),
     
 
     
@@ -35,6 +38,9 @@ urlpatterns =[
     
     path('add_vehicle/',views.vehicledetails,name='addvehicle'),
     path('show_vehicle/',views.show_vehicledetails,name='show-vehicle'),   
+
+    path('company_details/',views.company_details,name='company-details'),  
+    path('show_company_details/',views.show_company,name='s-company'), 
     
     path('add_driver/',views.adddriver,name='adddriver'),
     path('show_driver/',views.showdriver,name='showdrivers'),

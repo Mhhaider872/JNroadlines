@@ -405,10 +405,10 @@
         if (shortallow && disqty) {
             // Calculate and update the shortages allowed (as percentage of loaded qty)
             var loadedQtyPercent = (parseFloat(disqty) * parseFloat(shortallow)) / 100;
-            {% comment %} var result = parseInt(loadedQtyPercent * 100);
-            document.getElementById("loadedQtyPercent").value = loadedQtyPercent.toFixed(2); // Round to 2 decimal places {% endcomment %}
-            var result = parseInt(loadedQtyPercent * 100);
-            document.getElementById("loadedQtyPercent").value = result;
+            //var result = parseInt(loadedQtyPercent * 100);
+            document.getElementById("loadedQtyPercent").value = loadedQtyPercent.toFixed(2); // Round to 2 decimal places 
+            //var result = parseInt(loadedQtyPercent * 100);
+            //document.getElementById("loadedQtyPercent").value = result;
         }
     }
 </script>
