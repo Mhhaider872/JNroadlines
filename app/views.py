@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.db.models import Sum
 from django.shortcuts import render,redirect,HttpResponse,get_object_or_404, redirect
 from django.http import JsonResponse
-from num2words import num2words
+
 from .models import *
 from django.utils import timezone
 from django.contrib.auth import authenticate, login,logout
@@ -2157,3 +2157,8 @@ def showtrack(request):
     track=Tracking.objects.all()
     context={'track':track}
     return render(request,'show/show_track.html',context)
+
+
+
+def errorpage(request):
+    return render(request,'page_404.html')

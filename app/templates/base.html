@@ -250,9 +250,9 @@
           </li> {% endcomment %}
           <!-- End Messages Nav -->
 
-          <li class="nav-item dropdown pe-3">
+          <li class="nav-item dropdown  text-center pe-3">
             <a
-              class="nav-link nav-profile d-flex align-items-center pe-0"
+              class="nav-link nav-profile d-inline align-items-center pe-0"
               href="#"
               data-bs-toggle="dropdown"
             >
@@ -263,7 +263,12 @@
                 class="rounded-circle"
               />
               {% endcomment %}
-              <span class="d-none d-md-block dropdown-toggle ps-2"
+            <img
+             src="{% static '/img/user.png' %}"
+             alt="My image"
+            
+            />
+              <span class="d-none d-md-block dropdown-toggle"
                 ><strong>{{user.username}}</strong></span
               ></a
             ><!-- End Profile Iamge Icon -->
@@ -275,7 +280,7 @@
               <li>
                 <a
                   class="dropdown-item d-flex align-items-center"
-                  href="users-profile.html"
+                  href="{% url '404-page' %}"
                 >
                   <i class="bi bi-person"></i>
                   <span>My Profile</span>
@@ -288,7 +293,7 @@
               <li>
                 <a
                   class="dropdown-item d-flex align-items-center"
-                  href="users-profile.html"
+                  href="{% url '404-page' %}"
                 >
                   <i class="bi bi-gear"></i>
                   <span>Account Settings</span>

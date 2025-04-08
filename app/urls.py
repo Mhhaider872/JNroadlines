@@ -125,6 +125,7 @@ urlpatterns =[
 
 
     path('emi_calculator/', views.emi_calculator, name='emi_calculator'),
+    path('404_page', views.errorpage, name='404-page'),
 ]
 
 
