@@ -40,8 +40,8 @@
           {% csrf_token %}
           <div class="row">
            <div class="col-lg-4 mb-3">
-            <label for="exampleDataList" class="form-label fw-bold">Vehicle No</label>
-             <input class="form-control border-2" name="tankerno" list="datalistOptions" id="exampleDataList" placeholder="Search to vehicle no...">
+            <label for="tanker_number" class="form-label fw-bold">Vehicle No</label>
+             <input class="form-control border-2" name="tankerno" list="datalistOptions" id="tanker_number" onchange="fetchCapacity()" placeholder="Search to vehicle no...">
                <datalist id="datalistOptions" class="shadow-sm border-0" >
                 {% for v in vehicle %}
                  <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
@@ -79,24 +79,17 @@
                 </datalist>
           </div>
           <div class="col-lg-4 mb-3">
-            <label for="label6" class="form-label fw-bold"
+            <label for="capacity_output" class="form-label fw-bold"
               >Tanker Capacity
             </label>
            <div class="input-group mb-3">
-                <select class="form-select border-2" name="tanker_capacity" id="lable2">
-                 <option value="NAVBHARAT LTD">Select......</option>
-                 <option value="34MT">34MT</option>
-                  <option value="30MT">30MT</option>
-                  <option value="28MT">
-                    28MT
-                  </option>
-                  <option value="25MT">
-                    25MT
-                  </option>
-                  <option value="15MT">
-                    15MT
-                  </option>
-                </select>
+            <input
+              type="text"
+              name="tanker_capacity"
+              class="form-control border-2"
+              id="capacity_output"
+            />
+                
               </div>
           </div>
           <div class="col-lg-4 mb-3">
@@ -150,4 +143,15 @@
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
-  </body>
+<script>
+  function fetchCapacity() {
+    const number = document.getElementById("tanker_number").value;
+    fetch(`/get_capacity/?vehicle_name=${number}`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("capacity_output").value = data.tankercap || "Not found";
+      });
+  }
+</script>
+
+</body>

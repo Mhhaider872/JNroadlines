@@ -424,9 +424,7 @@
     // Calculate and update the Loaded Qty Percent
     if (percente && disqty) {
         var loadedQtyPercent = (parseInt(disqty) * parseFloat(percente)) / 100;
-        var result = parseInt(loadedQtyPercent * 100);
-
-        document.getElementById("loadedQtyPercent").value = result;
+      document.getElementById("loadedQtyPercent").value = loadedQtyPercent.toFixed(2);
     }
 }
 

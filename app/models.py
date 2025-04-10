@@ -249,6 +249,7 @@ class Diesel_detail(models.Model):
 
 class Add_Vehicle(models.Model):
     vehicle_name=models.CharField(max_length=200)
+    tankercap=models.CharField(max_length=200, null=True, blank=True)
     owner_name=models.CharField(max_length=200)
     making_year = models.DateField(null=True, blank=False)
     chassise_no = models.CharField(max_length=200)

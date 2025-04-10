@@ -7,12 +7,14 @@ urlpatterns =[
     path('admin/', admin.site.urls),
     path('dashboard/',views.dashboard,name='dashboard'),
     path('plan/',views.plan,name='plan'),
+    path('get_capacity/', views.get_capacity, name='get_capacity'),
     path('show_plan/',views.showplan,name='showplan'),
     path('update_plan/<int:id>',views.updateplan,name='update-plan'),
     path('do_updateplan/<int:id>',views. do_updateplan,name='do-updateplan'),
     path('deleteplan/<int:id>',views.deleteplan,name='delete-plan'),
     
     path('add_trip/',views.addtrip,name='addtrip'),
+    path('get_plan_details/', views.get_plan_details, name='get_plan_details'),
     path('add_trip_adani/',views.Trip_Adani,name='trip-adani'),
     path('show_adani_trip/',views.ShowAdani,name='show-adani'),
 
@@ -38,13 +40,18 @@ urlpatterns =[
     
     path('add_vehicle/',views.vehicledetails,name='addvehicle'),
     path('show_vehicle/',views.show_vehicledetails,name='show-vehicle'),   
+    path('delete_vehicle/<int:id>',views.deletevehicle,name='d-vehicle'), 
+    path('update_vehicle/<int:id>',views.updatevehicle,name='up-vehicle'),
 
     path('company_details/',views.company_details,name='company-details'),  
     path('show_company_details/',views.show_company,name='s-company'), 
+    path('delete/<int:id>',views.delete_company,name='de-company'),
+    path('update_company/<int:id>',views.updatecompany,name='update-company'),
     
     path('add_driver/',views.adddriver,name='adddriver'),
     path('show_driver/',views.showdriver,name='showdrivers'),
-    path('driverdelete/<int:id>',views.deletedriver,name='deletedriver'),
+    path('driverdelete/<int:id>',views.deletedriver,name='d-driver'),
+    path('update/<int:id>',views.updatedriver,name='update-driver'),
 
     path('add_salary/', views.addsalary, name='add-salary'),
     path('show_salary/', views.showsalary, name='show-s'),

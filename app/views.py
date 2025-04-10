@@ -117,18 +117,20 @@ def deleteplan(request,id):
 
 def addtrip(request):
     
-    plan = plandetails.objects.filter().last()
-    if plan:
-        tankerno = plan.tankerno
-        drivername=plan.drivername
-        From_address = plan.From_address
-        To_address = plan.To_address
-        tanker_capacity = plan.tanker_capacity
-    else:
-        tankerno = From_address = To_address = 'Data not available'
+    # plan = plandetails.objects.order_by('-id').first()
+    # if plan:
+    #     tankerno = plan.tankerno
+    #     drivername=plan.drivername
+    #     From_address = plan.From_address
+    #     To_address = plan.To_address
+    #     tanker_capacity = plan.tanker_capacity
+    # else:
+    #     tankerno = From_address = To_address = 'Data not available'
+    
     
     if request.method =="POST":
-       tankerno  = request.POST['tankerno']
+       tankerno_id = request.POST.get('tankerno')
+       selected_plan = plandetails.objects.get(id=tankerno_id)
        From_address = request.POST['From_address']
        To_address = request.POST['To_address']
        drivername = request.POST['drivername']
@@ -148,24 +150,45 @@ def addtrip(request):
        short_allow = request.POST['short_allow']
        return_qty = request.POST['return_qty']
        remark = request.POST['remark']
-       if   AddTrips.objects.filter(tankerno=tankerno, dispatch_time= dispatch_time).exists():
+       if   AddTrips.objects.filter(tankerno_id=tankerno_id, dispatch_time= dispatch_time).exists():
             messages.error(request, 'Trip already exists !!')
             return redirect('addtrip')
        else:
-          trip=AddTrips(tankerno=tankerno,From_address=From_address,To_address=To_address,drivername=drivername if drivername else None,tank_capacity=tank_capacity if tank_capacity else None,arrival_time=arrival_time if arrival_time else None,dispatch_time=dispatch_time if dispatch_time else None,reach_time=reach_time if reach_time else None,unload_time=unload_time if unload_time else None,lr_num=lr_num if lr_num else None,lr_date=lr_date if lr_date else None,freight_bill=freight_bill if freight_bill else None,freight_date=freight_date if freight_date else None,loaded_qty=loaded_qty if loaded_qty else None,unload_qty=unload_qty if unload_qty else None,short_qty=short_qty if short_qty else None,short_allow=short_allow if short_allow else None,return_qty=return_qty if return_qty else None,remark=remark if remark else None,)
+          trip=AddTrips(tankerno_id=selected_plan.tankerno,From_address=From_address,To_address=To_address,drivername=drivername if drivername else None,tank_capacity=tank_capacity if tank_capacity else None,arrival_time=arrival_time if arrival_time else None,dispatch_time=dispatch_time if dispatch_time else None,reach_time=reach_time if reach_time else None,unload_time=unload_time if unload_time else None,lr_num=lr_num if lr_num else None,lr_date=lr_date if lr_date else None,freight_bill=freight_bill if freight_bill else None,freight_date=freight_date if freight_date else None,loaded_qty=loaded_qty if loaded_qty else None,unload_qty=unload_qty if unload_qty else None,short_qty=short_qty if short_qty else None,short_allow=short_allow if short_allow else None,return_qty=return_qty if return_qty else None,remark=remark if remark else None,)
           trip.save()
           messages.success(request, 'Trip added successfully !!') 
     
     # Pass the values to the template
-    context = {
-        'tankerno': tankerno,
-        'From_address': From_address,
-        'To_address': To_address,
-        'tanker_capacity': tanker_capacity,
-        'drivername':drivername
-    }
+    # context = {
+    #     'tankerno': tankerno,
+    #     'From_address': From_address,
+    #     'To_address': To_address,
+    #     'tanker_capacity': tanker_capacity,
+    #     'drivername':drivername
+    # }
+    plans = plandetails.objects.all()
+    context={'plans':plans}
     return render(request, 'add/add_trip_all.html',context)
+
+def get_plan_details(request):
+    plan_id = request.GET.get('plan_id')
+    try:
+        plan = plandetails.objects.get(id=plan_id)
+        data = {
+            'drivername': plan.drivername,
+            'From_address': plan.From_address,
+            'To_address': plan.To_address,
+            'tanker_capacity': plan.tanker_capacity,
+            'dispatch_Date': plan.dispatch_Date,
+        }
+        return JsonResponse(data)
+    except plandetails.DoesNotExist:
+        return JsonResponse({'error': 'Plan not found'}, status=404)
    
+def showtrip(request):
+    show=AddTrips.objects.all()
+    context={'show':show}
+    return render(request,'show/show-trip.html',context)
 
 def updatetrip(request,id):
     uptrip=AddTrips.objects.get(pk=id)
@@ -381,10 +404,7 @@ def Showgemini(request):
     context={'gemeni':gemeni}
     return render(request,'show/show_gemini.html',context)
 
-def showtrip(request):
-    show=AddTrips.objects.all()
-    context={'show':show}
-    return render(request,'show/show-trip.html',context)
+
 
 
 def deltrip(request,id):
@@ -597,7 +617,10 @@ def deletedriver(request,id):
     d.delete()
     return redirect('showdrivers')
 
-
+def updatedriver(request,id):
+    updatedriver=NewDriver_Details.objects.get(pk=id)
+    context={'updatedriver':updatedriver}
+    return render(request,'update-driver.html',context)
 
 
 
@@ -795,6 +818,7 @@ def report(request):
 def vehicledetails(request):
     if request.method =="POST":
       vehicle_name = request.POST['vehicle_name']
+      tankercap = request.POST['tankercap']
       owner_name = request.POST['owner_name']
       making_year  = request.POST['making_year']
       chassise_no = request.POST['chassise_no']
@@ -811,18 +835,36 @@ def vehicledetails(request):
           messages.error(request, 'Vehicle No. already exists !!')
           return redirect('addvehicle')
       else:
-           vehicle_details=Add_Vehicle(vehicle_name=vehicle_name,owner_name=owner_name,making_year=making_year,chassise_no=chassise_no,engine_no=engine_no,insurance_date=insurance_date,state_permit=state_permit,national_permit=national_permit,fitness_date=fitness_date,tax_date=tax_date,puc_date=puc_date,vehicle_img=vehicle_img)
+           vehicle_details=Add_Vehicle(vehicle_name=vehicle_name,tankercap=tankercap if tankercap else None,owner_name=owner_name,making_year=making_year,chassise_no=chassise_no,engine_no=engine_no,insurance_date=insurance_date,state_permit=state_permit,national_permit=national_permit,fitness_date=fitness_date,tax_date=tax_date,puc_date=puc_date,vehicle_img=vehicle_img)
            vehicle_details.save()
            messages.success(request, 'Vehicle details added successfully !!') 
     # dname=NewDriverDetails.objects.all()
     # context={'dname':dname}
     return render(request,'add/add-vehicle.html')
 
+def get_capacity(request):
+    vehicle_name = request.GET.get('vehicle_name')
+    try:
+        tanker = Add_Vehicle.objects.get(vehicle_name=vehicle_name)
+        return JsonResponse({'tankercap': tanker.tankercap})
+    except Add_Vehicle.DoesNotExist:
+        return JsonResponse({'tankercap': None})
 
 def show_vehicledetails(request):
     showvehicle=Add_Vehicle.objects.all()
     context={'showvehicle':showvehicle}
     return render(request,'show/show-vehicle-details.html',context)
+
+
+def deletevehicle(request,id):
+    showvehicle=Add_Vehicle.objects.get(pk=id)
+    showvehicle.delete()
+    return redirect('show-vehicle')
+
+def updatevehicle(request,id):
+    upvehicle=Add_Vehicle.objects.get(pk=id)
+    context={'upvehicle':upvehicle}
+    return render(request,'update_vehicle.html',context)
 
 
 
@@ -841,7 +883,7 @@ def company_details(request):
           messages.error(request, 'Company already exists !!')
           return redirect('company-details')
       else:
-          cname=companydetails(name=name,area_name=area_name,state=state,city=city,pincode=pincode,gst=gst,pan=pan,contact_no=contact_no)
+          cname=companydetails(name=name,area_name=area_name,state=state,city=city if city else None,pincode=pincode if pincode else None,gst=gst if gst else None,pan=pan if pan else None,contact_no=contact_no if contact_no else None)
           cname.save()
           messages.success(request, 'Company details added successfully !!') 
     
@@ -852,6 +894,19 @@ def show_company(request):
     cshow=companydetails.objects.all()
     context={'cshow':cshow}
     return render(request,'show/show_company.html',context)
+
+def delete_company(request,id):
+    dcompany=companydetails.objects.get(pk=id)
+    dcompany.delete()
+    return redirect('s-company')
+
+
+def updatecompany(request,id):
+    upcompany=companydetails.objects.get(pk=id)
+    context={'upcompany':upcompany}
+    return render(request,'update_company_details.html',context)
+    
+
 
 def all_trip(request):
     if request.method == "POST":

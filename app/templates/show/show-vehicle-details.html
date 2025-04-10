@@ -27,6 +27,7 @@
                     <tr>
                       <th>Sr_No</th>
                       <th>Tanker_No.</th>
+                      <th>Tanker_Capacity</th>
                       <th>Owner_Name</th>
                       <th>Making_Date</th>
                       <th>Chassise_No</th>
@@ -46,6 +47,8 @@
                     <tr>
                       <td>{{forloop.counter }}</td>
                       <td>{{v.vehicle_name }}</td>
+                      <td>{{v.tankercap}}</td>
+                      
                       <td>{{v.owner_name }}</td>
                       <td>{{v.making_year |date:"d/m/Y" }}</td>
                       <td>{{v.chassise_no }}</td>
@@ -72,12 +75,11 @@
                
 
                       <td>
-                        <a href="#" class="text-success"
+                        <a href="{% url 'up-vehicle' v.id  %}" class="text-success"
                           ><i class="bi bi-pencil-square fs-5"></i
                         ></a>
-                        <a href="#" class="text-danger"
-                          ><i class="bi bi-trash fs-5"></i
-                        ></a>
+                        <a href="{% url 'd-vehicle' v.id  %}" class="text-danger"
+                          ><i class="bi bi-trash3-fill fs-5"></i></a>
                       </td>
                     </tr>
                     {% endfor %}

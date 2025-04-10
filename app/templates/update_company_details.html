@@ -49,6 +49,7 @@
               name="name"
               class="form-control border-2"
               id="label11"
+              value="{{upcompany.name}}"
             />
           </div>
            <div class="col-lg-4 mb-3">
@@ -60,41 +61,32 @@
               name="area_name"
               class="form-control border-2"
               id="label11"
+              value="{{upcompany.area_name}}"
             />
           </div>
        
-            <div class="col-lg-4 mb-3">      
-              <label for="state" class="form-label fw-bold" >Select State:</label>
-               <select id="state" onchange="updateCities()" name="state" class="form-select" aria-label="Default select example">
-               <option value="">Select State</option>
-               <option value="Maharashtra">Maharashtra</option>
-               <option value="Gujarat">Gujarat</option>
-                <option value="Karnataka">Karnataka</option>
-                <option value="Telangana">Telangana</option>
-                <option value="Haryana">Haryana</option>
-                 <option value="Himachal Pradesh">Himachal Pradesh</option>
-               <option value="Chhattisgarh">Chhattisgarh</option>
-               <option value="Andhra Pradesh">Andhra Pradesh</option>
-               <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                <option value="Assam">Assam</option>
-                <option value="Punjab">Punjab</option>
-                <option value="Rajasthan">Rajasthan</option>
-             
-             </select>
+            <div class="col-lg-4 mb-3">
+            <label for="state" class="form-label fw-bold" >State</label>
+            <input
+              type="text"
+              name="state"
+              class="form-control border-2"
+              id="state"
+              value="{{upcompany.state}}"
+            />      
            </div>
 
 
            <div class="col-lg-4 mb-3"> 
-          <label for="city" class="form-label fw-bold">Select City:</label>
-          <select id="city" name="city" class="form-select" aria-label="Default select example">
-           <option value="">Select City</option>
-           </select>
+          <label for="city" class="form-label fw-bold">City</label>
+           <input
+              type="text"
+              name="city"
+              class="form-control border-2"
+              id="city"
+              value="{{upcompany.city}}"
+            />    
            </div>
-  
-
-          
-          
- 
           <div class="col-lg-4 mb-3">
             <label for="label12" class="form-label fw-bold"
               >Pin Code</label
@@ -104,6 +96,7 @@
               name="pincode"
               class="form-control border-2"
               id="label12"
+              value="{{upcompany.pincode}}"
             />
           </div>
 
@@ -116,6 +109,7 @@
               name="gst"
               class="form-control border-2"
               id="label13"
+              value="{{upcompany.gst}}"
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -127,6 +121,7 @@
               name="pan"
               class="form-control border-2"
               id="label13"
+              value="{{upcompany.pan}}"
             />
           </div>
 
@@ -139,6 +134,7 @@
               name="contact_no"
               class="form-control border-2"
               id="label15"
+              value="{{upcompany.contact_no}}"
             />
           </div>
           
@@ -176,41 +172,5 @@
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
-   <script>
-    const cityOptions = {
-      "Maharashtra": ["Mumbai,Pune"],
-      "Gujarat": ["Kutch,Gandhinagar"],
-      "Karnataka": ["Bengaluru"],
-      "Telangana": ["Hyderabad"],
-      "Haryana": ["Gurgaon"],
-      "Himachal Pradesh": ["Baddi"],
-      "Delhi": ["New Delhi"],
-      "Chhattisgarh": ["Raipur"],
-      "Andhra Pradesh": ["Amaravati"],
-      "Arunachal Pradesh": ["Itanagar"],
-      "Assam": ["Dispur"],
-      "Punjab": ["Chandigarh"],
-      "Punjab": ["Chandigarh"],
-      "Rajasthan": ["Ajmer"],
-      
-    };
-
-    function updateCities() {
-      const stateSelect = document.getElementById("state");
-      const citySelect = document.getElementById("city");
-      const selectedState = stateSelect.value;
-
-      // Clear previous city options
-      citySelect.innerHTML = '<option value="">Select City</option>';
-
-      if (selectedState && cityOptions[selectedState]) {
-        cityOptions[selectedState].forEach(function(city) {
-          const option = document.createElement("option");
-          option.value = city;
-          option.text = city;
-          citySelect.appendChild(option);
-        });
-      }
-    }
-  </script>
+   
   </body>

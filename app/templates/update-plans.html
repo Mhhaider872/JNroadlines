@@ -38,7 +38,7 @@
                  {% endfor %}
                 </datalist> 
           </div>
-            <div class="col-lg-3 mb-3">
+            <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Driver Name</label>
              <input class="form-control" list="datalistOptions3" name="drivername" value="{{planupdate.drivername}}" id="exampleDataList" placeholder="Search to driver ..." required>
                <datalist id="datalistOptions3" class="shadow-sm border-0">
@@ -49,7 +49,7 @@
           </div> 
            <div class="col-lg-4 mb-3">
             <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
-             <input class="form-control" name="From_address" list="datalistOptions1" id="exampleDataList1"  value="{{planupdate.To_address}}" placeholder="Search to vehicle no...">
+             <input class="form-control" name="From_address" list="datalistOptions1" id="exampleDataList1"  value="{{planupdate.From_address}}" placeholder="Search to vehicle no...">
                <datalist id="datalistOptions1" class="shadow-sm border-0" >
                 {% for c in company %}
                  <option value="{{c.name}}, {{c.city}}"></option>
@@ -73,11 +73,12 @@
               >Tanker Capacity
             </label>
            <div class="input-group mb-3">
-                <select class="form-select shadow-sm border-0" name="tanker_capacity" id="lable2"  value={{planupdate.tanker_capacity}}>
+                <select class="form-select" name="tanker_capacity" id="lable2"  value={{planupdate.tanker_capacity}}>
                 <option value="30MT" {% if planupdate.tanker_capacity == '30MT' %}selected{% endif %}>30MT</option>
                 <option value="34MT" {% if planupdate.tanker_capacity == '34MT' %}selected{% endif %}>34MT</option>
                 <option value="28MT" {% if planupdate.tanker_capacity == '28MT' %}selected{% endif %}>28MT</option>
                 <option value="25MT" {% if planupdate.tanker_capacity == '25MT' %}selected{% endif %}>25MT</option>
+                <option value="15MT" {% if planupdate.tanker_capacity == '15MT' %}selected{% endif %}>15MT</option>
                 </select>
               </div>
           </div>
@@ -86,16 +87,20 @@
               >Dispatch Date</label
             >
             <input
+
+
+
+
               type="date"
               name="dispatch_Date"
-              class="form-control shadow-sm border-0"
+              class="form-control"
               id="label11" 
              value="{{planupdate.dispatch_Date|date:'Y-m-d' }}"
             />
           </div>
            <div class="col-lg-4 mb-3">
            <label for="id_status" class="form-label fw-bold">Status</label>
-           <select id="id_status" name="status" class="form-control shadow-sm border-0">
+           <select id="id_status" name="status" class="form-control">
             <option value="DISPATCH" selected>Dispatch</option>
             <option value="ARRIVAL">Arrival</option>
             <option value="REACHED">Reached</option>

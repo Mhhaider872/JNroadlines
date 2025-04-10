@@ -42,13 +42,8 @@
         {% csrf_token %}
           <div class="row">
           <div class="col-lg-4 mb-3">
-            <label for="exampleDataList" class="form-label fw-bold">Tanker No.</label>
-             <input input="text" class="form-control border-2" name="vehicle_name"  id="exampleDataList">
-               
-          </div>
-          <div class="col-lg-4 mb-3">
-            <label for="example" class="form-label fw-bold">Tanker Capacity</label>
-             <input input="text" class="form-control border-2" name="tankercap"  id="example">
+            <label for="exampleDataList" class="form-label fw-bold">Vehicle No</label>
+             <input input="text" class="form-control border-2" name="vehicle_name"  id="exampleDataList" value="{{upvehicle.vehicle_name}}">
                
           </div>
             <div class="col-lg-4 mb-3">
@@ -56,13 +51,7 @@
                 >Owner Name</label
               >
               <div class="input-group mb-3">
-                <select class="form-select border-2" name="owner_name" id="lable1">
-                <option>Select</option>
-                  <option value="Namrata Vijay Makhija">Namrata Vijay Makhija</option>
-                  <option value="Jay Vijay Makhija">Jay Vijay Makhija</option>
-                   <option value="J N Roadlines LLP">J N Roadlines LLP</option>
-                  
-                </select>
+              <input input="text" class="form-control border-2"  name="owner_name" id="lable1" value="{{upvehicle.owner_name}}">
               </div>
             </div>
           <div class="col-lg-4 mb-3">
@@ -74,16 +63,17 @@
               name="making_year"
               class="form-control border-2"
               id="label2"
+              value="{{upvehicle.making_year}}"
             />
           </div>
           <div class="col-lg-4 mb-3">
             <label for="label3" class="form-label fw-bold">Chassis No.</label>
-             <input input="text" class="form-control border-2" name="chassise_no"  id="label3">
+             <input input="text" class="form-control border-2" name="chassise_no"  id="label3" value="{{upvehicle.chassise_no}}">
                
           </div>
           <div class="col-lg-4 mb-3">
             <label  for="label4" class="form-label fw-bold">Engine No.</label>
-             <input input="text" class="form-control border-2" name="engine_no"  id="label4">
+             <input input="text" class="form-control border-2" name="engine_no"  id="label4" value="{{upvehicle.engine_no}}">
                
           </div>
 
@@ -93,10 +83,11 @@
               >Insurance Date
             </label>
            <input
-              type="date"
+              type="text"
               name="insurance_date"
               class="form-control border-2"
               id="label5"
+              value="{{upvehicle.insurance_date|date:'d-m-Y'}}"
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -110,10 +101,11 @@
               >State Permit
             </label>
            <input
-              type="date"
+              type="text"
               name="state_permit"
               class="form-control border-2"
               id="label7"
+              value="{{upvehicle.state_permit|date:'d-m-Y'}}"
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -127,10 +119,11 @@
               >National Permit</label
             >
             <input
-              type="date"
+              type="text"
               name="national_permit"
               class="form-control border-2"
               id="label9"
+              value="{{upvehicle.national_permit|date:'d-m-Y'}}"
             />
           </div>
            <div class="col-lg-4 mb-3">
@@ -144,10 +137,11 @@
               >Fitness Date</label
             >
             <input
-              type="date"
+              type="text"
               name="fitness_date"
               class="form-control border-2"
               id="label11"
+              value="{{upvehicle.fitness_date|date:'d-m-Y'}}"
             />
           </div>
            <div class="col-lg-4 mb-3">
@@ -161,10 +155,11 @@
               >Tax Date</label
             >
             <input
-              type="date"
+              type="text"
               name="tax_date"
               class="form-control border-2"
               id="label13"
+              value="{{upvehicle.tax_date|date:'d-m-Y'}}"
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -178,10 +173,11 @@
               >PUC Date</label
             >
             <input
-              type="date"
+              type="text"
               name="puc_date"
               class="form-control border-2" 
               id="label15"
+               value="{{upvehicle.puc_date|date:'Y-m-d'}}"
             />
           </div>
              <div class="col-lg-4 mb-3">
@@ -192,8 +188,8 @@
       </div>
 
           <div class="btn-div text-center py-2">
-            <button type="submit" class="btn btn-success px-4">Add</button>
-            <a href="{% url 'show-vehicle' %}" class="btn btn-info px-4">View</a>
+            <button type="submit" class="btn btn-info px-4">Update</button>
+           
           </div>
         </form>
       </div>

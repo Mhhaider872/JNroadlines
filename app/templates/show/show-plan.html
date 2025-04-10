@@ -48,6 +48,7 @@
                     <th>Tanker_Capacity</th>
                     <th>Dispatch_Date</th>
                     <th>Status</th>
+
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -76,7 +77,9 @@
                         onclick="return confirmDelete()"
                         ><i class="bi bi-trash3-fill fs-5"></i
                       ></a>
+                      
                     </td>
+                    
                   </tr>
                   {% endfor %} {% comment %}
                   <tr>
@@ -113,6 +116,15 @@
   <script type="text/javascript">
     function confirmDelete() {
       var result = confirm("Are you sure you want to delete this data ?");
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function confirmTrip() {
+      var result = confirm("Are you sure you want strat Trip ?");
       if (result) {
         return true;
       } else {

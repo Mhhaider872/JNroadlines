@@ -20,34 +20,40 @@
             <div class="card-body">
               <h5 class="card-title">Datatables</h5>
               {% if messages %}
-              <div class="container mt-3">
-                {% for message in messages %}
-                <div
-                  class="alert alert-info {{ message.tags }} alert-dismissible fade show"
-                  role="alert"
-                >
-                  <h5 class="text-center">{{ message }}</h5>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="Close"
-                  ></button>
+                <div class="container mt-3">
+                  {% for message in messages %}
+                  <div
+                    class="alert alert-info {{ message.tags }} alert-dismissible fade show"
+                    role="alert"
+                  >
+                    <h5 class="text-center">{{ message }}</h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="alert"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  {% endfor %}
                 </div>
-                {% endfor %}
+                {% endif %}
+                <!-- Export Button -->
+              <div class="col-md-7 d-flex align-items-end">
+                  <button class="btn btn-success" onclick="exportToExcel()">
+                    Export to Excel
+                  </button>
               </div>
-              {% endif %}
-              <table class="table datatable" id="Record">
+              <table class="table datatable" id="dataTable">
                 <thead>
                   <tr>
                     <th>Sr_No.</th>
-                    <th>Tanker_No</th>
-                    <th>Driver_Name</th>
-                    <th>From_Address</th>
-                    <th>To_Address</th>
-                    <th>Tanker_Capacity</th>
-                    <th>Dispatch_Date</th>
-                    <th>Status</th>
+                    <th>Company Name</th>
+                    <th>Area Name</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>GST</th>
+                    <th>PAN</th>
+                    <th>Contact No</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -64,12 +70,12 @@
                     <td>{{c.contact_no}}</td>
                     <td>
                       <a
-                        href="#"
+                        href="{% url 'update-company' c.id %}"
                         class="text-success mx-2"
                         ><i class="bi bi-pencil-square fs-5"></i
                       ></a>
                       <a
-                        href="#"
+                        href="{% url 'de-company' c.id %}"
                         class="text-danger"
                         onclick="return confirmDelete()"
                         ><i class="bi bi-trash3-fill fs-5"></i
@@ -117,5 +123,15 @@
         return false;
       }
     }
+
+    function exportToExcel() {
+      // Get table data
+      var table = document.getElementById("dataTable");
+      var wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+      // Generate Excel file
+      XLSX.writeFile(wb, "Company.xlsx");
+    }
+ 
   </script>
 </body>

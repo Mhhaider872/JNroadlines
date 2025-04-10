@@ -54,74 +54,40 @@
         <form  method="POST">
         {% csrf_token %}
           <div class="row">
-            <div class="col-lg-4 mb-3">
-              <label for="lable1" class="form-label fw-bold"
-                >Vehicle No</label
-              >
-               <input class="form-control" value="{{tankerno}}" name="tankerno" id="exampleDataList" placeholder="Search to vehicle no..." readonly>
+            {% comment %} <div class="col-lg-4 mb-3">
+              <select id="tankerno" name="tankerno">
+             <option value="">-- Select Tanker --</option>
+              {% for plan in plans %}
+              <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
+              {% endfor %}
+              </select>
+            
             </div>
 
 
             <div class="col-lg-4 mb-3">
-              <label for="lable2" class="form-label fw-bold"
-                >From Address</label
-              >
-              <div class="input-group mb-3">
-                 <input
+            <label for="fadd" class="form-label fw-bold">From Address</label>
+            <input type="text" id="From_address" name="From_address" readonly>
               
-              class="form-control"
-              name="From_address"
-              min="0"
-              id="label6"
-             
-              value="{{From_address}}"
-               readonly
-            />
-              </div>
             </div>
             <div class="col-lg-4 mb-3">
-              <label for="lable3" class="form-label fw-bold"
-                >To Address</label
-              >
-      
-               <input
-              
-              class="form-control"
-              name="To_address"
-              min="0"
-              id="label6"
-               value="{{To_address}}"
-              readonly
-            />
+              <label for="toadd" class="form-label fw-bold">To Address</label>
+              <input type="text" id="To_address" name="To_address" readonly>
             </div>
              <div class="col-lg-4 mb-3">
-            <label for="label" class="form-label fw-bold"
-              >Driver Name</label
-            >
-            <input
-           
-              class="form-control"
-              name="drivername"
-              min="0"
-              id="label"
-              value="{{drivername}}"
-              readonly
-            />
+             <label for="driver" class="form-label fw-bold">Driver Name</label>
+             <input type="text" id="drivername" name="drivername" readonly>
+            </div>
+          <div class="col-lg-4 mb-3">
+           <label for="tanker" class="form-label fw-bold">Tanker Capacity</label>
+            <input type="text" id="tanker_capacity" name="tanker_capacity" readonly>
           </div>
-           <div class="col-lg-4 mb-3">
-            <label for="label6" class="form-label fw-bold"
-              >Tanker Capacity</label
-            >
-            <input
+          <div class="col-lg-4 mb-3">
+           <label for="tdate" class="form-label fw-bold">Trip Date</label>
+
+            <input type="text" id="dispatch_Date" name="dispatch_Date" readonly>
            
-              class="form-control"
-              name="tank_capacity"
-              min="0"
-              id="label6"
-              value="{{tanker_capacity}}"
-              readonly
-            />
-          </div>
+          </div> {% endcomment %}
           <div class="col-lg-4 mb-3">
             <label for="label4" class="form-label fw-bold"
               >Arrival at Loading Point (Plant) Date & Time</label
@@ -449,6 +415,29 @@
         var selectedUrl = this.value;  // Get the selected URL
         window.location.href = selectedUrl;  // Redirect to the selected URL
     });
+</script>
+<script>
+document.getElementById("tankerno").addEventListener("change", function() {
+    let planId = this.value;
+
+    if (planId) {
+        fetch(`/get_plan_details/?plan_id=${planId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("drivername").value = data.drivername || '';
+                document.getElementById("From_address").value = data.From_address || '';
+                document.getElementById("To_address").value = data.To_address || '';
+                document.getElementById("tanker_capacity").value = data.tanker_capacity || '';
+                document.getElementById("dispatch_Date").value = data.dispatch_Date || '';
+            });
+    } else {
+        document.getElementById("drivername").value = '';
+        document.getElementById("From_address").value = '';
+        document.getElementById("To_address").value = '';
+        document.getElementById("tanker_capacity").value = '';
+        document.getElementById("dispatch_Date").value = '';
+    }
+});
 </script>
   </body>
 
