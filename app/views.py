@@ -9,6 +9,8 @@ from django.contrib.auth import authenticate, login,logout
 from django.utils.timezone import now
 import random
 import datetime
+from django.db.models import Subquery, OuterRef
+
 
 
 
@@ -64,10 +66,25 @@ def plan(request):
     context={'vehicle':vehicle,'company':company,'dname':dname}
     return render(request,'add/add-plans.html', context)
 
+# def showplan(request):
+#     showplans=plandetails.objects.all()
+#     context={'showplans':showplans}
+#     return render(request,'show/show-plan.html',context)
+
 def showplan(request):
-    showplans=plandetails.objects.all()
-    context={'showplans':showplans}
-    return render(request,'show/show-plan.html',context)
+    # pehle sab plan details la rahe ho
+    showplans = plandetails.objects.all()
+
+    # har plan ke latest trip ko nikalne ke liye Subquery
+    latest_trip = AddTrips.objects.filter(tankerno=OuterRef('pk')).order_by('-arrival_time')
+
+    showplans = showplans.annotate(
+        latest_arrival=Subquery(latest_trip.values('arrival_time')[:1]),
+        latest_reach=Subquery(latest_trip.values('reach_time')[:1]),
+        latest_unload=Subquery(latest_trip.values('unload_time')[:1]),
+    )
+
+    return render(request, 'show-plan.html', {'showplans': showplans})
 
 
 def updateplan(request,id):
@@ -829,17 +846,18 @@ def vehicledetails(request):
       fitness_date = request.POST['fitness_date'] 
       tax_date = request.POST['tax_date'] 
       puc_date = request.POST['puc_date'] 
-      vehicle_img = request.POST['vehicle_img'] 
+      vehicle_img = request.POST['vehicle_img']
+      status = request.POST['status']
 
       if Add_Vehicle.objects.filter(vehicle_name=vehicle_name).exists():
           messages.error(request, 'Vehicle No. already exists !!')
           return redirect('addvehicle')
       else:
-           vehicle_details=Add_Vehicle(vehicle_name=vehicle_name,tankercap=tankercap if tankercap else None,owner_name=owner_name,making_year=making_year,chassise_no=chassise_no,engine_no=engine_no,insurance_date=insurance_date,state_permit=state_permit,national_permit=national_permit,fitness_date=fitness_date,tax_date=tax_date,puc_date=puc_date,vehicle_img=vehicle_img)
+           vehicle_details=Add_Vehicle(vehicle_name=vehicle_name,tankercap=tankercap if tankercap else None,owner_name=owner_name,making_year=making_year,chassise_no=chassise_no,engine_no=engine_no,insurance_date=insurance_date,state_permit=state_permit,national_permit=national_permit,fitness_date=fitness_date,tax_date=tax_date,puc_date=puc_date,vehicle_img=vehicle_img,status=status if status else None)
            vehicle_details.save()
            messages.success(request, 'Vehicle details added successfully !!') 
     # dname=NewDriverDetails.objects.all()
-    # context={'dname':dname}
+    # context={'dname':dname}JCHZ425531
     return render(request,'add/add-vehicle.html')
 
 def get_capacity(request):

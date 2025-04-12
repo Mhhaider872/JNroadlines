@@ -191,6 +191,19 @@
         <input type="file" name="vehicle_img" class="form-control border-2" id="label16">
       </div>
 
+       <div class="col-lg-4 mb-3">
+              <label for="lables" class="form-label fw-bold"
+                >Status</label
+              >
+              <div class="input-group mb-3">
+                <select class="form-select border-2" name="status" id="lables">
+                <option>Select</option>
+                  <option value="Running">Running</option>
+                  <option value="Sold">Sold</option>
+                </select>
+              </div>
+            </div>
+
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-success px-4">Add</button>
             <a href="{% url 'show-vehicle' %}" class="btn btn-info px-4">View</a>

@@ -46,7 +46,7 @@
          <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
              <input class="form-control" list="datalistOptions" id="exampleDataList" name="tankerno" placeholder="Search to vehicle no..." required>
-               <datalist id="datalistOptions" class="shadow-sm border-0">
+               <datalist id="datalistOptions" class="border-2">
                 {% for t in tankno %}
                  <option value="{{t.tankerno}}">{{t.tankerno }}</option>
                 {% endfor %}
@@ -55,7 +55,7 @@
         <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
              <input class="form-control" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
-               <datalist id="driverslist" class="shadow-sm border-0" >
+               <datalist id="driverslist" class="border-2" >
                   {% for d in driver %}
                  <option value="{{d.drivername}}">{{d.drivername }}</option>
                 {% endfor %}
@@ -77,7 +77,7 @@
             <input
               type="date"
               name="f_date"
-              class="form-control shadow-sm border-0"
+              class="form-control border-2"
               id="label11"
             />
          </div>
@@ -88,7 +88,7 @@
             <input
               type="date"
               name="t_date"
-              class="form-control shadow-sm border-0"
+              class="form-control border-2"
               id="label11"
             />
         </div>
@@ -99,7 +99,7 @@
             <input
               type="date"
               name="p_date"
-              class="form-control shadow-sm border-0"
+              class="form-control border-2"
               id="label11"
             />
         </div>
@@ -112,7 +112,7 @@
             <input
               type="number"
               name="amount"
-              class="form-control shadow-sm border-0"
+              class="form-control border-2"
               id="totalamount"
               min="0"
               oninput="calculateTotal()"

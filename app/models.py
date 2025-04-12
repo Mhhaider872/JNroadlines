@@ -261,6 +261,7 @@ class Add_Vehicle(models.Model):
     tax_date = models.DateField(null=True, blank=False)
     puc_date = models.DateField(null=True, blank=False)
     vehicle_img=models.FileField(upload_to='vehicle_image/')
+    status=models.CharField(max_length=200, null=True, blank=True)
 
 
 

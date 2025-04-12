@@ -39,6 +39,7 @@
                       <th>Tax_Date</th>
                       <th>PUC_Date</th>
                       <th>Vehicle_Image</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -70,6 +71,15 @@
                      <p>No image available</p>
                      {% endif %}
                     </td>
+                    <td>
+                      {% if v.status == 'Sold' %}
+                      <span class="badge bg-danger">Sold</span>
+                      
+                       {% else%}
+                       <span class="badge bg-success">Running</span>
+                       {% endif %}
+                    </td>
+
 
                       
                
