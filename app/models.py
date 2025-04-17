@@ -14,6 +14,7 @@ class TankerCapacity(models.Model):
 class companydetails(models.Model):
      name=models.CharField(max_length=200)
      area_name=models.CharField(max_length=200,blank=True,null=True)
+     short_name=models.CharField(max_length=200,blank=True,null=True)
      city=models.CharField(max_length=200,blank=True,null=True)
      state=models.CharField(max_length=200,blank=True,null=True)
      pincode=models.IntegerField(blank=True,null=True)
@@ -27,11 +28,27 @@ class companydetails(models.Model):
         return self.name
     
 
+class NewDriver_Details(models.Model):
+    name=models.CharField(max_length=200, null=True)
+    adharnumber=models.BigIntegerField(null=False, blank=False)
+    licencenumber=models.CharField(max_length=20, null=False,blank=False)
+    issuedates=models.DateField(null=False, blank=False)
+    trdates=models.DateField(null=False, blank=False)
+    # imguploads=models.FileField(upload_to='img/')
+    # imguploads= models.FileField(upload_to='pdfs/')
+    img= models.FileField(upload_to='img/',null=True)
+    is_deleted = models.BooleanField(default=False)
+    fname=models.CharField(max_length=200, null=True, blank=True)
+   
+   
+    def __str__(self):
+        return self.name
 
 class plandetails(models.Model):
   
     tankerno = models.CharField(max_length=200)
-    drivername=models.CharField(max_length=200)
+    drivername=models.CharField(max_length=200, null=True)
+    # driver = models.ForeignKey(NewDriver_Details, on_delete=models.CASCADE, null=True)
     From_address=models.CharField(max_length=200)
     To_address=models.CharField(max_length=200)
     tanker_capacity=models.CharField(max_length=200)
@@ -39,9 +56,15 @@ class plandetails(models.Model):
     status=models.CharField(max_length=100)
 
 
+    def save(self, *args, **kwargs):
+        self.From_address = self.From_address.title()
+        self.To_address = self.To_address.title()
+        super().save(*args, **kwargs)
+
+
 
 class AddTrips(models.Model):
-    tankerno=models.CharField(max_length=100)
+    tankerno=models.CharField(max_length=100, null=True)
     From_address=models.CharField(max_length=200)
     To_address=models.CharField(max_length=200)
     drivername=models.CharField(max_length=100)
@@ -58,7 +81,7 @@ class AddTrips(models.Model):
     # percent=models.IntegerField(null=True, blank=True)
     unload_qty=models.IntegerField(null=True, blank=True)
     short_qty=models.IntegerField(null=True, blank=True)
-    short_allow=models.IntegerField(null=True, blank=True)
+    short_allow=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     return_qty=models.IntegerField(null=True, blank=True)
     remark=models.CharField(max_length=200, null=True, blank=True)
 
@@ -155,19 +178,6 @@ class TripExpense(models.Model):
     
 
 
-class NewDriver_Details(models.Model):
-    name=models.CharField(max_length=200)
-    adharnumber=models.BigIntegerField(null=False,blank=False)
-    licencenumber=models.CharField(max_length=20,null=False,blank=False)
-    issuedates=models.DateField(null=False,blank=False)
-    trdates=models.DateField(null=False,blank=False)
-    # imguploads=models.FileField(upload_to='img/')
-    # imguploads= models.FileField(upload_to='pdfs/')
-    img= models.FileField(upload_to='img/',null=True)
-   
-   
-    def __str__(self):
-        return self.name
     
 
 
@@ -252,8 +262,8 @@ class Add_Vehicle(models.Model):
     tankercap=models.CharField(max_length=200, null=True, blank=True)
     owner_name=models.CharField(max_length=200)
     making_year = models.DateField(null=True, blank=False)
-    chassise_no = models.CharField(max_length=200)
-    engine_no = models.CharField(max_length=200)
+    chassise_no = models.CharField(max_length=200, null=True, blank=False)
+    engine_no = models.CharField(max_length=200, null=True, blank=False)
     insurance_date = models.DateField(null=True, blank=False)
     state_permit = models.DateField(null=True, blank=False)
     national_permit = models.DateField(null=True, blank=False)
@@ -600,7 +610,7 @@ class TankerDetail(models.Model):
 
 
 class  AddBank_Loan(models.Model):
-    name= models.CharField(max_length=255)
+    name= models.CharField(max_length=255, null=True, blank=True)
     
 
 
@@ -614,7 +624,19 @@ class Loan(models.Model):
     def __str__(self):
         return f"Loan of {self.principal_amount} for {self.loan_tenure_months} months"
 
-
+class Addloan(models.Model):
+    tankerno=models.CharField(max_length=255,null=True, blank=True)
+    loan_contract=models.CharField(max_length=255,null=True, blank=True)
+    finance_by=models.CharField(max_length=255,null=True, blank=True)
+    pamount=models.DecimalField(max_digits=12, decimal_places=2)
+    iamount=models.DecimalField(max_digits=10, decimal_places=2)
+    famount=models.DecimalField(max_digits=15, decimal_places=2)
+    amount=models.DecimalField(max_digits=12, decimal_places=2)
+    ddate=models.DateField(blank=True,null=True)
+    pdate=models.DateField(blank=True,null=True)
+    days=models.CharField(max_length=150, blank=True,null=True)
+    bank=models.CharField(max_length=150, blank=True,null=True)
+    ramount=models.DecimalField(max_digits=15, decimal_places=2)
 
 
 
@@ -646,3 +668,21 @@ class Tracking(models.Model):
     destination = models.CharField(max_length=255)
     vehicle_status = models.CharField(max_length=100, null=True,blank=True)
        
+
+
+class State(models.Model):
+    statename = models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return self.statename
+
+class City(models.Model):
+    cityname = models.CharField(max_length=200, null=True, blank=True)
+    state = models.ForeignKey(State, related_name='cities', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.cityname}, {self.state.statename}"
+    
+
+
+

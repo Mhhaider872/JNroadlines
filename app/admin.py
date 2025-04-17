@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import *
 # Register your models here.
-admin.site.register(TankerCapacity)
+# admin.site.register(TankerCapacity)
 # admin.site.register(TripExpense)
 admin.site.register(NewDriver_Details)
 admin.site.register(Category)
@@ -21,6 +21,10 @@ admin.site.register(End_Trip)
 admin.site.register(Driver_salary)
 admin.site.register(Item)
 admin.site.register(DriverLoan)
+admin.site.register(Addloan)
+admin.site.register(State)
+admin.site.register(City)
+
 
 
 

@@ -4,10 +4,10 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>Driver Details</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -17,19 +17,39 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="card">
+          <div class="table-responsive">
             <div class="card-body">
-              <h5 class="card-title">Datatables</h5>
-
+              {% comment %} <h5 class="card-title">Datatables</h5> {% endcomment %}
+              {% if messages %}
+              <div class="container mt-3">
+                {% for message in messages %}
+                <div
+                  class="alert alert-info {{ message.tags }} alert-dismissible fade show"
+                  role="alert"
+                >
+                  <h5 class="text-center">{{ message }}</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
                   <tr>
                     <th>Sr_No.</th>
                     <th>Driver_Name</th>
+                    <th>Father's_Name</th>
                     <th>Aadhar_Number</th>
                     <th>Licence_Number</th>
                     <th>Issue_Date</th>
                     <th>TR Date</th>
+                   
                     <th>Aadhar_&_Licence_Image</th>
                     <th>Action</th>
                   </tr>
@@ -39,26 +59,29 @@
                   <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{d.name}}</td>
+                    <td>{{d.fname}}</td>
                     <td>{{d.adharnumber}}</td>
                     <td>{{d.licencenumber}}</td>
                     <td>{{d.issuedates|date:"d/m/Y"}}</td>
                     <td>{{d.trdates|date:"d/m/Y"}}</td>
+                  
 
        
                     <td>
                    {% if d.img %}
-                     <img src="{{ d.img }}" alt="Image" width="100"><br />
-                     <a href="{{ d.img }}" download>Download Image</a>
-                     {% else %}
+                   <img src="{{ d.img.url }}" alt="Image" width="100"><br />
+                    <a href="{{ d.img.url }}" download>Download File</a>
+                    {% else %}
                      No image available
                    {% endif %}
+
                     </td>
 
 
                     
 
                     <td>
-                      <a href="{% url 'update-driver' d.id %}" class="text-success mx-2"
+                      <a href="{% url 'updates-driver' d.id %}" class="text-success mx-2"
                         ><i class="bi bi-pencil-square fs-5"></i
                       ></a>
                       <a
@@ -74,6 +97,7 @@
               </table>
               <!-- End Table with stripped rows -->
             </div>
+          </div>
           </div>
         </div>
       </div>

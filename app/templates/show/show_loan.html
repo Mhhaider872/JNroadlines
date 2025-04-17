@@ -1,0 +1,145 @@
+<!-- @format -->
+
+{% include 'base2.html' %} {% load static %}
+<body>
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Loan Details</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+           <div class="table-responsive">
+            <div class="card-body">
+              {% comment %} <h5 class="card-title">Datatables</h5> {% endcomment %}
+              {% if messages %}
+              <div class="container mt-3">
+                {% for message in messages %}
+                <div
+                  class="alert alert-info {{ message.tags }} alert-dismissible fade show"
+                  role="alert"
+                >
+                  <h5 class="text-center">{{ message }}</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+              <table class="table datatable" id="Record">
+                <thead>
+                  <tr>
+                    <th>Sr_No.</th>
+                    <th>Tanker_No</th>
+                    <th>Loan_Contract_No</th>
+                    <th>Finance_by</th>
+                    <th>Principle_amount</th>
+                    <th>Interest_amount</th>
+                    <th>Finance_amount</th>
+                    <th>Emi_amount</th>
+                    <th>Due_date</th>
+                    <th>Paid_date</th>
+                    <th>Over_due_days</th>
+                    <th>Bank_name</th>
+                    <th>Rate_(%)</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for l in loanshow %}
+                  <tr>
+                    <td>{{forloop.counter }}</td>
+                    <td>{{l.tankerno }}</td>
+                    <td>{{l.loan_contract }}</td>
+                    <td>{{l.finance_by }}</td>
+                    <td>{{l.pamount}}</td>
+                    <td>{{l.iamount }}</td>
+                    <td>{{l.famount }}</td>
+                    <td>{{l.amount }}</td>
+                    <td>{{ l.ddate|date:"d/m/Y" }}</td>
+                    <td>{{ l.pdate|date:"d/m/Y" }}</td>
+                    <td><span class="badge bg-info">{{ l.days }}</span></td>
+                    <td>{{l.bank }}</td>
+                    <td>{{l.ramount }}</td>
+                    
+                    <td>
+                      <a
+                        href="#"
+                        class="text-success mx-2"
+                        ><i class="bi bi-pencil-square fs-5"></i
+                      ></a>
+                      <a
+                        href="#"
+                        class="text-danger"
+                        onclick="return confirmDelete()"
+                        ><i class="bi bi-trash3-fill fs-5"></i
+                      ></a>
+                      
+                    </td>
+                    
+                  </tr>
+                  {% endfor %} {% comment %}
+                  <tr>
+                    <td colspan="5">Total Amount</td>
+                  </tr>
+                  {% endcomment %}
+                </tbody>
+              </table>
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong>. All Rights Reserved</strong>
+    </div>
+    <div class="credits">
+      Designed by <a href="#"><strong>J N Roadlines</strong></a>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <a
+    href="#"
+    class="back-to-top d-flex align-items-center justify-content-center"
+    ><i class="bi bi-arrow-up-short"></i
+  ></a>
+
+  <script type="text/javascript">
+    function confirmDelete() {
+      var result = confirm("Are you sure you want to delete this data ?");
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function confirmTrip() {
+      var result = confirm("Are you sure you want strat Trip ?");
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  </script>
+</body>

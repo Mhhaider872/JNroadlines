@@ -62,7 +62,7 @@
              <input class="form-control border-2" name="fromconsignor" list="datalistOptions1" id="exampleDataList1" placeholder="Search to vehicle no...">
                <datalist id="datalistOptions1">
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div>
@@ -71,7 +71,7 @@
              <input class="form-control border-2" name="toconsignee" list="datalistOptions2" id="exampleDataList2" placeholder="Search to vehicle no...">
                <datalist id="datalistOptions2">
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div>

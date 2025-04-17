@@ -25,25 +25,21 @@
 
 
 <section class="main-sec">
- {% if messages %}
-  <div class="container mt-3">
-    {% for message in messages %}
-      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
-       <h5 class="text-center"> {{ message }}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-  </div>
-{% endif %}
+
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
-        <form  method="POST">
+        <form action="{% url 'update-vehicledetails' upvehicle.id %}"  method="POST" enctype="multipart/form-data">
         {% csrf_token %}
           <div class="row">
           <div class="col-lg-4 mb-3">
-            <label for="exampleDataList" class="form-label fw-bold">Vehicle No</label>
+            <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
              <input input="text" class="form-control border-2" name="vehicle_name"  id="exampleDataList" value="{{upvehicle.vehicle_name}}">
+               
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="example" class="form-label fw-bold">Tanker Capacity</label>
+             <input input="text" class="form-control border-2" name="tankercap"  id="example" value="{{upvehicle.tankercap}}">
                
           </div>
             <div class="col-lg-4 mb-3">
@@ -63,7 +59,7 @@
               name="making_year"
               class="form-control border-2"
               id="label2"
-              value="{{upvehicle.making_year}}"
+              value="{{ upvehicle.making_year|date:'Y-m-d' }}"
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -83,109 +79,85 @@
               >Insurance Date
             </label>
            <input
-              type="text"
+              type="date"
               name="insurance_date"
               class="form-control border-2"
               id="label5"
-              value="{{upvehicle.insurance_date|date:'d-m-Y'}}"
+              value="{{ upvehicle.insurance_date|date:'Y-m-d' }}"
             />
           </div>
-          <div class="col-lg-4 mb-3">
-           <label for="lable6" class="form-label fw-bold"
-                >Insurance Paper</label
-              >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label6">
-         </div>
+         
           <div class="col-lg-4 mb-3">
             <label for="label7" class="form-label fw-bold"
               >State Permit
             </label>
            <input
-              type="text"
+              type="date"
               name="state_permit"
               class="form-control border-2"
               id="label7"
-              value="{{upvehicle.state_permit|date:'d-m-Y'}}"
+              value="{{ upvehicle.state_permit|date:'Y-m-d' }}"
             />
           </div>
-          <div class="col-lg-4 mb-3">
-           <label for="lable8" class="form-label fw-bold"
-                >State Permit Paper</label
-              >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label8">
-         </div>
+          
           <div class="col-lg-4 mb-3">
             <label for="label9" class="form-label fw-bold"
               >National Permit</label
             >
             <input
-              type="text"
+              type="date"
               name="national_permit"
               class="form-control border-2"
               id="label9"
-              value="{{upvehicle.national_permit|date:'d-m-Y'}}"
+              value="{{ upvehicle.national_permit|date:'Y-m-d' }}"
             />
           </div>
-           <div class="col-lg-4 mb-3">
-           <label for="lable10" class="form-label fw-bold"
-                >National Permit Paper</label
-              >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label10">
-         </div>
+          
           <div class="col-lg-4 mb-3">
             <label for="label11" class="form-label fw-bold"
               >Fitness Date</label
             >
             <input
-              type="text"
+              type="date"
               name="fitness_date"
               class="form-control border-2"
               id="label11"
-              value="{{upvehicle.fitness_date|date:'d-m-Y'}}"
+              value="{{ upvehicle.fitness_date|date:'Y-m-d' }}"
             />
           </div>
-           <div class="col-lg-4 mb-3">
-           <label for="lable12" class="form-label fw-bold"
-                >Fitness Paper</label
-              >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label12">
-         </div>
+          
           <div class="col-lg-4 mb-3">
             <label for="label13" class="form-label fw-bold"
               >Tax Date</label
             >
             <input
-              type="text"
+              type="date"
               name="tax_date"
               class="form-control border-2"
-              id="label13"
-              value="{{upvehicle.tax_date|date:'d-m-Y'}}"
+              id="label13" 
+              value="{{ upvehicle.tax_date|date:'Y-m-d' }}"
             />
           </div>
-          <div class="col-lg-4 mb-3">
-           <label for="lable14" class="form-label fw-bold"
-                >Tax Paper</label
-              >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label14">
-         </div>
+         
           <div class="col-lg-4 mb-3">
             <label for="label15" class="form-label fw-bold"
               >PUC Date</label
             >
             <input
-              type="text"
+              type="date"
               name="puc_date"
               class="form-control border-2" 
               id="label15"
-               value="{{upvehicle.puc_date|date:'Y-m-d'}}"
+               value="{{ upvehicle.puc_date|date:'Y-m-d' }}"
             />
           </div>
-             <div class="col-lg-4 mb-3">
-        <label for="lable16" class="form-label fw-bold"
-                >PUC Paper</label
+          
+            <div class="col-lg-4 mb-3">
+              <label for="lables" class="form-label fw-bold"
+                >Status</label
               >
-        <input type="file" name="vehicle_img" class="form-control border-2" id="label16">
-      </div>
+              <input type="text" name="status" id="lables" class="form-control border-2" value="{{upvehicle.status}}" >
+            </div>
 
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-info px-4">Update</button>

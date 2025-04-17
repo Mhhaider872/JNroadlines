@@ -8,8 +8,10 @@ from django.utils import timezone
 from django.contrib.auth import authenticate, login,logout
 from django.utils.timezone import now
 import random
-import datetime
-from django.db.models import Subquery, OuterRef
+from datetime import datetime, timedelta
+from django.core.mail import send_mail
+
+from django.core.mail import send_mail
 
 
 
@@ -58,7 +60,8 @@ def plan(request):
       else:
           plan=plandetails(tankerno=tankerno,drivername=drivername,From_address=From_address,To_address=To_address,tanker_capacity=tanker_capacity,dispatch_Date=dispatch_Date,status=status)
           plan.save()
-          messages.success(request, 'Plan details added successfully !!') 
+          messages.success(request, 'Plan details added successfully !!')
+          return redirect('showplan')
     vehicle=Add_Vehicle.objects.all()
     # dname=DriverName.objects.all()
     company=companydetails.objects.all()
@@ -66,25 +69,25 @@ def plan(request):
     context={'vehicle':vehicle,'company':company,'dname':dname}
     return render(request,'add/add-plans.html', context)
 
-# def showplan(request):
-#     showplans=plandetails.objects.all()
-#     context={'showplans':showplans}
-#     return render(request,'show/show-plan.html',context)
-
 def showplan(request):
-    # pehle sab plan details la rahe ho
-    showplans = plandetails.objects.all()
+    showplans=plandetails.objects.all()
+    context={'showplans':showplans}
+    return render(request,'show/show-plan.html',context)
 
-    # har plan ke latest trip ko nikalne ke liye Subquery
-    latest_trip = AddTrips.objects.filter(tankerno=OuterRef('pk')).order_by('-arrival_time')
+# def showplan(request):
+#     # pehle sab plan details la rahe ho
+#     showplans = plandetails.objects.all()
 
-    showplans = showplans.annotate(
-        latest_arrival=Subquery(latest_trip.values('arrival_time')[:1]),
-        latest_reach=Subquery(latest_trip.values('reach_time')[:1]),
-        latest_unload=Subquery(latest_trip.values('unload_time')[:1]),
-    )
+#     # har plan ke latest trip ko nikalne ke liye Subquery
+#     latest_trip = AddTrips.objects.filter(tankerno=OuterRef('pk')).order_by('-arrival_time')
 
-    return render(request, 'show-plan.html', {'showplans': showplans})
+#     showplans = showplans.annotate(
+#         latest_arrival=Subquery(latest_trip.values('arrival_time')[:1]),
+#         latest_reach=Subquery(latest_trip.values('reach_time')[:1]),
+#         latest_unload=Subquery(latest_trip.values('unload_time')[:1]),
+#     )
+
+#     return render(request, 'show-plan.html', {'showplans': showplans})
 
 
 def updateplan(request,id):
@@ -133,59 +136,77 @@ def deleteplan(request,id):
 
 
 def addtrip(request):
-    
-    # plan = plandetails.objects.order_by('-id').first()
-    # if plan:
-    #     tankerno = plan.tankerno
-    #     drivername=plan.drivername
-    #     From_address = plan.From_address
-    #     To_address = plan.To_address
-    #     tanker_capacity = plan.tanker_capacity
-    # else:
-    #     tankerno = From_address = To_address = 'Data not available'
-    
-    
-    if request.method =="POST":
-       tankerno_id = request.POST.get('tankerno')
-       selected_plan = plandetails.objects.get(id=tankerno_id)
-       From_address = request.POST['From_address']
-       To_address = request.POST['To_address']
-       drivername = request.POST['drivername']
-       tank_capacity = request.POST['tank_capacity']
-       arrival_time = request.POST['arrival_time']
-       dispatch_time = request.POST['dispatch_time']
-       reach_time = request.POST['reach_time']
-       unload_time = request.POST['unload_time']
-       lr_num  = request.POST['lr_num']
-       lr_date = request.POST['lr_date']
-       freight_bill = request.POST['freight_bill']
-       freight_date = request.POST['freight_date']
-       loaded_qty = request.POST['loaded_qty']
-    #    percent = request.POST['percent']
-       unload_qty = request.POST['unload_qty']
-       short_qty = request.POST['short_qty']
-       short_allow = request.POST['short_allow']
-       return_qty = request.POST['return_qty']
-       remark = request.POST['remark']
-       if   AddTrips.objects.filter(tankerno_id=tankerno_id, dispatch_time= dispatch_time).exists():
-            messages.error(request, 'Trip already exists !!')
+    if request.method == "POST":
+        # Get tankerno_id from the form
+        tankerno_id = request.POST.get('tankerno')
+
+        if not tankerno_id:
+            messages.error(request, 'Please select a tanker.')
             return redirect('addtrip')
-       else:
-          trip=AddTrips(tankerno_id=selected_plan.tankerno,From_address=From_address,To_address=To_address,drivername=drivername if drivername else None,tank_capacity=tank_capacity if tank_capacity else None,arrival_time=arrival_time if arrival_time else None,dispatch_time=dispatch_time if dispatch_time else None,reach_time=reach_time if reach_time else None,unload_time=unload_time if unload_time else None,lr_num=lr_num if lr_num else None,lr_date=lr_date if lr_date else None,freight_bill=freight_bill if freight_bill else None,freight_date=freight_date if freight_date else None,loaded_qty=loaded_qty if loaded_qty else None,unload_qty=unload_qty if unload_qty else None,short_qty=short_qty if short_qty else None,short_allow=short_allow if short_allow else None,return_qty=return_qty if return_qty else None,remark=remark if remark else None,)
-          trip.save()
-          messages.success(request, 'Trip added successfully !!') 
-    
-    # Pass the values to the template
-    # context = {
-    #     'tankerno': tankerno,
-    #     'From_address': From_address,
-    #     'To_address': To_address,
-    #     'tanker_capacity': tanker_capacity,
-    #     'drivername':drivername
-    # }
+
+        try:
+            # Get the selected plan details using tankerno_id
+            selected_plan = plandetails.objects.get(id=tankerno_id)
+        except plandetails.DoesNotExist:
+            messages.error(request, 'Selected tanker does not exist.')
+            return redirect('addtrip')
+
+        # Collect other form data
+        From_address = request.POST['From_address']
+        To_address = request.POST['To_address']
+        drivername = request.POST['drivername']
+        tank_capacity = request.POST['tank_capacity']
+        arrival_time = request.POST['arrival_time']
+        dispatch_time = request.POST['dispatch_time']
+        reach_time = request.POST['reach_time']
+        unload_time = request.POST['unload_time']
+        lr_num = request.POST['lr_num']
+        lr_date = request.POST['lr_date']
+        freight_bill = request.POST['freight_bill']
+        freight_date = request.POST['freight_date']
+        loaded_qty = request.POST['loaded_qty']
+        unload_qty = request.POST['unload_qty']
+        short_qty = request.POST['short_qty']
+        short_allow = request.POST['short_allow']
+        return_qty = request.POST['return_qty']
+        remark = request.POST['remark']
+
+        # Check if trip already exists with the same tankerno and dispatch_time
+        if AddTrips.objects.filter(tankerno=tankerno_id, dispatch_time=dispatch_time).exists():
+            messages.error(request, 'Trip already exists!')
+            return redirect('addtrip')
+        
+        # Create a new trip entry
+        trip = AddTrips(
+            tankerno=tankerno_id,
+            From_address=From_address,
+            To_address=To_address,
+            drivername=drivername if drivername else None,
+            tank_capacity=tank_capacity if tank_capacity else None,
+            arrival_time=arrival_time if arrival_time else None,
+            dispatch_time=dispatch_time if dispatch_time else None,
+            reach_time=reach_time if reach_time else None,
+            unload_time=unload_time if unload_time else None,
+            lr_num=lr_num if lr_num else None,
+            lr_date=lr_date if lr_date else None,
+            freight_bill=freight_bill if freight_bill else None,
+            freight_date=freight_date if freight_date else None,
+            loaded_qty=loaded_qty if loaded_qty else None,
+            unload_qty=unload_qty if unload_qty else None,
+            short_qty=short_qty if short_qty else None,
+            short_allow=short_allow if short_allow else None,
+            return_qty=return_qty if return_qty else None,
+            remark=remark if remark else None,
+        )
+        trip.save()  # Save the new trip
+        messages.success(request, 'Trip added successfully!')
+
+    # Get the list of plans for the dropdown
     plans = plandetails.objects.all()
-    context={'plans':plans}
-    return render(request, 'add/add_trip_all.html',context)
+
+    # Return to the template with the plans
+    context = {'plans': plans}
+    return render(request, 'add/add_trip_all.html', context)
 
 def get_plan_details(request):
     plan_id = request.GET.get('plan_id')
@@ -611,15 +632,22 @@ def adddriver(request):
       issuedates = request.POST['issuedates']
       trdates = request.POST['trdates']
     #   imguploads = request.POST['imguploads'] 
-      img = request.POST['img'] 
+      img = request.FILES.get('img') 
+      fname = request.POST['fname']
       
       if NewDriver_Details.objects.filter(adharnumber=adharnumber).exists():
-         messages.error(request, 'Aadhar No already exists !!')
+         messages.error(request, 'Driver & Aadhar No already exists !!')
          return redirect('adddriver')
       else:
-         deriver=NewDriver_Details(name=name,adharnumber=adharnumber,licencenumber=licencenumber,issuedates=issuedates,trdates=trdates,img=img)
-         deriver.save()
-         messages.success(request, 'Driver details added successfully !!') 
+          deriver=NewDriver_Details(name=name,
+                                    adharnumber=adharnumber if adharnumber else None,
+                                    licencenumber=licencenumber if licencenumber else None,
+                                    issuedates=issuedates if issuedates else None,
+                                    trdates=trdates if trdates else None,
+                                    img=img if img else None,
+                                    fname=fname if fname else None)
+          deriver.save()
+          messages.success(request, 'Driver details added successfully !!') 
     # dname=NewDriver_Details.objects.all()
     # context={'dname':dname}
     return render(request,'add/add-driver.html')
@@ -630,15 +658,41 @@ def showdriver(request):
     return render(request,'show/show-driver-details.html',context)
 
 def deletedriver(request,id):
-    d= NewDriver_Details.objects.get(pk=id)
-    d.delete()
+    driver= NewDriver_Details.objects.get(pk=id)
+    if  AddTrips.objects.filter(drivername=driver.name).exists():
+          messages.error(request, "Driver cannot be deleted because they have trips assigned.")
+          return redirect('showdrivers')
+    else:
+         driver.delete()
+         messages.success(request, "Driver deleted successfully.")
+
     return redirect('showdrivers')
 
-def updatedriver(request,id):
+def driverupdate(request,id):
     updatedriver=NewDriver_Details.objects.get(pk=id)
     context={'updatedriver':updatedriver}
     return render(request,'update-driver.html',context)
 
+def doupdatedriver(request,id):
+     name = request.POST.get('name')
+     adharnumber = request.POST.get('adharnumber')
+     licencenumber = request.POST.get('licencenumber')
+     issuedates = request.POST.get('issuedates')
+     trdates = request.POST.get('trdates')
+     img = request.FILES.get('img') 
+     fname = request.POST.get('fname')
+
+     updatedriver=NewDriver_Details.objects.get(pk=id)
+     updatedriver.name=name
+     updatedriver.adharnumber=adharnumber
+     updatedriver.licencenumber=licencenumber
+     updatedriver.issuedates=issuedates
+     updatedriver.trdates=trdates
+     updatedriver.img=img
+     updatedriver.fname=fname
+     updatedriver.save()
+     messages.success(request, "Driver update deleted successfully.")
+     return redirect('showdrivers')
 
 
 
@@ -683,70 +737,11 @@ def  showtripexpense(request):
      return render(request,'show-trip-expense.html',context)
 
 
-def  addtolls(request):
-    if request.method =="POST":
-      tankerno  = request.POST['tankerno']
-      driver_names  = request.POST['driver_names']
-      trip_date = request.POST['trip_date']
-      date = request.POST['date']
-      amount = request.POST['amount']
-      toll_name = request.POST['toll_name']
-      From_address = request.POST['From_address']
-      To_address = request.POST['To_address']
-      
-      if Toll_Details.objects.filter(tankerno=tankerno,date=date).exists():
-         messages.error(request, 'already exists !!')
-         return redirect('add-toll')
-      else:
-         toll=Toll_Details(tankerno=tankerno,driver_names=driver_names,trip_date=trip_date,amount=amount,toll_name=toll_name,From_address=From_address,To_address=To_address)
-         toll.save()
-         messages.success(request, 'Toll details added successfully !!') 
-    vehicle=Add_Vehicle.objects.all()
-    company=companydetails.objects.all()
-    dname=NewDriver_Details.objects.all()
-    context={'vehicle': vehicle,'company':company,'dname':dname}
- 
-    return render(request,'add/add-toll.html',context)
 
 
-def  tolldetails(request):
-     showtoll=Toll_Details.objects.all()
-     context={'showtoll':showtoll}
-     return render(request,'show/show-toll.html',context)
 
 
-def  adddiesel(request):
-    if request.method =="POST":
-     tankerno_diesel  = request.POST['tankerno_diesel']
-     tripdate_diesel  = request.POST['tripdate_diesel']
-     date_diesel= request.POST['date_diesel']
-     category = request.POST['category']
-     subCategory = request.POST['subCategory']
-     paid_to = request.POST['paid_to']
-     given_amounts_diesel = request.POST['given_amounts_diesel']
-     liters = request.POST['liters']
-     rate = request.POST['rate']
-     total_diesel= request.POST['total_diesel']
-      
-     if Diesel_detail.objects.filter(tankerno_diesel=tankerno_diesel,date_diesel=date_diesel).exists():
-        messages.error(request, 'already exists !!')
-        return redirect('add-toll')
-     else:
-        diesel=Diesel_detail(tankerno_diesel=tankerno_diesel,tripdate_diesel=tripdate_diesel,date_diesel=date_diesel,category=category,subCategory=subCategory,paid_to=paid_to,given_amounts_diesel=given_amounts_diesel,liters=liters,rate=rate,total_diesel=total_diesel)
-        diesel.save()
-        messages.success(request, 'Diesel details added successfully !!') 
-    vehicle=Add_Vehicle.objects.all()
-    categories = Category.objects.all()
-    dname=NewDriver_Details.objects.all()
-    petrol=AddPetrolPump.objects.all()
-    context={'categories':categories,'dname':dname,'vehicle':vehicle,'petrol':petrol}
-    return render(request,'diesel-details.html',context)
 
-
-def dieseldetails(request):
-    showdiesel=Diesel_detail.objects.all()
-    context={'showdiesel':showdiesel}
-    return render(request,'show/show-diesel-details.html',context)
 
 
 def get_subcategories(request, category_id):
@@ -772,7 +767,8 @@ def  addsalary(request):
       else:
         d_salary=Driver_salary(tankerno=tankerno,drivername=drivername,salary_driver=salary_driver,f_date=f_date,t_date=t_date,p_date=p_date,amount=amount)
         d_salary.save()
-        messages.success(request, 'Driver Salary added successfully !!') 
+        messages.success(request, 'Driver Salary added successfully !!')
+        return redirect('show-s')
     vehicle=Add_Vehicle.objects.all()   
     company=companydetails.objects.all()
     context={'vehicle':vehicle,'company':company}    
@@ -783,40 +779,7 @@ def  showsalary(request):
     context={'show_s':show_s}
     return render(request,'show/show_salary.html',context)
 
-def  addurea(request):
 
-    if request.method =="POST":
-      urea_tanker_no = request.POST['urea_tanker_no']
-      From_address = request.POST['From_address']
-      To_address  = request.POST['To_address']
-      paid_date = request.POST['paid_date']
-      bill_date= request.POST['bill_date']
-      trip_urea_date = request.POST['trip_urea_date'] 
-      urea_liter = request.POST['urea_liter'] 
-      urea_rate = request.POST['urea_rate'] 
-      urea_total = request.POST['urea_total'] 
-    
-      if Add_Urea.objects.filter(urea_tanker_no=urea_tanker_no,paid_date=paid_date).exists():
-        messages.error(request, 'Urea Details already exists !!')
-        return redirect('add-urea')
-      else:
-        urea_details=Add_Urea(urea_tanker_no=urea_tanker_no,From_address=From_address,To_address=To_address,paid_date=paid_date,bill_date=bill_date,trip_urea_date=trip_urea_date,urea_liter=urea_liter,urea_rate=urea_rate,urea_total=urea_total)
-        urea_details.save()
-        messages.success(request, 'Urea details added successfully !!') 
-    vehicle=Add_Vehicle.objects.all()   
-    company=companydetails.objects.all()
-    context={'vehicle':vehicle,'company':company}       
-    return render(request,'add/add-urea.html',context)
-   
-
-def  showurea(request):
-    showurea=Add_Urea.objects.all()
-    context={'showurea':showurea}
-    return render(request,'urea-details.html',context)
-
-
-def  repairs(request):
-    return render(request,'repairs.html')
 
 
 def report(request):
@@ -832,33 +795,121 @@ def report(request):
 
 
 
-def vehicledetails(request):
-    if request.method =="POST":
-      vehicle_name = request.POST['vehicle_name']
-      tankercap = request.POST['tankercap']
-      owner_name = request.POST['owner_name']
-      making_year  = request.POST['making_year']
-      chassise_no = request.POST['chassise_no']
-      engine_no = request.POST['engine_no']
-      insurance_date = request.POST['insurance_date'] 
-      state_permit = request.POST['state_permit'] 
-      national_permit = request.POST['national_permit'] 
-      fitness_date = request.POST['fitness_date'] 
-      tax_date = request.POST['tax_date'] 
-      puc_date = request.POST['puc_date'] 
-      vehicle_img = request.POST['vehicle_img']
-      status = request.POST['status']
+# def vehicledetails(request):
+#     if request.method =="POST":
+#       vehicle_name = request.POST['vehicle_name']
+#       tankercap = request.POST['tankercap']
+#       owner_name = request.POST['owner_name']
+#       making_year  = request.POST['making_year']
+#       chassise_no = request.POST['chassise_no']
+#       engine_no = request.POST['engine_no']
+#       insurance_date = request.POST['insurance_date'] 
+#       state_permit = request.POST['state_permit'] 
+#       national_permit = request.POST['national_permit'] 
+#       fitness_date = request.POST['fitness_date'] 
+#       tax_date = request.POST['tax_date'] 
+#       puc_date = request.POST['puc_date'] 
+#       vehicle_img = request.POST['vehicle_img']
+#       status = request.POST['status']
 
-      if Add_Vehicle.objects.filter(vehicle_name=vehicle_name).exists():
-          messages.error(request, 'Vehicle No. already exists !!')
-          return redirect('addvehicle')
-      else:
-           vehicle_details=Add_Vehicle(vehicle_name=vehicle_name,tankercap=tankercap if tankercap else None,owner_name=owner_name,making_year=making_year,chassise_no=chassise_no,engine_no=engine_no,insurance_date=insurance_date,state_permit=state_permit,national_permit=national_permit,fitness_date=fitness_date,tax_date=tax_date,puc_date=puc_date,vehicle_img=vehicle_img,status=status if status else None)
-           vehicle_details.save()
-           messages.success(request, 'Vehicle details added successfully !!') 
-    # dname=NewDriverDetails.objects.all()
-    # context={'dname':dname}JCHZ425531
-    return render(request,'add/add-vehicle.html')
+#       if Add_Vehicle.objects.filter(vehicle_name=vehicle_name).exists():
+#           messages.error(request, 'Vehicle No. already exists !!')
+#           return redirect('addvehicle')
+#       else:
+#            vehicle_details=Add_Vehicle(vehicle_name=vehicle_name,tankercap=tankercap if tankercap else None,owner_name=owner_name,making_year=making_year,chassise_no=chassise_no,engine_no=engine_no,insurance_date=insurance_date,state_permit=state_permit,national_permit=national_permit,fitness_date=fitness_date,tax_date=tax_date,puc_date=puc_date,vehicle_img=vehicle_img,status=status if status else None)
+#            vehicle_details.save()
+#            messages.success(request, 'Vehicle details added successfully !!')
+#            return redirect('show-vehicle')
+#     # dname=NewDriverDetails.objects.all()
+#     # context={'dname':dname}JCHZ425531
+#     return render(request,'add/add-vehicle.html')
+
+
+
+def vehicledetails(request):
+    if request.method == "POST":
+        vehicle_name = request.POST['vehicle_name']
+        tankercap = request.POST['tankercap']
+        owner_name = request.POST['owner_name']
+        making_year = request.POST['making_year']
+        chassise_no = request.POST['chassise_no']
+        engine_no = request.POST['engine_no']
+        insurance_date = request.POST['insurance_date']
+        state_permit = request.POST['state_permit']
+        national_permit = request.POST['national_permit']
+        fitness_date = request.POST['fitness_date']
+        tax_date = request.POST['tax_date']
+        puc_date = request.POST['puc_date']
+        vehicle_img = request.POST['vehicle_img']
+        status = request.POST['status']
+
+        # 👇 Replace with actual logged-in user's email if available
+        # user_email = 'user@example.com'
+
+        if Add_Vehicle.objects.filter(vehicle_name=vehicle_name).exists():
+            messages.error(request, 'Vehicle No. already exists !!')
+            return redirect('addvehicle')
+
+        # Save vehicle data
+        vehicle_details = Add_Vehicle(
+            vehicle_name=vehicle_name if vehicle_name else None,
+            tankercap=tankercap if tankercap else None,
+            owner_name=owner_name if owner_name else None,
+            making_year=making_year if making_year else None,
+            chassise_no=chassise_no if chassise_no else None,
+            engine_no=engine_no if engine_no else None,
+            insurance_date=insurance_date if insurance_date else None,
+            state_permit=state_permit if state_permit else None,
+            national_permit=national_permit if national_permit else None,
+            fitness_date=fitness_date if fitness_date else None,
+            tax_date=tax_date if tax_date else None,
+            puc_date=puc_date if puc_date else None,
+            vehicle_img=vehicle_img if vehicle_img else None,
+            status=status if status else None
+        )
+        vehicle_details.save()
+        messages.success(request, 'Vehicle details added successfully!!')
+        return redirect('show-vehicle')
+
+        # === Alert generation for near-expiry dates ===
+        # alerts = []
+        # today = datetime.today().date()
+        # threshold = today + timedelta(days=5)
+
+        # date_fields = {
+        #     'Insurance': insurance_date,
+        #     'State Permit': state_permit,
+        #     'National Permit': national_permit,
+        #     'Fitness Certificate': fitness_date,
+        #     'Road Tax': tax_date,
+        #     'PUC': puc_date
+        # }
+
+        # for label, date_str in date_fields.items():
+        #     try:
+        #         exp_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        #         if today <= exp_date <= threshold:
+        #             alerts.append(f"🔔 {label} is expiring on {exp_date}")
+        #     except ValueError:
+        #         alerts.append(f"⚠️ Invalid date for {label}: {date_str}")
+
+        # if alerts:
+        #     alert_msg = "\n".join(alerts)
+
+        #     # ✉️ Send email
+        #     send_test_email(
+        #         subject='Upcoming Vehicle Document Expiry Alerts',
+        #         message=alert_msg,
+        #         from_email='your@email.com',  # 👈 Replace with real sender
+        #         recipient_list=[user_email],
+        #         fail_silently=False,
+        #     )
+
+        # messages.success(request, 'Vehicle details added successfully (Email sent if any expiry alert) !!')
+        # return redirect('show-vehicle')
+
+    return render(request, 'add/add-vehicle.html')
+
 
 def get_capacity(request):
     vehicle_name = request.GET.get('vehicle_name')
@@ -886,10 +937,66 @@ def updatevehicle(request,id):
 
 
 
+def doupdatevehicle(request, id):
+    try:
+        # Fetch the vehicle by its ID
+        upvehicle = Add_Vehicle.objects.get(pk=id)
+
+        if request.method == "POST":
+            vehicle_name = request.POST.get('vehicle_name')
+            tankercap = request.POST.get('tankercap')
+            owner_name = request.POST.get('owner_name')
+            making_year = request.POST.get('making_year')
+            chassise_no = request.POST.get('chassise_no')
+            engine_no = request.POST.get('engine_no')
+            insurance_date = request.POST.get('insurance_date')
+            state_permit = request.POST.get('state_permit')
+            national_permit = request.POST.get('national_permit')
+            fitness_date = request.POST.get('fitness_date')
+            tax_date = request.POST.get('tax_date')
+            puc_date = request.POST.get('puc_date')
+            vehicle_img = request.FILES.get('vehicle_img')
+            status = request.POST.get('status')
+
+            # Update the fields
+            upvehicle.vehicle_name = vehicle_name
+            upvehicle.tankercap = tankercap
+            upvehicle.owner_name = owner_name
+            upvehicle.making_year = making_year
+            upvehicle.chassise_no = chassise_no
+            upvehicle.engine_no = engine_no
+            upvehicle.insurance_date = insurance_date
+            upvehicle.state_permit = state_permit
+            upvehicle.national_permit = national_permit
+            upvehicle.fitness_date = fitness_date
+            upvehicle.tax_date = tax_date
+            upvehicle.puc_date = puc_date
+            if vehicle_img:  # Update the image only if a new one is provided
+                upvehicle.vehicle_img = vehicle_img
+            upvehicle.status = status
+
+            # Save the updated vehicle
+            upvehicle.save()
+            messages.success(request, 'Vehicle details updated successfully!')
+            return redirect('show-vehicle')
+        
+        # If the method is GET, render the update form with current vehicle data
+        return render(request, 'update_vehicle.html', {'vehicle': upvehicle})
+
+    except Add_Vehicle.DoesNotExist:
+        messages.error(request, 'Vehicle not found!')
+        return redirect('show-vehicle')
+
+
+
+ 
+
+
 def company_details(request):
     if request.method =="POST":
       name  = request.POST['name']
       area_name = request.POST['area_name']
+      short_name = request.POST['short_name']
       state = request.POST['state']
       city = request.POST['city']
       pincode = request.POST['pincode']
@@ -901,11 +1008,14 @@ def company_details(request):
           messages.error(request, 'Company already exists !!')
           return redirect('company-details')
       else:
-          cname=companydetails(name=name,area_name=area_name,state=state,city=city if city else None,pincode=pincode if pincode else None,gst=gst if gst else None,pan=pan if pan else None,contact_no=contact_no if contact_no else None)
+          cname=companydetails(name=name,area_name=area_name,state=state,city=city if city else None,pincode=pincode if pincode else None,gst=gst if gst else None,pan=pan if pan else None,contact_no=contact_no if contact_no else None,short_name=short_name if short_name else None)
           cname.save()
           messages.success(request, 'Company details added successfully !!') 
-    
-    return render(request,'add/add_company.html')
+          return redirect('s-company')
+    city=City.objects.all()
+    state=State.objects.all()
+    context={'city':city,'state':state}
+    return render(request,'add/add_company.html',context)
 
 
 def show_company(request):
@@ -923,6 +1033,33 @@ def updatecompany(request,id):
     upcompany=companydetails.objects.get(pk=id)
     context={'upcompany':upcompany}
     return render(request,'update_company_details.html',context)
+
+def doupdatecompany(request,id):
+      name  = request.POST.get('name')
+      area_name = request.POST.get('area_name')
+      state = request.POST.get('state')
+      city = request.POST.get('city')
+      pincode = request.POST.get('pincode')
+      gst = request.POST.get('gst')
+      pan = request.POST.get('pan')
+      contact_no = request.POST.get('contact_no')
+      
+      upcompany=companydetails.objects.get(pk=id)
+
+      upcompany.name=name if name else None
+      upcompany.area_name=area_name if area_name else None
+      upcompany.state=state if state else None
+      upcompany.city=city if city else None
+      upcompany.pincode=pincode if pincode else None
+      upcompany.gst=gst if gst else None
+      upcompany.pan=pan if pan else None
+      upcompany.contact_no=contact_no if contact_no else None
+
+      upcompany.save()
+      messages.success(request, 'Company details update successfully !!')
+      return redirect('s-company')
+
+
     
 
 
@@ -1222,10 +1359,10 @@ def aak_bill(request):
         invoice.total_amount = total_amount
 
         # Convert the total amount into words
-        total_in_words = num2words(total_amount).title()
+        # total_in_words = num2words(total_amount).title()
 
         # Save the invoice's total amount in words as well, if needed
-        invoice.total_in_words = total_in_words
+        # invoice.total_in_words = total_in_words
         invoice.save()
 
         # Redirect to the invoice detail page
@@ -1546,77 +1683,101 @@ def update_exp(request,id):
 
 
 def do_update(request,id):
-    trip_general_expenses = request.POST.get('trip_general_expenses')
-    food_allowance = request.POST.get('food_allowance')
-    bhatta = request.POST.get('bhatta')
-    washing_charges_tank = request.POST.get('washing_charges_tank')
-    actual_amount=request.POST.get('actual_amount')
-    total_amount = request.POST.get('total_amount')
-    toll_date = request.POST.get('toll_date')
-    toll_amount = request.POST.get('toll_amount')
-    toll_name = request.POST.get('toll_name')
-    category = request.POST.get('category')
-    subCategory = request.POST.get('subCategor')
-    paid_to = request.POST.get('paid_to')
-    amount_given = request.POST.get('amount_given')
-    liters = request.POST.get('liters')
-    rate = request.POST.get('rate')
-    total_diesel = request.POST.get('total_diesel')
-    paid_date = request.POST.get('paid_date')
-    bill_date = request.POST.get('bill_date')
-    urea_liter = request.POST.get('urea_liter')
-    urea_rate = request.POST.get('urea_rate')
-    urea_total = request.POST.get('urea_total')
-    r_paid_date = request.POST.get('r_paid_date')
-    r_bill_date = request.POST.get('r_bill_date')
-    spare_part = request.POST.get('spare_part')
-    r_amount = request.POST.get('r_amount')
-    part_name = request.POST.get('part_name')
-    no_piece = request.POST.get('no_piece')
-    date = request.POST.get('date')
-    from_via = request.POST.get('from_via')
-    To_via = request.POST.get('To_via')      
-         
-    # Fetch the existing Expense details to update  
-    upexpense=Expense.objects.get(pk=id)
+ try:
+     trip_general_expenses = request.POST.get('trip_general_expenses')
+     food_allowance = request.POST.get('food_allowance')
+     bhatta = request.POST.get('bhatta')
+     washing_charges_tank = request.POST.get('washing_charges_tank')
+     actual_amount = request.POST.get('actual_amount')
+     total_amount = request.POST.get('total_amount')
+     toll_amount = request.POST.get('toll_amount')
+     toll_name = request.POST.get('toll_name')
+     category = request.POST.get('category')
+     subCategory = request.POST.get('subCategor')
+     paid_to = request.POST.get('paid_to')
+     amount_given = request.POST.get('amount_given')
+     liters = request.POST.get('liters')
+     rate = request.POST.get('rate')
+     total_diesel = request.POST.get('total_diesel')
+     paid_date = request.POST.get('paid_date')
+     bill_date = request.POST.get('bill_date')
+     urea_liter = request.POST.get('urea_liter')
+     urea_rate = request.POST.get('urea_rate')
+     urea_total = request.POST.get('urea_total')
+     r_paid_date = request.POST.get('r_paid_date')
+     r_bill_date = request.POST.get('r_bill_date')
+     spare_part = request.POST.get('spare_part')
+     r_amount = request.POST.get('r_amount')
+     part_name = request.POST.get('part_name')
+     no_piece = request.POST.get('no_piece')
+     date = request.POST.get('date')
+     from_via = request.POST.get('from_via')
+     To_via = request.POST.get('To_via')
+     amount = request.POST.get('amount')  
+  
+     upexpense = Expense.objects.get(pk=id)
 
-    upexpense.trip_general_expenses = trip_general_expenses
-    upexpense.food_allowance = food_allowance
-    upexpense.bhatta = bhatta
-    upexpense.washing_charges_tank = washing_charges_tank
-    upexpense.actual_amount= actual_amount
-    upexpense.total_amount= total_amount
-    upexpense.toll_name= toll_name
-    upexpense.toll_amount= toll_amount
-    upexpense.category= category
-    upexpense.subCategory= subCategory
-    upexpense.paid_to= paid_to
-    upexpense.amount_given= amount_given
-    upexpense.liters= liters
-    upexpense.rate= rate
-    upexpense.total_diesel= total_diesel
-    upexpense.paid_date= paid_date
-    upexpense.bill_date= bill_date
-    upexpense.urea_liter= urea_liter
-    upexpense.urea_rate= urea_rate
-    upexpense.urea_total= urea_total
-    upexpense.r_paid_date= r_paid_date
-    upexpense.r_bill_date= r_bill_date
-    upexpense.spare_part= spare_part
-    upexpense.r_amount= r_amount
-    upexpense.part_name= part_name
-    upexpense.no_piece = no_piece 
-    upexpense.date = date
-    
-    upexpense.save()
-    messages.success(request, 'Expense Update successfully !!')
-    return redirect('start_trip')
+     upexpense.trip_general_expenses = trip_general_expenses or None
+     upexpense.food_allowance = food_allowance or None
+     upexpense.bhatta = bhatta or None
+     upexpense.washing_charges_tank = washing_charges_tank or None
+     upexpense.actual_amount = actual_amount or None
+     upexpense.total_amount = total_amount or None
+     upexpense.toll_name = toll_name or None
+     upexpense.toll_amount = toll_amount or None
+     upexpense.category = category or None
+     upexpense.subCategory = subCategory or None
+     upexpense.paid_to = paid_to or None
+     upexpense.amount_given = amount_given or None
+     upexpense.liters = liters or None
+     upexpense.rate = rate or None
+     upexpense.total_diesel = total_diesel or None
+     upexpense.paid_date = paid_date or None
+     upexpense.bill_date = bill_date or None
+     upexpense.urea_liter = urea_liter or None
+     upexpense.urea_rate = urea_rate or None
+     upexpense.urea_total = urea_total or None
+     upexpense.r_paid_date = r_paid_date or None
+     upexpense.r_bill_date = r_bill_date or None
+     upexpense.spare_part = spare_part or None
+     upexpense.r_amount = r_amount or None
+     upexpense.part_name = part_name or None
+     upexpense.no_piece = no_piece or None
+     upexpense.date = date or None
+     upexpense.amount = amount or None
+
+     upexpense.save()
+     messages.success(request, 'Expense updated successfully!')
+     return redirect('start_trip')
+
+ except Expense.DoesNotExist:
+        messages.error(request, 'Expense not found.')
+        return redirect('start_trip')
+
+ except Exception as e:
+        messages.error(request, f'Error in expense: {str(e)}')
+        return redirect('start_trip')
+   
 
 
 
-def delete_expense(request,id):
+# def delete_expense(request,id):
+#     de=Expense.objects.get(pk=id)
+#     if Expense.objects.filter(date=date).exists(): 
+#          messages.error(request, "Trip has already started. Expense cannot be deleted.")
+#          return redirect('start_trip')
+#     de.delete()
+#     return redirect('start_trip')
+def delete_expense(request, id):
+    # de = get_object_or_404(Expense, pk=id)
+
+    # # Trip already started check based on date
+    # if Expense.objects.filter(date=de.date).exists():
+    #     messages.error(request, "Trip has already started. Expense cannot be deleted.")
+    #     return redirect('start_trip')
     de=Expense.objects.get(pk=id)
     de.delete()
+    messages.success(request, "Expense deleted successfully.")
     return redirect('start_trip')
 
 
@@ -2067,23 +2228,54 @@ def create_invoice(request):
 
 
 # ---------------------Loan-----------------------#
-def addloan(request):
+def addbank(request):
     if request.method == "POST":
         name = request.POST.get('name')  # Use .get() to avoid KeyError
         if name:
             bankname = AddBank_Loan.objects.create(name=name)
             bankname.save()
-        else:
-            # Handle missing name field, e.g., add a message or log the error
-            pass
+       
 
     # Fetch all banks regardless of POST or GET request
-    bank = AddBank_Loan.objects.all()
+    bname=AddBank_Loan.objects.all()
+    context = {'bname': bname,}
 
-    context = {'bank': bank}
+    return render(request, 'add/add_bank_name.html')
 
-    return render(request, 'loan-details.html', context)
 
+def addloan(request):
+    if request.method=="POST":
+        tankerno=request.POST.get('tankerno')
+        loan_contract=request.POST.get('loan_contract')
+        finance_by=request.POST.get('finance_by')
+        pamount=request.POST.get('pamount')
+        iamount=request.POST.get('iamount')
+        famount=request.POST.get('famount')
+        amount=request.POST.get('amount')
+        ddate=request.POST.get('ddate')
+        pdate=request.POST.get('pdate')
+        days=request.POST.get('days')
+        bank=request.POST.get('bank')
+        ramount=request.POST.get('ramount')
+
+        if Addloan.objects.filter(tankerno=tankerno,loan_contract=loan_contract).exists():
+           messages.error(request, 'Loan already exists!')
+           return redirect('loandetails')
+        else:
+            loan=Addloan.objects.create(tankerno=tankerno,loan_contract=loan_contract,finance_by=finance_by,pamount=pamount,iamount=iamount,famount=famount,amount=amount,ddate=ddate,pdate=pdate,days=days,bank=bank,ramount=ramount)
+            loan.save()
+            messages.success(request, 'Loan Details added successfully!')
+            return redirect('loan-show')
+    vehicle=Add_Vehicle.objects.all()
+    bname=AddBank_Loan.objects.all()
+    context={'vehicle':vehicle,'bname': bname,}
+    return render(request,'loan-details.html',context)
+
+
+def showloan(request):
+    loanshow=Addloan.objects.all()
+    context={'loanshow':loanshow}
+    return render(request,'show/show_loan.html',context)
 
 
 
@@ -2235,3 +2427,37 @@ def showtrack(request):
 
 def errorpage(request):
     return render(request,'page_404.html')
+
+
+def addbank(request):
+    if request.method=="POST":
+        name=request.POST['name']
+        if AddBank_Loan.objects.filter(name=name).exists():
+           messages.error(request, 'Please enter the Bank Name !!')
+           return redirect('add-bank')
+        
+        else:
+            bank=AddBank_Loan.objects.create(name=name)
+            bank.save()
+            messages.success(request, 'Bank Name add successfully !!')
+    return render (request,'add/add_bank_name.html')
+
+
+
+def get_cities(request):
+    state = request.GET.get('state')
+    cities = City.objects.filter(state__statename=state).values_list('cityname', flat=True)
+    return JsonResponse({'cities': list(cities)})
+
+
+
+
+def send_test_email(request):
+    send_mail(
+        subject='Test Email from Django',
+        message='Hello bhai! Django se email successfully bhej diya gaya hai.',
+        from_email='abc123@gmail.com',  # ← apna Gmail yahan likho
+        recipient_list=['kisi.kodost@gmail.com'],  # ← jisko bhejna hai
+        fail_silently=False,
+    )
+    return HttpResponse("Email sent successfully!")

@@ -36,7 +36,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
-        <form  method="POST">
+        <form  method="POST" autocomplete="off">
           {% csrf_token %}
           <div class="row">
            
@@ -62,9 +62,20 @@
               id="label11"
             />
           </div>
+          <div class="col-lg-4 mb-3">
+            <label for="short" class="form-label fw-bold"
+              >Company Short Address</label
+            >
+            <input
+              type="text"
+              name="short_name"
+              class="form-control border-2"
+              id="short"
+            />
+          </div>
        
             <div class="col-lg-4 mb-3">      
-              <label for="state" class="form-label fw-bold" >Select State:</label>
+              {% comment %} <label for="state" class="form-label fw-bold" >Select State:</label>
                <select id="state" onchange="updateCities()" name="state" class="form-select" aria-label="Default select example">
                <option value="">Select State</option>
                <option value="Maharashtra">Maharashtra</option>
@@ -80,15 +91,28 @@
                 <option value="Punjab">Punjab</option>
                 <option value="Rajasthan">Rajasthan</option>
              
-             </select>
+             </select> {% endcomment %}
+             <label for="state" class="form-label fw-bold" >Select State:</label>
+              <input class="form-control border-2" list="statelist" id="state" name="state" placeholder="Select state..." required>
+               <datalist id="statelist" class="shadow-sm border-0" >
+                  <option value="">Select State</option>
+                 {% for s in state%}
+                 <option value="{{s.statename}}">{{s.statename}}</option>
+                 {%endfor%}
+                </datalist>
            </div>
 
 
            <div class="col-lg-4 mb-3"> 
           <label for="city" class="form-label fw-bold">Select City:</label>
-          <select id="city" name="city" class="form-select" aria-label="Default select example">
-           <option value="">Select City</option>
-           </select>
+          <input class="form-control border-2" list="citylist" id="city" name="city" placeholder="Select city..." required>
+               <datalist id="citylist" class="shadow-sm border-0" >
+                 <option value="">Select City</option>
+                 {% for s in city%}
+                 <option value="{{s.cityname}}">{{s.cityname}}</option>
+                 {%endfor%}
+                </datalist>
+    
            </div>
   
 
@@ -176,7 +200,7 @@
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
-   <script>
+   {% comment %} <script>
     const cityOptions = {
       "Maharashtra": ["Mumbai,Pune"],
       "Gujarat": ["Kutch,Gandhinagar"],
@@ -212,5 +236,22 @@
         });
       }
     }
-  </script>
-  </body>
+  </script> {% endcomment %}
+<script>
+document.getElementById('state').addEventListener('input', function () {
+    const state = this.value;
+
+    fetch(`/get-cities/?state=${encodeURIComponent(state)}`)
+        .then(response => response.json())
+        .then(data => {
+            const citylist = document.getElementById('citylist');
+            citylist.innerHTML = ""; // clear existing cities
+            data.cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                citylist.appendChild(option);
+            });
+        });
+});
+</script>
+</body>

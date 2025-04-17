@@ -4,10 +4,10 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>Company Details</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -18,7 +18,7 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Datatables</h5>
+              {% comment %} <h5 class="card-title">Datatables</h5> {% endcomment %}
               {% if messages %}
                 <div class="container mt-3">
                   {% for message in messages %}
@@ -47,13 +47,13 @@
                 <thead>
                   <tr>
                     <th>Sr_No.</th>
-                    <th>Company Name</th>
-                    <th>Area Name</th>
-                    <th>State</th>
+                    <th>Company_Name</th>
+                    <th>Area_Name</th>
                     <th>City</th>
+                    <th>State</th>
                     <th>GST</th>
                     <th>PAN</th>
-                    <th>Contact No</th>
+                    <th>Contact_No</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -61,10 +61,10 @@
                   {% for c in cshow %}
                   <tr>
                     <td>{{forloop.counter }}</td>
-                    <td>{{c.name }}</td>
-                    <td>{{c.area_name }}</td>
-                    <td>{{c.state }}</td>
-                    <td>{{c.city}}</td>
+                    <td>{{c.name|title }}</td>
+                    <td>{{c.area_name|title }}</td>
+                    <td>{{c.city|capfirst}}</td>
+                    <td>{{c.state|capfirst }}</td>
                     <td>{{c.gst}}</td>
                     <td>{{c.pan}}</td>
                     <td>{{c.contact_no}}</td>

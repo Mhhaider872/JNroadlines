@@ -42,33 +42,38 @@ urlpatterns =[
     path('show_vehicle/',views.show_vehicledetails,name='show-vehicle'),   
     path('delete_vehicle/<int:id>',views.deletevehicle,name='d-vehicle'), 
     path('update_vehicle/<int:id>',views.updatevehicle,name='up-vehicle'),
+    path('update/<int:id>',views.doupdatevehicle,name='update-vehicledetails'),
 
     path('company_details/',views.company_details,name='company-details'),  
     path('show_company_details/',views.show_company,name='s-company'), 
     path('delete/<int:id>',views.delete_company,name='de-company'),
     path('update_company/<int:id>',views.updatecompany,name='update-company'),
+    path('company_details_update/<int:id>',views.doupdatecompany,name='company-update'),
     
     path('add_driver/',views.adddriver,name='adddriver'),
     path('show_driver/',views.showdriver,name='showdrivers'),
     path('driverdelete/<int:id>',views.deletedriver,name='d-driver'),
-    path('update/<int:id>',views.updatedriver,name='update-driver'),
+    path('update_driver/<int:id>',views.driverupdate,name='updates-driver'),
+    path('drivers_update/<int:id>',views.doupdatedriver,name='drivers-updated'),
 
     path('add_salary/', views.addsalary, name='add-salary'),
     path('show_salary/', views.showsalary, name='show-s'),
     
+    path('bank_details/',views.addbank,name='bank-details'),
     path('loan_details/',views.addloan,name='loandetails'),
+    path('show_loan_details/',views.showloan,name='loan-show'),
     
     path('trip_expense/',views.tripexpense,name='trip-expense'),
     path('show_expense/',views.showtripexpense,name='show-expense'),
-    path('add_toll/',views.addtolls,name='add-toll'),
-    path('toll_details/',views.tolldetails,name='toll-details'),
-    path('diesel_details/', views.adddiesel, name='diesel-details'),
-    path('show_diesel_details/', views.dieseldetails, name='show-diesel'),
+    # path('add_toll/',views.addtolls,name='add-toll'),
+    # path('toll_details/',views.tolldetails,name='toll-details'),
+    # path('diesel_details/', views.adddiesel, name='diesel-details'),
+    # path('show_diesel_details/', views.dieseldetails, name='show-diesel'),
     path('get_subcategories/<int:category_id>/', views.get_subcategories, name='get_subcategories'),
     
-    path('add_urea/', views.addurea, name='add-urea'),
-    path('show_urea_details/', views.showurea, name='urea-details'),
-    path('add_repairs/', views.repairs, name='add-repairs'),
+    # path('add_urea/', views.addurea, name='add-urea'),
+    # path('show_urea_details/', views.showurea, name='urea-details'),
+    # path('add_repairs/', views.repairs, name='add-repairs'),
     path('reports/', views.report, name='report-show'),
     path('all_expense/', views.all_trip, name='all-trip'),
     path('show_all_expense/', views.showallexpense, name='all-expense'),
@@ -131,8 +136,11 @@ urlpatterns =[
 
 
 
-    path('emi_calculator/', views.emi_calculator, name='emi_calculator'),
+    path('add_bank/', views.addbank, name='add-bank'),
     path('404_page', views.errorpage, name='404-page'),
+    path('get-cities/', views.get_cities, name='get_cities'),
+    # path('test-email/', views.send_test_email, name='test_email'),
+    
 ]
 
 

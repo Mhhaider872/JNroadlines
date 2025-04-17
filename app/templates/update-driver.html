@@ -36,18 +36,30 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
-        <form  method="POST">
+        <form action="{% url 'drivers-updated' updatedriver.id %}"    method="POST" enctype="multipart/form-data">
         {% csrf_token %}
           <div class="row">
            <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Driver Name</label>
-             <input class="form-control border-2" list="datalistOptions" name="name" value="{{updatedriver.name}}" id="exampleDataList" placeholder="Add Driver..." required>
+             <input class="form-control border-2" list="datalistOptions" name="name" value="{{ updatedriver.name }}" id="exampleDataList" placeholder="Add Driver..." required>
                {% comment %} <datalist id="datalistOptions" class="shadow-sm border-0">
                 {% for d in dname %}
                  <option value="{{d.name}}">{{d.name }}</option>
                  {% endfor %}
                 </datalist> {% endcomment %}
           </div>
+          <div class="col-lg-4 mb-3">
+              <label for="phone" class="form-label fw-bold"
+                >Father's Name</label
+              >
+              <input
+              type="text"
+              name="fname"
+              class="form-control border-2"
+              id="fname"
+              value="{{ updatedriver.fname }}"
+            />
+        </div>
         <div class="col-lg-4 mb-3">
               <label for="lable3" class="form-label fw-bold"
                 >Aadhar Number</label
@@ -58,7 +70,7 @@
               class="form-control border-2"
               id="aadhar"
               min="0" maxlength="10"
-              value="{{updatedriver.adharnumber}}"
+              value="{{ updatedriver.adharnumber }}"
               required
             />
         </div>
@@ -72,7 +84,7 @@
               class="form-control border-2"
               id="label11"
               maxlength="15"
-              value="{{updatedriver.licencenumber}}"
+              value="{{ updatedriver.licencenumber }}"
               required
             />
         </div>
@@ -85,7 +97,7 @@
               name="issuedates"
               class="form-control border-2"
               id="label11"
-              value="{{updatedriver.issuedates|date:'Y-m-d'}}"
+              value="{{ updatedriver.issuedates|date:'Y-m-d' }}"
             />
         </div>
         <div class="col-lg-4 mb-3">
@@ -97,15 +109,15 @@
               name="trdates"
               class="form-control border-2"
               id="label11"
-              value="{{updatedriver.trdates|date:'Y-m-d'}}"
+              value="{{ updatedriver.trdates|date:'Y-m-d' }}"
             />
         </div>
          <div class="col-lg-4 mb-3">
-        <label for="lable3" class="form-label fw-bold"
+             <label  class="form-label fw-bold"
                 >Upload Image</label
               >
-        <input type="file" name="img" class="form-control" id="inputGroupFile01" value="{updatedriver.img}">
-      </div>
+            <input type="file" name="img" class="form-control"  value="{{ updatedriver.img }}">
+           </div>
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-info px-4">Update</button>
           </div>

@@ -36,7 +36,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
-        <form  method="POST">
+        <form  action="{% url 'company-update' upcompany.id %}"  method="POST" >
           {% csrf_token %}
           <div class="row">
            
@@ -140,8 +140,8 @@
           
 
           <div class="btn-div text-center py-2">
-            <button type="submit" class="btn btn-success px-4">Add</button>
-            <a href="{% url 's-company'%}" class="btn btn-info px-4">View</a>
+            <button type="submit" class="btn btn-info px-4">Update</button>
+            {% comment %} <a href="{% url 's-company'%}" class="btn btn-info px-4">View</a> {% endcomment %}
           </div>
         </form>
       </div>

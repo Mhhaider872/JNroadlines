@@ -509,28 +509,49 @@
       ><i class="bi bi-arrow-up-short"></i
     ></a>
 
-    <script>
-        function calculateTotal1() {
-     // Get the values of the input fields by their IDs
-       let allowance1 = parseFloat(document.getElementById('allowance1').value) || 0;
-       let allowance2 = parseFloat(document.getElementById('allowance2').value) || 0;
-       let allowance3 = parseFloat(document.getElementById('allowance3').value) || 0;
-       let allowance4 = parseFloat(document.getElementById('allowance4').value) || 0;
+   <script> 
+      function calculateTotal() {
+    // Get the values from all input fields and calculate their sum.
+    let allowance1 = parseFloat(document.getElementById('allowance1').value) || 0;
+    let allowance2 = parseFloat(document.getElementById('allowance2').value) || 0;
+    let allowance3 = parseFloat(document.getElementById('allowance3').value) || 0;
+    let allowance4 = parseFloat(document.getElementById('allowance4').value) || 0;
+    let loanamount = parseFloat(document.getElementById('loanamount').value) || 0;
+    
+    // Calculate total allowance
+    let totalAllowance = allowance1 + allowance2 + allowance3 + allowance4 + loanamount;
 
-       let total = allowance1 + allowance2 + allowance3 + allowance4;
-       document.getElementById('totalamount1').value = total;
-      }
-    </script>
-     <script>
-       function calculate_Total() {
-    // Get the values of the input fields by their IDs
-       let liters = parseFloat(document.getElementById('liter').value) ;
-       let rates = parseFloat(document.getElementById('rate').value) ;
-       
+    // Get diesel details
+    let liter = parseFloat(document.getElementById('liter').value) || 0; // Diesel Liters
+    let rate = parseFloat(document.getElementById('rate').value) || 0; // Diesel Rate
+    let additionalAmount = parseFloat(document.getElementById('additionalAmount').value) || 0;
+    let totalDiesel = (liter * rate) + additionalAmount;  
 
-       let total2 = liters * rates;
-       document.getElementById('totalamount2').value = total2;
-    }
+    // Get urea details
+    let ureaLiter = parseFloat(document.getElementById('Uliter').value) || 0;
+    let ureaRate = parseFloat(document.getElementById('Urate').value) || 0;
+    let totalUrea = ureaLiter * ureaRate;
+
+    // Get actual shortage amount
+    let totalAmount = parseFloat(document.getElementById('totalamount').value) || 0;
+    
+    // Sum up all the totals
+    let total = totalAllowance + totalDiesel + totalUrea + totalAmount;
+
+    // Display the total value
+    document.getElementById('totalAllowance').value = totalAllowance.toFixed(2);
+    document.getElementById('totalDiesel').value = totalDiesel.toFixed(2);
+    document.getElementById('totalUrea').value = totalUrea.toFixed(2);
+    
+    
+    
+
+    // Display the total expense in the respective field or section
+    document.getElementById('total').value = total.toFixed(2);
+}
+
+
+
 
 </script>
  <script>

@@ -54,8 +54,9 @@
         <form  method="POST">
         {% csrf_token %}
           <div class="row">
-            {% comment %} <div class="col-lg-4 mb-3">
-              <select id="tankerno" name="tankerno">
+              <div class="col-lg-4 mb-3">
+              <label for="tankerno" class="form-label fw-bold">Tanker No</label>
+              <select id="tankerno" name="tankerno" class="form-select">
              <option value="">-- Select Tanker --</option>
               {% for plan in plans %}
               <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
@@ -67,27 +68,27 @@
 
             <div class="col-lg-4 mb-3">
             <label for="fadd" class="form-label fw-bold">From Address</label>
-            <input type="text" id="From_address" name="From_address" readonly>
+            <input type="text" class="form-control" id="From_address" name="From_address" readonly>
               
             </div>
             <div class="col-lg-4 mb-3">
               <label for="toadd" class="form-label fw-bold">To Address</label>
-              <input type="text" id="To_address" name="To_address" readonly>
+              <input type="text" class="form-control" id="To_address" name="To_address" readonly>
             </div>
              <div class="col-lg-4 mb-3">
              <label for="driver" class="form-label fw-bold">Driver Name</label>
-             <input type="text" id="drivername" name="drivername" readonly>
+             <input type="text" class="form-control" id="drivername" name="drivername" readonly>
             </div>
           <div class="col-lg-4 mb-3">
            <label for="tanker" class="form-label fw-bold">Tanker Capacity</label>
-            <input type="text" id="tanker_capacity" name="tanker_capacity" readonly>
+            <input type="text" class="form-control" id="tanker_capacity" name="tank_capacity" readonly>
           </div>
           <div class="col-lg-4 mb-3">
            <label for="tdate" class="form-label fw-bold">Trip Date</label>
 
-            <input type="text" id="dispatch_Date" name="dispatch_Date" readonly>
+            <input type="text" class="form-control" id="dispatch_Date" name="dispatch_Date" readonly>
            
-          </div> {% endcomment %}
+          </div>
           <div class="col-lg-4 mb-3">
             <label for="label4" class="form-label fw-bold"
               >Arrival at Loading Point (Plant) Date & Time</label
@@ -428,7 +429,14 @@ document.getElementById("tankerno").addEventListener("change", function() {
                 document.getElementById("From_address").value = data.From_address || '';
                 document.getElementById("To_address").value = data.To_address || '';
                 document.getElementById("tanker_capacity").value = data.tanker_capacity || '';
-                document.getElementById("dispatch_Date").value = data.dispatch_Date || '';
+                //document.getElementById("dispatch_Date").value = data.dispatch_Date || '';
+                // Convert date to DD/MM/YYYY
+                if (data.dispatch_Date) {
+                const dateOnly = data.dispatch_Date.split('T')[0]; // "2025-04-15"
+                const [year, month, day] = dateOnly.split('-');
+                const formattedDate = `${day}/${month}/${year}`; // "15/04/2025"
+                document.getElementById("dispatch_Date").value = formattedDate;
+               } 
             });
     } else {
         document.getElementById("drivername").value = '';

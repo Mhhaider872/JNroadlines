@@ -7,6 +7,7 @@
 
 
     <main id="main" class="main">
+
       <div class="pagetitle">
         <h1>Add Loan</h1>
         <nav>
@@ -21,144 +22,176 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Form</h5>
-
-<div class="col-lg-12 form-div">
-        <form  method="POST">
-        {% csrf_token %}
-          <div class="row">
-          <div class="row">
-          <div class="col-lg-4 mb-3">
-            <!-- Button trigger modal -->
-         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-         Add Bank 
-        </button>
-        </div>
-         </div>
-    <!------- Modal------------ ---->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-       <div class="modal-content">
-       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Bank Name</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="pb-4 p-2">
+                
+                <a  href="{% url 'add-bank' %}" class="btn btn-primary px-4">Add Banks</a>
+            </div>
+             {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <div class="col-lg-12 mb-3">
+    {% endfor %}
+  </div>
+{% endif %}
+              <div class="card-body">
+        
+                
+      <div class="col-lg-12 form-div">
+       <form  method="POST">
+        {% csrf_token %}          
+         <div class="container">
+         <div class="row">
+          
+          <div class="row">
+          <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold">Tanker No</label>
+             <input class="form-control border-2" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions" class="shadow-sm border-0" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+          </div>
+            <div class="col-lg-3 mb-3">
+             <label for="number" class="form-label fw-bold">Loan Contract No</label>
+             <input type="text" class="form-control border-2" name="loan_contract"  id="number">
+           </div>
+
+          </div>
+
+          <div class="row">
+          <div class="col-lg-3 mb-3">
               <label for="lable3" class="form-label fw-bold"
-                >Bank Name</label
+                >Finance By</label
               >
               <input
               type="text"
-              name="name"
-              class="form-control border-2"
-              id="label3"
+              name="finance_by"
+              class="form-control"
+              id="label11"
              
             />
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-danger px-4">Save</button>
-      </div>
-      </div>
-      </div>
-    </div>
- <div class="container">
-    <div class="row">
-          <div class="col-lg-4 mb-3">
-            <label for="exampleDataList" class="form-label fw-bold">Vehicle No</label>
-             <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search to vehicle no...">
-               <datalist id="datalistOptions" class="shadow-sm border-0">
-                  <option value="MH-04-AF-6641">MH-04-AF-6641</option>
-                  <option value="MH-03-RF-6642">MH-03-RF-6642</option>
-                  <option value="MH-05-FF-6645">MH-05-FF-6645</option>
-                   <option value="MH-06-KF-6640">MH-06-KF-6640</option>
-                </datalist>
-          </div>
-           <div class="col-lg-4 mb-3">
+           
+        <div class="col-lg-3 mb-3">
+              <label for="lable3" class="form-label fw-bold"
+                >Principle Amount</label
+              >
+              <input
+              type="text"
+              name="pamount"
+              class="form-control"
+              id="principal" oninput="calculateFinance()" 
+              min="0"
+             
+            />
+        </div>
+        <div class="col-lg-3 mb-3">
+              <label for="lable3" class="form-label fw-bold"
+                >Interest Amount</label
+              >
+              <input
+              type="text"
+              name="iamount"
+              class="form-control"
+              min="0"
+              id="interest" oninput="calculateFinance()"
+             
+            />
+        </div>
+        <div class="col-lg-3 mb-3">
               <label for="lable3" class="form-label fw-bold"
                 >Finance Amount</label
               >
               <input
               type="number"
-              name="vhdate"
+              name="famount"
               class="form-control"
-              id="label11"
+              
+              id="finance" readonly 
              
             />
         </div>
-        <div class="col-lg-4 mb-3">
+        </div>
+        <div class="col-lg-3 mb-3">
               <label for="lable3" class="form-label fw-bold"
                 >EMI Amount</label
               >
               <input
               type="number"
-              name="vhdate"
+              name="amount"
               class="form-control"
+              min="0"
               id="label11"
              
             />
         </div>
-        <div class="col-lg-4 mb-3">
-              <label for="lable3" class="form-label fw-bold"
+        <div class="col-lg-3 mb-3">
+              <label for="dueDate" class="form-label fw-bold"
                 >Due Date</label
               >
               <input
               type="date"
-              name="vhdates"
+              name="ddate"
               class="form-control "
-              id="label11"
+              id="dueDate"
+              onchange="calculateOverdue()"
             />
         </div>
-        <div class="col-lg-4 mb-3">
-              <label for="lable3" class="form-label fw-bold"
-                >Over Due</label
+        <div class="col-lg-3 mb-3">
+              <label for="paidDate" class="form-label fw-bold"
+                >Paid Date</label
               >
               <input
-              type="day"
-              name="vdate"
+              type="date"
+              name="pdate"
               class="form-control "
-              id="label11"
+              id="paidDate"
+              onchange="calculateOverdue()"
             />
         </div>
-        <div class="col-lg-4 mb-3">
-              <label for="lable3" class="form-label fw-bold"
+        <div class="col-lg-3 mb-3">
+              <label for="overdueResult" class="form-label fw-bold"
                 >Over Due Days</label
               >
               <input
-              type="day"
-              name="dates"
+              type="text"
+              name="days"
               class="form-control "
-              id="label11"
+              id="overdueResult"
+              onchange="calculateOverdue()"
+              readonly
             />
         </div>
-        <div class="col-lg-4 mb-3">
+        <div class="col-lg-3 mb-3">
               <label for="exampleDataList0" class="form-label fw-bold"
                 >Bank Name</label
               >
-               <input class="form-control border-2" list="datalistOptions0" id="exampleDataList0" placeholder="Search Bank...">
+               <input class="form-control border-2" list="datalistOptions0" name="bank" id="exampleDataList0" placeholder="Search Bank...">
                <datalist id="datalistOptions0" >
-                {% for b in bank %}
+                {% for b in bname %}
                  <option value="{{b.name}}"></option>
                  {% endfor %}
                 </datalist>
         </div>
-         <div class="col-lg-4 mb-3">
+         <div class="col-lg-3 mb-3">
               <label for="lable3" class="form-label fw-bold"
                 >Rate ( % )</label
               >
               <input
-              type="day"
-              name="vdate"
+              type="number"
+              name="ramount"
               class="form-control "
               id="label11"
+              min="0"
             />
         </div>
           <div class="btn-div text-center py-2">
-            <button type="submit" class="btn btn-danger px-4">Save</button>
-            <a href="#" class="btn btn-success px-4">View</a>
+            <button type="submit" class="btn btn-success px-4">Save</button>
+            <a href="{% url 'loan-show'%}" class="btn btn-info px-4">View</a>
           </div>
         </form>
       </div>
@@ -183,5 +216,37 @@
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
-  </body>
+<script>
+  function calculateOverdue() {
+    const dueDate = new Date(document.getElementById("dueDate").value);
+    const paidDate = new Date(document.getElementById("paidDate").value);
+    const result = document.getElementById("overdueResult");
+
+    if (isNaN(dueDate) || isNaN(paidDate)) {
+      result.value = "";
+      return;
+    }
+
+    const diffTime = paidDate - dueDate;
+    const diffDays = Math.ceil(Math.abs(diffTime) / (1000 * 60 * 60 * 24));
+
+    if (diffTime > 0) {
+      result.value = `Overdue by ${diffDays} days`;
+    } else if (diffTime < 0) {
+      result.value = `Paid early by ${diffDays} days`;
+    } else {
+      result.value = `Paid on time`;
+    }
+  }
+  function calculateFinance() {
+    const principal = parseFloat(document.getElementById("principal").value) || 0;
+    const interest = parseFloat(document.getElementById("interest").value) || 0;
+
+    const financeAmount = principal + interest;
+
+    document.getElementById("finance").value = financeAmount.toFixed(2);
+  }
+</script>
+
+</body>
 

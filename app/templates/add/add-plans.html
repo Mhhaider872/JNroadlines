@@ -36,7 +36,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
-        <form  method="POST">
+        <form  method="POST" autocomplete="off">
           {% csrf_token %}
           <div class="row">
            <div class="col-lg-4 mb-3">
@@ -53,7 +53,7 @@
              <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers..." required>
                <datalist id="driverslist" class="shadow-sm border-0" >
                   {% for d in dname %}
-                 <option value="{{d.name}}">{{d.name }}</option>
+                 <option value="{{d.name}}">{{d.fname }}</option>
                 {% endfor %}
                 </datalist>
              </div>
@@ -62,7 +62,7 @@
              <input class="form-control border-2" name="From_address" list="datalistOptions1" id="exampleDataList1" placeholder="Search to vehicle no...">
                <datalist id="datalistOptions1" class="shadow-sm border-0" >
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div>
@@ -74,7 +74,7 @@
              <input class="form-control border-2" name="To_address" list="datalistOptions2" id="exampleDataList2" placeholder="Search to vehicle no...">
                <datalist id="datalistOptions2" class="shadow-sm border-0" >
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div>

@@ -5,10 +5,10 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>Tanker Details</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -20,7 +20,17 @@
           <div class="card">
             <div class="card-body">
               <div class="table-responsive">
-                <h5 class="card-title">Datatables</h5>
+                {% comment %} <h5 class="card-title">Datatables</h5> {% endcomment %}
+                 {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
                 <!-- Table with stripped rows -->
                 <table class="table datatable">
                   <thead>

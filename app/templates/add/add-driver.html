@@ -36,7 +36,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
-        <form  method="POST">
+        <form  method="POST" enctype="multipart/form-data" autocomplete="off">
         {% csrf_token %}
           <div class="row">
            <div class="col-lg-4 mb-3">
@@ -48,6 +48,19 @@
                  {% endfor %}
                 </datalist> {% endcomment %}
           </div>
+          <div class="col-lg-4 mb-3">
+              <label for="phone" class="form-label fw-bold"
+                >Father's Name</label
+              >
+              <input
+              type="text"
+              name="fname"
+              class="form-control border-2"
+              id="fname"
+              min="0" 
+              
+            />
+        </div>
         <div class="col-lg-4 mb-3">
               <label for="lable3" class="form-label fw-bold"
                 >Aadhar Number</label
@@ -96,11 +109,12 @@
               id="label11"
             />
         </div>
+        
          <div class="col-lg-4 mb-3">
-        <label for="lable3" class="form-label fw-bold"
+        <label  class="form-label fw-bold"
                 >Upload Image</label
               >
-        <input type="file" name="img" class="form-control" id="inputGroupFile01">
+        <input type="file" name="img" class="form-control" accept=".pdf">
       </div>
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-success px-4">Save</button>
@@ -150,7 +164,9 @@
       quantityInput.value = quantityInput.value.slice(0, 12);
     }
   });
+
 </script>
 
-  </body>
+
+</body>
 
