@@ -1,0 +1,12 @@
+<h2>All Orders (Admin)</h2>
+{% for order in orders %}
+  <p>
+    <strong>{{ order.company.name }}</strong>: {{ order.order_details }}<br>
+    {% if order.response %}
+      Reply: {{ order.response }}
+    {% else %}
+      <a href="{% url 'respond_to_order' order.id %}">Reply</a>
+    {% endif %}
+  </p>
+  <hr>
+{% endfor %}

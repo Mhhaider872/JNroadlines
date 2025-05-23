@@ -1,0 +1,593 @@
+
+<!-- create_invoice.html -->
+
+
+
+
+
+
+
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle py-3">
+        <h1>Ashland</h1>
+        {% comment %} <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav> {% endcomment %}
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title text-center">Ashland Invoice</h5>
+                 {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="row">
+     {% comment %} <div class="col-lg-3 mb-3">
+    <label for="invoice_number" class="form-label fw-bold">Bill No:</label>
+    <input type="text" class="form-control border-2" name="invoice_number"  disabled>
+    </div> {% endcomment %}
+    
+    <div class="col-lg-3 mb-3">
+     <label for="exampleDataList1" class="form-label fw-bold">Company Name:</label>
+     <input class="form-control border-2" name="company" list="datalistOptions1" id="exampleDataList1" placeholder="Search Company Name...">
+               <datalist id="datalistOptions1" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.area_name}}"></option>
+                 {% endfor %}
+                </datalist>
+
+
+
+    {% comment %} <input type="text" class="form-control border-2" name="company"> {% endcomment %}
+    </div>
+     <div class="col-lg-3 mb-3">
+    <label for="date" class="form-label fw-bold">Date:</label>
+    <input type="date" class="form-control border-2" name="date">
+    </div>
+    <div class="col-lg-3 mb-3">
+    <label for="gst" class="form-label fw-bold">GST:</label>
+    <input type="text" name="gst" class="form-control border-2">
+    </div>
+    <div class="col-lg-3 mb-3">
+    <label for="pan" class="form-label fw-bold">PAN:</label>
+    <input type="text" name="pan" class="form-control border-2">
+    </div>
+<hr>
+<h5 class="card-title">Items</h5>
+    <div id="items">
+        <div class="item">
+          <div class="row">
+          <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Sr No:</label>
+            <input type="text" class="form-control border-2" name="item_description">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">Tanker No :</label>
+            <input type="text" class="form-control border-2" name="tanker" list="datalistOptions2" id="exampleDataList2" placeholder="Search Tanker No...">
+            <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Dispatch Date :</label>
+            <input type="date" class="form-control border-2" name="date_dis">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="exampleDataList3" class="form-label fw-bold">From Address :</label>
+            <input type="text" class="form-control border-2" name="From_add" list="datalistOptions3" id="exampleDataList3" placeholder="Search From Address...">
+            <datalist id="datalistOptions3" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="exampleDataList4" class="form-label fw-bold">To Address :</label>
+            <input type="text" class="form-control border-2" name="To_add"  list="datalistOptions4" id="exampleDataList4" placeholder="Search To Address...">
+            <datalist id="datalistOptions4" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">LR No :</label>
+            <input type="text" class="form-control border-2" name="lr_no">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">HSN/SAC :</label>
+            <input type="number" class="form-control border-2" name="sac" value="996791">
+            </div>
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Chargable QTY K.G :</label>
+            <input type="text" class="form-control border-2" name="item_quantity" >
+            </div> {% endcomment %}
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Loaded QTY K.G:</label>
+            <input type="number" class="form-control border-2" name="item_quantity"  id="disqty" oninput="calculateTotalShort()" >
+            </div>
+             {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Unloaded QTY K.G :</label>
+            <input type="number" class="form-control border-2" name="unload" id="unlodqty" oninput="calculateTotalShort()">
+            </div> {% endcomment %}
+             {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">
+Shortages / Excess Qty K.G :</label>
+            <input type="number" class="form-control border-2" id="totalshort" name="short">
+            </div> {% endcomment %}
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Return QTY K.G :</label>
+            <input type="number" class="form-control border-2" name="retn">
+            </div> {% endcomment %}
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_quantity" class="form-label fw-bold">Quantity:</label>
+            <input type="number" name="item_quantity" value="1" class="form-control border-2" required>
+            </div> {% endcomment %}
+            <div class="col-lg-3 mb-3">
+            <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
+            <input type="number" step="any" name="item_unit_price" class="form-control border-2" required>
+            </div>
+            <div>
+              <button type="button" onclick="addItem()" class="btn btn-danger btn-sm px-4 ">Add + </button>
+            </div>
+           
+        
+         </div>
+        </div>
+    </div>
+     <hr>
+            <h5 class="card-title">Detention & Other Charges</h5>
+            <div class="col-lg-3 mb-3">
+            <label for="tank" class="form-label fw-bold"
+              > Tanker Cleaning Charges :</label
+            ><select id="tank" class="form-select" name="tcharges">
+    <option value="">Select</option>
+    {% comment %} <option value="Detention Charges">Detention Charges</option>
+    <option value="Union Charges">Union Charges</option>
+    <option value="Double Driver Charges">Double Driver Charges</option> {% endcomment %}
+    <option value="Tanker Cleaning Services">Tanker Cleaning Services</option>
+    {% comment %} <option value="Storage & Reshuffling Oil">Storage & Reshuffling Oil</option>
+    <option value="Local Trip- 1 Lakhs Charges As a Rent">Local Trip- 1 Lakhs Charges As a Rent</option>
+     <option value="Extra Diesel, Toll, Urea-( No GST)">Extra Diesel, Toll, Urea-( No GST)</option>
+    <option value="Local Trip- Toll, Diesel-( No GST)">Local Trip- Toll, Diesel-( No GST)</option> {% endcomment %}
+    </select>
+           
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="ac" class="form-label fw-bold"
+              >HSN/SAC:</label
+            >
+            <select id="ac" class="form-select" name="thsac">
+    <option value="">Select</option>
+    {% comment %} <option value="996749">996749</option> {% endcomment %}
+    <option value="998534">998534</option>
+    {% comment %} <option value="996601">996601</option>
+    <option value="No GST">No GST</option> {% endcomment %}
+   
+    </select>
+        </div>
+        {% comment %} <div class="col-lg-3 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >From </label
+            >
+            <input
+              type="date"
+              name="Fo_date"
+              class="form-control"
+              id="Fo_date"
+            />
+        </div>
+         <div class="col-lg-3 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >To</label
+            >
+            <input
+              type="date"
+              name="To_date"
+              class="form-control"
+              id="To_date"
+            />
+        </div> {% endcomment %}
+         <div class="col-lg-3 mb-3">
+            <label for="label18" class="form-label fw-bold">Rate </label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_rate"
+              min="0"
+              id="perrate"
+              oninput="Total()"
+            />
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="label19" class="form-label fw-bold"> Per Day</label>
+            <input
+              type="number"
+              class="form-control"
+              name="tpar_day"
+              min="0"
+              id="day"
+              oninput="Total()"
+            />
+        </div>
+     
+         <div class="col-lg-3 mb-3">
+            <label for="label20" class="form-label fw-bold"
+              >Total</label
+            >
+            <input
+              type="number"
+              name="total_t"
+              class="form-control"
+              id="totals"
+              oninput="Total()"
+               min="0"
+               value="0"
+               readonly
+            />
+         </div>
+<hr>
+            <h5 class="card-title">Detention Charges</h5>
+            <div class="col-lg-3 mb-3">
+            <label for="Fo" class="form-label fw-bold"
+              > Detention Charges :</label
+            ><select id="Fo" class="form-select" name="charges">
+    <option value="">Select</option>
+    <option value="Detention Charges">Detention Charges</option>
+    {% comment %} 
+    <option value="Union Charges">Union Charges</option>
+    <option value="Double Driver Charges">Double Driver Charges</option> {% endcomment %}
+    {% comment %} <option value="Tanker Cleaning Services">Tanker Cleaning Services</option> {% endcomment %}
+    {% comment %} <option value="Storage & Reshuffling Oil">Storage & Reshuffling Oil</option>
+    <option value="Local Trip- 1 Lakhs Charges As a Rent">Local Trip- 1 Lakhs Charges As a Rent</option>
+     <option value="Extra Diesel, Toll, Urea-( No GST)">Extra Diesel, Toll, Urea-( No GST)</option>
+    <option value="Local Trip- Toll, Diesel-( No GST)">Local Trip- Toll, Diesel-( No GST)</option> {% endcomment %}
+    </select>
+           
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="sac" class="form-label fw-bold"
+              >HSN/SAC:</label
+            >
+            <select id="sac" class="form-select" name="hsac">
+    <option value="">Select</option>
+     <option value="996749">996749</option>
+    {% comment %} <option value="996749">996749</option> {% endcomment %}
+    {% comment %} <option value="998534">998534</option> {% endcomment %}
+    {% comment %} <option value="996601">996601</option>
+    <option value="No GST">No GST</option> {% endcomment %}
+   
+    </select>
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >From </label
+            >
+            <input
+              type="date"
+              name="Fo_date"
+              class="form-control"
+              id="Fo_date"
+            />
+        </div>
+         <div class="col-lg-3 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >To</label
+            >
+            <input
+              type="date"
+              name="To_date"
+              class="form-control"
+              id="To_date"
+            />
+        </div>
+         <div class="col-lg-3 mb-3">
+            <label for="label18" class="form-label fw-bold">Rate </label>
+            <input
+              type="number"
+              class="form-control"
+              name="d_rate"
+              min="0"
+              id="perrat"
+              oninput="Total2()"
+            />
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="label19" class="form-label fw-bold"> Per Day</label>
+            <input
+              type="number"
+              class="form-control"
+              name="par_day"
+              min="0"
+              id="days"
+              oninput="Total2()"
+            />
+        </div>
+     
+         <div class="col-lg-3 mb-3">
+            <label for="label20" class="form-label fw-bold"
+              >Total</label
+            >
+            <input
+              type="number"
+              name="total_d"
+              class="form-control"
+              id="total"
+              oninput="Total2()"
+               min="0"
+               value="0"
+               readonly
+            />
+         </div>
+  
+
+
+
+    </div>
+    
+    {% comment %} <div class="col-lg-3">
+
+    <select id="item-select" class="form-select" onchange="addItemRowFromDropdown()">
+    <option value="">Charges</option>
+    <option value="item1">Detention Charges</option>
+    <option value="item3">Union Charges</option>
+    <option value="item2">Double Driver Charges</option>
+    <option value="item2">Tanker Cleaning Charges</option>
+    
+    </select>
+    </div> {% endcomment %}
+<div class="btn-div text-center py-4">
+    
+    <button type="submit" class="btn btn-success px-4">Create Invoice</button>
+    <a href="{% url 'ainvoice_list' %}" class="btn btn-primary px-4">View Invoice</a>
+    </div>
+    
+</form>
+
+
+   
+{% comment %} 
+          <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-danger px-4">Add</button>
+            <a href="{% url 'showplan' %}" class="btn btn-success px-4">View</a>
+          </div> {% endcomment %}
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+    <script>
+    function addItem() {
+        var itemDiv = document.createElement('div');
+        itemDiv.classList.add('item');
+        itemDiv.innerHTML = `
+         <div class="row">
+         <hr>
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Item Description:</label>
+            <input type="text" name="item_description" class="form-control border-2" required>
+            </div>
+             <div class="col-lg-3 mb-3" class="form-label fw-bold">
+            <label for="item_quantity">Quantity:</label>
+            <input type="number" name="item_quantity" value="1" class="form-control border-2" required>
+            </div>
+             <div class="col-lg-3 mb-3" class="form-label fw-bold">
+            <label for="item_unit_price">Unit Price:</label>
+            <input type="number" step="0.01" name="item_unit_price" class="form-control border-2" required>
+            </div> {% endcomment %}
+
+
+
+
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Sr No:</label>
+            <input type="text" class="form-control border-2" name="item_description" required>
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Tanker No :</label>
+            <input type="text" class="form-control border-2" name="tanker">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Dispatch Date :</label>
+            <input type="date" class="form-control border-2" name="date_dis">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">From Address :</label>
+            <input type="text" class="form-control border-2" name="From_add">
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">To Address :</label>
+            <input type="text" class="form-control border-2" name="To_add">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">LR No :</label>
+            <input type="text" class="form-control border-2" name="lr_no">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">HSN/SAC :</label>
+            <input type="number" class="form-control border-2" name="sac" value="996791">
+            </div>
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Tanker Capacity K.G :</label>
+            <input type="text" class="form-control border-2" name="item_quantity" >
+            </div> {% endcomment %}
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Loaded QTY K.G:</label>
+            <input type="number" class="form-control border-2 disqty_row" name="item_quantity">
+            </div>
+             {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Unloaded QTY K.G :</label>
+            <input type="number" class="form-control border-2 unlodqty_row" name="unload"  oninput="calculateShort()">
+            </div> {% endcomment %}
+             {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">
+Shortages / Excess Qty K.G :</label>
+            <input type="number" class="form-control border-2 totalshort_row"  name="short">
+            </div> {% endcomment %}
+             <div class="col-lg-3 mb-3">
+            <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
+            <input type="number" step="0.01" name="item_unit_price" class="form-control border-2" required>
+            </div>
+              
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Return QTY K.G :</label>
+            <input type="number" class="form-control border-2" name="retn">
+            </div> {% endcomment %}
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_quantity" class="form-label fw-bold">Quantity:</label>
+            <input type="number" name="item_quantity" value="1" class="form-control border-2" required>
+            </div> {% endcomment %}
+            
+          </div>
+          
+        `;
+        document.getElementById('items').appendChild(itemDiv);
+    }
+</script>
+{% comment %} <script>
+    function calculateTotalShort() {
+        // Get the values of disqty, unlodqty, and shortallow
+        var disqty = document.getElementById("disqty").value;
+        var unlodqty = document.getElementById("unlodqty").value;
+        var totalshort = document.getElementById("totalshort").value;
+
+        // Ensure values are numbers and disqty and unlodqty are available
+        if (disqty && unlodqty) {
+            // Calculate totalshort and update it
+            var totalshort = parseInt(unlodqty) - parseInt(disqty) ;
+            document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
+        }
+
+        
+    }
+</script> {% endcomment %}
+{% comment %} <script>
+  function calculateShort() {
+    // Get all loaded and unloaded quantity inputs
+    var disqtyElements = document.querySelectorAll('.disqty_row');
+    var unlodqtyElements = document.querySelectorAll('.unlodqty_row');
+    var totalshortElements = document.querySelectorAll('.totalshort_row');
+
+    // Loop through all the rows
+    for (var i = 0; i < disqtyElements.length; i++) {
+        var disqty_row = parseFloat(disqtyElements[i].value) || 0;
+        var unlodqty_row = parseFloat(unlodqtyElements[i].value) || 0;
+
+        // Calculate the shortage
+        var totalshort_row = disqty_row - unlodqty_row; // Correcting the shortage calculation
+
+        // Update the corresponding totalshort input
+        totalshortElements[i].value = totalshort_row >= 0 ? totalshort_row : 0; // Set to 0 if negative
+    }
+}
+</script> {% endcomment %}
+  <script>
+    function Total2() {
+        // Get the values of the input fields by their IDs
+        let perrat = parseFloat(document.getElementById('perrat').value);
+        let days = parseFloat(document.getElementById('days').value);
+
+        // If either kg or rate is NaN (not a number), don't calculate the total
+        if (isNaN(perrat) || isNaN( days)) {
+            document.getElementById('total').value = ''; // Clear the total field if invalid input
+        } else {
+            let total = perrat * days;
+            document.getElementById('total').value = total; // Display the total in the input field
+        }
+    }
+</script>
+  <script>
+    function Total() {
+        // Get the values of the input fields by their IDs
+        let perrate = parseFloat(document.getElementById('perrate').value);
+        let day = parseFloat(document.getElementById('day').value);
+
+        // If either kg or rate is NaN (not a number), don't calculate the total
+        if (isNaN(perrate) || isNaN( day)) {
+            document.getElementById('totals').value = ''; // Clear the total field if invalid input
+        } else {
+            let total = perrate * day;
+            document.getElementById('totals').value = total; // Display the total in the input field
+        }
+    }
+</script>
+<script>
+  function addItemRowFromDropdown() {
+    var selectedValue = document.getElementById("item-select").value;
+
+    if (selectedValue !== "") {
+      var itemDiv = document.createElement('div');
+      itemDiv.classList.add('item');
+
+      // Add charge-specific input
+      itemDiv.innerHTML = `
+        <div class="row">
+          <hr>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Charge Description:</label>
+            <input type="text" class="form-control border-2" name="charge_description" value="${selectedValue.replace(/_/g, ' ')}" readonly>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Amount (₹):</label>
+            <input type="number" class="form-control border-2" name="charge_amount" step="0.01" required>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('items').appendChild(itemDiv);
+
+      // Reset dropdown to default
+      document.getElementById("item-select").value = "";
+    }
+  }
+</script>
+
+
+</body>

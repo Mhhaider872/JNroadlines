@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.db.models import Sum
 from django.shortcuts import render,redirect,HttpResponse,get_object_or_404, redirect
 from django.http import JsonResponse
-
 from .models import *
 from django.utils import timezone
 from django.contrib.auth import authenticate, login,logout
@@ -10,11 +9,42 @@ from django.utils.timezone import now
 import random
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
+from django.utils.dateparse import parse_datetime
+from num2words import num2words
 
-from django.core.mail import send_mail
 
 
 
+def userdash(request):
+     plan=plandetails.objects.count()
+     bill_count = Gemini.objects.count()
+     vehicle_c=Add_Vehicle.objects.count()
+     dname=NewDriver_Details.objects.count()
+     trip=AddTrips.objects.count()
+     tripgemini=TripGemini.objects.count()
+     tripadani=TripAdani.objects.count()
+     triplocal=AakLocal.objects.count()
+     trip_exp=Trip.objects.count()
+     salary=Driver_salary.objects.count()
+     
+
+     context = {
+        'plan':plan,
+        'bill_count': bill_count,
+        'vehicle_c': vehicle_c,
+        'dname':dname,
+        'trip':trip,
+        'trip_exp':trip_exp,
+        'salary':salary,
+        'tripgemini':tripgemini,
+        'tripadani':tripadani,
+        'triplocal':triplocal
+    }
+     return render(request,'userdash.html',context)
+
+def userloan(request):
+    
+    return render(request,'userloan.html')
 
 
 # Create your views here.
@@ -135,6 +165,8 @@ def deleteplan(request,id):
     return redirect('showplan')
 
 
+
+
 def addtrip(request):
     if request.method == "POST":
         # Get tankerno_id from the form
@@ -152,47 +184,49 @@ def addtrip(request):
             return redirect('addtrip')
 
         # Collect other form data
-        From_address = request.POST['From_address']
-        To_address = request.POST['To_address']
-        drivername = request.POST['drivername']
-        tank_capacity = request.POST['tank_capacity']
-        arrival_time = request.POST['arrival_time']
-        dispatch_time = request.POST['dispatch_time']
-        reach_time = request.POST['reach_time']
-        unload_time = request.POST['unload_time']
-        lr_num = request.POST['lr_num']
-        lr_date = request.POST['lr_date']
-        freight_bill = request.POST['freight_bill']
-        freight_date = request.POST['freight_date']
-        loaded_qty = request.POST['loaded_qty']
-        unload_qty = request.POST['unload_qty']
-        short_qty = request.POST['short_qty']
-        short_allow = request.POST['short_allow']
-        return_qty = request.POST['return_qty']
-        remark = request.POST['remark']
+        From_address = request.POST.get('From_address')
+        To_address = request.POST.get('To_address')
+        drivername = request.POST.get('drivername')
+        tank_capacity = request.POST.get('tank_capacity')
+        arrival_time = parse_datetime(request.POST.get('arrival_time')) if request.POST.get('arrival_time') else None
+        dispatch_time = parse_datetime(request.POST.get('dispatch_time')) if request.POST.get('dispatch_time') else None
+        reach_time = parse_datetime(request.POST.get('reach_time')) if request.POST.get('reach_time') else None
+        unload_time = parse_datetime(request.POST.get('unload_time')) if request.POST.get('unload_time') else None
+        lr_num = request.POST.get('lr_num')
+        lr_date = request.POST.get('lr_date')
+        freight_bill = request.POST.get('freight_bill')
+        freight_date = request.POST.get('freight_date')
+        loaded_qty = request.POST.get('loaded_qty')
+        unload_qty = request.POST.get('unload_qty')
+        percent = request.POST.get('percent')
+        short_qty = request.POST.get('short_qty')
+        short_allow = request.POST.get('short_allow')
+        return_qty = request.POST.get('return_qty')
+        remark = request.POST.get('remark')
 
-        # Check if trip already exists with the same tankerno and dispatch_time
-        if AddTrips.objects.filter(tankerno=tankerno_id, dispatch_time=dispatch_time).exists():
+        # Validate the necessary fields
+        if AddTrips.objects.filter(plan=selected_plan, dispatch_time=dispatch_time).exists():
             messages.error(request, 'Trip already exists!')
             return redirect('addtrip')
-        
+
         # Create a new trip entry
         trip = AddTrips(
-            tankerno=tankerno_id,
+            plan=selected_plan,  # Link the selected_plan to the ForeignKey field
             From_address=From_address,
             To_address=To_address,
             drivername=drivername if drivername else None,
             tank_capacity=tank_capacity if tank_capacity else None,
-            arrival_time=arrival_time if arrival_time else None,
-            dispatch_time=dispatch_time if dispatch_time else None,
-            reach_time=reach_time if reach_time else None,
-            unload_time=unload_time if unload_time else None,
+            arrival_time=arrival_time,
+            dispatch_time=dispatch_time,
+            reach_time=reach_time,
+            unload_time=unload_time,
             lr_num=lr_num if lr_num else None,
             lr_date=lr_date if lr_date else None,
             freight_bill=freight_bill if freight_bill else None,
             freight_date=freight_date if freight_date else None,
             loaded_qty=loaded_qty if loaded_qty else None,
             unload_qty=unload_qty if unload_qty else None,
+            percent=percent if percent else None,
             short_qty=short_qty if short_qty else None,
             short_allow=short_allow if short_allow else None,
             return_qty=return_qty if return_qty else None,
@@ -207,6 +241,8 @@ def addtrip(request):
     # Return to the template with the plans
     context = {'plans': plans}
     return render(request, 'add/add_trip_all.html', context)
+
+
 
 def get_plan_details(request):
     plan_id = request.GET.get('plan_id')
@@ -230,7 +266,8 @@ def showtrip(request):
 
 def updatetrip(request,id):
     uptrip=AddTrips.objects.get(pk=id)
-    context={'uptrip':uptrip}
+    plans = plandetails.objects.all()
+    context={'uptrip':uptrip,'plans':plans}
     return render (request,'update-add-trip.html',context)
 
 
@@ -240,6 +277,7 @@ def do_updatetrip(request,id):
     From_address = request.POST.get('From_address')
     To_address = request.POST.get('To_address')
     tank_capacity = request.POST.get('tank_capacity')
+    arrival_time = request.POST.get('arrival_time')
     dispatch_time = request.POST.get('dispatch_time')
     reach_time = request.POST.get('reach_time')
     unload_time = request.POST.get('unload_time')
@@ -250,7 +288,9 @@ def do_updatetrip(request,id):
     short_allow = request.POST.get('short_allow')
     return_qty = request.POST.get('return_qty')
     lr_num = request.POST.get('lr_num')
+    lr_date = request.POST.get('lr_date')
     freight_bill = request.POST.get('freight_bill')
+    freight_date = request.POST.get('freight_date')
      
 
     # Fetch the existing plan details to update
@@ -262,18 +302,21 @@ def do_updatetrip(request,id):
     update_t.From_address = From_address
     update_t.To_address = To_address
     update_t.tank_capacity = tank_capacity
-    update_t.dispatch_time = dispatch_time
-    update_t.reach_time = reach_time
-    update_t.unload_time = unload_time
-    update_t.loaded_qty = loaded_qty
-    update_t.percent = percent
-    update_t.unload_qty = unload_qty
-    update_t.short_qty = short_qty
-    update_t.short_allow = short_allow
-    update_t.return_qty = return_qty
-    update_t.lr_num = lr_num
-    update_t.return_qty = return_qty
-    update_t.freight_bill = freight_bill
+    update_t.arrival_time=arrival_time if freight_bill else None
+    update_t.dispatch_time = dispatch_time if freight_bill else None
+    update_t.reach_time = reach_time if freight_bill else None
+    update_t.unload_time = unload_time if freight_bill else None
+    update_t.loaded_qty = loaded_qty if freight_bill else 0
+    update_t.percent = percent if freight_bill else 0
+    update_t.unload_qty = unload_qty if freight_bill else 0
+    update_t.short_qty = short_qty if freight_bill else 0
+    update_t.short_allow = short_allow if freight_bill else 0
+    update_t.return_qty = return_qty if freight_bill else 0
+    update_t.lr_num = lr_num if freight_bill else 0
+    update_t.return_qty = return_qty if freight_bill else 0
+    update_t.freight_bill = freight_bill if freight_bill else 0
+    update_t.freight_date = freight_date if freight_date else 0
+    update_t.lr_date = lr_date if lr_date else 0
 
     # Save the changes
     update_t.save()
@@ -286,7 +329,10 @@ def do_updatetrip(request,id):
 
 
 
-
+def deltrip(request,id):
+    deltrips=AddTrips.objects.get(pk=id)
+    deltrips.delete()
+    return redirect('showtrip')
 
 
 
@@ -294,42 +340,57 @@ def do_updatetrip(request,id):
 
 
 def Trip_Adani(request):
-    plan = plandetails.objects.earliest('tankerno')  
-    if plan:
-        tankerno = plan.tankerno
-        drivername=plan.drivername
-        From_address = plan.From_address
-        To_address = plan.To_address
-        tanker_capacity = plan.tanker_capacity
-    else:
-        tankerno = From_address = To_address = 'Data not available'
+    # plan = plandetails.objects.earliest('tankerno')  
+    # if plan:
+    #     tankerno = plan.tankerno
+    #     drivername=plan.drivername
+    #     From_address = plan.From_address
+    #     To_address = plan.To_address
+    #     tanker_capacity = plan.tanker_capacity
+    # else:
+    #     tankerno = From_address = To_address = 'Data not available'
     
-    if request.method =="POST":
-       tankerno  = request.POST['tankerno']
-       From_address = request.POST['From_address']
-       To_address = request.POST['To_address']
-       drivername = request.POST['drivername']
-       tank_capacity = request.POST['tank_capacity']
-       arrival_time = request.POST['arrival_time']
-       dispatch_time = request.POST['dispatch_time']
-       reach_time = request.POST['reach_time']
-       unload_time = request.POST['unload_time']
-       lr_num  = request.POST['lr_num']
-       lr_date = request.POST['lr_date']
-       freight_bill = request.POST['freight_bill']
-       freight_date = request.POST['freight_date']
-       loaded_qty = request.POST['loaded_qty']
+    
+    if request.method == "POST":
+        # Get tankerno_id from the form
+        tankerno_id = request.POST.get('tankerno')
+
+        if not tankerno_id:
+            messages.error(request, 'Please select a tanker.')
+            return redirect('addtrip')
+
+        try:
+            # Get the selected plan details using tankerno_id
+            selected_plan = plandetails.objects.get(id=tankerno_id)
+        except plandetails.DoesNotExist:
+            messages.error(request, 'Selected tanker does not exist.')
+            return redirect('addtrip')
+       
+        From_address = request.POST['From_address']
+        To_address = request.POST['To_address']
+        drivername = request.POST['drivername']
+        tank_capacity = request.POST['tank_capacity']
+        arrival_time = request.POST['arrival_time']
+        dispatch_time = request.POST['dispatch_time']
+        reach_time = request.POST['reach_time']
+        unload_time = request.POST['unload_time']
+        lr_num  = request.POST['lr_num']
+        lr_date = request.POST['lr_date']
+        freight_bill = request.POST['freight_bill']
+        freight_date = request.POST['freight_date']
+        loaded_qty = request.POST['loaded_qty']
     #    percent = request.POST['percent']
-       unload_qty = request.POST['unload_qty']
-       short_qty = request.POST['short_qty']
-       short_allow = request.POST['short_allow']
-       return_qty = request.POST['return_qty']
-       remark = request.POST['remark']
-       if   TripAdani.objects.filter(tankerno=tankerno, dispatch_time= dispatch_time).exists():
+        unload_qty = request.POST['unload_qty']
+        short_qty = request.POST['short_qty']
+        short_allow = request.POST['short_allow']
+        return_qty = request.POST['return_qty']
+        remark = request.POST['remark']
+        if   TripAdani.objects.filter(plan=selected_plan, dispatch_time= dispatch_time).exists():
             messages.error(request, 'Trip already exists !!')
             return redirect('trip-adani')
-       else:
-          trip=TripAdani(tankerno=tankerno,
+        else:
+          trip=TripAdani( plan=selected_plan,
+                         tankerno=tankerno_id,
                          From_address=From_address,
                          To_address=To_address,
                          drivername=drivername,
@@ -350,15 +411,16 @@ def Trip_Adani(request):
                          remark=remark if remark else None)
           trip.save()
           messages.success(request, 'Trip added successfully !!') 
+          
+          
+          
     
     # Pass the values to the template
-    context = {
-        'tankerno': tankerno,
-        'From_address': From_address,
-        'To_address': To_address,
-        'tanker_capacity': tanker_capacity,
-        'drivername':drivername
-    }
+    # Get the list of plans for the dropdown
+    plans = plandetails.objects.all()
+
+    # Return to the template with the plans
+    context = {'plans': plans}
     return render(request, 'add/add_trip_adani.html',context)
 
 def ShowAdani(request):
@@ -366,45 +428,119 @@ def ShowAdani(request):
     context={'adani':adani}
     return render(request,'show/show_adani.html',context)
 
+def delatrip(request,id):
+    dadani=TripAdani.objects.get(pk=id)
+    dadani.delete()
+    return redirect('show-adani')
+
+def upadanitrip(request,id):
+    up_adani=TripAdani.objects.get(pk=id)
+    context={'up_adani':up_adani}
+    return render(request,'update_adani.html', context)
+
+def do_upadani(request,id):
+    tankerno = request.POST.get('tankerno')
+    drivername = request.POST.get('drivername')
+    From_address = request.POST.get('From_address')
+    To_address = request.POST.get('To_address')
+    tank_capacity = request.POST.get('tank_capacity')
+    arrival_time = request.POST.get('arrival_time')
+    dispatch_time = request.POST.get('dispatch_time')
+    reach_time = request.POST.get('reach_time')
+    unload_time = request.POST.get('unload_time')
+    loaded_qty = request.POST.get('loaded_qty')
+    # percent = request.POST.get('percent')
+    unload_qty = request.POST.get('unload_qty')
+    short_qty = request.POST.get('short_qty')
+    short_allow = request.POST.get('short_allow')
+    return_qty = request.POST.get('return_qty')
+    lr_num = request.POST.get('lr_num')
+    lr_date = request.POST.get('lr_date')
+    freight_bill = request.POST.get('freight_bill')
+    freight_date = request.POST.get('freight_date')
+    
+    
+
+    up_adani=TripAdani.objects.get(pk=id)
+
+    up_adani.tankerno=tankerno
+    up_adani.drivername=drivername
+    up_adani.From_address=From_address
+    up_adani.To_address=To_address
+    up_adani.tank_capacity=tank_capacity
+    up_adani.arrival_time=arrival_time
+    up_adani.dispatch_time=dispatch_time
+    up_adani.reach_time=reach_time
+    up_adani.unload_time=unload_time
+    up_adani.loaded_qty=loaded_qty
+    up_adani.unload_qty=unload_qty
+    up_adani.short_qty=short_qty
+    up_adani.short_allow=short_allow
+    up_adani.return_qty=return_qty
+    up_adani.lr_num=lr_num
+    up_adani.lr_date=lr_date
+    up_adani.freight_bill=freight_bill
+    up_adani.freight_date=freight_date
+
+    up_adani.save()
+
+    messages.success(request, 'Adani Trip updated successfully!')
+    return redirect('show-adani')
+
 
 
 def Trip_Gemini(request):
-    plan = plandetails.objects.earliest('tankerno')  
-    if plan:
-        tankerno = plan.tankerno
-        drivername=plan.drivername
-        From_address = plan.From_address
-        To_address = plan.To_address
-        tanker_capacity = plan.tanker_capacity
-    else:
-        tankerno = From_address = To_address = 'Data not available'
+    # plan = plandetails.objects.earliest('tankerno')  
+    # if plan:
+    #     tankerno = plan.tankerno
+    #     drivername=plan.drivername
+    #     From_address = plan.From_address
+    #     To_address = plan.To_address
+    #     tanker_capacity = plan.tanker_capacity
+    # else:
+    #     tankerno = From_address = To_address = 'Data not available'
     
     if request.method =="POST":
-       tankerno  = request.POST['tankerno']
-       From_address = request.POST['From_address']
-       To_address = request.POST['To_address']
-       drivername = request.POST['drivername']
-       tank_capacity = request.POST['tank_capacity']
-       arrival_time = request.POST['arrival_time']
-       dispatch_time = request.POST['dispatch_time']
-       reach_time = request.POST['reach_time']
-       unload_time = request.POST['unload_time']
-       lr_num  = request.POST['lr_num']
-       lr_date = request.POST['lr_date']
-       freight_bill = request.POST['freight_bill']
-       freight_date = request.POST['freight_date']
-       loaded_qty = request.POST['loaded_qty']
-    #    percent = request.POST['percent']
-       unload_qty = request.POST['unload_qty']
-       short_qty = request.POST['short_qty']
-       short_allow = request.POST['short_allow']
-       return_qty = request.POST['return_qty']
-       remark = request.POST['remark']
-       if   TripGemini.objects.filter(tankerno=tankerno, dispatch_time= dispatch_time).exists():
+       if request.method =="POST":
+        # Get tankerno_id from the form
+        tankerno_id = request.POST.get('tankerno')
+
+        if not tankerno_id:
+            messages.error(request, 'Please select a tanker.')
+            return redirect('addtrip')
+
+        try:
+            # Get the selected plan details using tankerno_id
+            selected_plan = plandetails.objects.get(id=tankerno_id)
+        except plandetails.DoesNotExist:
+            messages.error(request, 'Selected tanker does not exist.')
+            return redirect('addtrip')
+       
+        From_address = request.POST['From_address']
+        To_address = request.POST['To_address']
+        drivername = request.POST['drivername']
+        tank_capacity = request.POST['tank_capacity']
+        arrival_time = request.POST['arrival_time']
+        dispatch_time = request.POST['dispatch_time']
+        reach_time = request.POST['reach_time']
+        unload_time = request.POST['unload_time']
+        lr_num  = request.POST['lr_num']
+        lr_date = request.POST['lr_date']
+        freight_bill = request.POST['freight_bill']
+        freight_date = request.POST['freight_date']
+        loaded_qty = request.POST['loaded_qty']
+        # percent = request.POST['percent']
+        unload_qty = request.POST['unload_qty']
+        short_qty = request.POST['short_qty']
+        short_allow = request.POST['short_allow']
+        return_qty = request.POST['return_qty']
+        remark = request.POST['remark']
+        if   TripGemini.objects.filter(plan=selected_plan, dispatch_time= dispatch_time).exists():
             messages.error(request, 'Trip already exists !!')
             return redirect('trip-gemini')
-       else:
-          trip=TripGemini(tankerno=tankerno,
+        else:
+          trip=TripGemini( plan=selected_plan,
+                        tankerno=tankerno_id,
                          From_address=From_address,
                          To_address=To_address,
                          drivername=drivername,
@@ -419,6 +555,7 @@ def Trip_Gemini(request):
                          freight_date=freight_date if freight_date else None,
                          loaded_qty=loaded_qty if loaded_qty else None,
                          unload_qty=unload_qty if unload_qty else None,
+                        #  percent=percent if percent else None,
                          short_qty=short_qty if short_qty else None,
                          short_allow=short_allow if short_allow else None,
                          return_qty=return_qty if return_qty else None,
@@ -426,15 +563,13 @@ def Trip_Gemini(request):
                          )
           trip.save()
           messages.success(request, 'Trip added successfully !!') 
+          return redirect('show-gemini-details')
     
-    # Pass the values to the template
-    context = {
-        'tankerno': tankerno,
-        'From_address': From_address,
-        'To_address': To_address,
-        'tanker_capacity': tanker_capacity,
-        'drivername':drivername
-    }
+    # Get the list of plans for the dropdown
+    plans = plandetails.objects.all()
+
+    # Return to the template with the plans
+    context = {'plans': plans}
     return render(request, 'add/add_trip_gemini.html',context)
 
 def Showgemini(request):
@@ -443,65 +578,124 @@ def Showgemini(request):
     return render(request,'show/show_gemini.html',context)
 
 
+def delgemini(request,id):
+    g=TripGemini.objects.get(pk=id)
+    g.delete()
+    return redirect('show-gemini-details')
 
 
-def deltrip(request,id):
-    deltrips=AddTrips.objects.get(pk=id)
-    deltrips.delete()
-    return redirect('showtrip')
+def upgemini(request,id):
+    geminiup=TripGemini.objects.get(pk=id)
+    context={'geminiup':geminiup}
+    return render(request,'update_gemini.html',context)
+
+
+def do_upgemini(request,id):
+    tankerno = request.POST.get('tankerno')
+    drivername = request.POST.get('drivername')
+    From_address = request.POST.get('From_address')
+    To_address = request.POST.get('To_address')
+    tank_capacity = request.POST.get('tank_capacity')
+    arrival_time = request.POST.get('arrival_time')
+    dispatch_time = request.POST.get('dispatch_time')
+    reach_time = request.POST.get('reach_time')
+    unload_time = request.POST.get('unload_time')
+    loaded_qty = request.POST.get('loaded_qty')
+    # percent = request.POST.get('percent')
+    unload_qty = request.POST.get('unload_qty')
+    short_qty = request.POST.get('short_qty')
+    short_allow = request.POST.get('short_allow')
+    return_qty = request.POST.get('return_qty')
+    lr_num = request.POST.get('lr_num')
+    lr_date = request.POST.get('lr_date')
+    freight_bill = request.POST.get('freight_bill')
+    freight_date = request.POST.get('freight_date')
+    
+    
+
+    geminiup=TripGemini.objects.get(pk=id)
+
+    geminiup.tankerno=tankerno
+    geminiup.drivername=drivername
+    geminiup.From_address=From_address
+    geminiup.To_address=To_address
+    geminiup.tank_capacity=tank_capacity
+    geminiup.arrival_time=arrival_time
+    geminiup.dispatch_time=dispatch_time
+    geminiup.reach_time=reach_time
+    geminiup.unload_time=unload_time
+    geminiup.loaded_qty=loaded_qty
+    geminiup.unload_qty=unload_qty
+    geminiup.short_qty=short_qty
+    geminiup.short_allow=short_allow
+    geminiup.return_qty=return_qty
+    geminiup.lr_num=lr_num
+    geminiup.lr_date=lr_date
+    geminiup.freight_bill=freight_bill
+    geminiup.freight_date=freight_date
+
+    geminiup.save()
+
+    messages.success(request, 'Gemini Trip updated successfully!')
+    return redirect('show-gemini-details')
 
 
 
 
 def aaklocal(request):
-    plan = plandetails.objects.earliest('tankerno')  
-    if plan:
-        tankerno = plan.tankerno
-        drivername=plan.drivername
-        From_address = plan.From_address
-        To_address = plan.To_address
-        tanker_capacity = plan.tanker_capacity
-    else:
-        tankerno = From_address = To_address = 'Data not available'
     
     if request.method =="POST":
-       tankerno  = request.POST['tankerno']
-       From_address = request.POST['From_address']
-       To_address = request.POST['To_address']
-    #    drivername = request.POST['drivername']
-       tank_capacity = request.POST['tank_capacity']
-       arrival_time = request.POST['arrival_time']
-       dispatch_time = request.POST['dispatch_time']
-       reach_time = request.POST['reach_time']
+        # Get tankerno_id from the form
+        tankerno_id = request.POST.get('tankerno')
+
+        if not tankerno_id:
+            messages.error(request, 'Please select a tanker.')
+            return redirect('addtrip')
+
+        try:
+            # Get the selected plan details using tankerno_id
+            selected_plan = plandetails.objects.get(id=tankerno_id)
+        except plandetails.DoesNotExist:
+            messages.error(request, 'Selected tanker does not exist.')
+            return redirect('addtrip')
+        From_address = request.POST['From_address']
+        To_address = request.POST['To_address']
+        drivername = request.POST['drivername']
+        tank_capacity = request.POST['tank_capacity']
+        arrival_time = request.POST['arrival_time']
+        dispatch_time = request.POST['dispatch_time']
+        reach_time = request.POST['reach_time']
     #    unload_time = request.POST['unload_time']
-       lr_num  = request.POST['lr_num']
-       lr_date = request.POST['lr_date']
-       freight_bill = request.POST['freight_bill']
-       freight_date = request.POST['freight_date']
-       loaded_qty = request.POST['loaded_qty']
-    #    percent = request.POST['percent']
-       unload_qty = request.POST['unload_qty']
-       short_qty = request.POST['short_qty']
-       short_allow = request.POST['short_allow']
-       return_qty = request.POST['return_qty']
-       return_qty = request.POST['return_qty']
-       return_qty = request.POST['return_qty']
-       remark = request.POST['remark']
-       time_Loading = request.POST['time_Loading']
-       time_Loading_mama = request.POST['time_Loading_mama']
-       time_Loading_mama = request.POST['time_Loading_mama']
-       unloading_ganesh   = request.POST['unloading_ganesh']
-       unloading_mama   = request.POST['unloading_mama']
-       returned   = request.POST['returned']
-       trip_ganesh   = request.POST['trip_ganesh']
-       trip_mama   = request.POST['trip_mama']
-       if  AakLocal.objects.filter(tankerno=tankerno, dispatch_time= dispatch_time).exists():
+        lr_num  = request.POST['lr_num']
+        lr_date = request.POST['lr_date']
+        freight_bill = request.POST['freight_bill']
+        freight_date = request.POST['freight_date']
+        loaded_qty = request.POST['loaded_qty']
+        percent = request.POST['percent']
+        unload_qty = request.POST['unload_qty']
+        short_qty = request.POST['short_qty']
+        short_allow = request.POST['short_allow']
+        return_qty = request.POST['return_qty']
+        return_qty = request.POST['return_qty']
+        return_qty = request.POST['return_qty']
+        remark = request.POST['remark']
+        time_Loading = request.POST['time_Loading']
+        time_Loading_mama = request.POST['time_Loading_mama']
+        time_Loading_mama = request.POST['time_Loading_mama']
+        unloading_ganesh   = request.POST['unloading_ganesh']
+        unloading_mama   = request.POST['unloading_mama']
+        returned   = request.POST['returned']
+        trip_ganesh   = request.POST['trip_ganesh']
+        trip_mama   = request.POST['trip_mama']
+        if  AakLocal.objects.filter(plan=selected_plan, dispatch_time= dispatch_time).exists():
            messages.error(request, 'Trip already exists !!')
            return redirect('aak-local')
-       else:
-            trip=AakLocal(tankerno=tankerno,
+        else:
+            trip=AakLocal(plan=selected_plan,
+                         tankerno=selected_plan.tankerno, 
                          From_address=From_address,
                          To_address=To_address,
+                         drivername=drivername,
                          tank_capacity=tank_capacity,
                          arrival_time=arrival_time if arrival_time else None,
                          dispatch_time=dispatch_time if dispatch_time else None,
@@ -513,6 +707,7 @@ def aaklocal(request):
                          freight_date=freight_date if freight_date else None,
                          loaded_qty=loaded_qty if loaded_qty else None,
                          unload_qty=unload_qty if unload_qty else None,
+                         percent=percent if percent else None,
                          short_qty=short_qty if short_qty else None,
                          short_allow=short_allow if short_allow else None,
                          return_qty=return_qty if return_qty else None,
@@ -527,12 +722,11 @@ def aaklocal(request):
                         )
             trip.save()
             messages.success(request, 'Trip added successfully !!')
-    context = {
-        'tankerno': tankerno,
-        'From_address': From_address,
-        'To_address': To_address,
-        'tanker_capacity': tanker_capacity,
-        'drivername':drivername}
+     # Get the list of plans for the dropdown
+    plans = plandetails.objects.all()
+
+    # Return to the template with the plans
+    context = {'plans': plans}
     return render(request,'AAK-india-local.html',context)
 
 def ShowAakLocal(request):
@@ -553,6 +747,7 @@ def doupdateAak(request,id):
     tankerno  = request.POST.get('tankerno')
     From_address = request.POST.get('From_address')
     To_address = request.POST.get('To_address')
+    drivername = request.POST.get('drivername')
     tank_capacity = request.POST.get('tank_capacity') 
     arrival_time = request.POST.get('arrival_time')
     dispatch_time = request.POST.get('dispatch_time')
@@ -583,6 +778,7 @@ def doupdateAak(request,id):
     Aakupdate.tankerno=tankerno
     Aakupdate.From_address=From_address
     Aakupdate.To_address=To_address
+    Aakupdate.drivername=drivername
     Aakupdate.tank_capacity=tank_capacity
     Aakupdate.arrival_time=arrival_time
     Aakupdate.dispatch_time=dispatch_time
@@ -698,43 +894,43 @@ def doupdatedriver(request,id):
 
 # TripExpense
 
-def tripexpense(request):
-    if request.method =="POST":
-      tankerno = request.POST['tankerno']
-      tripdate = request.POST['tripdate']
-      tdate = request.POST['tdate']
-      drivername = request.POST['drivername']
-      fromconsignor = request.POST['fromconsignor']
-      toconsignee = request.POST['toconsignee']
-      trip_general_expenses = request.POST['trip_general_expenses']
-      food_allowance = request.POST['food_allowance']
-      bhatta =request.POST['bhatta']
-      washing_charges_tank =request.POST['washing_charges_tank']
-      total_amount = request.POST['total_amount']
+# def tripexpense(request):
+#     if request.method =="POST":
+#       tankerno = request.POST['tankerno']
+#       tripdate = request.POST['tripdate']
+#       tdate = request.POST['tdate']
+#       drivername = request.POST['drivername']
+#       fromconsignor = request.POST['fromconsignor']
+#       toconsignee = request.POST['toconsignee']
+#       trip_general_expenses = request.POST['trip_general_expenses']
+#       food_allowance = request.POST['food_allowance']
+#       bhatta =request.POST['bhatta']
+#       washing_charges_tank =request.POST['washing_charges_tank']
+#       total_amount = request.POST['total_amount']
 
-      if TripExpense.objects.filter(tankerno=tankerno,tdate=tdate).exists():
-          messages.error(request, 'Trip Expense already exists !!')
-          return redirect('trip-expense')
-      else:
-         res=TripExpense(tankerno=tankerno,tripdate=tripdate,tdate=tdate,drivername=drivername,fromconsignor=fromconsignor,toconsignee=toconsignee,trip_general_d=trip_general_expenses,food_allowance=food_allowance,bhatta=bhatta,washing_charges_tank=washing_charges_tank,total_amount=total_amount)
-         res.save()
-         messages.success(request, 'Trip expense added successfully !!') 
+#       if TripExpense.objects.filter(tankerno=tankerno,tdate=tdate).exists():
+#           messages.error(request, 'Trip Expense already exists !!')
+#           return redirect('trip-expense')
+#       else:
+#          res=TripExpense(tankerno=tankerno,tripdate=tripdate,tdate=tdate,drivername=drivername,fromconsignor=fromconsignor,toconsignee=toconsignee,trip_general_d=trip_general_expenses,food_allowance=food_allowance,bhatta=bhatta,washing_charges_tank=washing_charges_tank,total_amount=total_amount)
+#          res.save()
+#          messages.success(request, 'Trip expense added successfully !!') 
       
     
-    vehicle=Add_Vehicle.objects.all()
-    company=companydetails.objects.all()
-    dname=NewDriver_Details.objects.all()
-    context={'vehicle':vehicle,'company':company,'dname':dname}
-    return render(request,'add/add-trip-expense.html',context)
+#     vehicle=Add_Vehicle.objects.all()
+#     company=companydetails.objects.all()
+#     dname=NewDriver_Details.objects.all()
+#     context={'vehicle':vehicle,'company':company,'dname':dname}
+#     return render(request,'add/add-trip-expense.html',context)
 
 
 
 
 
-def  showtripexpense(request):
-     expense=TripExpense.objects.all()
-     context={'expense':expense}
-     return render(request,'show-trip-expense.html',context)
+# def  showtripexpense(request):
+#      expense=TripExpense.objects.all()
+#      context={'expense':expense}
+#      return render(request,'show-trip-expense.html',context)
 
 
 
@@ -769,9 +965,9 @@ def  addsalary(request):
         d_salary.save()
         messages.success(request, 'Driver Salary added successfully !!')
         return redirect('show-s')
-    vehicle=Add_Vehicle.objects.all()   
-    company=companydetails.objects.all()
-    context={'vehicle':vehicle,'company':company}    
+    vehicle=Add_Vehicle.objects.all() 
+    dname=NewDriver_Details.objects.all()  
+    context={'vehicle':vehicle,'dname':dname}    
     return render(request,'driver-salary.html',context)
 
 def  showsalary(request):
@@ -780,9 +976,56 @@ def  showsalary(request):
     return render(request,'show/show_salary.html',context)
 
 
+def dsalary(request,id):
+    d=Driver_salary.objects.get(pk=id)
+    d.delete()
+    return redirect('show-s')
+
+def usalary(request,id):
+    upsalary=Driver_salary.objects.get(pk=id)
+    vehicle=Add_Vehicle.objects.all() 
+    dname=NewDriver_Details.objects.all()  
+    context={'vehicle':vehicle,'dname':dname,'upsalary':upsalary}    
+    return render(request,'update_salary.html',context)
+
+
+def do_update_salary(request,id):
+    tankerno = request.POST.get('tankerno')
+    drivername = request.POST.get('drivername')
+    salary_driver  = request.POST.get('salary_driver')
+    f_date = request.POST.get('f_date')
+    t_date= request.POST.get('t_date')
+    p_date = request.POST.get('p_date')
+    amount = request.POST.get('amount')
+
+    upsalary=Driver_salary.objects.get(pk=id)
+
+    upsalary.tankerno=tankerno
+    upsalary.drivername=drivername
+    upsalary.salary_driver=salary_driver
+    upsalary.f_date= f_date
+    upsalary.t_date= t_date
+    upsalary.p_date= p_date
+    upsalary.amount= amount
+    upsalary.save()
+    messages.success(request, 'Driver Salary Update successfully !!')
+    return redirect('show-s')
+
 
 
 def report(request):
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+
+    trips = Trip.objects.all()
+
+    if from_date and to_date:
+        try:
+            from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
+            to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
+            trips = trips.filter(trip_date__range=(from_date_obj, to_date_obj))
+        except ValueError:
+            pass  # Invalid date format, ignore the filter
     trips = Trip.objects.all()
     expenses = Expense.objects.all()
     total_expense_sum = trips.aggregate(Sum('total_expense'))['total_expense__sum']
@@ -795,35 +1038,6 @@ def report(request):
 
 
 
-# def vehicledetails(request):
-#     if request.method =="POST":
-#       vehicle_name = request.POST['vehicle_name']
-#       tankercap = request.POST['tankercap']
-#       owner_name = request.POST['owner_name']
-#       making_year  = request.POST['making_year']
-#       chassise_no = request.POST['chassise_no']
-#       engine_no = request.POST['engine_no']
-#       insurance_date = request.POST['insurance_date'] 
-#       state_permit = request.POST['state_permit'] 
-#       national_permit = request.POST['national_permit'] 
-#       fitness_date = request.POST['fitness_date'] 
-#       tax_date = request.POST['tax_date'] 
-#       puc_date = request.POST['puc_date'] 
-#       vehicle_img = request.POST['vehicle_img']
-#       status = request.POST['status']
-
-#       if Add_Vehicle.objects.filter(vehicle_name=vehicle_name).exists():
-#           messages.error(request, 'Vehicle No. already exists !!')
-#           return redirect('addvehicle')
-#       else:
-#            vehicle_details=Add_Vehicle(vehicle_name=vehicle_name,tankercap=tankercap if tankercap else None,owner_name=owner_name,making_year=making_year,chassise_no=chassise_no,engine_no=engine_no,insurance_date=insurance_date,state_permit=state_permit,national_permit=national_permit,fitness_date=fitness_date,tax_date=tax_date,puc_date=puc_date,vehicle_img=vehicle_img,status=status if status else None)
-#            vehicle_details.save()
-#            messages.success(request, 'Vehicle details added successfully !!')
-#            return redirect('show-vehicle')
-#     # dname=NewDriverDetails.objects.all()
-#     # context={'dname':dname}JCHZ425531
-#     return render(request,'add/add-vehicle.html')
-
 
 
 def vehicledetails(request):
@@ -835,12 +1049,17 @@ def vehicledetails(request):
         chassise_no = request.POST['chassise_no']
         engine_no = request.POST['engine_no']
         insurance_date = request.POST['insurance_date']
+        insurance_img = request.FILES.get('insurance_img') 
         state_permit = request.POST['state_permit']
+        state_img = request.FILES.get('state_img') 
         national_permit = request.POST['national_permit']
+        national_img = request.FILES.get('national_img')
         fitness_date = request.POST['fitness_date']
+        fitness_img = request.FILES.get('fitness_img')
         tax_date = request.POST['tax_date']
+        tax_img = request.FILES.get('tax_img')
         puc_date = request.POST['puc_date']
-        vehicle_img = request.POST['vehicle_img']
+        puc_img = request.FILES.get('puc_img')
         status = request.POST['status']
 
         # 👇 Replace with actual logged-in user's email if available
@@ -859,12 +1078,19 @@ def vehicledetails(request):
             chassise_no=chassise_no if chassise_no else None,
             engine_no=engine_no if engine_no else None,
             insurance_date=insurance_date if insurance_date else None,
+            insurance_img=insurance_img if insurance_img else None,
+
             state_permit=state_permit if state_permit else None,
+            state_img= state_img if  state_img else None,
             national_permit=national_permit if national_permit else None,
+            national_img= national_img if  national_img else None,
+
             fitness_date=fitness_date if fitness_date else None,
+            fitness_img= fitness_img if  fitness_img else None,
             tax_date=tax_date if tax_date else None,
+            tax_img= tax_img if  tax_img else None,
             puc_date=puc_date if puc_date else None,
-            vehicle_img=vehicle_img if vehicle_img else None,
+            puc_img= puc_img if puc_img else None,
             status=status if status else None
         )
         vehicle_details.save()
@@ -950,12 +1176,17 @@ def doupdatevehicle(request, id):
             chassise_no = request.POST.get('chassise_no')
             engine_no = request.POST.get('engine_no')
             insurance_date = request.POST.get('insurance_date')
+            insurance_img = request.FILES.get('insurance_img')
             state_permit = request.POST.get('state_permit')
+            state_img = request.FILES.get('state_img')
             national_permit = request.POST.get('national_permit')
+            national_img = request.FILES.get('national_img')
             fitness_date = request.POST.get('fitness_date')
+            fitness_img = request.FILES.get('fitness_img')
             tax_date = request.POST.get('tax_date')
+            tax_img = request.FILES.get('tax_img')
             puc_date = request.POST.get('puc_date')
-            vehicle_img = request.FILES.get('vehicle_img')
+            puc_img = request.FILES.get('puc_img')
             status = request.POST.get('status')
 
             # Update the fields
@@ -966,15 +1197,27 @@ def doupdatevehicle(request, id):
             upvehicle.chassise_no = chassise_no
             upvehicle.engine_no = engine_no
             upvehicle.insurance_date = insurance_date
+            if insurance_img:
+               upvehicle.insurance_img = insurance_img if insurance_img else None
             upvehicle.state_permit = state_permit
+            if state_img:
+               upvehicle.state_img = state_img if  state_img else None
             upvehicle.national_permit = national_permit
-            upvehicle.fitness_date = fitness_date
-            upvehicle.tax_date = tax_date
-            upvehicle.puc_date = puc_date
-            if vehicle_img:  # Update the image only if a new one is provided
-                upvehicle.vehicle_img = vehicle_img
-            upvehicle.status = status
+            if national_img:
+               upvehicle.national_img= national_img if  national_img else None
 
+            upvehicle.fitness_date = fitness_date
+            if fitness_img:
+                upvehicle.fitness_img= fitness_img if  fitness_img else None
+
+            upvehicle.tax_date = tax_date
+            if tax_date:
+                upvehicle.tax_img= tax_img if  tax_img else None
+
+            upvehicle.puc_date = puc_date
+            if puc_date:
+                upvehicle.puc_img= puc_img if puc_img else None
+            upvehicle.status = status
             # Save the updated vehicle
             upvehicle.save()
             messages.success(request, 'Vehicle details updated successfully!')
@@ -1037,6 +1280,7 @@ def updatecompany(request,id):
 def doupdatecompany(request,id):
       name  = request.POST.get('name')
       area_name = request.POST.get('area_name')
+      short_name = request.POST.get('short_name')
       state = request.POST.get('state')
       city = request.POST.get('city')
       pincode = request.POST.get('pincode')
@@ -1048,6 +1292,7 @@ def doupdatecompany(request,id):
 
       upcompany.name=name if name else None
       upcompany.area_name=area_name if area_name else None
+      upcompany.short_name=short_name if short_name else None
       upcompany.state=state if state else None
       upcompany.city=city if city else None
       upcompany.pincode=pincode if pincode else None
@@ -1060,181 +1305,83 @@ def doupdatecompany(request,id):
       return redirect('s-company')
 
 
+
+
+
+# def showallexpense(request):
+#     allExp=Trip_Expense.objects.all()
+#     # endTrip=EndTrip.objects.all()
+#     # Aggregate sums for each field
+#     all_sum = Trip_Expense.objects.aggregate(Sum('r_amount'))['r_amount__sum']
+#     u_sum = Trip_Expense.objects.aggregate(Sum('urea_total'))['urea_total__sum']
+#     d_sum = Trip_Expense.objects.aggregate(Sum('total_diesel'))['total_diesel__sum']
+#     t_sum = Trip_Expense.objects.aggregate(Sum('total_amount'))['total_amount__sum']
+#     a_sum = Trip_Expense.objects.aggregate(Sum('amount'))['amount__sum']
     
+#     # Calculate the total of all sums (if the sum is None, it defaults to 0)
+#     total_sum = (all_sum or 0) + (u_sum or 0) + (d_sum or 0) + (t_sum or 0) + (a_sum or 0)
+    
+#     # Context to send to the template
+#     context = {
+#         'allExp': allExp,
+#         # 'endTrip':endTrip,
+#         'all_sum': all_sum,
+#         'u_sum': u_sum,
+#         'd_sum': d_sum,
+#         't_sum': t_sum,
+#         'a_sum': a_sum,
+#         'total_sum': total_sum  # total_sum includes the sum of all individual sums
+#     }
+#     return render(request,'show/show_all_expense.html',context)
 
 
-def all_trip(request):
-    if request.method == "POST":
-        # Retrieve all data from the POST request
-        trip_tanker = request.POST.get('trip_tanker')
-        tripdate = request.POST.get('tripdate')
-        tdate = request.POST.get('tdate')
-        drivername = request.POST.get('drivername')
-        From_address = request.POST.get('From_address')
-        To_address = request.POST.get('To_address')
-        trip_general_expenses = request.POST.get('trip_general_expenses')
-        food_allowance = request.POST.get('food_allowance')
-        bhatta = request.POST.get('bhatta')
-        washing_charges_tank = request.POST.get('washing_charges_tank')
-        total_amount = request.POST.get('total_amount')
-        date = request.POST.get('date')
-        amount = request.POST.get('amount')
-        toll_name = request.POST.get('toll_name')
-        category = request.POST.get('category')
-        subCategory = request.POST.get('subCategory')
-        paid_to = request.POST.get('paid_to')
-        given_amounts_diesel = request.POST.get('given_amounts_diesel')
-        liters = request.POST.get('liters')
-        rate = request.POST.get('rate')
-        total_diesel = request.POST.get('total_diesel')
-        paid_date = request.POST.get('paid_date')
-        bill_date = request.POST.get('bill_date')
-        urea_liter = request.POST.get('urea_liter')
-        urea_rate = request.POST.get('urea_rate')
-        urea_total = request.POST.get('urea_total')
-        r_paid_date = request.POST.get('r_paid_date')
-        r_bill_date = request.POST.get('r_bill_date')
-        spare_part = request.POST.get('spare_part')
-        r_amount = request.POST.get('r_amount')
-        part_name = request.POST.get('part_name')
-        no_piece = request.POST.get('no_piece')
-        end_date = request.POST.get('end_date')
 
-        # Ensure the 'tripdate' field is filled
-        if not tripdate or not trip_tanker:
-           messages.error(request, 'Please fill in the required fields!')
-           return redirect('all-trip')
+
+# def allexpensedelete(request,id):
+#     Exp_del=Trip_Expense.objects.get(pk=id)
+#     Exp_del.delete()
+#     return redirect('all-expense')
+
+
+
+
+# def addEndTrip(request):
+#     tripend =Trip_Expense.objects.all().last()  
+#     if tripend: 
+#         trip_tanker = tripend.trip_tanker
+#         tripdate = tripend.tripdate
+#         drivername=tripend.drivername
+#     else:
+#         trip_tanker = tripdate =  'Data not available'
+#     if request.method =="POST":
+#         tank_ends = request.POST['tank_ends']
+#         date = request.POST['date']
+#         driver = request.POST['driver']
+#         end_Date = request.POST['end_Date']
         
-        else:
-          # Create and save Trip_Expense instance
-            e = Trip_Expense(
-            trip_tanker=trip_tanker or None,
-            tripdate=tripdate or None,
-            tdate = tdate or None,
-            drivername=drivername or None,
-            From_address=From_address or None,
-            To_address=To_address or None,
-            trip_general_expenses=trip_general_expenses or None,
-            food_allowance=food_allowance or None,
-            bhatta=bhatta or None,
-            washing_charges_tank=washing_charges_tank or None,
-            total_amount=total_amount or None,
-            date= date or None,
-            amount=amount or None,
-            toll_name=toll_name or None,
-            category=category or None,
-            subCategory=subCategory or None,
-            paid_to=paid_to or None,
-            given_amounts_diesel=given_amounts_diesel or None,
-            liters=liters or None,
-            rate=rate or None,
-            total_diesel=total_diesel or None,
-            paid_date=paid_date or None,
-            bill_date=bill_date or None,
-            urea_liter=urea_liter or None,
-            urea_rate=urea_rate or None,
-            urea_total=urea_total or None,
-            r_paid_date=r_paid_date or None,
-            r_bill_date=r_bill_date or None,
-            spare_part=spare_part or None,
-            r_amount=r_amount or None,
-            part_name=part_name or None,
-            no_piece=no_piece or None,
-            end_date=end_date or None,
-        )
-        e.save()
-        messages.success(request, 'Trip Expenses Added successfully!!')
+#         if End_Trip.objects.filter(tank_ends=tank_ends,end_Date=end_Date).exists():
+#            messages.error(request, 'Trip End already!!')
+#            return redirect('add-trip-end')
+#         else:
+#            d_end=End_Trip(tank_ends=tank_ends,date=date,driver=driver,end_Date=end_Date)
+#            d_end.save()
+#            messages.success(request, 'Trip End successfully !!')
 
-    # Fetch data for rendering
-    vehicle = Add_Vehicle.objects.all()
-    company = companydetails.objects.all()
-    categories = Category.objects.all()
-    dname = NewDriver_Details.objects.all()
-    petrol = AddPetrolPump.objects.all()
-
-    # Return the response
-    context = {'categories': categories, 'dname': dname, 'vehicle': vehicle, 'petrol': petrol, 'company': company}
-    return render(request, 'trip-expense-all.html', context)
-
-
-
-
-
-
-def showallexpense(request):
-    allExp=Trip_Expense.objects.all()
-    # endTrip=EndTrip.objects.all()
-    # Aggregate sums for each field
-    all_sum = Trip_Expense.objects.aggregate(Sum('r_amount'))['r_amount__sum']
-    u_sum = Trip_Expense.objects.aggregate(Sum('urea_total'))['urea_total__sum']
-    d_sum = Trip_Expense.objects.aggregate(Sum('total_diesel'))['total_diesel__sum']
-    t_sum = Trip_Expense.objects.aggregate(Sum('total_amount'))['total_amount__sum']
-    a_sum = Trip_Expense.objects.aggregate(Sum('amount'))['amount__sum']
-    
-    # Calculate the total of all sums (if the sum is None, it defaults to 0)
-    total_sum = (all_sum or 0) + (u_sum or 0) + (d_sum or 0) + (t_sum or 0) + (a_sum or 0)
-    
-    # Context to send to the template
-    context = {
-        'allExp': allExp,
-        # 'endTrip':endTrip,
-        'all_sum': all_sum,
-        'u_sum': u_sum,
-        'd_sum': d_sum,
-        't_sum': t_sum,
-        'a_sum': a_sum,
-        'total_sum': total_sum  # total_sum includes the sum of all individual sums
-    }
-    return render(request,'show/show_all_expense.html',context)
-
-
-
-
-def allexpensedelete(request,id):
-    Exp_del=Trip_Expense.objects.get(pk=id)
-    Exp_del.delete()
-    return redirect('all-expense')
-
-
-
-
-def addEndTrip(request):
-    tripend =Trip_Expense.objects.all().last()  
-    if tripend: 
-        trip_tanker = tripend.trip_tanker
-        tripdate = tripend.tripdate
-        drivername=tripend.drivername
-    else:
-        trip_tanker = tripdate =  'Data not available'
-    if request.method =="POST":
-        tank_ends = request.POST['tank_ends']
-        date = request.POST['date']
-        driver = request.POST['driver']
-        end_Date = request.POST['end_Date']
-        
-        if End_Trip.objects.filter(tank_ends=tank_ends,end_Date=end_Date).exists():
-           messages.error(request, 'Trip End already!!')
-           return redirect('add-trip-end')
-        else:
-           d_end=End_Trip(tank_ends=tank_ends,date=date,driver=driver,end_Date=end_Date)
-           d_end.save()
-           messages.success(request, 'Trip End successfully !!')
-
-    context = {
-        'trip_tanker': trip_tanker,
-        'tripdate':  tripdate,
-        'drivername':drivername
+#     context = {
+#         'trip_tanker': trip_tanker,
+#         'tripdate':  tripdate,
+#         'drivername':drivername
       
-    }       
-    return render(request, 'end-trip-date.html',context)
+#     }       
+#     return render(request, 'end-trip-date.html',context)
        
     
 
 
-def showEndTrip(request):
-    showend=End_Trip.objects.all()
-    context={'showend':showend}
-    return render(request,'show-trip-end.html',context)
+# def showEndTrip(request):
+#     showend=End_Trip.objects.all()
+#     context={'showend':showend}
+#     return render(request,'show-trip-end.html',context)
 
 
 def all_bill(request):
@@ -1243,328 +1390,223 @@ def all_bill(request):
 
 
 
-def generate_bill_no():
-    # Generate a simple bill number using the current year and a random number
-    year = now().year
-    random_number = random.randint(1000, 9999)
-    bill_no = f"J.N/{random_number}/{year}"
-    return bill_no
-
-def aak_bill(request):
-   
-    if request.method == "POST":
-        # Get the date for the invoice
-        date = request.POST.get('date')
-        company = request.POST.get('company')
-        gst = request.POST.get('gst')
-        pan = request.POST.get('pan')
-        tanker = request.POST.get('tanker')
-        tanker_cap = request.POST.get('tanker_cap')
-        From_add = request.POST.get('From_add')
-        To_add = request.POST.get('To_add')
-        date_dis = request.POST.get('date_dis')
-        unload = request.POST.get('unload')
-        short = request.POST.get('short')
-        retn = request.POST.get('retn')
-        lr_no = request.POST.get('lr_no')
-        Fo_date = request.POST.get('Fo_date')
-        To_date = request.POST.get('To_date')
-        d_rate = request.POST.get('d_rate')
-        par_day = request.POST.get('par_day')
-        total_d = request.POST.get('total_d')
-
-        # Initialize total amount as 0
-        total_amount = 0.0
-        
-        # Get today's date, but exclude the year for the invoice number
-        today = datetime.date.today()
-        date_str = today.strftime('%m-%y')  # Format as 'MM-DD'
-
-        # Generate the base invoice number (e.g., 'INV-03-25')
-        invoice_prefix = f'{date_str}'
-
-        # Generate a random 6-digit number (you can change the length or characters)
-        # random_number = ''.join(random.choices(string.digits, k=4))
-        # Assume a variable to store the last used number (this would be stored in DB)
-        last_used_number = 1000  # You can get this from your database or other storage
-
-        # Increment the counter for the new invoice
-        random_number = last_used_number + 1
-        last_used_number = random_number  # Save this updated value back to the database
-
-         # Combine the invoice prefix with the new sequential number
-        invoice_number = f'{str(random_number)}-{invoice_prefix}'
-
-        # Ensure the invoice number is unique
-        while Invoice.objects.filter(invoice_number=invoice_number).exists():
-              random_number += 1
-              invoice_number = f'J N-{str(random_number)}-{invoice_prefix}'
-
-
-        # Create the invoice object
-        invoice = Invoice.objects.create(
-            invoice_number=invoice_number,
-            date=date,
-            company=company if company else None,
-            gst=gst if gst else None,
-            pan=pan if pan else None,
-            tanker=tanker if tanker else None,
-            tanker_cap=tanker_cap if tanker_cap else None,
-            From_add=From_add if  From_add else None,
-            To_add=To_add if  To_add else None,
-            date_dis=date_dis if  date_dis else None,
-            unload=unload if  unload else None,
-            short=short if  short else None,
-            retn=retn if  retn else None,
-            lr_no=lr_no if lr_no else None,
-            Fo_date=Fo_date if Fo_date else None,
-            To_date=To_date if To_date else None,
-            d_rate=d_rate if d_rate else None,
-            par_day=par_day if par_day else None,
-            total_d=total_d if total_d else None,
-            total_amount=total_amount  # This will be updated later
-        )
-
-        # Process the items
-        item_data = request.POST.getlist('item_description')
-        quantities = request.POST.getlist('item_quantity')
-        unit_prices = request.POST.getlist('item_unit_price')
-
-        # Loop through items and add them to the invoice
-        for i in range(len(item_data)):
-            quantity = int(quantities[i])
-            unit_price = float(unit_prices[i])
-
-            # Calculate the total amount for this item and add it to the invoice
-            total_item_cost = quantity * unit_price
-            # Define GST rates for SGST and CGST (6% each)
-            sgst_rate = 0.06  # 6% SGST
-            cgst_rate = 0.06  # 6% CGST
-            # Calculate SGST and CGST
-            sgst = total_item_cost * sgst_rate
-            cgst = total_item_cost * cgst_rate
-            # total_amount += int(total_item_cost) + int(total_d)
-            total_amount += int(total_item_cost) + int(total_d) + float(sgst) + float(cgst)
-            
-            
-            # Create Item instance and associate it with the invoice
-            Item.objects.create(
-                invoice=invoice,
-                description=item_data[i],
-                quantity=quantity,
-                unit_price=unit_price
-            )
-        
-        # After processing items, update the invoice's total amount
-        invoice.total_amount = total_amount
-
-        # Convert the total amount into words
-        # total_in_words = num2words(total_amount).title()
-
-        # Save the invoice's total amount in words as well, if needed
-        # invoice.total_in_words = total_in_words
-        invoice.save()
-
-        # Redirect to the invoice detail page
-        return redirect('invoice_detail', invoice_id=invoice.id)
-    company=companydetails.objects.all()
-    context={'company':company}
-
-    return render(request,'bills/aak-india-pvt.html',context)
-
-def Aak_bills(request):
-    # bill =.objects.latest('bill_no')
-    bill = AAkIndia.objects.filter().last()
-    total_sum = bill.total or 0
-    total_d_sum = bill.total_d or 0
-# Sum of both totals
-    total_sum = total_sum + total_d_sum
-    total_in_words = num2words(total_sum)
-    context = {'bill': bill, 'total_sum': total_sum,'total_in_words': total_in_words}
-    return render(request,'bills/akk_india_bill.html',context)
 # def generate_bill_no():
-#     # Generate a simple bill number using the current year and a random number
+#     months=now().month
 #     year = now().year
 #     random_number = random.randint(1000, 9999)
-#     bill_no = f"J.N/{random_number}/{year}"
+#     bill_no = f"{random_number}/JN/0{months}/{year}"
 #     return bill_no
 
 
-def gemini_bill(request):
-    if request.method == "POST":
-        # Get the date for the invoice
-        date = request.POST.get('date')
-        company = request.POST.get('company')
-        gst = request.POST.get('gst')
-        pan = request.POST.get('pan')
-        tanker = request.POST.get('tanker')
-        tanker_cap = request.POST.get('tanker_cap')
-        From_add = request.POST.get('From_add')
-        To_add = request.POST.get('To_add')
-        date_dis = request.POST.get('date_dis')
-        unload = request.POST.get('unload')
-        short = request.POST.get('short')
-        retn = request.POST.get('retn')
-        lr_no = request.POST.get('lr_no')
-        Fo_date = request.POST.get('Fo_date')
-        To_date = request.POST.get('To_date')
-        d_rate = request.POST.get('d_rate')
-        par_day = request.POST.get('par_day')
-        total_d = request.POST.get('total_d')
+# def Aak_bills(request):
+#     # bill =.objects.latest('bill_no')
+#     bill = AAkIndia.objects.filter().last()
+#     total_sum = bill.total or 0
+#     total_d_sum = bill.total_d or 0
+# # Sum of both totals
+#     total_sum = total_sum + total_d_sum
+#     total_in_words = num2words(total_sum)
+#     context = {'bill': bill, 'total_sum': total_sum,'total_in_words': total_in_words}
+#     return render(request,'bills/akk_india_bill.html',context)
+# # def generate_bill_no():
+# #     # Generate a simple bill number using the current year and a random number
+# #     year = now().year
+# #     random_number = random.randint(1000, 9999)
+# #     bill_no = f"J.N/{random_number}/{year}"
+# #     return bill_no
 
-        # Initialize total amount as 0
-        total_amount = 0.0
+
+# def gemini_bill(request):
+#     if request.method == "POST":
+#         # Get the date for the invoice
+#         date = request.POST.get('date')
+#         company = request.POST.get('company')
+#         gst = request.POST.get('gst')
+#         pan = request.POST.get('pan')
+#         tanker = request.POST.get('tanker')
+#         tanker_cap = request.POST.get('tanker_cap')
+#         From_add = request.POST.get('From_add')
+#         To_add = request.POST.get('To_add')
+#         date_dis = request.POST.get('date_dis')
+#         unload = request.POST.get('unload')
+#         short = request.POST.get('short')
+#         retn = request.POST.get('retn')
+#         lr_no = request.POST.get('lr_no')
+#         Fo_date = request.POST.get('Fo_date')
+#         To_date = request.POST.get('To_date')
+#         d_rate = request.POST.get('d_rate')
+#         par_day = request.POST.get('par_day')
+#         total_d = request.POST.get('total_d')
+
+#         # Initialize total amount as 0
+#         total_amount = 0.0
         
-        # Get today's date, but exclude the year for the invoice number
-        today = datetime.date.today()
-        date_str = today.strftime('%m-%y')  # Format as 'MM-DD'
+#         # Get today's date, but exclude the year for the invoice number
+#         today = datetime.date.today()
+#         date_str = today.strftime('%m-%y')  # Format as 'MM-DD'
 
-        # Generate the base invoice number (e.g., 'INV-03-25')
-        invoice_prefix = f'{date_str}'
+#         # Generate the base invoice number (e.g., 'INV-03-25')
+#         invoice_prefix = f'{date_str}'
 
-        # Generate a random 6-digit number (you can change the length or characters)
-        # random_number = ''.join(random.choices(string.digits, k=4))
-        # Assume a variable to store the last used number (this would be stored in DB)
-        last_used_number = 1000  # You can get this from your database or other storage
+#         # Generate a random 6-digit number (you can change the length or characters)
+#         # random_number = ''.join(random.choices(string.digits, k=4))
+#         # Assume a variable to store the last used number (this would be stored in DB)
+#         last_used_number = 1000  # You can get this from your database or other storage
 
-        # Increment the counter for the new invoice
-        random_number = last_used_number + 1
-        last_used_number = random_number  # Save this updated value back to the database
+#         # Increment the counter for the new invoice
+#         random_number = last_used_number + 1
+#         last_used_number = random_number  # Save this updated value back to the database
 
-         # Combine the invoice prefix with the new sequential number
-        invoice_number = f'{str(random_number)}-{invoice_prefix}'
+#          # Combine the invoice prefix with the new sequential number
+#         invoice_number = f'{str(random_number)}-{invoice_prefix}'
 
-        # Ensure the invoice number is unique
-        while Invoice.objects.filter(invoice_number=invoice_number).exists():
-              random_number += 1
-              invoice_number = f'J N-{str(random_number)}-{invoice_prefix}'
+#         # Ensure the invoice number is unique
+#         while Invoice.objects.filter(invoice_number=invoice_number).exists():
+#               random_number += 1
+#               invoice_number = f'J N-{str(random_number)}-{invoice_prefix}'
 
 
-        # Create the invoice object
-        invoice = Invoice.objects.create(
-            invoice_number=invoice_number,
-            date=date,
-            company=company if company else None,
-            gst=gst if gst else None,
-            pan=pan if pan else None,
-            tanker=tanker if tanker else None,
-            tanker_cap=tanker_cap if tanker_cap else None,
-            From_add=From_add if  From_add else None,
-            To_add=To_add if  To_add else None,
-            date_dis=date_dis if  date_dis else None,
-            unload=unload if  unload else None,
-            short=short if  short else None,
-            retn=retn if  retn else None,
-            lr_no=lr_no if lr_no else None,
-            Fo_date=Fo_date if  Fo_date else None,
-            To_date=To_date if  To_date else None,
-            d_rate=d_rate if  d_rate else None,
-            par_day=par_day if  par_day else None,
-            total_d=total_d if  total_d else None,
-            total_amount=total_amount  # This will be updated later
-        )
+#         # Create the invoice object
+#         invoice = Invoice.objects.create(
+#             invoice_number=invoice_number,
+#             date=date,
+#             company=company if company else None,
+#             gst=gst if gst else None,
+#             pan=pan if pan else None,
+#             tanker=tanker if tanker else None,
+#             tanker_cap=tanker_cap if tanker_cap else None,
+#             From_add=From_add if  From_add else None,
+#             To_add=To_add if  To_add else None,
+#             date_dis=date_dis if  date_dis else None,
+#             unload=unload if  unload else None,
+#             short=short if  short else None,
+#             retn=retn if  retn else None,
+#             lr_no=lr_no if lr_no else None,
+#             Fo_date=Fo_date if  Fo_date else None,
+#             To_date=To_date if  To_date else None,
+#             d_rate=d_rate if  d_rate else None,
+#             par_day=par_day if  par_day else None,
+#             total_d=total_d if  total_d else None,
+#             total_amount=total_amount  # This will be updated later
+#         )
 
-        # Process the items
-        item_data = request.POST.getlist('item_description')
-        quantities = request.POST.getlist('item_quantity')
-        unit_prices = request.POST.getlist('item_unit_price')
+#         # Process the items
+#         item_data = request.POST.getlist('item_description')
+#         quantities = request.POST.getlist('item_quantity')
+#         unit_prices = request.POST.getlist('item_unit_price')
 
-        # Loop through items and add them to the invoice
-        for i in range(len(item_data)):
-            quantity = int(quantities[i])
-            unit_price = float(unit_prices[i])
+#         # Loop through items and add them to the invoice
+#         for i in range(len(item_data)):
+#             quantity = int(quantities[i])
+#             unit_price = float(unit_prices[i])
 
-            # Calculate the total amount for this item and add it to the invoice
-            total_item_cost = quantity * unit_price
-            # Define GST rates for SGST and CGST (6% each)
-            sgst_rate = 0.06  # 6% SGST
-            cgst_rate = 0.06  # 6% CGST
-            # Calculate SGST and CGST
-            sgst = total_item_cost * sgst_rate
-            cgst = total_item_cost * cgst_rate
-            # total_amount += int(total_item_cost) + int(total_d)
-            total_amount += int(total_item_cost) + int(total_d) + float(sgst) + float(cgst)
+#             # Calculate the total amount for this item and add it to the invoice
+#             total_item_cost = quantity * unit_price
+#             # Define GST rates for SGST and CGST (6% each)
+#             sgst_rate = 0.06  # 6% SGST
+#             cgst_rate = 0.06  # 6% CGST
+#             # Calculate SGST and CGST
+#             sgst = total_item_cost * sgst_rate
+#             cgst = total_item_cost * cgst_rate
+#             # total_amount += int(total_item_cost) + int(total_d)
+#             total_amount += int(total_item_cost) + int(total_d) + float(sgst) + float(cgst)
             
             
-            # Create Item instance and associate it with the invoice
-            Item.objects.create(
-                invoice=invoice,
-                description=item_data[i],
-                quantity=quantity,
-                unit_price=unit_price
-            )
+#             # Create Item instance and associate it with the invoice
+#             Item.objects.create(
+#                 invoice=invoice,
+#                 description=item_data[i],
+#                 quantity=quantity,
+#                 unit_price=unit_price
+#             )
         
-        # After processing items, update the invoice's total amount
-        invoice.total_amount = total_amount
+#         # After processing items, update the invoice's total amount
+#         invoice.total_amount = total_amount
 
-        # Convert the total amount into words
-        total_in_words = num2words(total_amount).title()
+#         # Convert the total amount into words
+#         total_in_words = num2words(total_amount).title()
 
-        # Save the invoice's total amount in words as well, if needed
-        invoice.total_in_words = total_in_words
-        invoice.save()
+#         # Save the invoice's total amount in words as well, if needed
+#         invoice.total_in_words = total_in_words
+#         invoice.save()
 
-        # Redirect to the invoice detail page
-        return redirect('invoice_detail', invoice_id=invoice.id)
-    company=companydetails.objects.all()
-    context={'company':company}
-    return render(request, 'bills/gemini-bill.html', context)
-
-
-
-
-def  geminidetails(request):
-     show=Gemini.objects.all()
-     context={'show':show}
-     return render(request,'bills/show-gemini-bill.html',context)
+#         # Redirect to the invoice detail page
+#         return redirect('invoice_detail', invoice_id=invoice.id)
+#     company=companydetails.objects.all()
+#     context={'company':company}
+#     return render(request, 'bills/gemini-bill.html', context)
 
 
 
-def bills(request):
-    # bill = Gemini.objects.latest('bill_no')
-    bill = Gemini.objects.filter().last()
-    total_kg_sum = bill.total_kg or 0
-    union_charge_sum = bill.union_charge or 0
-# Sum of both totals
-    total_sum = total_kg_sum + union_charge_sum
-    total_in_words = num2words(total_sum)
-    context = {'bill': bill, 'total_sum': total_sum,'total_in_words': total_in_words}
-    return render(request,'bills/bill.html',context)
+
+# def  geminidetails(request):
+#      show=Gemini.objects.all()
+#      context={'show':show}
+#      return render(request,'bills/show-gemini-bill.html',context)
+
+
+
+# def bills(request):
+#     # bill = Gemini.objects.latest('bill_no')
+#     bill = Gemini.objects.filter().last()
+#     total_kg_sum = bill.total_kg or 0
+#     union_charge_sum = bill.union_charge or 0
+# # Sum of both totals
+#     total_sum = total_kg_sum + union_charge_sum
+#     total_in_words = num2words(total_sum)
+#     context = {'bill': bill, 'total_sum': total_sum,'total_in_words': total_in_words}
+#     return render(request,'bills/bill.html',context)
 
 
 
 
 def start_trip(request):
     if request.method == 'POST':
-        trip_id = request.POST.get('trip_id')
-        tanker = request.POST.get('tanker')
-        trip_date = request.POST.get('trip_date')
-        from_id = request.POST.get('from_id')
-        To_id = request.POST.get('To_id')
+        try:
+            # Get data from POST request
+            trip_id = request.POST.get('trip_id')
+            tanker = request.POST.get('tanker')
+            trip_date = request.POST.get('trip_date')
+            from_id = request.POST.get('from_id')
+            To_id = request.POST.get('To_id')
+            drivername = request.POST.get('drivername')
+            f_trip = request.POST.get('f_trip')
+
+            # Check if a trip with this trip_id already exists
+            existing_trip = Trip.objects.filter(trip_id=trip_id).first()
+            if existing_trip:
+                # If a trip with the same trip_id exists, redirect to the 'add_expense' page for that trip
+                return redirect('add_expense', trip_id=existing_trip.trip_id)
+
+            # If no trip with the same trip_id exists, create a new trip
+            if trip_id:
+                trip = Trip.objects.create(
+                    trip_id=trip_id,
+                    tanker=tanker,
+                    trip_date=trip_date,
+                    from_id=from_id,
+                    To_id=To_id,
+                    drivername=drivername,
+                    f_trip=f_trip if f_trip else None
+                )
+                # After creating the trip, redirect to the 'add_expense' page for the newly created trip
+                return redirect('add_expense', trip_id=trip.trip_id)
         
-        # Check if a trip with this trip_id already exists
-        existing_trip = Trip.objects.filter(trip_id=trip_id).first()
-        if existing_trip:
-            # If a trip with the same trip_id exists, redirect to the 'add_expense' page for that trip
-            return redirect('add_expense', trip_id=existing_trip.trip_id)
-        
-        # If no trip with the same trip_id exists, create a new trip
-        if trip_id:
-            trip = Trip.objects.create(
-                trip_id=trip_id, 
-                tanker=tanker, 
-                trip_date=trip_date, 
-                from_id=from_id, 
-                To_id=To_id
-            )
-            # After creating the trip, redirect to the 'add_expense' page for the newly created trip
-            return redirect('add_expense', trip_id=trip.trip_id)
-    
+        except Exception as e:
+            # Catch any general exception and show an error message
+            messages.error(request, f"Please fill the date fields")
+            return redirect('start_trip')  # Redirect to the same page if an error occurs
+
     # For a GET request, or after the POST is processed, get the necessary context data
-    vehicle = Add_Vehicle.objects.all()
-    company = companydetails.objects.all()
-    context = {'vehicle': vehicle, 'company': company}
-    
+    try:
+        vehicle = Add_Vehicle.objects.all()
+        company = companydetails.objects.all()
+        dname = NewDriver_Details.objects.all()
+        context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+    except Exception as e:
+        messages.error(request, f"Error loading data: {str(e)}")
+        context = {'vehicle': [], 'company': [], 'dname': []}  # Empty lists if an error occurs
+
     return render(request, 'exp/start_trip.html', context)
 
 
@@ -1596,7 +1638,7 @@ def add_expense(request, trip_id):
         toll_amount = request.POST.get('toll_amount')
         toll_name = request.POST.get('toll_name')
         category = request.POST.get('category')
-        subCategory = request.POST.get('subCategor')
+        subCategory = request.POST.get('subCategory')
         paid_to = request.POST.get('paid_to')
         amount_given = request.POST.get('amount_given')
         liters = request.POST.get('liters')
@@ -1713,9 +1755,11 @@ def do_update(request,id):
      date = request.POST.get('date')
      from_via = request.POST.get('from_via')
      To_via = request.POST.get('To_via')
-     amount = request.POST.get('amount')  
+     amount = request.POST.get('amount')
+     end_date = request.POST.get('end_date')
   
      upexpense = Expense.objects.get(pk=id)
+     trip_id =upexpense.trip.trip_id
 
      upexpense.trip_general_expenses = trip_general_expenses or None
      upexpense.food_allowance = food_allowance or None
@@ -1745,10 +1789,11 @@ def do_update(request,id):
      upexpense.no_piece = no_piece or None
      upexpense.date = date or None
      upexpense.amount = amount or None
+     upexpense.end_date=end_date or None
 
      upexpense.save()
      messages.success(request, 'Expense updated successfully!')
-     return redirect('start_trip')
+     return redirect('add_expense', trip_id=trip_id)
 
  except Expense.DoesNotExist:
         messages.error(request, 'Expense not found.')
@@ -1776,33 +1821,34 @@ def delete_expense(request, id):
     #     messages.error(request, "Trip has already started. Expense cannot be deleted.")
     #     return redirect('start_trip')
     de=Expense.objects.get(pk=id)
+    trip_id =de.trip.trip_id
     de.delete()
     messages.success(request, "Expense deleted successfully.")
-    return redirect('start_trip')
+    return redirect('add_expense', trip_id=trip_id)
 
 
 
-def end_trip(request, trip_id):
-    if request.method == 'POST':
-        end_time = request.POST.get('end_time')
-    # Get the trip object based on trip_id, handle the case of multiple trips
-    trips = Trip.objects.filter(trip_id=trip_id)
+# def end_trip(request, trip_id):
+#     if request.method == 'POST':
+#         end_time = request.POST.get('end_time')
+#     # Get the trip object based on trip_id, handle the case of multiple trips
+#     trips = Trip.objects.filter(trip_id=trip_id)
 
-    if trips.count() == 1:
-        trip = trips.first()  # If exactly one trip is found
-    elif trips.count() > 1:
-        trip = trips.first()  # If multiple trips, select the first one (you can handle it as needed)
-    else:
-        return render(request, '404.html')  # If no trip found, return 404 or an appropriate response
+#     if trips.count() == 1:
+#         trip = trips.first()  # If exactly one trip is found
+#     elif trips.count() > 1:
+#         trip = trips.first()  # If multiple trips, select the first one (you can handle it as needed)
+#     else:
+#         return render(request, '404.html')  # If no trip found, return 404 or an appropriate response
     
-    # Mark the trip as ended
-    trip.end_time = timezone.now()  # Set the end time
-    trip.is_active = False  # Set is_active to False
-    trip.calculate_total_expense()  # Recalculate the total expenses for the trip
-    trip.save()
+#     # Mark the trip as ended
+#     trip.end_time = timezone.now()  # Set the end time
+#     trip.is_active = False  # Set is_active to False
+#     trip.calculate_total_expense()  # Recalculate the total expenses for the trip
+#     trip.save()
 
-    # Redirect to a page showing the details of the ended trip
-    return render(request, 'exp/end_trip.html', {'trip': trip})
+#     # Redirect to a page showing the details of the ended trip
+#     return render(request, 'exp/end_trip.html', {'trip': trip})
 
 
 def AllTrip(request):
@@ -1811,12 +1857,14 @@ def AllTrip(request):
 
     # Fetch all expense records from the database
     expense = Expense.objects.all()
+    # Pass the trip, expense, and profit/loss data to the template
+    context = {
+        't': t,
+        'expense': expense,
+    }
 
-    # Pass the trip and expense data to the template
-    context = {'t': t, 'expense': expense}
-
-    # Render the 'all_trip.html' template with the context data
     return render(request, 'show/all_trip.html', context)
+
 
 
 def del_allTrip(request,id):
@@ -1843,7 +1891,17 @@ def Login(request):
         
         if user is not None:
             login(request, user)  # Log the user in
-            return redirect('dashboard')  # Redirect to the dashboard page
+
+             # Username ke hisaab se redirect
+            if user.username == 'haider':
+                return redirect('udashboard')  # isko URL me define karo
+            elif user.username == 'Pooja':
+                return redirect('ldashboard')  # isko bhi define karo
+            elif user.username == 'Gemini':
+                return redirect('gemini')  # isko bhi define karo
+            else:
+                return redirect('dashboard')  # Redirect to the dashboard page
+        
         else:
             messages.error(request, ' Name and Password is incorrect !!')
             return redirect('log-in') 
@@ -1857,374 +1915,6 @@ def Login(request):
 def Logout_user(request):
     logout(request)
     return redirect('log-in')
-
-
-
-
-def generate_bill_no():
-    # Generate a simple bill number using the current year and a random number
-    year = now().year
-    random_number = random.randint(1000, 9999)
-    bill_no = f"J.N/{random_number}/{year}"
-    return bill_no
-
-
-def ashland(request):
-
-    if request.method == "POST":
-        # Use .get() to avoid KeyError when fields are missing
-        bill_no = request.POST.get('bill_no')
-        date = request.POST.get('date')
-        company = request.POST.get('company')
-        gst = request.POST.get('gst')
-        pan = request.POST.get('pan')
-        tanker = request.POST.get('tanker')
-        From_add = request.POST.get('From_add')
-        To_add = request.POST.get('To_add')
-        date_dis = request.POST.get('date_dis')
-        kg = request.POST.get('kg')
-        rate = request.POST.get('rate')
-        total_kg = request.POST.get('total_kg')
-        lr_no = request.POST.get('lr_no')
-        Fo_date = request.POST.get('Fo_date')
-        To_date = request.POST.get('To_date')
-        d_rate = request.POST.get('d_rate')
-        par_day = request.POST.get('par_day')
-        total_d = request.POST.get('total_d')
-        tank_c = request.POST.get('tank_c')
-        tanker_cap = request.POST.get('tanker_cap')
-        
-        # If no bill_no is provided, auto-generate one
-        if not bill_no:
-            bill_no = generate_bill_no()
-
-        # Checking if required fields are not empty
-        if not tanker:
-           messages.error(request, 'Please fill in the required fields!')
-           return redirect('ash-bills')
-        else:
-            # Create the Gemini instance, only filling non-empty fields
-            a = Ashland(
-                bill_no=bill_no if bill_no else None,  
-                date=date if date else None,  
-                company=company if company else None,
-                gst=gst if gst else None,
-                pan=pan if pan else None,  
-                tanker=tanker if tanker else None, 
-                From_add=From_add if From_add else None,  
-                To_add=To_add if To_add else None,  
-                date_dis=date_dis if date_dis else None,  
-                tanker_cap=tanker_cap if tanker_cap else None,  
-                kg=kg if kg else None,  
-                rate=rate if rate else None,  
-                total_kg=total_kg if total_kg else None,  
-                lr_no=lr_no if lr_no else None,  
-                Fo_date=Fo_date if Fo_date else None,  
-                To_date=To_date if To_date else None,  
-                d_rate=d_rate if d_rate else None, 
-                par_day=par_day if par_day else None,  
-                total_d=total_d if total_d else None, 
-                tank_c=tank_c if tank_c else None, 
-            )
-            a.save()
-            messages.success(request, 'Bill added successfully!')
-
-  
-    vehicle = Add_Vehicle.objects.all()
-    company = companydetails.objects.all()
-    context = {'vehicle': vehicle, 'company': company}
-    return render(request,'bills/ashland_india_pvt.html',context)
-
-
-def Showashland(request):
-    show=Ashland.objects.all()
-    context={'show':show}
-    return render(request,'bills/show_ashland_pvt.html',context)
-
-def Ash_bills(request):
-    # bill =.objects.latest('bill_no')
-    bill =Ashland.objects.filter().last()
-    total_kg_sum = bill.total_kg or 0
-    total_d_sum = bill.total_d or 0
-    tank_c_sum = bill.tank_c or 0
-# Sum of both totals
-    total_sum = total_kg_sum + total_d_sum + tank_c_sum 
-    total_in_words = num2words(total_sum)
-    context = {'bill': bill, 'total_sum': total_sum,'total_in_words': total_in_words}
-    return render(request,'bills/ashland_bill.html',context)
-
-def  Cargill(request):
-    
-    return render(request,'bills/cargill_india.html')
-
-
-def  Harkaran(request):
-    if request.method == "POST":
-        # Use .get() to avoid KeyError when fields are missing
-        bill = request.POST.get('bill')
-        date = request.POST.get('date')
-        company = request.POST.get('company')
-        gst = request.POST.get('gst')
-        pan = request.POST.get('pan')
-        tanker = request.POST.get('tanker')
-        From_add = request.POST.get('From_add')
-        To_add = request.POST.get('To_add')
-        date_dis = request.POST.get('date_dis')
-        kg = request.POST.get('kg')
-        rate = request.POST.get('rate')
-        total_kg = request.POST.get('total_kg')
-        lr_no = request.POST.get('lr_no')
-        # union_charge = request.POST.get('union_charge')
-        
-        #   # If no bill_no is provided, auto-generate one
-        if not bill:
-            bill = generate_bill_no()
-
-        # Checking if required fields are not empty
-        if not tanker or not From_add or not To_add or not date_dis or not kg or not rate:
-           messages.error(request, 'Please fill in the required fields!')
-           return redirect('harkaran')
-        else:
-            # Create the Gemini instance, only filling non-empty fields
-            h = harkaran(
-                bill=bill if bill else None,  
-                date=date if date else None,  
-                company=company if company else None,
-                gst=gst if gst else None,
-                pan=pan if pan else None,  
-                tanker=tanker if tanker else None, 
-                From_add=From_add if From_add else None,  
-                To_add=To_add if To_add else None,  
-                date_dis=date_dis if date_dis else None,  
-                kg=kg if kg else None,  
-                rate=rate if rate else None,  
-                total_kg=total_kg if total_kg else None,  
-                lr_no=lr_no if lr_no else None,  
-                
-            )
-            h.save()
-            messages.success(request, 'Bill added successfully!')
-
-  
-    vehicle = Add_Vehicle.objects.all()
-    company = companydetails.objects.all()
-    # bill=Gemini.objects.filter().first()
-    context = {'vehicle': vehicle, 'company': company}
-    return render(request,'bills/Harkaran_dass_ved.html',context)
-
-
-
-def create_bill(request):
-    if request.method == 'POST':
-        # Get the static fields from the POST request
-        date = request.POST.get('date')
-        company = request.POST.get('company')
-        gst = request.POST.get('gst')
-        pan = request.POST.get('pan')
-
-        # Save the Bill object
-        bill = Bill.objects.create(
-            date=date,
-            company=company,
-            gst=gst,
-            pan=pan
-        )
-
-        # Loop through dynamic rows (if any) and save them
-        # Assuming each dynamic row has the same naming convention
-        tanker_data = []
-        for i in range(len(request.POST.getlist('tanker'))):
-            tanker = request.POST.getlist('tanker')[i]
-            from_address = request.POST.getlist('From_add')[i]
-            to_address = request.POST.getlist('To_add')[i]
-            dispatch_date = request.POST.getlist('date_dis')[i]
-            tanker_capacity = request.POST.getlist('tanker_cap')[i]
-            lr_num = request.POST.getlist('lr_num')[i]
-            loaded_qty = request.POST.getlist('kg')[i]
-            rate_per_kg = request.POST.getlist('rate')[i]
-            total_amount = request.POST.getlist('total_kg')[i]
-
-            # Save each dynamic row as TankerDetail
-            TankerDetail.objects.create(
-                bill=bill,
-                tanker=tanker,
-                from_address=from_address,
-                to_address=to_address,
-                dispatch_date=dispatch_date,
-                tanker_capacity=tanker_capacity,
-                lr_num=lr_num,
-                loaded_qty=loaded_qty,
-                rate_per_kg=rate_per_kg,
-                total_amount=total_amount
-            )
-
-        # Save other details such as detention charges
-        detention_from_date = request.POST.get('Fo_date')
-        detention_to_date = request.POST.get('To_date')
-        detention_rate = request.POST.get('d_rate')
-        detention_per_day = request.POST.get('par_day')
-        total_detention = request.POST.get('total_d')
-        tanker_washing_charges = request.POST.get('tank_c')
-
-        # You can save detention charges or tanker washing charges in a similar way
-
-        # After saving, show a success message
-        messages.success(request, 'Bill created successfully!')
-        return redirect('cargill')
-
-    return render(request, 'bills/cargill.html')
-
-
-def  VVF(request):
-    
-    return render(request,'bills/vvf_india.html')
-
-def  Anjani(request):
-    
-    return render(request,'bills/anjani_agro.html')
-
-
-
-
-
-#=================Bills ============
-def invoice_detail(request, invoice_id):
-    # Invoice ko fetch karein
-    invoice = get_object_or_404(Invoice, id=invoice_id)
-    
-    # Invoice ki items ko fetch karein
-    items = invoice.items.all()
-    # Invoice aur items ko template mein bhejein
-    return render(request, 'invoice_detail.html', {'invoice': invoice, 'items': items})
-
-
-
-
-
-
-def create_invoice(request):
-    if request.method == "POST":
-        # Get the date for the invoice
-        date = request.POST.get('date')
-        company = request.POST.get('company')
-        gst = request.POST.get('gst')
-        pan = request.POST.get('pan')
-        tanker = request.POST.get('tanker')
-        tanker_cap = request.POST.get('tanker_cap')
-        From_add = request.POST.get('From_add')
-        To_add = request.POST.get('To_add')
-        date_dis = request.POST.get('date_dis')
-        unload = request.POST.get('unload')
-        short = request.POST.get('short')
-        retn = request.POST.get('retn')
-        lr_no = request.POST.get('lr_no')
-        Fo_date = request.POST.get('Fo_date')
-        To_date = request.POST.get('To_date')
-        d_rate = request.POST.get('d_rate')
-        par_day = request.POST.get('par_day')
-        total_d = request.POST.get('total_d')
-
-        # Initialize total amount as 0
-        total_amount = 0.0
-        
-        # Get today's date, but exclude the year for the invoice number
-        today = datetime.date.today()
-        date_str = today.strftime('%m-%y')  # Format as 'MM-DD'
-
-        # Generate the base invoice number (e.g., 'INV-03-25')
-        invoice_prefix = f'{date_str}'
-
-        # Generate a random 6-digit number (you can change the length or characters)
-        # random_number = ''.join(random.choices(string.digits, k=4))
-        # Assume a variable to store the last used number (this would be stored in DB)
-        last_used_number = 1000  # You can get this from your database or other storage
-
-        # Increment the counter for the new invoice
-        random_number = last_used_number + 1
-        last_used_number = random_number  # Save this updated value back to the database
-
-         # Combine the invoice prefix with the new sequential number
-        invoice_number = f'{str(random_number)}-{invoice_prefix}'
-
-        # Ensure the invoice number is unique
-        while Invoice.objects.filter(invoice_number=invoice_number).exists():
-              random_number += 1
-              invoice_number = f'J N-{str(random_number)}-{invoice_prefix}'
-
-
-        # Create the invoice object
-        invoice = Invoice.objects.create(
-            invoice_number=invoice_number,
-            date=date,
-            company=company if company else None,
-            gst=gst if gst else None,
-            pan=pan if pan else None,
-            tanker=tanker if tanker else None,
-            tanker_cap=tanker_cap if tanker_cap else None,
-            From_add=From_add if  From_add else None,
-            To_add=To_add if  To_add else None,
-            date_dis=date_dis if  date_dis else None,
-            unload=unload if  unload else None,
-            short=short if  short else None,
-            retn=retn if  retn else None,
-            lr_no=lr_no if lr_no else None,
-            Fo_date=Fo_date if  Fo_date else None,
-            To_date=To_date if  To_date else None,
-            d_rate=d_rate if  d_rate else None,
-            par_day=par_day if  par_day else None,
-            total_d=total_d if  total_d else None,
-            total_amount=total_amount  # This will be updated later
-        )
-
-        # Process the items
-        item_data = request.POST.getlist('item_description')
-        quantities = request.POST.getlist('item_quantity')
-        unit_prices = request.POST.getlist('item_unit_price')
-
-        # Loop through items and add them to the invoice
-        for i in range(len(item_data)):
-            quantity = int(quantities[i])
-            unit_price = float(unit_prices[i])
-
-            # Calculate the total amount for this item and add it to the invoice
-            total_item_cost = quantity * unit_price
-            # Define GST rates for SGST and CGST (6% each)
-            sgst_rate = 0.06  # 6% SGST
-            cgst_rate = 0.06  # 6% CGST
-            # Calculate SGST and CGST
-            sgst = total_item_cost * sgst_rate
-            cgst = total_item_cost * cgst_rate
-            # total_amount += int(total_item_cost) + int(total_d)
-            total_amount += int(total_item_cost) + int(total_d) + float(sgst) + float(cgst)
-            
-            
-            # Create Item instance and associate it with the invoice
-            Item.objects.create(
-                invoice=invoice,
-                description=item_data[i],
-                quantity=quantity,
-                unit_price=unit_price
-            )
-        
-        # After processing items, update the invoice's total amount
-        invoice.total_amount = total_amount
-
-        # Convert the total amount into words
-        total_in_words = num2words(total_amount).title()
-
-        # Save the invoice's total amount in words as well, if needed
-        invoice.total_in_words = total_in_words
-        invoice.save()
-
-        # Redirect to the invoice detail page
-        return redirect('invoice_detail', invoice_id=invoice.id)
-    company=companydetails.objects.all()
-    context={'company':company}
-    return render(request, 'create_invoice.html',context)
-
-
-
-
 
 
 # ---------------------Loan-----------------------#
@@ -2276,6 +1966,11 @@ def showloan(request):
     loanshow=Addloan.objects.all()
     context={'loanshow':loanshow}
     return render(request,'show/show_loan.html',context)
+
+def ldelete(request,id):
+    ldel=Addloan.objects.get(id=id)
+    ldel.delete()
+    return redirect('loan-show')
 
 
 
@@ -2369,6 +2064,57 @@ def ShowLoan(request):
     Loan=DriverLoan.objects.all()
     return render(request,'show/show_driver_loan.html',{'Loan':Loan})
 
+def deleteloan(request,id):
+    d=DriverLoan.objects.get(pk=id)
+    d.delete()
+    return redirect('show-loan')
+
+def updriverloan(request,id):
+    updatedl=DriverLoan.objects.get(pk=id)
+    context={'updatedl':updatedl}
+    return render(request,'update_driver_loan.html',context)
+
+def do_update_dloan(request,id):
+      tankerno=request.POST.get('tankerno')
+      From_address=request.POST.get('From_address')
+      To_address=request.POST.get('To_address')
+      drivername=request.POST.get('drivername')
+      trip_date=request.POST.get('trip_date')
+      date=request.POST.get('date')
+      load=request.POST.get('load')
+      unload=request.POST.get('unload')
+      short_kg=request.POST.get('short_kg')
+      allow_kg = request.POST.get('allow_kg')
+      actual_short = request.POST.get('actual_short')
+      rate = request.POST.get('rate')
+      short_amount = request.POST.get('short_amount')
+      previous_loan = request.POST.get('previous_loan')
+      loan_amount = request.POST.get('loan_amount')
+      total = request.POST.get('total')
+      updatedl=DriverLoan.objects.get(pk=id)
+
+      updatedl.tankerno=tankerno
+      updatedl.From_address=From_address
+      updatedl.To_address=To_address
+      updatedl.drivername=drivername
+      updatedl.trip_date=trip_date
+      updatedl.date=date
+      updatedl.load=load
+      updatedl.unload=unload
+      updatedl.short_kg=short_kg
+      updatedl.allow_kg=allow_kg
+      updatedl.actual_short=actual_short
+      updatedl.rate=rate
+      updatedl.short_amount=short_amount
+      updatedl.previous_loan=previous_loan
+      updatedl.loan_amount=loan_amount
+      updatedl.total=total
+      updatedl.save()
+      messages.success(request, 'Driver Loan Details Update Successfully!')
+      return redirect('show-loan')
+
+
+
 
 
 def generate_bill(request):
@@ -2461,3 +2207,1458 @@ def send_test_email(request):
         fail_silently=False,
     )
     return HttpResponse("Email sent successfully!")
+
+
+
+def addtolls(request):
+    if request.method =="POST":
+      tankerno  = request.POST['tankerno']
+      driver_names = request.POST['driver_names']
+      From_address = request.POST['From_address']
+      To_address = request.POST['To_address']
+      trip_date = request.POST['trip_date']
+      amount=request.POST['amount']
+      status = request.POST['status']
+      if  Toll_Details.objects.filter(tankerno=tankerno,trip_date=trip_date).exists():
+          messages.error(request, 'Toll already exists !!')
+          return redirect('add-toll')
+      else:
+          toll=Toll_Details(tankerno=tankerno,driver_names=driver_names,trip_date=trip_date,From_address=From_address,To_address=To_address,amount=amount,status=status)
+          toll.save()
+          messages.success(request, 'Toll details added successfully !!')
+          return redirect('toll-details')
+    vehicle=Add_Vehicle.objects.all()
+    # dname=DriverName.objects.all()
+    company=companydetails.objects.all()
+    dname=NewDriver_Details.objects.all()
+    context={'vehicle':vehicle,'company':company,'dname':dname}
+    return render(request,'add/add-toll.html', context)
+
+
+# def tolldetails(request):
+#     show=Toll_Details.objects.all()
+#     total_toll_sum =show.aggregate(Sum('amount'))['amount__sum']
+#     context={'show':show,'total_toll_sum':total_toll_sum}
+#     return render(request,'show/show-toll.html',context)
+# def tolldetails(request):
+#     from_date = request.GET.get('from_date')
+#     to_date = request.GET.get('to_date')
+
+#     show = Toll_Details.objects.all()
+
+#     if from_date and to_date:
+#         try:
+#             from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
+#             to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
+#             show = show.filter(trip_date__range=(from_date_obj, to_date_obj))
+#         except ValueError:
+#             pass  # Invalid date format, ignore the filter
+
+#     total_toll_sum = show.aggregate(Sum('amount'))['amount__sum'] or 0
+
+#     context = {
+#         'show': show,
+
+#         'total_toll_sum': total_toll_sum
+#     }
+#     return render(request, 'show/show-toll.html', context)
+from django.shortcuts import render
+from datetime import datetime
+from django.db.models import Sum
+from .models import Toll_Details  # Replace with your actual model name
+
+def tolldetails(request):
+    # Get filters from GET parameters
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+    tankerno = request.GET.get('tankerno')
+    driver_names = request.GET.get('driver_names')
+    from_address = request.GET.get('From_address')
+    to_address = request.GET.get('To_address')
+
+    show = Toll_Details.objects.all()
+
+    # Apply filters
+    if tankerno:
+        show = show.filter(tankerno__icontains=tankerno)
+
+    if driver_names:
+        show = show.filter(driver_names__icontains=driver_names)
+
+    if from_address:
+        show = show.filter(From_address__icontains=from_address)
+
+    if to_address:
+        show = show.filter(To_address__icontains=to_address)
+
+    if from_date and to_date:
+        try:
+            from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
+            to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
+            show = show.filter(trip_date__range=(from_date_obj, to_date_obj))
+        except ValueError:
+            pass  # Invalid date format
+
+    # Calculate total toll amount
+    total_toll_sum = show.aggregate(Sum('amount'))['amount__sum'] or 0
+
+    context = {
+        'show': show,
+        'total_toll_sum': total_toll_sum,
+    }
+    return render(request, 'show/show-toll.html', context)
+
+
+
+def tolldelete(request,id):
+    d=Toll_Details.objects.get(pk=id)
+    d.delete()
+    return redirect('toll-details')
+
+
+def updatedelete(request,id):
+    uptoll=Toll_Details.objects.get(pk=id)
+    context={'uptoll':uptoll}
+    return render(request,'update_toll.html',context)
+
+def doupdate_toll(request,id):
+     tankerno  = request.POST.get('tankerno')
+     driver_names = request.POST.get('driver_names')
+     From_address = request.POST.get('From_address')
+     To_address = request.POST.get('To_address')
+     trip_date = request.POST.get('trip_date')
+     amount=request.POST.get('amount')
+     status = request.POST.get('status')
+
+     uptoll=Toll_Details.objects.get(pk=id)
+     uptoll.tankerno=tankerno
+     uptoll.driver_names=driver_names
+     uptoll.From_address=From_address
+     uptoll.To_address=To_address
+     uptoll.trip_date=trip_date
+     uptoll.amount=amount
+     uptoll.status=status
+     uptoll.save()
+     messages.success(request, 'Toll details Update successfully !!')
+     return redirect('toll-details')
+
+    
+
+
+def AddPetrolp(request):
+    if request.method=="POST":
+        name=request.POST['name']
+        if AddPetrolPump.objects.filter(name=name).exists():
+           messages.error(request, 'Petrol Pump already exists !!')
+           return redirect('add-petrol') 
+        else:
+            pname=AddPetrolPump(name=name)
+            pname.save()
+            messages.success(request, 'Petrol Pump added successfully !!')
+    return render(request,'add/add_petrol_pump.html')
+
+
+def showpertol(request):
+    showpump=AddPetrolPump.objects.all()
+    context={'showpump':showpump}
+    return render(request,'show/petrol_pump.html',context)
+    
+
+def dpertol(request,id):
+    dpump=AddPetrolPump.objects.get(pk=id)
+    dpump.delete()
+    return redirect('s-petrol')
+    
+
+##================Client Dashborad===================
+
+def cgemini(request):
+    showg = Clientgemini.objects.all().order_by('-create_date')[:3]
+    context={'showg':showg}
+    return render(request,'client/gemini.html',context)
+
+
+def ordergemini(request):
+    return render(request,'client/gemini_form.html')
+    
+
+import os
+# def generate_order_id():
+#     date = datetime.now().strftime("%Y")
+#     rand = str(random.randint(100, 999)).zfill(3)
+#     return f"GEM-{rand}{date}"
+def generate_order_id():
+    date = datetime.now().strftime("%Y")
+    serial_file = f"serial_{date}.txt"  # Year-wise file
+
+    if os.path.exists(serial_file):
+        with open(serial_file, "r") as file:
+            serial = int(file.read().strip()) + 1
+    else:
+        serial = 1  # Start from 1 if file for this year doesn't exist
+
+    with open(serial_file, "w") as file:
+        file.write(str(serial))
+
+    serial_str = str(serial).zfill(3)  # Pad with zeros to make 3 digits
+    return f"GEM-{serial_str}{date}"
+
+def geminiorder(request):
+    if request.method == "POST":
+       
+       
+        # Auto-generate order ID
+        order_id = generate_order_id()
+
+        # Other form fields
+        tanker_type = request.POST['tanker_type']
+        tanker_cpa = request.POST['tanker_cpa']
+        fadd = request.POST['fadd']
+        tadd = request.POST['tadd']
+        ddate = request.POST['ddate']
+
+        # Check uniqueness
+        if  Clientgemini.objects.filter(fadd=fadd,tadd=tadd,ddate=ddate).exists():
+            messages.error(request, 'Order already exists !!')
+            return redirect('order-gemini')
+        else:
+         # Save order
+            gorder = Clientgemini(
+            order_id=order_id,
+            tanker_type=tanker_type,
+            tanker_cpa=tanker_cpa,
+            fadd=fadd,
+            tadd=tadd,
+            ddate=ddate
+        )
+        gorder.save()
+        messages.success(request, f'Order-: {order_id} add successfully! ')
+        return redirect('order-show')
+
+    return render(request, 'client/gemini_form.html')
+
+
+def gorder(request):
+    gshow=Clientgemini.objects.all()
+    context={'gshow':gshow}
+    return render (request,'client/show.html',context)
+
+
+def companyorder(request):
+    return render (request,'fresh_order.html')
+
+
+#=====================Fresh Order By Companies======================
+
+
+def freshgemini(request):
+    fshow=Clientgemini.objects.all()
+    context={'fshow':fshow}
+    return render(request,'fresh_order/gemini_order.html',context)
+
+def plangemini(request):
+    return render(request,'fresh_order/plan_gemini.html')
+
+
+# def create_bill(request):
+#     if request.method == 'POST':
+#         customer_name = request.POST.get('customer_name')
+#         descriptions = request.POST.getlist('description')
+#         quantities = request.POST.getlist('quantity')
+#         rates = request.POST.getlist('rate')
+
+#         total = 0
+#         for q, r in zip(quantities, rates):
+#             total += int(q) * float(r)
+
+#         bill = Bills.objects.create(customer_name=customer_name, total_amount=total)
+
+#         for desc, qty, rate in zip(descriptions, quantities, rates):
+#             BillItem.objects.create(
+#                 bill=bill,
+#                 description=desc,
+#                 quantity=int(qty),
+#                 rate=float(rate)
+#             )
+#         return redirect('bill_list')
+
+#     return render(request, 'create_bill.html')
+
+
+# def bill_list(request):
+#     bills = Bills.objects.all()
+#     return render(request, 'bill_list.html', {'bills': bills})
+
+
+# def bill_detail(request, bill_id):
+#     bill = get_object_or_404(Bills, id=bill_id)
+#     return render(request, 'bill_detail.html', {'bill': bill})
+
+
+
+#================Billing System===============================
+
+def Billing(request):
+    adani=Invoice.objects.count()
+    gemini=GInvoice.objects.count()
+    akkinword=Aak_in_Invoice.objects.count()
+    context={'adani':adani,'gemini':gemini,'akkinword':akkinword}
+    return render(request,'billing.html',context)
+
+
+
+# def adani_bill(request):
+#     if request.method == "POST":
+#         # Step 1: Extract invoice data
+#         date = request.POST.get('date')
+#         company = request.POST.get('company')
+#         gst = request.POST.get('gst')  # This is buyer GST (To GST)
+#         pan = request.POST.get('pan')
+#         tanker = request.POST.get('tanker')
+#         tanker_cap = request.POST.get('tanker_cap')
+#         From_add = request.POST.get('From_add')
+#         To_add = request.POST.get('To_add')
+#         date_dis = request.POST.get('date_dis')
+#         unload = request.POST.get('unload')
+#         short = request.POST.get('short')
+#         retn = request.POST.get('retn')
+#         lr_no = request.POST.get('lr_no')
+#         Fo_date = request.POST.get('Fo_date')
+#         To_date = request.POST.get('To_date')
+#         d_rate = request.POST.get('d_rate')
+#         par_day = request.POST.get('par_day')
+#         total_d = request.POST.get('total_d')
+#         sac = request.POST.get('sac')
+#         charges = request.POST.get('charges')
+#         hsac = request.POST.get('hsac')
+
+#         # Step 2: Generate invoice number
+#         invoice_number = generate_bill_no()
+        
+
+#         if Invoice.objects.filter(date=date,company=company).exists():
+#            messages.error(request, 'Bill already Exists!!')
+#            return redirect('create_bill')
+#         else:
+          
+#         # Step 3: Create empty invoice
+#          invoice = Invoice.objects.create(
+#             invoice_number=invoice_number,
+#             date=date,
+#             company=company,
+#             gst=gst,
+#             pan=pan,
+#             tanker=tanker,
+#             tanker_cap=tanker_cap,
+#             From_add=From_add,
+#             To_add=To_add,
+#             date_dis=date_dis,
+#             unload=unload,
+#             short=short,
+#             retn=retn,
+#             lr_no=lr_no,
+#             sac=sac if sac else 0,
+#             charges=charges if total_d else None,
+#             hsac=hsac if hsac else 0,
+#             Fo_date=Fo_date if Fo_date else None,
+#             To_date=To_date if Fo_date else None,
+#             d_rate=d_rate if total_d else 0,
+#             par_day=par_day if total_d else None,
+#             total_d=total_d if total_d else 0,
+#             total_amount=0.0
+#         )
+
+#         # Step 4: Handle item data
+#         item_data = request.POST.getlist('item_description')
+#         quantities = request.POST.getlist('item_quantity')
+#         unit_prices = request.POST.getlist('item_unit_price')
+
+#         subtotal = 0.0
+
+#         for i in range(len(item_data)):
+#             try:
+#                 quantity = int(quantities[i])
+#                 unit_price = float(unit_prices[i])
+#                 line_total = quantity * unit_price
+#                 subtotal += line_total
+
+#                 Item.objects.create(
+#                     invoice=invoice,
+#                     description=item_data[i],
+#                     quantity=quantity,
+#                     unit_price=unit_price
+#                 )
+#             except (ValueError, IndexError):
+#                 continue
+        
+#         g_amount = float(total_d)  # or Decimal(total_d)
+
+#         #Step 5: Calculate tax
+#         cgst_r = 0.09
+#         sgst_r = 0.09
+#         igst_r = 0.18
+
+#         # GST-based logic
+#         company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+#         from_gst_code = extract_gst_code(company_gst)  # Your GST
+#         to_gst_code = extract_gst_code(gst)  # Customer GST
+
+#         if from_gst_code == '27' and to_gst_code == '27':
+#             # Intra-state (Maharashtra)
+#             c_gst = round(g_amount * cgst_r, 2)
+#             s_gst = round(g_amount * sgst_r, 2)
+#             i_gst = 0.0
+#         else:
+#             # Inter-state
+#             c_gst = 0.0
+#             s_gst = 0.0
+#             i_gst = round(g_amount * igst_r, 2)
+
+#         g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+     
+
+        
+
+#         basic_amount = subtotal 
+
+#         cgst_rate = 0.06
+#         sgst_rate = 0.06
+#         igst_rate = 0.12
+
+#         # GST-based logic
+#         company_gst = "27XXXXX0000Z5A" 
+#         from_gst_code = extract_gst_code(company_gst)  # Your GST
+#         to_gst_code = extract_gst_code(gst)  # Customer GST
+
+#         if from_gst_code == '27' and to_gst_code == '27':
+#             # Intra-state (Maharashtra)
+#             cgst = round(basic_amount * cgst_rate, 2)
+#             sgst = round(basic_amount * sgst_rate, 2)
+#             igst = 0.0
+#         else:
+#             # Inter-state
+#             cgst = 0.0
+#             sgst = 0.0
+#             igst = round(basic_amount * igst_rate, 2)
+
+#         fright_total = round(basic_amount + cgst + sgst + igst, 2)
+#         grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
+
+
+
+#         # Step 6: Save tax and total
+#         invoice.c_gst = c_gst
+#         invoice.s_gst = s_gst
+#         invoice.i_gst = i_gst
+#         invoice.total_amount = basic_amount
+#         invoice.cgst = cgst
+#         invoice.sgst = sgst
+#         invoice.igst = igst
+#         invoice.total_d = total_d
+#         invoice.g_total = g_total
+#         invoice.fright_total = fright_total 
+#         invoice.grand_total = grand_total
+#         invoice.save()
+#         messages.success(request, 'Bill generate successfully !!')
+
+#         return redirect('invoice_list')
+
+#     vehicle = Add_Vehicle.objects.all()
+#     company = companydetails.objects.all()
+#     dname = NewDriver_Details.objects.all()
+#     context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+#     return render(request, 'bills/adani.html', context)
+
+
+
+
+
+#========================ADANI BILL====================================================
+def generate_bill_no():
+    now = datetime.now()  # <-- correct function call
+    month = f"{now.month:02d}"  # Zero-padded month (e.g., 05)
+    year = now.year
+    random_number = random.randint(1000, 9999)  # 4-digit random
+
+    # Financial year logic
+    if now.month >= 4:  # April se new financial year
+        fy_start = str(year)[-2:]
+        fy_end = str(year + 1)[-2:]
+    else:
+        fy_start = str(year - 1)[-2:]
+        fy_end = str(year)[-2:]
+
+    financial_year = f"{fy_start}-{fy_end}"
+
+    # Final bill number
+    bill_no = f"{random_number}/JN/{month}/{financial_year}"
+    return bill_no
+
+
+def extract_gst_code(gst_number):
+    return gst_number[:2] if gst_number and isinstance(gst_number, str) and len(gst_number) >= 2 else ''
+
+
+def extract_state(address):
+    try:
+        return address.split(',')[-1].strip().lower()
+    except:
+        return ''
+
+
+
+
+def adani_bill(request):
+    if request.method == "POST":
+        # Step 1: Extract invoice data
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        tanker = request.POST.get('tanker')
+        tanker_cap = request.POST.get('tanker_cap')
+        From_add = request.POST.get('From_add')
+        To_add = request.POST.get('To_add')
+        date_dis = request.POST.get('date_dis')
+        unload = request.POST.get('unload')
+        short = request.POST.get('short')
+        retn = request.POST.get('retn')
+        lr_no = request.POST.get('lr_no')
+        Fo_date = request.POST.get('Fo_date')
+        To_date = request.POST.get('To_date')
+        d_rate = request.POST.get('d_rate')
+        par_day = request.POST.get('par_day')
+        total_d = request.POST.get('total_d')
+        sac = request.POST.get('sac')
+        charges = request.POST.get('charges')
+        hsac = request.POST.get('hsac')
+
+        # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
+        
+
+        if Invoice.objects.filter(date=date,company=company).exists():
+           messages.error(request, 'Bill already Exists!!')
+           return redirect('create_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = Invoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            tanker=tanker,
+            tanker_cap=tanker_cap,
+            From_add=From_add,
+            To_add=To_add,
+            date_dis=date_dis,
+            unload=unload,
+            short=short,
+            retn=retn,
+            lr_no=lr_no,
+            sac=sac if sac else 0,
+            charges=charges if total_d else None,
+            hsac=hsac if hsac else 0,
+            Fo_date=Fo_date if Fo_date else None,
+            To_date=To_date if Fo_date else None,
+            d_rate=d_rate if total_d else 0,
+            par_day=par_day if total_d else None,
+            total_d=total_d if total_d else 0,
+            total_amount=0.0
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price
+                subtotal += line_total
+
+                Item.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price
+                )
+            except (ValueError, IndexError):
+                continue
+        
+        g_amount = float(total_d)  # or Decimal(total_d)
+
+        #Step 5: Calculate tax
+        cgst_r = 0.09
+        sgst_r = 0.09
+        igst_r = 0.18
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            c_gst = round(g_amount * cgst_r, 2)
+            s_gst = round(g_amount * sgst_r, 2)
+            i_gst = 0.0
+        else:
+            # Inter-state
+            c_gst = 0.0
+            s_gst = 0.0
+            i_gst = round(g_amount * igst_r, 2)
+
+        g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+     
+
+        
+
+        basic_amount = subtotal 
+
+        cgst_rate = 0.06
+        sgst_rate = 0.06
+        igst_rate = 0.12
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
+
+            # Check decimal part
+        decimal_part = grand_total - int(grand_total)
+
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
+
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
+        
+
+
+
+        # Step 6: Save tax and total
+        invoice.c_gst = c_gst
+        invoice.s_gst = s_gst
+        invoice.i_gst = i_gst
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.total_d = total_d
+        invoice.g_total = g_total
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        # invoice. total_in_words = num2words(formatted_total)
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "") + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('invoice_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/adani.html', context)
+
+
+def invoice_list(request):
+    invoices = Invoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'invoice_list.html', {'invoices': invoices})
+
+
+def invoice_detail(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    items = Item.objects.filter(invoice=invoice)
+    return render(request, 'invoice_detail.html', {'invoice': invoice, 'items': items})
+
+
+#========================GEMINI BILL====================================================
+def gemini_bill(request):
+    if request.method == "POST":
+        # Step 1: Extract invoice data
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        tanker = request.POST.get('tanker')
+        tanker_cap = request.POST.get('tanker_cap')
+        From_add = request.POST.get('From_add')
+        To_add = request.POST.get('To_add')
+        date_dis = request.POST.get('date_dis')
+        # unload = request.POST.get('unload')
+        # short = request.POST.get('short')
+        # retn = request.POST.get('retn')
+        lr_no = request.POST.get('lr_no')
+        Fo_date = request.POST.get('Fo_date')
+        To_date = request.POST.get('To_date')
+        d_rate = request.POST.get('d_rate')
+        par_day = request.POST.get('par_day')
+        total_d = request.POST.get('total_d')
+        sac = request.POST.get('sac')
+        charges = request.POST.get('charges')
+        hsac = request.POST.get('hsac')
+
+        # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
+        
+
+        if GInvoice.objects.filter(date=date,company=company).exists():
+           messages.error(request, 'Bill already Exists!!')
+           return redirect('create_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = GInvoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            tanker=tanker,
+            # tanker_cap=tanker_cap,
+            From_add=From_add,
+            To_add=To_add,
+            date_dis=date_dis,
+            # unload=unload,
+            # short=short,
+            # retn=retn,
+            lr_no=lr_no,
+            sac=sac if sac else 0,
+            charges=charges if total_d else None,
+            hsac=hsac if hsac else 0,
+            Fo_date=Fo_date if Fo_date else None,
+            To_date=To_date if Fo_date else None,
+            d_rate=d_rate if total_d else 0,
+            par_day=par_day if total_d else None,
+            total_d=total_d if total_d else 0,
+            total_amount=0.0
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price + 1500
+                subtotal += line_total
+                
+
+                GItem.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price
+                )
+            except (ValueError, IndexError):
+                continue
+        
+        g_amount = float(total_d)  # or Decimal(total_d)
+
+        #Step 5: Calculate tax
+        cgst_r = 0.09
+        sgst_r = 0.09
+        igst_r = 0.18
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            c_gst = round(g_amount * cgst_r, 2)
+            s_gst = round(g_amount * sgst_r, 2)
+            i_gst = 0.0
+        else:
+            # Inter-state
+            c_gst = 0.0
+            s_gst = 0.0
+            i_gst = round(g_amount * igst_r, 2)
+
+        g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+     
+
+        
+
+        basic_amount = subtotal 
+
+        cgst_rate = 0.06
+        sgst_rate = 0.06
+        igst_rate = 0.12
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
+       # Check decimal part
+        decimal_part = grand_total - int(grand_total)
+
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
+
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
+
+
+
+        # Step 6: Save tax and total
+        invoice.c_gst = c_gst
+        invoice.s_gst = s_gst
+        invoice.i_gst = i_gst
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.total_d = total_d
+        invoice.g_total = g_total
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "") + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('ginvoice_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/gemini.html', context)
+
+
+def Ginvoice_list(request):
+    ginvoice = GInvoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/gemini_list.html', {'ginvoice': ginvoice})
+
+
+def Ginvoice_detail(request, invoice_id):
+    invoice = get_object_or_404(GInvoice, id=invoice_id)
+    items = GItem.objects.filter(invoice=invoice)
+    return render(request, 'bills/gemini_details.html', {'invoice': invoice, 'items': items})
+
+
+#========================Ashland BILL====================================================
+def ashland_bill(request):
+
+    if request.method == "POST":
+        # Step 1: Extract invoice data
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        tanker = request.POST.get('tanker')
+        tanker_cap = request.POST.get('tanker_cap')
+        From_add = request.POST.get('From_add')
+        To_add = request.POST.get('To_add')
+        date_dis = request.POST.get('date_dis')
+        # unload = request.POST.get('unload')
+        # short = request.POST.get('short')
+        # retn = request.POST.get('retn')
+        lr_no = request.POST.get('lr_no')
+        Fo_date = request.POST.get('Fo_date')
+        To_date = request.POST.get('To_date')
+        d_rate = request.POST.get('d_rate')
+        par_day = request.POST.get('par_day')
+        total_d = request.POST.get('total_d')
+        t_rate = request.POST.get('t_rate')
+        tpar_day = request.POST.get('tpar_day')
+        total_t = request.POST.get('total_t')
+        sac = request.POST.get('sac')
+        charges = request.POST.get('charges')
+        hsac = request.POST.get('hsac')
+        tcharges = request.POST.get('tcharges')
+        thsac = request.POST.get('thsac')
+
+        # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
+        
+
+        if AInvoice.objects.filter(date=date,company=company).exists():
+           messages.error(request, 'Bill already Exists!!')
+           return redirect('create_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = AInvoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            tanker=tanker,
+            # tanker_cap=tanker_cap,
+            From_add=From_add,
+            To_add=To_add,
+            date_dis=date_dis,
+            # unload=unload,
+            # short=short,
+            # retn=retn,
+            lr_no=lr_no,
+            sac=sac if sac else 0,
+            charges=charges if charges else None,
+            hsac=hsac if hsac else 0,
+            tcharges=tcharges if tcharges else None,
+            thsac=thsac if thsac else 0,
+            Fo_date=Fo_date if Fo_date else None,
+            To_date=To_date if Fo_date else None,
+            d_rate=d_rate if d_rate else 0,
+            par_day=par_day if par_day else None,
+            total_d=total_d if total_d else 0,
+            t_rate=t_rate if t_rate else 0,
+            tpar_day=tpar_day if tpar_day else None,
+            total_t=total_t if total_t else 0,
+            total_amount=0.0
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price + 0
+                subtotal += line_total
+
+                AItem.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price
+                )
+            except (ValueError, IndexError):
+                continue
+        
+        g_amount = float(total_d)  # or Decimal(total_d)
+
+        #Step 5: Calculate tax
+        cgst_r = 0.09
+        sgst_r = 0.09
+        igst_r = 0.18
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            c_gst = round(g_amount * cgst_r, 2)
+            s_gst = round(g_amount * sgst_r, 2)
+            i_gst = 0.0
+        else:
+            # Inter-state
+            c_gst = 0.0
+            s_gst = 0.0
+            i_gst = round(g_amount * igst_r, 2)
+
+        g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+     
+
+        
+
+        basic_amount = subtotal 
+
+        cgst_rate = 0.06
+        sgst_rate = 0.06
+        igst_rate = 0.12
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
+
+
+
+        # Step 6: Save tax and total
+        invoice.c_gst = c_gst
+        invoice.s_gst = s_gst
+        invoice.i_gst = i_gst
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.total_d = total_d
+        invoice.g_total = g_total
+        invoice.fright_total = fright_total 
+        invoice.grand_total = grand_total
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('ainvoice_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/Ashland/ashland.html', context)
+
+
+def Ainvoice_list(request):
+    ginvoice = AInvoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/Ashland/ashland_list.html', {'ginvoice': ginvoice})
+
+
+def Ainvoice_detail(request, invoice_id):
+    invoice = get_object_or_404(AInvoice, id=invoice_id)
+    items = AItem.objects.filter(invoice=invoice)
+    return render(request, 'bills/Ashland/ashland_details.html', {'invoice': invoice, 'items': items})
+
+
+#========================CARGILL BILL====================================================
+
+
+
+#========================AAK INWORD BILL====================================================
+
+def aakin_bill(request):
+    if request.method == "POST":
+        # Step 1: Extract invoice data
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        tanker = request.POST.get('tanker')
+        tanker_cap = request.POST.get('tanker_cap')
+        From_add = request.POST.get('From_add')
+        To_add = request.POST.get('To_add')
+        date_dis = request.POST.get('date_dis')
+        unload = request.POST.get('unload')
+        short = request.POST.get('short')
+        retn = request.POST.get('retn')
+        lr_no = request.POST.get('lr_no')
+        Fo_date = request.POST.get('Fo_date')
+        To_date = request.POST.get('To_date')
+        d_rate = request.POST.get('d_rate')
+        par_day = request.POST.get('par_day')
+        total_d = request.POST.get('total_d')
+        sac = request.POST.get('sac')
+        charges = request.POST.get('charges')
+        hsac = request.POST.get('hsac')
+
+        # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
+        
+
+        if Aak_in_Invoice.objects.filter(date=date,company=company).exists():
+           messages.error(request, 'Bill already Exists!!')
+           return redirect('create_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = Aak_in_Invoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            tanker=tanker,
+            tanker_cap=tanker_cap,
+            From_add=From_add,
+            To_add=To_add,
+            date_dis=date_dis,
+            unload=unload,
+            short=short,
+            retn=retn,
+            lr_no=lr_no,
+            sac=sac if sac else 0,
+            charges=charges if total_d else None,
+            hsac=hsac if hsac else 0,
+            Fo_date=Fo_date if Fo_date else None,
+            To_date=To_date if Fo_date else None,
+            d_rate=d_rate if total_d else 0,
+            par_day=par_day if total_d else None,
+            total_d=total_d if total_d else 0,
+            total_amount=0.0
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price
+                subtotal += line_total
+
+                Aak_in_Item.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price
+                )
+            except (ValueError, IndexError):
+                continue
+        
+        g_amount = float(total_d)  # or Decimal(total_d)
+
+        #Step 5: Calculate tax
+        cgst_r = 0.09
+        sgst_r = 0.09
+        igst_r = 0.18
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            c_gst = round(g_amount * cgst_r, 2)
+            s_gst = round(g_amount * sgst_r, 2)
+            i_gst = 0.0
+        else:
+            # Inter-state
+            c_gst = 0.0
+            s_gst = 0.0
+            i_gst = round(g_amount * igst_r, 2)
+
+        g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+     
+
+        
+
+        basic_amount = subtotal 
+
+        cgst_rate = 0.06
+        sgst_rate = 0.06
+        igst_rate = 0.12
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
+
+            # Check decimal part
+        decimal_part = grand_total - int(grand_total)
+
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
+
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
+        
+
+
+
+        # Step 6: Save tax and total
+        invoice.c_gst = c_gst
+        invoice.s_gst = s_gst
+        invoice.i_gst = i_gst
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.total_d = total_d
+        invoice.g_total = g_total
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        # invoice. total_in_words = num2words(formatted_total)
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "") + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('Aak_Inword_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/Aak_Inword/aak_india.html', context)
+
+
+def aakin_list(request):
+    invoices = Aak_in_Invoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/Aak_Inword/aakin_list.html', {'invoices': invoices})
+
+
+def aakin_detail(request, invoice_id):
+    invoice = get_object_or_404(Aak_in_Invoice, id=invoice_id)
+    items = Aak_in_Item.objects.filter(invoice=invoice)
+    return render(request, 'bills/Aak_Inword/aakin_detail.html', {'invoice': invoice, 'items': items})
+
+
+
+#========================VVF TALOJA BILL====================================================
+
+def vvft_bill(request):
+    if request.method == "POST":
+        # Step 1: Extract invoice data
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        tanker = request.POST.get('tanker')
+        tanker_cap = request.POST.get('tanker_cap')
+        From_add = request.POST.get('From_add')
+        To_add = request.POST.get('To_add')
+        date_dis = request.POST.get('date_dis')
+        unload = request.POST.get('unload')
+        short = request.POST.get('short')
+        retn = request.POST.get('retn')
+        lr_no = request.POST.get('lr_no')
+        Fo_date = request.POST.get('Fo_date')
+        To_date = request.POST.get('To_date')
+        d_rate = request.POST.get('d_rate')
+        par_day = request.POST.get('par_day')
+        total_d = request.POST.get('total_d')
+        sac = request.POST.get('sac')
+        charges = request.POST.get('charges')
+        hsac = request.POST.get('hsac')
+
+        # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
+        
+
+        if vvft_Invoice.objects.filter(date=date,company=company).exists():
+           messages.error(request, 'Bill already Exists!!')
+           return redirect('create_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = vvft_Invoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            tanker=tanker,
+            tanker_cap=tanker_cap,
+            From_add=From_add,
+            To_add=To_add,
+            date_dis=date_dis,
+            unload=unload,
+            short=short,
+            retn=retn,
+            lr_no=lr_no,
+            sac=sac if sac else 0,
+            charges=charges if total_d else None,
+            hsac=hsac if hsac else 0,
+            Fo_date=Fo_date if Fo_date else None,
+            To_date=To_date if Fo_date else None,
+            d_rate=d_rate if total_d else 0,
+            par_day=par_day if total_d else None,
+            total_d=total_d if total_d else 0,
+            total_amount=0.0
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price
+                subtotal += line_total
+
+                vvft_Item.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price
+                )
+            except (ValueError, IndexError):
+                continue
+        
+        g_amount = float(total_d)  # or Decimal(total_d)
+
+        #Step 5: Calculate tax
+        cgst_r = 0.09
+        sgst_r = 0.09
+        igst_r = 0.18
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            c_gst = round(g_amount * cgst_r, 2)
+            s_gst = round(g_amount * sgst_r, 2)
+            i_gst = 0.0
+        else:
+            # Inter-state
+            c_gst = 0.0
+            s_gst = 0.0
+            i_gst = round(g_amount * igst_r, 2)
+
+        g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+     
+
+        
+
+        basic_amount = subtotal 
+
+        cgst_rate = 0.06
+        sgst_rate = 0.06
+        igst_rate = 0.12
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
+
+            # Check decimal part
+        decimal_part = grand_total - int(grand_total)
+
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
+
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
+        
+
+
+
+        # Step 6: Save tax and total
+        invoice.c_gst = c_gst
+        invoice.s_gst = s_gst
+        invoice.i_gst = i_gst
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.total_d = total_d
+        invoice.g_total = g_total
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        # invoice. total_in_words = num2words(formatted_total)
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "") + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('Aak_Inword_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/Aak_Inword/aak_india.html', context)
+
+
+def aakin_list(request):
+    invoices = Aak_in_Invoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/Aak_Inword/aakin_list.html', {'invoices': invoices})
+
+
+def aakin_detail(request, invoice_id):
+    invoice = get_object_or_404(Aak_in_Invoice, id=invoice_id)
+    items = Aak_in_Item.objects.filter(invoice=invoice)
+    return render(request, 'bills/Aak_Inword/aakin_detail.html', {'invoice': invoice, 'items': items})

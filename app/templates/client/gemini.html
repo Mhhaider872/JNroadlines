@@ -1,0 +1,141 @@
+<!-- @format -->
+
+{% include 'dashboard/gemini_dash.html' %}
+{% load static %}
+  <body>
+<main id="main" class="main">
+      
+      <!-- End Page Title -->
+      <section class="section">
+      
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+            <div class="pagetitle py-3 bg-light">
+        <h1>Dashboard </h1>
+        {% comment %} <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav> {% endcomment %}
+      </div>
+              <div class="card-body py-4">
+                {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
+
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+<section class="main-sec py-5">
+  <div class="container">
+    
+      <div class="col-lg-12 form-div">
+             <section class="cards">
+             <div class="row">
+              <div class="col-lg-4">
+                <div class="card shadow-4 p-2 bg-info">
+                <i class="bi bi-bag fs-2 text-white"></i>
+                    <h3 class="fs-5 fw-bold text-white">My Orders</h3>
+                    <p class="fs-3 fw-bold text-white">0</p>
+                </div>
+                  </div>
+
+                {% comment %} <div class="col-lg-3">
+                <div class="card shadow-4 p-3 bg-info">
+                    <h3 class="fs-5 fw-bold text-white">Order Accepted</h3>
+                    <p class="fs-3 fw-bold text-white">0</p>
+                </div>
+                  </div> {% endcomment %}
+
+                <div class="col-lg-4">
+                <div class="card shadow-4 p-2 bg-danger">
+                <i class="bi bi-pause-circle fs-2 text-white"></i>
+                    <h3 class="fs-5 fw-bold text-white">Pending Orders</h3>
+                    <p class="fs-3 fw-bold text-white">0</p>
+                </div>
+                  </div>
+         <div class="col-lg-4">
+                <div class="card shadow-4 p-2 bg-success">
+                <i class="bi bi-check-circle fs-2 text-white"></i>
+                    <h3 class="fs-5 fw-bold text-white">Completed</h3>
+                    <p class="fs-3 fw-bold text-white">0</p>
+                </div>
+                  </div>
+            </section>
+    </div>
+  </div>
+</section>
+<section>
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Recent Orders</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle text-center">
+          <thead class="table-light">
+            <tr>
+              <th>Order ID</th>
+              <th>Tanker Type</th>
+              <th>Quantity</th>
+              <th>From Address</th>
+              <th>To Address</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+                  {% for p in showg %}
+                  <tr>
+                    <td>{{p.order_id }}</td>
+                    <td>{{p.tanker_type }}</td>
+                    <td>{{p.tanker_cpa }}MT</td>
+                    <td>{{p.fadd }}</td>
+                    <td>{{p.tadd}}</td>
+                    <td>{{p.ddate|date:"d/m/Y" }}</td>
+                    <td>
+                      <span class="badge bg-warning text-dark">pending</span>
+                    </td>   
+                  </tr>
+                  {% endfor %} {% comment %}
+                  <tr>
+                    <td colspan="5">Total Amount</td>
+                  </tr>
+                  {% endcomment %}
+                </tbody>
+        </table>
+        <a class="float-end text-primary text-decoration-underline" href="{% url 'order-show' %}">View more</a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+    <!-- End #main -->
+
+
+    <!-- ======= Footer ======= -->
+    <footer class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+

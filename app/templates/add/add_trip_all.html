@@ -90,16 +90,18 @@
            
           </div>
           <div class="col-lg-4 mb-3">
-            <label for="label4" class="form-label fw-bold"
-              >Arrival at Loading Point (Plant) Date & Time</label
-            >
-            <input
-              type="datetime-local"
-              name="arrival_time"
-              class="form-control"
-              id="label4"
-            />
-          </div>
+            <label for="label4" class="form-label fw-bold">
+             Arrival at Loading Point (Plant) Date & Time
+             </label>
+              <input
+               type="datetime-local"
+               name="arrival_time"
+               class="form-control"
+               id="label4"
+               
+               onchange="formatTimeLabel4()"  
+               />
+               </div>
           <div class="col-lg-4 mb-3">
             <label for="label5" class="form-label fw-bold"
               >Dispatched date & time</label
@@ -113,34 +115,7 @@
           </div>
          
 
-          {% comment %} <div class="col-lg-4 mb-3">
-            <label for="label5" class="form-label fw-bold"
-              >Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ganesh Sir </label
-            >
-            <input
-              type="number"
-              class="form-control"
-              name="dispddate"
-              min="0"
-              id="label5"
-            />
-          </div> {% endcomment %}
-          {% comment %} <div class="col-lg-4 mb-3">
-            <label for="label6" class="form-label fw-bold"
-              >Vehicle Kilometer at the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
-            </label>
-            <input
-              type="text"
-              class="form-control"
-              name="tankcap"
-              min="0"
-              id="label6"
-            />
-          </div> {% endcomment %}
-          {% comment %} <div class="col-lg-4 mb-3">
-            <label for="label7" class="form-label fw-bold">Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ganesh Sir )</label>
-           <input type="number" class="form-control " >
-          </div> {% endcomment %}
+         
            <div class="col-lg-4 mb-3">
             <label for="label5" class="form-label fw-bold"
               >Reached date & time</label
@@ -211,7 +186,7 @@
         <div class="col-lg-4 mb-3">
             <label for="label17" class="form-label fw-bold">LR No</label>
             <input
-              type="number"
+              type="text"
               class="form-control"
               name="lr_num"
               min="0"
@@ -234,7 +209,7 @@
               >Freight Bill no.</label
             >
             <input
-              type="number"
+              type="text"
               name="freight_bill"
               class="form-control"
               id="label19"
@@ -258,15 +233,15 @@
         </div>
      <div class="col-lg-4 mb-3">
             <label for="label13" class="form-label fw-bold">Allow Percentage</label>
-            <input type="number" class="form-control" id="shortallow" name="percent" value="{{t.totalshort}}" oninput="calculateTotalShort()" step="0.01">
+            <input type="number" class="form-control" id="shortallow" name="percent"  oninput="calculateTotalShort()" step="0.1">
         </div> 
           <div class="col-lg-4 mb-3">
             <label for="label13" class="form-label fw-bold">Unloaded Qty</label>
-            <input type="number" class="form-control" id="unlodqty" name="unload_qty" value="{{t.totalshort}}" oninput="calculateTotalShort()">
+            <input type="number" class="form-control" id="unlodqty" name="unload_qty"  oninput="calculateTotalShort()">
         </div>
         <div class="col-lg-4 mb-3">
             <label for="label14" class="form-label fw-bold"
-              >Total Shortages Qty</label
+              >Shortages / Excess Qty</label
             >
             <input type="number" class="form-control" id="totalshort" name="short_qty" readonly>
         </div>
@@ -324,13 +299,13 @@
     </main>
     <!-- End #main -->
 
-    <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
+        <!-- ======= Footer ======= -->
+    <footer class="footer">
       <div class="copyright">
-        &copy; Copyright <strong>. All Rights Reserved</strong>
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
       </div>
       <div class="credits">
-        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
       </div>
     </footer>
     <!-- End Footer -->
@@ -364,7 +339,7 @@
         // Ensure values are numbers and disqty and unlodqty are available
         if (disqty && unlodqty) {
             // Calculate totalshort and update it
-            var totalshort = parseInt(disqty) - parseInt(unlodqty);
+            var totalshort =parseInt(unlodqty) - parseInt(disqty);
             document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
         }
 
@@ -446,6 +421,25 @@ document.getElementById("tankerno").addEventListener("change", function() {
         document.getElementById("dispatch_Date").value = '';
     }
 });
+</script>
+
+<script>
+  function formatTimeLabel4() {
+    const input = document.getElementById("label4").value;
+    if (!input) return;
+
+    const date = new Date(input);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 becomes 12
+    const mins = minutes < 10 ? '0' + minutes : minutes;
+
+    const formattedTime = `${hours}:${mins} ${ampm}`;
+    document.getElementById("formattedTimeLabel4").innerText = `Selected Time: ${formattedTime}`;
+  }
 </script>
   </body>
 

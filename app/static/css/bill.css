@@ -1,32 +1,38 @@
-body{
+
+      body {
         font-family: "Roboto", sans-serif;
-        background-color: #f1f2f3;
+        background-color: #fff;
         padding: 0px;
         margin: 0;
         user-select: none;
         font-size:12px;
       }
-
+.section-invoice{
+  max-width: 800px !important;
+  margin: 0px auto !important;
+}
     
-      .header {
-        /* display: inline-block; */
-        align-items: center;
-        justify-content: center;
+      .header-1 {
+        /* display:flex;
+        justify-content:space-between;
+        
+        text-decoration:underline; */
         text-align: center;
       }
 
-      .header span {
+      .header-1 span {
         margin-right: 50px;
         color: black;
       }
 
-      .header:hover span,
-      .header:hover h1 {
+      .header-1:hover span,
+      .header-1:hover h1 {
         color: grey;
       }
 
       .invoice {
         /* max-width: 800px; */
+        font-size: 10px !important;
         height: auto;
         margin: auto;
         background-color: #fff;
@@ -47,22 +53,38 @@ body{
   
 
     
-      .print-row-btn,
-       .btn-print
-       button {
-        display: inline-block;
+      .print-row-btn
+      {
+        border: none;
+        /* display: inline-block;
         margin-top: 20px;
-        /* float: left; */
-        padding: 10px 30px;
+        padding: 5px 15px !important;
         position: left;
         margin-right: 5px;
         color: white;
-        border: none;
+        
         border-radius: 3px;
         cursor: pointer;
         font-size: 1em;
         transition: background-color 0.3s ease, transform 0.3s ease;
-        background:blue;
+        background:blue; */
+
+      }
+        .print-row-btn
+      {
+        border: none;
+        /* display: inline-block;
+        margin-top: 20px;
+        padding: 5px 15px !important;
+        position: left;
+        margin-right: 5px;
+        color: white;
+        
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        background:blue; */
 
       }
 
@@ -87,9 +109,9 @@ body{
       p{
         margin: 5px;
       }
-      thead, tbody {
-        font-size:12px;
-        
+      thead,
+      tbody {
+        font-size:8px !important;
         border: 1px solid black;
       }
       .conpany-div p{
@@ -98,3 +120,33 @@ body{
       .pra-bill{
         float:right;
       }
+      @media print {
+        .table-responsive {
+          overflow: visible !important;
+        }
+        .table {
+          width: 100% !important;
+        }
+      }
+      .table-head th{
+        font-size: 10px !important;
+        font-weight: bold !important;
+      }
+      /* .invoice::before {
+        content: "J N ROADLINES LLP";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-30deg);
+        font-size: 65px;
+        font-weight: 800;
+        color: rgba(0, 0, 0, 0.09); 
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .invoice {
+        position: relative;
+        z-index: 1;
+      } */

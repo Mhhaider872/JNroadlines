@@ -1,0 +1,159 @@
+
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Planning For Gemini</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body py-4">
+                {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
+
+
+ <section class="main-sec">
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form  method="POST" autocomplete="off">
+          {% csrf_token %}
+          <div class="row">
+           <div class="col-lg-4 mb-3">
+            <label for="tanker_number" class="form-label fw-bold">Vehicle No</label>
+             <input class="form-control border-2" name="tankerno" list="datalistOptions" id="tanker_number" onchange="fetchCapacity()" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions" class="shadow-sm border-0" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+          </div>
+        <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
+             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers..." required>
+               <datalist id="driverslist" class="shadow-sm border-0" >
+                  {% for d in dname %}
+                 <option value="{{d.name}}">{{d.fname }}</option>
+                {% endfor %}
+                </datalist>
+             </div>
+           <div class="col-lg-4 mb-3">
+            <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
+             <input class="form-control border-2" name="From_address" list="datalistOptions1" id="exampleDataList1" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions1" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+            
+  
+
+          <div class="col-lg-4 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">To Address</label>
+             <input class="form-control border-2" name="To_address" list="datalistOptions2" id="exampleDataList2" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="capacity_output" class="form-label fw-bold"
+              >Tanker Capacity
+            </label>
+           <div class="input-group mb-3">
+            <input
+              type="text"
+              name="tanker_capacity"
+              class="form-control border-2"
+              id="capacity_output"
+              Readonly
+            />
+                
+              </div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Dispatch Date</label
+            >
+            <input
+              type="date"
+              name="dispatch_Date"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+           <label for="id_status" class="form-label fw-bold">Status</label>
+           <select id="id_status" name="status" class="form-control border-2">
+            <option value="DISPATCH" selected>Dispatch</option>
+           </select>
+           </div> 
+
+          <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-success px-4">Add</button>
+            <a href="{% url 'showplan' %}" class="btn btn-info px-4">View</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+<script>
+  function fetchCapacity() {
+    const number = document.getElementById("tanker_number").value;
+    fetch(`/get_capacity/?vehicle_name=${number}`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("capacity_output").value = data.tankercap || "Not found";
+      });
+  }
+</script>
+
+</body>

@@ -21,6 +21,33 @@
           <!-- Left side columns -->
           <div class="col-lg-12">
             <div class="row">
+              <!-- Order Card -->
+              <div class="col-lg-3 col-md-12">
+                <div class="card info-card sales-card">
+                  <div class="filter">
+                    <a class="icon" href="{% url 'com-order' %}" 
+                      ><i class="bi bi-three-dots"></i
+                    >
+                  </div>
+
+                  <div class="card-body">
+                    <h5 class="card-title">Fresh Order</h5>
+
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                            <i class="bi bi-bag"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>0</h6>
+                      </div>
+                    </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- End Order Card -->
               <!-- Sales Card -->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card sales-card">
@@ -283,7 +310,7 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-people"></i>
+                      <i class="bi bi-person-vcard"></i>
                         
                       </div>
                       <div class="ps-3">
@@ -323,7 +350,34 @@
                   </a>
                 </div>
               </div>
+<div class="col-lg-3 col-md-12">
+                <div class="card info-card customers-card">
+                  <div class="filter">
+                   <a class="icon" href="{% url 'add-toll' %}" 
+                      ><i class="bi bi-three-dots"></i
+                    >
+                  </div>
 
+                  <div class="card-body">
+                    <h5 class="card-title">
+                     Add Toll
+                    </h5>
+
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                        <i class="bi bi-align-start"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>0</h6>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  </a>
+                </div>
+              </div>
                <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
                   <div class="filter">
@@ -341,10 +395,10 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-receipt"></i>
+                        <i class="bi bi-map"></i>
                       </div>
                       <div class="ps-3">
-                        <h6>{{trip_exp}}</h6>
+                        <h6>0</h6>
                         
                       </div>
                     </div>
@@ -569,7 +623,7 @@
         &copy; Copyright <strong>. All Rights Reserved</strong>
       </div>
       <div class="credits">
-        Designed by <a href="#"><strong>J N Roadlines</strong
+        Designed by <a href="#"><strong> JTECH VENTURES</strong
         ></a>
       </div>
     </footer>

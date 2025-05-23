@@ -384,7 +384,7 @@
             data-bs-toggle="collapse"
             href="#"
           >
-            <i class="bi bi-layout-text-window-reverse"></i><span>Trip</span
+            <i class="bi bi-arrow-down-up"></i><span>Trip</span
             ><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -398,11 +398,7 @@
               </a>
             </li>
           
-            <li>
-              <a href="{% url 'start_trip' %}">
-                <i class="bi bi-circle"></i><span>Trip Expense (Advance)</span>
-              </a>
-            </li>
+            
          
             {% comment %} <li>
              
@@ -417,7 +413,31 @@
             </li> {% endcomment %}
           </ul>
         </li>
-
+          <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            data-bs-target="#tables-nav2"
+            data-bs-toggle="collapse"
+            href="#"
+          >
+            <i class="bi bi-cash-stack"></i><span>Add Expense</span
+            ><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul
+            id="tables-nav2"
+            class="nav-content collapse"
+            data-bs-parent="#sidebar-nav"
+          >
+            
+            <li>
+              <a href="{% url 'start_trip' %}">
+                <i class="bi bi-circle"></i><span>Trip Expense (Advance)</span>
+              </a>
+            </li>
+         
+            
+          </ul>
+        </li>
         <li class="nav-item">
           <a
             class="nav-link collapsed"
@@ -492,7 +512,7 @@
             data-bs-toggle="collapse"
             href="#"
           >
-            <i class="bi bi-people"></i><span>Company Details</span
+            <i class="bi bi-building"></i><span>Company Details</span
             ><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -515,7 +535,7 @@
             data-bs-toggle="collapse"
             href="{% url 'loandetails' %}"
           >
-            <i class="bi bi-people"></i><span>Loan</span
+           <i class="bi bi-person-vcard"></i><span>Loan</span
             ><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -531,7 +551,27 @@
             
           </ul>
         </li>
-       
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            data-bs-target="#petrol-details"
+            data-bs-toggle="collapse"
+            href="#"
+          >
+           <i class="bi bi-fuel-pump"></i><span>Add Petrol Pump</span
+            ><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul
+            id="petrol-details"
+            class="nav-content collapse"
+            data-bs-parent="#sidebar-nav"
+          >
+            <li>
+              <a href="{% url 'add-petrol'%}"> <i class="bi bi-circle"></i><span>Petrol Pump Name</span> </a>
+            </li>
+           
+          </ul>
+        </li>
         <li class="nav-item">
           <a
             class="nav-link collapsed"
@@ -568,7 +608,7 @@
             data-bs-parent="#sidebar-nav"
           >
             <li>
-              <a href="{% url 'all-bill' %}"> <i class="bi bi-circle"></i><span>All Bills </span> </a>
+              <a href="{% url 'create_bill' %}"> <i class="bi bi-circle"></i><span>All Bills </span> </a>
             </li>
           </ul>
         </li>
@@ -591,7 +631,8 @@
     <script src="{% static 'vendor/quill/quill.js' %}"></script>
     <script src="{% static 'vendor/simple-datatables/simple-datatables.js' %}"></script>
     <script src="{% static 'vendor/tinymce/tinymce.min.js' %}"></script>
-    <script src="{% static 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    {% comment %} <script src="{% static 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js' %}"></script> {% endcomment %}
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const table = new simpleDatatables.DataTable(".datatable", {

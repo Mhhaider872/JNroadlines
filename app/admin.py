@@ -24,6 +24,9 @@ admin.site.register(DriverLoan)
 admin.site.register(Addloan)
 admin.site.register(State)
 admin.site.register(City)
+admin.site.register(Clientgemini)
+# admin.site.register(Billing)
+# admin.site.register(Itemsss)
 
 
 
@@ -48,5 +51,6 @@ admin.site.register(AddBank_Loan)
 admin.site.register(Trip)
 admin.site.register(TripAdani)
 admin.site.register(AakLocal)
-
-
+admin.site.register(GInvoice)
+admin.site.register(AInvoice)
+admin.site.register(Aak_in_Invoice)

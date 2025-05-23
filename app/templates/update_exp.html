@@ -1,51 +1,4 @@
-{% comment %} <!-- add_expense.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Expense for Trip {{ trip.trip_id }}</title>
-</head>
-<body>
-    <h1>Add Expense for Trip {{ trip.trip_id }}</h1>
 
-    <!-- Form to add new expense -->
-    <form method="POST">
-        {% csrf_token %}
-        <label for="amount">Amount:</label>
-        <input type="number" step="0.01" id="amount" name="amount" required>
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description" required>
-        <button type="submit">Add Expense</button>
-    </form>
-
-    <!-- Show expenses table -->
-    <h2>Expenses</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for expense in expenses %}
-            <tr>
-                <td>{{ expense.amount }}</td>
-                <td>{{ expense.description }}</td>
-                <td>{{ expense.timestamp }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <p>Total Expense: {{ trip.total_expense }}</p>
-
-    <a href="{% url 'end_trip' trip_id=trip.trip_id %}">End Trip</a>
-    <a href="{% url 'start_trip'  %}">Home</a>
-</body>
-</html> {% endcomment %}
 {% include 'base.html' %}
 {% load static %}
   <body>
@@ -65,7 +18,7 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Trip Expense Sr. No. -:  {{exp.id}} </h5>
+                {% comment %} <h5 class="card-title">Trip Expense Sr. No. -:  {{exp.id}} </h5> {% endcomment %}
 <section class="main-sec">
  {% if messages %}
   <div class="container mt-3">
@@ -80,13 +33,46 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
-         
-      <h1></h1>
+
 
     <!-- Form to add new expense -->
     <form  action="{% url 'do-exp-update' exp.id %}" method="POST">
      {% csrf_token %}
-       <div class="row">
+       <div class="row py-3">
+  
+<div class="col-lg-3 mb-3">
+        <label for="amount" class="form-label fw-bold"> Date :</label>
+        <input type="date" class="form-control border-2"  id="date" name="date" value="{{exp.date|date:'Y-m-d' }}">
+       </div>
+<div class="col-lg-3 mb-3">
+        <label for="amount" class="form-label fw-bold">Amount :</label>
+        <input type="number" class="form-control border-2" step="0.01" id="total" name="amount" oninput="calculateTotal()" value="{{ exp.amount }}"  required>
+       </div>
+       
+<div class="col-lg-3 mb-3">
+            <label for="exampleDataList3" class="form-label fw-bold">( From via) Address </label>
+             <input class="form-control border-2" name="from_via" list="datalistOptions3" id="exampleDataList3" placeholder="Search to...">
+               <datalist id="datalistOptions3">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">( To via ) Address </label>
+             <input class="form-control border-2" name="To_via" list="datalistOptions" id="exampleDataList" placeholder="Search to...">
+               <datalist id="datalistOptions">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div> 
+
+          <div class="col-lg-3 mb-3">
+        <label for="amount" class="form-label fw-bold">End Trip Date :</label>
+        <input type="date" class="form-control border-2"  id="date" name="end_date"  value="{{exp.end_date|date:'Y-m-d' }}">
+       </div>
+        <hr>
         <h5 class="card-title">General Expense</h5>
 
        <div class="col-lg-3 mb-3">
@@ -177,30 +163,7 @@
             </div>
 
            <h5 class="card-title">Tolls Details</h5>
-            {% comment %} <div class="col-lg-3 mb-3">
-            <label for="label11" class="form-label fw-bold"
-              > Date</label
-            >
-            <input
-              type="date"
-              name="toll_date"
-              class="form-control  border-2"
-              id="label11"
-            />
-          </div> {% endcomment %}
-            
-           <div class="col-lg-3 mb-3">
-             <label for="label11" class="form-label fw-bold"
-              >Toll Name</label
-             >
-            <input
-              type="text"
-              name="toll_name"
-              class="form-control border-2"
-              id="label11"
-              value="{{exp.toll_name}}"
-            />
-          </div>
+
           <div class="col-lg-3 mb-3">
              <label for="label11" class="form-label fw-bold"
               >Amount</label
@@ -218,18 +181,25 @@
  
       <div class="col-lg-3 mb-3">
          <label for="category" class="form-label fw-bold">Diesel</label>
-          <select id="category" name="category" onchange="updateSubCategory()" class="form-select border-2" value="{{exp.toll_amount}}">
+         <input
+              type="text"
+              name="category"
+              class="form-control border-2"
+              id="category"
+              value="{{exp.category.name}}"
+            />
+          {% comment %} <select id="category" name="category" onchange="updateSubCategory()" class="form-select border-2" value="{{exp.toll_amount}}">
          <option value="">Select</option>
          {% for category in categories %}
          <option value="{{ category.name }}">{{ category.name }}</option>
          <!-- Populate categories dynamically -->
-        {% endfor %}
+        {% endfor %} {% endcomment %}
         </select>
       </div>
        <div class="col-lg-3 mb-3">
          <label for="datalistOptions4" class="form-label fw-bold">Paid To</label>
-         <input class="form-control border-2" list="datalistOptions4" name="paid_to"  placeholder="Search...">
-               <datalist id="datalistOptions4">
+         <input class="form-control border-2" list="datalistOptions4" name="paid_to"  value="{{exp.paid_to}}">
+               {% comment %} <datalist id="datalistOptions4">
     
                  <option value="Cash">Cash</option>
                  <option value="BanK">BanK</option>
@@ -239,14 +209,21 @@
                 {% for d in dname %}
                  <option value="{{d.name}}">{{d.name }}</option>
                  {% endfor %}
-                </datalist>
+                </datalist> {% endcomment %}
     </div>
     <div class="col-lg-3 mb-3">
       <label for="subCategory" class="form-label fw-bold">Paid By</label>
-      <select id="subCategory" name="subCategory" class="form-select border-2">
+      {% comment %} <select id="subCategory" name="subCategory" class="form-select border-2">
         <option value="">Select</option>
         <!-- Initial empty subcategory dropdown -->
-      </select>
+      </select> {% endcomment %}
+      <input
+              type="text"
+              name="subCategory"
+              class="form-control border-2"
+              id="subCategory"
+              value="{{exp.subCategory}}"
+            />
     </div>
    
         <div class="col-lg-3 mb-3">
@@ -317,6 +294,7 @@
               name="paid_date"
               class="form-control border-2"
               id="label11"
+              value="{{exp.paid_date|date:'Y-m-d' }}"
             />
         </div> 
         <div class="col-lg-3 mb-3">
@@ -328,6 +306,7 @@
               name="bill_date"
               class="form-control border-2"
               id="label11"
+              value="{{exp.bill_date|date:'Y-m-d' }}"
             />
         </div>
       
@@ -383,6 +362,7 @@
               name="r_paid_date"
               class="form-control border-2"
               id="label11"
+              value="{{exp.r_paid_date|date:'Y-m-d' }}"
             />
         </div>
       
@@ -395,6 +375,8 @@
               name="r_bill_date"
               class="form-control border-2"
               id="label11"
+              value="{{exp.r_bill_date|date:'Y-m-d' }}"
+              
             />
         </div>
          {% comment %} <div class="col-lg-4 mb-3">
@@ -408,7 +390,7 @@
               id="label11"
             />
         </div> {% endcomment %}
-         <div class="col-lg-3 mb-3">
+         {% comment %} <div class="col-lg-3 mb-3">
              <label for="label11" class="form-label fw-bold"
               >Spare Parts</label
              >
@@ -419,7 +401,7 @@
               id="label11"
               value="{{exp.spare_part}}"
             />
-        </div>
+        </div> {% endcomment %}
            
            <div class="col-lg-3 mb-3">
              <label for="label12" class="form-label fw-bold"
@@ -458,42 +440,10 @@
                id="totalamount"
                min="0"
                oninput="calculateTotal()"
-               value="{{exp.r_amount}}"
+               value="{{exp.r_amount|default_if_none:"0"}}"
             />
           </div>
-<hr>
-<div class="col-lg-3 mb-3">
-        <label for="amount" class="form-label fw-bold"> Date :</label>
-        <input type="date" class="form-control border-2"  id="date" name="date">
-       </div>
-<div class="col-lg-3 mb-3">
-        <label for="amount" class="form-label fw-bold">Amount :</label>
-        <input type="number" class="form-control border-2" step="0.01" id="total" name="amount" oninput="calculateTotal()" value="{{ exp.amount }}"  required>
-       </div>
-       
-<div class="col-lg-3 mb-3">
-            <label for="exampleDataList3" class="form-label fw-bold">( From via) Address </label>
-             <input class="form-control border-2" name="from_via" list="datalistOptions3" id="exampleDataList3" placeholder="Search to...">
-               <datalist id="datalistOptions3">
-                {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
-                 {% endfor %}
-                </datalist>
-          </div>
-          <div class="col-lg-3 mb-3">
-            <label for="exampleDataList" class="form-label fw-bold">( To via ) Address </label>
-             <input class="form-control border-2" name="To_via" list="datalistOptions" id="exampleDataList" placeholder="Search to...">
-               <datalist id="datalistOptions">
-                {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
-                 {% endfor %}
-                </datalist>
-          </div> 
 
-          <div class="col-lg-3 mb-3">
-        <label for="amount" class="form-label fw-bold">End Trip Date :</label>
-        <input type="date" class="form-control border-2"  id="date" name="date">
-       </div>
 
       </div>
       <div class="text-center">

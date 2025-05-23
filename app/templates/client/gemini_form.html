@@ -1,0 +1,109 @@
+<!-- @format -->
+
+{% include 'dashboard/gemini_dash.html' %}
+{% load static %}
+  <body>
+<main id="main" class="main">
+      
+      <!-- End Page Title -->
+      <section class="section">
+      
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+            <div class="pagetitle py-3 text-center bg-primary">
+            <h1 class="text-white">Gemini </h1>
+        {% comment %} <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav> {% endcomment %}
+      </div>
+              <div class="card-body py-4">
+                {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
+
+
+<section class="main-sec">
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <div class="container">
+                <div class="mb-3">
+                    <div class="card-header mb-3">
+                        <h5 class="text-dark fw-bold">Book a New Load</h5>
+                    </div>
+                      <form  method="POST" autocomplete="off">
+                        {% csrf_token %}
+                          <div class="row">
+                            <div class="col-lg-4 mb-3">
+                                <label for="fuelType" class="form-label fw-bold">Tanker Type</label>
+                                <select class="form-select" id="fuelType" name="tanker_type">
+                                <option value="">select</option>
+                                    <option value="Oil">Oil</option>
+                                    <option value="Milk">Milk</option>
+                                    <option value="Chocolate">Chocolate</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 mb-3">
+                                <label for="quantity" class="form-label fw-bold">Quantity ( MT )</label>
+                                <input type="number" class="form-control" id="quantity" name="tanker_cpa" placeholder="Enter quantity">
+                               
+                            </div>
+                           <div class="col-lg-4 mb-3">
+                                <label for="faddress" class="form-label fw-bold">From Address</label>
+                                <input type="text" class="form-control" id="faddress" name="fadd" placeholder="Enter Address">
+                            </div>
+                            <div class="col-lg-4 mb-3">
+                                <label for="taddress" class="form-label fw-bold">To Address</label>
+                                <input type="text" class="form-control" id="taddress" name="tadd" placeholder="Enter Address">
+                            </div>
+                            <div class="col-lg-4 mb-3">
+                                <label for="deliveryDate" class="form-label fw-bold">Delivery Date</label>
+                                <input type="date" class="form-control" id="deliveryDate" name="ddate">
+                            </div>
+                           
+                          </div>
+                        <div class="text-center">
+                         <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                        </form>
+                       </div>
+
+              
+            </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- End #main -->
+
+
+    <!-- ======= Footer ======= -->
+   <footer class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>J N Roadlines LLP </strong> All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+

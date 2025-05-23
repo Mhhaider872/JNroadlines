@@ -1,0 +1,400 @@
+
+
+{% include 'base_bill.html' %} 
+{% load static %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<body>
+  <main  class="main">
+
+    <!-- End Page Title -->
+    <section class="section-invoice">
+    <div class="invoice" >
+      {% comment %} <div class="main-head">
+        <div>
+         <!-- QR Code Section -->
+
+        </div>
+        <div>
+          <p><strong>Phone No :</strong> 9833209818</p>
+          <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?data=Total%20Amount%3A%20₹{{ invoice.total_amount|floatformat:2 }}" >
+        </div>
+      </div> {% endcomment %}
+      <div class="header-1 py-2">
+        <!-- <span class="material-symbols-rounded"> receipt_long </span> -->
+        <!-- <h1 id="invoice-type" onclick="toggleInvoiceType()">Report</h1> -->
+        <div><p></p></div>
+        <div class="text-center">
+        <h1>J N ROADLINES LLP</h1>
+        <p class="text-uppercase fw-bold">Fleet Owners & Transport Contractors</p>
+        <p class="text-uppercase fw-bold" style="padding:0px 150px">
+          1402,Orion west, 13th floor, 2nd Gaothan Lane,
+          Santacruz Railway Station Road, Opp Bhagwan Cutpiece, Mumbai-400054
+        </p>
+        <p><strong>Phone No :</strong> 9833209818</p><br>
+        <p class="text-decoration-underline"><strong>GSTIN No :</strong>27AAVFJ3706F1Z5</p>
+          <p class="text-decoration-underline"><strong>PAN No :</strong> AAVFJ3706F</p>
+        <p class="text-decoration-underline"><strong>UDYAM No : </strong>  UDYAM-MH-18-0022141</p>
+        {% comment %} <p><strong>FSSAI LICENSE No : </strong> 11521006000010</p> {% endcomment %}
+
+        </div>
+        
+        
+          
+          {% comment %} <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?data=https%3A%2F%2Fexample.com%2Finvoices%2F1234.pdf"> {% endcomment %}
+
+
+     
+      </div>
+
+    <div class="main-head">
+
+        <div class="conpany-div">
+            <p><strong>To </strong></p>
+            <div style="width:300px"><p><strong>{{ invoice.company}}</strong></p></div>
+            <p><strong>GSTIN No : </strong> {{ invoice.gst }}</p>
+            <p><strong>PAN No : </strong> {{ invoice.pan }}</p>
+        </div>
+        
+        <div>
+            <p class="pra-bill"><strong>Ref No :{{ invoice.invoice_number }}</strong><br><strong>Date : {{ invoice.date|date:"d/m/Y"  }}</strong></p>
+ 
+            
+          {% comment %} <div>
+             <table class="table table-bordered table-sm">
+             <tr>
+              <td> <strong>SAC Code : </strong></td>
+              <td>  996791 </td>
+            </tr>
+            <tr>
+                <td><p>
+                <strong>Description of Services :</strong> 
+             </p> </td>
+              <td><p>
+              Goods Transport Agency<br/> Services For Road
+                Transport
+             </p> </td>
+
+            </tr>
+          </table>
+          </div> {% endcomment %}
+        </div>
+
+</div>
+
+     
+
+
+
+  <div class="div-table py-0">
+
+
+
+  <div class="table-responsive">
+  <table class="table table-bordered table-sm">
+   <thead>
+        <tr class="table-head">
+            <th>Sr No.</th>
+             <th>Tanker No.</th>
+              <th>Dispatch Date</th>
+               <th>From Address</th>
+                <th>To Address</th>
+                 <th>LR No.</th>
+                 <th>HSN/SAC Code</th>
+                  <th>Chargable QTY(KG)</th>
+                   <th>Loaded QTY(KG)</th>
+                    <th>Unloaded QTY(KG)</th>
+                     <th>Excess/ Shortage QTY(KG) </th>
+                      <th>Return QTY(KG)</th>
+                       <th>Rate Per(KG)</th>
+          
+            <th>Freight Rs.</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.description}}</td>
+            {% comment %} <td>{{ item.dispatch_d}}</td>
+            <td>{{ item.f_add}}</td>
+            <td>{{ item.t_add}}</td>
+            <td>{{ item.lr_no}}</td>{% endcomment %}
+            <td>{{invoice.tanker}}</td>
+            <td>{{invoice.date_dis|date:"d/m/Y"}}</td>
+            <td>{{invoice.From_add}}</td>
+            <td>{{invoice.To_add}}</td>
+            <td>{{invoice.lr_no}}</td>
+            <td>{{invoice.sac}}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{invoice.tanker_cap}} </td>
+            <td>{{ invoice.unload }}</td>
+            <td>{{ invoice.short }}</td>
+            <td>{{ invoice.retn }}</td>
+           
+            <td><strong>₹{{ item.unit_price }}</strong></td>
+  
+      
+            <td><strong>₹{{ item.total_price }}</strong></td>
+        </tr>
+        {% endfor %}
+        <tr>
+         <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+         <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        
+                    <tr>
+         <td></td>
+            <td colspan="9"></td>
+            
+       
+            <td colspan="3"><strong>Sub-Total</strong></td>
+             <td><strong>₹{{invoice.total_amount }}</strong></td>
+
+        
+        </tr>
+      
+                    <tr>
+         <td></td>
+            <td colspan="9"></td>
+            
+       
+            <td colspan="3"><strong>OUTPUT SGST @ 6% </strong></td>
+             <td>₹{{ invoice.cgst }}</td>
+
+        
+        </tr>
+        <tr>
+         <td></td>
+            <td colspan="9"></td>
+
+            <td colspan="3"><strong>OUTPUT CGST @ 6%</strong></td>
+            <td>₹{{ invoice.sgst }}</td>
+        </tr>
+         <tr>
+         <td></td>
+            <td colspan="9"></td>
+
+            <td colspan="3"><strong>OUTPUT IGST @ 12%</strong></td>
+            <td>₹{{ invoice.igst }}</td>
+        </tr>
+        <tr>
+         <td></td>
+            <td colspan="9"></td>
+
+            <td colspan="3" class="fw-bold"><strong>Total (1)</strong></td>
+             <td class="fw-bold"><strong>₹{{ invoice.fright_total }}</strong></td>
+        </tr>
+        <tr>
+  <td></td>
+  <td colspan="9"></td>
+  <td colspan="3"></td>
+  <td></td>
+        </tr>
+        <tr>
+         <td></td>
+            <td colspan="4"><strong>{{ invoice.charges }}</strong></td>
+            <td colspan="5">{% if invoice.charges %}<strong>  SAC Code-</strong> {{invoice.hsac}}{% else %}
+    <strong></strong>
+{% endif %}</td>
+           
+            
+            
+            {% comment %} <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td> {% endcomment %}
+            <td  colspan="3" ></td>
+        </tr>
+
+
+        <tr>
+                   <td></td>
+                     <td colspan="9">{% if invoice.charges %}
+     <strong>( {{invoice.Fo_date|date:"d/m/Y"}}  To {{invoice.To_date|date:"d/m/Y"}} = {{invoice.par_day}} Day)    ( Rs-{{invoice.d_rate}} /- Per day  *  {{invoice.par_day}} Days )</strong>
+{% else %}
+    <strong> ( Mail Copy Attached )  </strong>
+{% endif %} </td> 
+                {% comment %} <td></td>
+                 <td></td>
+                  <td></td>
+                   <td></td> 
+                    <td></td>{% endcomment %}
+                     <td  colspan="3"></td>
+               
+                   
+                    <td>{% if invoice.charges %}<strong>₹{{invoice.total_d}}</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
+                 
+
+                  </tr>
+                   <tr>
+                   <td></td>
+                     <td colspan="9"> </td> 
+                {% comment %} <td></td>
+                 <td></td>
+                  <td></td>
+                   <td></td> 
+                    <td></td>{% endcomment %}
+                     <td  colspan="3">{% if invoice.charges %}<strong>Sub-Total</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
+               
+                   
+                    <td>{% if invoice.charges %}<strong>₹{{invoice.total_d}}</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
+                 
+
+                  </tr>
+                  <tr>
+         <td></td>
+            <td colspan="9"></td>
+            
+       
+            <td colspan="3" >{% if invoice.charges %}<strong>OUTPUT SGST @ 9%</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
+             <td>{% if invoice.charges %}₹{{invoice.s_gst}} {% else %}
+    <strong></strong>
+{% endif %}</td>
+
+        
+        </tr>
+        <tr>
+         <td></td>
+            <td colspan="9"></td>
+
+            <td colspan="3" >{% if invoice.charges %}<strong>OUTPUT CGST @ 9%</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
+            <td>{% if invoice.charges %}₹{{invoice.c_gst}} {% else %}
+    <strong></strong>
+{% endif %}</td>
+        </tr>
+         <tr>
+         <td></td>
+            <td colspan="9"></td>
+
+            <td colspan="3" >{% if invoice.charges %}<strong>OUTPUT IGST @ 18%</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
+            <td>{% if invoice.charges %}₹{{invoice.i_gst}} {% else %}
+    <strong></strong>
+{% endif %}</td>
+        </tr>
+         <tr>
+         <td></td>
+            <td colspan="9"></td>
+
+            <td colspan="3"  class="fw-bold">{% if invoice.charges %}<strong>Total(2)</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
+             <td class="fw-bold">{% if invoice.charges %}<strong>₹{{invoice.g_total}}</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
+        </tr>
+        <tr>
+  <td></td>
+  <td colspan="9"></td>
+  <td colspan="3" ></td>
+  <td></td>
+        </tr>
+        <tr>
+  <td></td>
+  <td colspan="9"></td>
+  <td colspan="3" ></td>
+  <td></td>
+        </tr>
+          <tr>
+          <td></td> 
+          <td colspan="9">
+          
+            <td colspan="3" ><strong>ROUNDED TO RS (1+2)</strong></td> 
+       
+            <td class="fw-bold"><strong>₹{{ invoice.grand_total }}</strong></td>
+        </tr>
+    </tbody>
+</table>
+  </div>
+ <div class="row">
+        <div class="col-lg-4">
+         {% comment %} {% if bill %}
+            <p class="pb-4"><strong>Amount -:{{ invoice.total_in_words }}</strong></p>
+            {% else %}
+            <p>No bill data available.</p>
+              
+          {% endif %} {% endcomment %}
+            <p class="pb-2"><strong>Amount -:{{invoice.total_in_words|upper }} Only</strong></p>
+            {% comment %} <p><strong>NOTES -:</strong> "GST on this Invoice is to be paid under Reverse Charge Mechanism by the recipient of the Service."</p>
+        
+             <p><strong>NOTES -:</strong> "I/We hereby declare that though our aggregate turnover in any preceding financial year 2017-18 onwards is more than the aggregate turnover notified under sub-rule( 4 ) of rule 48, we are not required to prepare an invoice in terms of the provisions of the said sub-rule. "</p> {% endcomment %}
+        
+        <p><strong>NOTES -:</strong> " We are registered under MSME ".</p>
+        </div>
+        <div class="col-lg-8">
+          <p class="float-end"><strong>FOR : J. N. Roadlines</strong></p>
+
+<br>
+<br>
+<br>
+<br>
+
+           <p class="float-end"><strong>Authorised Signatory</strong></p>
+        </div>
+      </div>
+
+        
+ 
+      <!-- Your invoice details here -->
+
+     
+            <div class="btn-print" style="display: flex; gap: 10px;">
+  <!-- Print Button -->
+  <button class="print-row-btn" onclick="window.print()">
+     <i class="bi bi-printer fs-4 text-white"></i>
+  </button>
+
+</div>
+  </section>
+{% comment %} <div class="btn-print">
+        <button class="print-row-btn" onclick="window.print()">
+          <span class="material-symbols-rounded"> print </span>
+        </button>
+      </div> {% endcomment %}
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+

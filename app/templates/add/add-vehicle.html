@@ -38,7 +38,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
-        <form  method="POST" autocomplete="off">
+        <form  method="POST" enctype="multipart/form-data" autocomplete="off">
         {% csrf_token %}
           <div class="row">
           <div class="col-lg-4 mb-3">
@@ -88,7 +88,7 @@
           </div>
 
           
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
             <label for="label5" class="form-label fw-bold"
               >Insurance Date
             </label>
@@ -99,13 +99,14 @@
               id="label5"
             />
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
            <label for="lable6" class="form-label fw-bold"
                 >Insurance Paper</label
               >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label6">
+              {% comment %} <input type="file" name="img" class="form-control" accept=".pdf"> {% endcomment %}
+           <input type="file" name="insurance_img" class="form-control border-2" id="label6" accept=".pdf">
          </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
             <label for="label7" class="form-label fw-bold"
               >State Permit
             </label>
@@ -116,13 +117,13 @@
               id="label7"
             />
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
            <label for="lable8" class="form-label fw-bold"
                 >State Permit Paper</label
               >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label8">
+           <input type="file" name="state_img" class="form-control border-2" id="label8" accept=".pdf">
          </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
             <label for="label9" class="form-label fw-bold"
               >National Permit</label
             >
@@ -133,13 +134,13 @@
               id="label9"
             />
           </div>
-           <div class="col-lg-4 mb-3">
+           <div class="col-lg-3 mb-3">
            <label for="lable10" class="form-label fw-bold"
                 >National Permit Paper</label
               >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label10">
+           <input type="file" name="national_img" class="form-control border-2" id="label10" accept=".pdf" >
          </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
             <label for="label11" class="form-label fw-bold"
               >Fitness Date</label
             >
@@ -150,13 +151,13 @@
               id="label11"
             />
           </div>
-           <div class="col-lg-4 mb-3">
+           <div class="col-lg-3 mb-3">
            <label for="lable12" class="form-label fw-bold"
                 >Fitness Paper</label
               >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label12">
+           <input type="file" name="fitness_img" class="form-control border-2" id="label12" accept=".pdf">
          </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
             <label for="label13" class="form-label fw-bold"
               >Tax Date</label
             >
@@ -167,13 +168,13 @@
               id="label13"
             />
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
            <label for="lable14" class="form-label fw-bold"
                 >Tax Paper</label
               >
-           <input type="file" name="vehicle_img" class="form-control border-2" id="label14">
+           <input type="file" name="tax_img" class="form-control border-2" id="label14" accept=".pdf">
          </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
             <label for="label15" class="form-label fw-bold"
               >PUC Date</label
             >
@@ -184,11 +185,11 @@
               id="label15"
             />
           </div>
-             <div class="col-lg-4 mb-3">
+             <div class="col-lg-3 mb-3">
         <label for="lable16" class="form-label fw-bold"
                 >PUC Paper</label
               >
-        <input type="file" name="vehicle_img" class="form-control border-2" id="label16">
+        <input type="file" name="puc_img" class="form-control border-2" id="label16" accept=".pdf">
       </div>
 
        <div class="col-lg-4 mb-3">
@@ -221,13 +222,13 @@
     </main>
     <!-- End #main -->
 
-    <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
+     <!-- ======= Footer ======= -->
+    <footer class="footer">
       <div class="copyright">
-        &copy; Copyright <strong>. All Rights Reserved</strong>
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
       </div>
       <div class="credits">
-        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
       </div>
     </footer>
     <!-- End Footer -->

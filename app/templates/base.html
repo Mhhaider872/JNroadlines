@@ -375,7 +375,7 @@
             data-bs-toggle="collapse"
             href="#"
           >
-            <i class="bi bi-layout-text-window-reverse"></i><span>Trip</span
+            <i class="bi bi-arrow-down-up"></i><span>Trip</span
             ><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -389,11 +389,11 @@
               </a>
             </li>
             
-            <li>
+            {% comment %} <li>
               <a href="{% url 'start_trip' %}">
                 <i class="bi bi-circle"></i><span>Trip Expense (Advance)</span>
               </a>
-            </li>
+            </li> {% endcomment %}
          
             {% comment %} <li>
               <a href="#tolls">
@@ -412,6 +412,31 @@
                 <i class="bi bi-circle"></i><span>Urea Details</span>
               </a>
             </li> {% endcomment %}
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            data-bs-target="#tables-nav2"
+            data-bs-toggle="collapse"
+            href="#"
+          >
+            <i class="bi bi-cash-stack"></i><span>Add Expense</span
+            ><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul
+            id="tables-nav2"
+            class="nav-content collapse"
+            data-bs-parent="#sidebar-nav"
+          >
+            
+            <li>
+              <a href="{% url 'start_trip' %}">
+                <i class="bi bi-circle"></i><span>Trip Expense (Advance)</span>
+              </a>
+            </li>
+         
+            
           </ul>
         </li>
 
@@ -489,7 +514,7 @@
             data-bs-toggle="collapse"
             href="#"
           >
-            <i class="bi bi-people"></i><span>Company Details</span
+            <i class="bi bi-building"></i><span>Company Details</span
             ><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -512,7 +537,7 @@
             data-bs-toggle="collapse"
             href="{% url 'loandetails' %}"
           >
-            <i class="bi bi-people"></i><span>Loan</span
+            <i class="bi bi-person-vcard"></i><span>Loan</span
             ><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -526,6 +551,27 @@
               </a>
             </li>
          
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            data-bs-target="#petrol-details"
+            data-bs-toggle="collapse"
+            href="#"
+          >
+            <i class="bi bi-fuel-pump"></i><span>Add Petrol Pump</span
+            ><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul
+            id="petrol-details"
+            class="nav-content collapse"
+            data-bs-parent="#sidebar-nav"
+          >
+            <li>
+              <a href="{% url 'add-petrol'%}"> <i class="bi bi-circle"></i><span>Petrol Pump Name</span> </a>
+            </li>
+           
           </ul>
         </li>
         <li class="nav-item">
@@ -549,6 +595,7 @@
            
           </ul>
         </li>
+        
         <li class="nav-item">
           <a
             class="nav-link collapsed"
@@ -564,8 +611,11 @@
             class="nav-content collapse"
             data-bs-parent="#sidebar-nav"
           >
+            {% comment %} <li>
+              <a href="{% url 'create_bill' %}"> <i class="bi bi-circle"></i><span>All Bills </span> </a>
+            </li> {% endcomment %}
             <li>
-              <a href="{% url 'all-bill' %}"> <i class="bi bi-circle"></i><span>All Bills </span> </a>
+              <a href="{% url 'bill-page' %}"> <i class="bi bi-circle"></i><span>Billing </span> </a>
             </li>
          
           </ul>

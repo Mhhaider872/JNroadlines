@@ -66,11 +66,9 @@
         <input type="text" class="form-control" id="trip_id" name="trip_id" required>
         </div> {% endcomment %}
         <div class="row">
-        <div class="row">
-          <div class="col-lg-2 mb-3">
+          <div class="col-lg-3 mb-3">
             <label for="trip_id" class="form-label fw-bold">Trip id</label>
-             <input class="form-control"  id="trip_id" name="trip_id" required>
-             </div>
+             <input type="text" class="form-control"  id="trip_id" name="trip_id"  min="0" step="Trip" required>
              </div>
          <div class="col-lg-3 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
@@ -82,11 +80,20 @@
                 </datalist>
           </div>
           <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
+             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
+               <datalist id="driverslist" class="shadow-sm border-0" >
+                  {% for d in dname %}
+                 <option value="{{d.name}}"></option>
+                {% endfor %}
+                </datalist>
+             </div>
+          <div class="col-lg-3 mb-3">
             <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
              <input class="form-control border-2" name="from_id" list="datalistOptions1" id="exampleDataList1" placeholder="Search to...">
                <datalist id="datalistOptions1">
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div>
@@ -95,7 +102,7 @@
              <input class="form-control border-2" name="To_id" list="datalistOptions2" id="exampleDataList2" placeholder="Search to...">
                <datalist id="datalistOptions2">
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div>
@@ -110,9 +117,24 @@
               id="label11"
             />
           </div>
+          <div class="col-lg-3 mb-3">
+            <label for="label12" class="form-label fw-bold"
+              >Trip Fixed Amount</label
+            >
+            <input
+              type="number"
+              name="f_trip"
+              class="form-control  border-2"
+              id="label12"
+              min="0"
+              value="0"
+             
+            />
+          </div>
           </div>
         <button type="submit" class="btn btn-success my-3">Start Trip</button>
         <a  class="btn btn-info mx-2" href="{% url 'trip'  %}">View Trip</a>
+        
     </form>
 
 
@@ -136,5 +158,31 @@
       ><i class="bi bi-arrow-up-short"></i
     ></a>
 
+<div class="col-lg-2 mb-3">
+    <label for="trip_id" class="form-label fw-bold">Trip id</label>
+    <input type="text" class="form-control" id="trip_id" name="trip_id" required>
+</div>
+
+<script>
+    // Trip ID ko track karne ke liye localStorage ka use karein
+    let serialNumber = localStorage.getItem('serialNumber');
+
+    if (!serialNumber) {
+        // Agar serial number nahi hai, to initial value set karein (jaise 1)
+        serialNumber = 1;
+    } else {
+        // Agar serial number hai, to usse increment karein
+        serialNumber = parseInt(serialNumber) + 1;
+    }
+
+    // Serial number ko zero-padded format mein convert karein (TRIP001, TRIP002, ...)
+    let tripId = "TRIP" + serialNumber.toString().padStart(3, '0');
+
+    // Set the trip id in the input field
+    document.getElementById('trip_id').value = tripId;
+
+    // Save the updated serial number in localStorage
+    localStorage.setItem('serialNumber', serialNumber);
+</script>
 
   </body>

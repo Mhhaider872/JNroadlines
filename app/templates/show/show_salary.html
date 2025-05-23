@@ -42,11 +42,9 @@
                   <tr>
                     <th>Sr No.</th>
                     <th>Tanker No</th>
-                    
                     <th>From Date</th>
                     <th>To Date</th>
                     <th>Driver Name</th>
-                  
                     <th>Paid Type</th>
                     <th>Paid Date</th>
                     <th>Amount</th>
@@ -58,26 +56,27 @@
                   <tr>
                     <td>{{forloop.counter }}</td>
                     <td>{{s.tankerno }}</td>
-                    <td>{{s.f_date }}</td>
-                    <td>{{s.t_date }}</td>
+                    <td>{{s.f_date|date:"d/m/Y" }}</td>
+                    <td>{{s.t_date|date:"d/m/Y" }}</td>
                     <td>{{s.drivername }}</td>
                     <td>{{s.salary_driver }}</td>
-                    <td>{{s.p_date }}</td>
-                     <td>{{s.amount }}</td>
-                    <
+                    <td>{{s.p_date|date:"d/m/Y" }}</td>
+                    <td>{{s.amount }}</td>
+                    
                     <td>
                       <a
-                        href="#"
+                        href="{% url 'update-s' s.id  %}"
                         class="text-success mx-2"
                         ><i class="bi bi-pencil-square fs-5"></i
                       ></a>
                       <a
-                        href="#"
+                        href="{% url 'delete-s' s.id  %}"
                         class="text-danger"
                         onclick="return confirmDelete()"
-                        ><i class="bi bi-trash fs-5"></i
+                        ><i class="bi bi-trash3-fill fs-5"></i
                       ></a>
-                      </td>
+                      
+                    </td>
                      </tr>
                   {% endfor %}
                    {% comment %}
@@ -95,16 +94,16 @@
   </main>
   <!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong>. All Rights Reserved</strong>
-    </div>
-    <div class="credits">
-      Designed by <a href="#"><strong>J N Roadlines</strong></a>
-    </div>
-  </footer>
-  <!-- End Footer -->
+    <!-- ======= Footer ======= -->
+    <footer class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
 
   <a
     href="#"

@@ -59,17 +59,17 @@
           </div>
           <div class="col-lg-4 mb-3">
             <label for="label11" class="form-label fw-bold"
-              >Trip Date</label
+              >Toll Date</label
             >
             <input
               type="date"
               name="trip_date"
-              class="form-control shadow-sm border-0"
+              class="form-control border-2"
               id="label11"
             />
           </div>
 
-            <div class="col-lg-4 mb-3">
+            {% comment %} <div class="col-lg-4 mb-3">
             <label for="label11" class="form-label fw-bold"
               > Date</label
             >
@@ -79,19 +79,9 @@
               class="form-control shadow-sm border-0"
               id="label11"
             />
-          </div>
-            <div class="col-lg-4 mb-3">
-             <label for="label11" class="form-label fw-bold"
-              >Amount</label
-             >
-            <input
-              type="number"
-              name="amount"
-              class="form-control shadow-sm border-0"
-              id="label11"
-            />
-          </div>
-           <div class="col-lg-4 mb-3">
+          </div> {% endcomment %}
+           
+           {% comment %} <div class="col-lg-4 mb-3">
              <label for="label11" class="form-label fw-bold"
               >Toll Name</label
              >
@@ -101,13 +91,13 @@
               class="form-control shadow-sm border-0"
               id="label11"
             />
-          </div>
+          </div> {% endcomment %}
           <div class="col-lg-4 mb-3">
             <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
              <input class="form-control" name="From_address" list="datalistOptions1" id="exampleDataList1" placeholder="Search to...">
                <datalist id="datalistOptions1" class="shadow-sm border-0" >
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div>
@@ -116,16 +106,37 @@
              <input class="form-control" name="To_address" list="datalistOptions0" id="exampleDataList0" placeholder="Search to...">
                <datalist id="datalistOptions0" class="shadow-sm border-0" >
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div>
           
-          
+           <div class="col-lg-4 mb-3">
+             <label for="label11" class="form-label fw-bold"
+              >Amount</label
+             >
+            <input
+              type="number"
+              name="amount"
+              class="form-control border-2"
+              id="label11"
+            />
+          </div>
+           <div class="col-lg-4 mb-3">
+             <label for="status" class="form-label fw-bold"
+              >Status</label
+             >
+            <select id="status" name="status" class="form-control border-2">
+            <option value="" selected>Select</option>
+            <option value="Empty" >Empty</option>
+            <option value="Pending">Pending</option>
+            <option value="Add Trip">Add Trip</option>
+           </select>
+          </div>
           
           <div class="btn-div text-center py-2">
-            <button type="submit" class="btn btn-danger px-4">Add</button>
-            <a href="{% url 'toll-details' %}" class="btn btn-success px-4">View</a>
+            <button type="submit" class="btn btn-success px-4">Add</button>
+            <a href="{% url 'toll-details' %}" class="btn btn-info px-4">View</a>
           </div>
         </form>
       </div>
@@ -136,12 +147,12 @@
     <!-- End #main -->
 
     <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="copyright">
-        &copy; Copyright <strong>. All Rights Reserved</strong>
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
       </div>
       <div class="credits">
-        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
       </div>
     </footer>
     <!-- End Footer -->

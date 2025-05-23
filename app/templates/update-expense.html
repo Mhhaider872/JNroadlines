@@ -264,10 +264,17 @@
     </div>
     <div class="col-lg-4 mb-3">
       <label for="subCategory" class="form-label fw-bold">Paid By</label>
-      <select id="subCategory" name="subCategory" class="form-select shadow-sm border-0">
+      {% comment %} <select id="subCategory" name="subCategory" class="form-select shadow-sm border-0">
         <option value="">Select</option>
         <!-- Initial empty subcategory dropdown -->
-      </select>
+      </select> {% endcomment %}
+      <input
+              type="text"
+              name="subCategory"
+              class="form-control shadow-sm border-0"
+              id="subCategory"
+              value={{}}
+            />
     </div>
    
         <div class="col-lg-4 mb-3">
@@ -478,6 +485,7 @@
               name="trip_end"
               class="form-control shadow-sm border-0"
               id="label11"
+              value="{}"
             />
         </div>
            <div class="btn-div text-center py-2">

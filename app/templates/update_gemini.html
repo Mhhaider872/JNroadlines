@@ -1,0 +1,384 @@
+<!-- @format -->
+{% include 'base.html' %}
+{% load static %}
+
+
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1 class="py-4">Update Gemini Trip </h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'addtrip' %}">Add Trip Page</a></li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body py-4">
+                {% comment %} <a href="{% url 'aak-local' %}" class="btn btn-primary  float-end">AAK India Local</a> {% endcomment %}
+                </div>
+    <section class="main-sec">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form  action="{% url 'do-gemini-update' geminiup.id  %}"  method="POST" autocomplete="off">
+        {% csrf_token %}
+          <div class="row">
+           <div class="col-lg-4 mb-3">
+              <label for="tankerno" class="form-label fw-bold">Tanker No</label>
+              <input type="text" name="tankerno" class="form-control" value="{{geminiup.plan.tankerno}}" readonly>
+              {% comment %} <select id="tankerno" name="tankerno" class="form-select">
+             <option value="">-- Select Tanker --</option>
+              {% for plan in plans %}
+              <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
+              {% endfor %}
+              </select> {% endcomment %}
+            
+            </div>
+
+
+            <div class="col-lg-4 mb-3">
+            <label for="fadd" class="form-label fw-bold">From Address</label>
+            <input type="text" class="form-control" id="From_address" name="From_address" value="{{geminiup.From_address}}" readonly>
+              
+            </div>
+            <div class="col-lg-4 mb-3">
+              <label for="toadd" class="form-label fw-bold">To Address</label>
+              <input type="text" class="form-control" id="To_address" name="To_address" value="{{geminiup.To_address}}" readonly>
+            </div>
+             <div class="col-lg-4 mb-3">
+             <label for="driver" class="form-label fw-bold">Driver Name</label>
+             <input type="text" class="form-control" id="drivername" name="drivername" value="{{geminiup.drivername}}" readonly>
+            </div>
+          <div class="col-lg-4 mb-3">
+           <label for="tanker" class="form-label fw-bold">Tanker Capacity</label>
+            <input type="text" class="form-control" id="tanker_capacity" name="tank_capacity" value="{{geminiup.tank_capacity}}" readonly>
+          </div>
+          <div class="col-lg-4 mb-3">
+           <label for="tdate" class="form-label fw-bold">Trip Date</label>
+
+            <input type="text" class="form-control" id="dispatch_Date" name="dispatch_Date" value="{{geminiup.dispatch_Date|date:'Y-m-d'}}" readonly>
+           
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label4" class="form-label fw-bold"
+              >Arrival at Loading Point (Plant) Date & Time</label
+            >
+            <input
+              type="datetime-local"
+              name="arrival_time"
+              class="form-control"
+              id="label4"
+              value="{{ geminiup.arrival_time|date:'Y-m-d\TH:i'  }}"
+            />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >Dispatched date & time</label
+            >
+            <input
+              type="datetime-local"
+              name="dispatch_time"
+              class="form-control"
+              id="label5"
+               value="{{ geminiup.dispatch_time|date:'Y-m-d\TH:i'  }}"
+            />
+          </div>
+         
+
+         
+           <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >Reached date & time</label
+            >
+            <input
+              type="datetime-local"
+              name="reach_time"
+              class="form-control"
+              id="label5"
+              value="{{ geminiup.reach_time|date:'Y-m-d\TH:i'  }}"
+            />
+          </div>
+{% comment %} 
+          <div class="col-lg-4 mb-3">
+            <label for="label8" class="form-label fw-bold">Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ashok mama )</label>
+            <input
+              type="text"
+              class="form-control"
+              name="product"
+              min="0"
+              id="label8"
+            />
+          </div> {% endcomment %}
+          {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >Vehicle Date & Time when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  </label
+            >
+            <input
+              type="datetime-local"
+              name="ardate"
+              class="form-control"
+              id="label5"
+            />
+          </div> {% endcomment %}
+          {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label9" class="form-label fw-bold">Vehicle Kilometer Per Trip (As per Ganesh Sir)  </label>
+            <input
+              type="number"
+              class="form-control"
+              name="traday"
+              min="0"
+              id="label9"
+            />
+          </div> {% endcomment %}
+
+        {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label9" class="form-label fw-bold">Vehicle Kilometer Per Trip (As per Ashok Mama )  </label>
+            <input
+              type="number"
+              class="form-control"
+              name="traday"
+              min="0"
+              id="label9"
+            />
+          </div> {% endcomment %}
+        
+          <div class="col-lg-4 mb-3">
+            <label for="label12" class="form-label fw-bold"
+              >Unloading date & time</label
+            >
+            <input
+              type="datetime-local"
+              name="unload_time"
+              class="form-control shadow-sm border-0"
+              id="label12"
+              value="{{ geminiup.unload_time|date:'Y-m-d\TH:i' }}"
+            />
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            <label for="label17" class="form-label fw-bold">LR No</label>
+            <input
+              type="number"
+              class="form-control"
+              name="lr_num"
+              min="0"
+              id="label17"
+               value="{{ geminiup.lr_num }}"
+
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label18" class="form-label fw-bold"
+              >LR Received Date</label
+            >
+            <input
+              type="date"
+              name="lr_date"
+              class="form-control"
+              id="label18"
+               value="{{ geminiup.lr_date }}"
+            />
+        </div>
+         <div class="col-lg-4 mb-3">
+            <label for="label19" class="form-label fw-bold"
+              >Freight Bill no.</label
+            >
+            <input
+              type="text"
+              name="freight_bill"
+              class="form-control"
+              id="label19"
+               min="0"
+               value="{{ geminiup.lr_date }}"
+               
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label20" class="form-label fw-bold"
+              >Freight Bill Date</label
+            >
+            <input
+              type="date"
+              class="form-control"
+              name="freight_date"
+              id="label20"
+              value="{{ geminiup.lr_date|date:'Y-m-d' }}"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Loaded Qty</label>
+            <input type="text" class="form-control" id="disqty" name="loaded_qty" value="{{geminiup.loaded_qty}}" oninput="calculateTotalShort()">
+        </div>
+        {% comment %} <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Allow Percentage</label>
+            <input type="number" class="form-control" id="shortallow" name="percent" value="{{t.totalshort}}" oninput="calculateTotalShort()" step="0.01">
+        </div> {% endcomment %}
+          <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Unloaded Qty</label>
+            <input type="text" class="form-control" id="unlodqty" name="unload_qty" value="{{geminiup.unload_qty}}" oninput="calculateTotalShort()">
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label14" class="form-label fw-bold"
+              >Shortages / Excess Qty</label
+            >
+            <input type="text" class="form-control" id="totalshort" name="short_qty" value="{{geminiup.short_qty}}" readonly>
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label15" class="form-label fw-bold"
+              >Shortages allowed against loaded Qty</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="short_allow"
+              min="0"
+              id="shortallow" name="loadedQtyPercent" oninput="calculateTotalShort()" value="{{geminiup.loadedQtyPercent}}" readonly
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label16" class="form-label fw-bold">Return Qty</label>
+            <input
+              type="text"
+              class="form-control"
+              name="return_qty"
+              min="0"
+              id="label16"
+              value="{{geminiup.return_qty}}"
+            />
+        </div>
+         
+         
+          
+        <div class="col-lg-4 mb-3">
+            <label for="label21" class="form-label fw-bold"
+              >J. N. Roadlines Remarks</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="remark"
+              min="0"
+              id="label21"
+              value="{{geminiup.remark}}"
+              value="J N Roadlines"
+            />
+        </div>
+        <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-info px-4 mx-2">Update</button>
+            
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+<script>
+  function calculateTotalShort() {
+    var disqty = parseInt(document.getElementById("disqty").value);
+    var unlodqty = parseInt(document.getElementById("unlodqty").value);
+
+   if (!isNaN(disqty) && !isNaN(unlodqty)) {
+    // Step 1: Subtract disqty from unlodqty
+    var totalshort = unlodqty - disqty;
+
+    // Step 2: Show totalshort (it can be negative)
+    document.getElementById("totalshort").value = totalshort;
+    
+      // Initialize shortallow
+      var shortallow = totalshort;
+
+     // Check if totalshort is exactly 0
+      if (totalshort >= -60) {
+            shortallow = 0;
+          } 
+      else{
+            shortallow = totalshort - (-60); // or totalshort + 60
+          }
+
+      
+    //var shortallow = totalshort + 60;
+    // Step 4: Show shortallow (either normal or 0 if negative)
+    document.getElementById("shortallow").value = shortallow;
+   }
+
+    
+  }
+</script>
+
+
+
+
+<script>
+document.getElementById("tankerno").addEventListener("change", function() {
+    let planId = this.value;
+
+    if (planId) {
+        fetch(`/get_plan_details/?plan_id=${planId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("drivername").value = data.drivername || '';
+                document.getElementById("From_address").value = data.From_address || '';
+                document.getElementById("To_address").value = data.To_address || '';
+                document.getElementById("tanker_capacity").value = data.tanker_capacity || '';
+                //document.getElementById("dispatch_Date").value = data.dispatch_Date || '';
+                // Convert date to DD/MM/YYYY
+                if (data.dispatch_Date) {
+                const dateOnly = data.dispatch_Date.split('T')[0]; // "2025-04-15"
+                const [year, month, day] = dateOnly.split('-');
+                const formattedDate = `${day}/${month}/${year}`; // "15/04/2025"
+                document.getElementById("dispatch_Date").value = formattedDate;
+               } 
+            });
+    } else {
+        document.getElementById("drivername").value = '';
+        document.getElementById("From_address").value = '';
+        document.getElementById("To_address").value = '';
+        document.getElementById("tanker_capacity").value = '';
+        document.getElementById("dispatch_Date").value = '';
+    }
+});
+</script>
+</body>
+

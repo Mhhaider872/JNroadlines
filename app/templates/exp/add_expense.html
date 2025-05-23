@@ -81,34 +81,44 @@
     <div class="row">
       <div class="col-lg-12 form-div">
          
-      <h1></h1>
+
 
     <!-- Form to add new expense -->
     <form method="POST">
      {% csrf_token %}
-       <div class="row">
-      {% comment %} <h5 class="card-title">Trip General Expenses & Toll</h5> {% endcomment %}
-    {% comment %} <label for="description">Expense Details :</label>
-        <input type="text" class="form-control border-2" id="description" name="description" required> {% endcomment %}
-        {% comment %} <div class="col-lg-4 mb-3">
+       <div class="row py-3">   
+<div class="col-lg-3 mb-3">
+        <label for="amount" class="form-label fw-bold"> Date :</label>
+        <input type="date" class="form-control border-2"  id="date" name="date">
+       </div>
+<div class="col-lg-3 mb-3">
+        <label for="amount" class="form-label fw-bold">Amount :</label>
+        <input type="number" class="form-control border-2" step="0.01" id="total" name="amount" oninput="calculateTotal()" required>
+       </div>
        
-            <label for="description" class="form-label fw-bold">Expense Details :</label>
-             <input class="form-control border-2" name="description"  list="datalistOptions" id="description" placeholder="Search ....">
-               <datalist id="datalistOptions" class="shadow-sm border-0" >
-               
-                 <option value="Trip General Expenses">Trip General Expenses</option>
-                 <option value="Food Allowances">Food Allowances</option>
-                 <option value="Bhatta">Bhatta</option>
-                 <option value="Washing Charges Tank">Washing Charges Tank</option>
-                 <option value="Toll">Toll</option>
-                 <option value="Diesel Details">Diesel Details</option>
-                 <option value="Urea Details">Urea Details</option>
-                 <option value="Repairs Details">Repairs Details</option>
-           
+<div class="col-lg-3 mb-3">
+            <label for="exampleDataList3" class="form-label fw-bold">( From via) Address </label>
+             <input class="form-control border-2" name="from_via" list="datalistOptions3" id="exampleDataList3" placeholder="Search to...">
+               <datalist id="datalistOptions3">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
                 </datalist>
-         
-        </div> {% endcomment %}
-         
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">( To via ) Address </label>
+             <input class="form-control border-2" name="To_via" list="datalistOptions" id="exampleDataList" placeholder="Search to...">
+               <datalist id="datalistOptions">
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.city}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div> 
+          <div class="col-lg-3 mb-3">
+        <label for="date" class="form-label fw-bold">End Trip Date :</label>
+        <input type="date" class="form-control border-2"  id="date" name="end_date">
+       </div>
+        <hr>
         <h5 class="card-title">General Expense</h5>
 
        <div class="col-lg-3 mb-3">
@@ -205,7 +215,7 @@
             />
           </div> {% endcomment %}
             
-           <div class="col-lg-3 mb-3">
+           {% comment %} <div class="col-lg-3 mb-3">
              <label for="label11" class="form-label fw-bold"
               >Toll Name</label
              >
@@ -215,16 +225,17 @@
               class="form-control border-2"
               id="label11"
             />
-          </div>
+          </div> {% endcomment %}
           <div class="col-lg-3 mb-3">
-             <label for="label11" class="form-label fw-bold"
-              >Amount</label
+             <label for="toll" class="form-label fw-bold"
+              >Toll Amount</label
              >
             <input
               type="number"
               name="toll_amount"
               class="form-control border-2"
-              id="label11"
+              id="toll"
+              oninput="calculateTotal()"
             />
           </div>
         <h5 class="card-title">Diesel Details</h5>
@@ -246,12 +257,12 @@
                <datalist id="datalistOptions4">
     
                  <option value="Cash">Cash</option>
-                 <option value="BanK">BanK</option>
+                 <option value="Bank">Bank</option>
                   {% for p in petrol %}
                  <option value="{{p.name}}">{{p.name }}</option>
                  {% endfor %}
                 {% for d in dname %}
-                 <option value="{{d.name}}">{{d.name }}</option>
+                 <option value="{{d.name}}"></option>
                  {% endfor %}
                 </datalist>
     </div>
@@ -259,7 +270,7 @@
       <label for="subCategory" class="form-label fw-bold">Paid By</label>
       <select id="subCategory" name="subCategory" class="form-select border-2">
         <option value="">Select</option>
-        <option value="{{ subCategory.name }}"></option>
+        <option value="{{ subCategory.name }}">{{ subCategory.name }}</option>
         <!-- Initial empty subcategory dropdown -->
       </select>
     </div>
@@ -299,6 +310,7 @@
                class="form-control border-2"
                id="rate"
                min="0"
+               step="0.01"
               oninput="calculateTotal()"
             />
           </div>
@@ -365,6 +377,7 @@
                class="form-control border-2"
                id="Urate"
                min="0"
+               step="0.01"
               oninput="calculateTotal()"
             />
           </div>
@@ -416,7 +429,7 @@
               id="label11"
             />
         </div> {% endcomment %}
-         <div class="col-lg-3 mb-3">
+         {% comment %} <div class="col-lg-3 mb-3">
              <label for="label11" class="form-label fw-bold"
               >Spare Parts</label
              >
@@ -426,7 +439,7 @@
               class="form-control border-2"
               id="liter"
             />
-        </div>
+        </div> {% endcomment %}
            
            <div class="col-lg-3 mb-3">
              <label for="label11" class="form-label fw-bold"
@@ -452,78 +465,49 @@
               min="0"
             />
           </div>
-<div class="col-lg-3 mb-3">
+            <div class="col-lg-3 mb-3">
              <label for="label11" class="form-label fw-bold"
               >Amount </label
              >
-            <input
+             <input
                ype="number"
                name="r_amount"
                class="form-control border-2"
                id="totalamount"
                min="0"
                oninput="calculateTotal()"
-            />
-          </div>
-<hr>
-<div class="col-lg-3 mb-3">
-        <label for="amount" class="form-label fw-bold"> Date :</label>
-        <input type="date" class="form-control border-2"  id="date" name="date">
-       </div>
-<div class="col-lg-3 mb-3">
-        <label for="amount" class="form-label fw-bold">Amount :</label>
-        <input type="number" class="form-control border-2" step="0.01" id="total" name="amount" oninput="calculateTotal()" required>
-       </div>
-       
-<div class="col-lg-3 mb-3">
-            <label for="exampleDataList3" class="form-label fw-bold">( From via) Address </label>
-             <input class="form-control border-2" name="from_via" list="datalistOptions3" id="exampleDataList3" placeholder="Search to...">
-               <datalist id="datalistOptions3">
-                {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
-                 {% endfor %}
-                </datalist>
-          </div>
-          <div class="col-lg-3 mb-3">
-            <label for="exampleDataList" class="form-label fw-bold">( To via ) Address </label>
-             <input class="form-control border-2" name="To_via" list="datalistOptions" id="exampleDataList" placeholder="Search to...">
-               <datalist id="datalistOptions">
-                {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
-                 {% endfor %}
-                </datalist>
-          </div> 
-          <div class="col-lg-3 mb-3">
-        <label for="date" class="form-label fw-bold">End Trip Date :</label>
-        <input type="date" class="form-control border-2"  id="date" name="end_date">
-       </div>
+             />
+            </div>
+
       </div>
       <div class="text-center py-3">
         <button  type="submit" class="btn btn-success my-3">Add Expense</button>
-         <a  class="btn btn-primary mx-2" href="{% url 'start_trip'  %}">Start Trip</a>
+         {% comment %} <a  class="btn btn-primary mx-2" href="{% url 'start_trip'  %}">Start Trip</a> {% endcomment %}
         </div>
     </form>
 <hr>
     <!-- Show expenses table -->
     <h2>Expenses</h2>
     <div class="table-responsive">
-    <table class="table table-bordered border-dark">
+    <table class="table table-hover">
         <thead>
             <tr>
             <th>Tanker_No</th> 
+            <th>Driver_Name</th>
+            <th>Trip_Date</th>
              <th>From_Address</th>
             <th>To_Address</th>
-            <th>( From via)_Address </th>
-            <th>( To via)_Address </th>
-            <th>Trip_Date</th>
-            <th>Date</th>
+            <th>(From_via)_Address </th>
+            <th>(To_via)_Address </th>
+            
+            <th>Trip_Expense_Date</th>
             <th>Trip_General_Expenses</th>
                       <th>Food_Allowance</th>
                       <th>Bhatta</th>
                       <th>Washing_Charges_Tank</th>
-                      <th>Actual_Shortage_Amount</th>
+                      <th>Driver_Loan_Amount</th>
                       <th>Total_Amount</th>
-                      <th>Toll_Name</th>
+                      {% comment %} <th>Toll_Name</th> {% endcomment %}
                       <th>Toll_Amount</th>
                       <th>Paid_To</th>
                       <th>Paid_By</th>
@@ -551,20 +535,20 @@
             {% for exp in expenses %}
             <tr>
                  <td> {{ trip.tanker }}</td> 
+                 <td> {{ trip.drivername }}</td> 
+                 <td><strong> {{ trip.trip_date |date:"d/m/Y" }}</strong></td>
                  <td> {{ trip.from_id }}</td>
                 <td> {{ trip.To_id }}</td>
                 <td> {{ exp.from_via }}</td>
                 <td> {{ exp.To_via }}</td>
-                <td> {{ trip.trip_date |date:"d/m/Y" }}</td>
-                <td>{{ exp.date |date:"d/m/Y" }}</td>
+               
+                <td><strong>{{ exp.date |date:"d/m/Y" }}</strong></td>
                  <td>{{exp.trip_general_expenses}}</td>
                       <td>{{exp.food_allowance}}</td>
                       <td>{{exp.bhatta}}</td>
                       <td>{{exp.washing_charges_tank}}</td>
                       <td>{{exp.actual_amount}}</td>
                       <td>{{exp.total_amount}}</td>
-                      <td>{{exp.toll_name}}</td>
-                      
                       <td>{{exp.toll_amount}}</td>
                       <td>{{exp.paid_to}}</td>
                       <td>{{exp.subCategory}}</td>
@@ -572,18 +556,18 @@
                       <td>{{exp.liters }}</td>
                       <td>{{exp.rate}}</td>
                       <td>{{exp.total_diesel}}</td>
-                      <td>{{exp.paid_date|date:"d/m/Y" }}</td>
-                      <td>{{exp.bill_date |date:"d/m/Y" }}</td>
+                      <td><strong>{{exp.paid_date|date:"d/m/Y" }}</strong></td>
+                      <td><strong>{{exp.bill_date |date:"d/m/Y" }}</strong></td>
                       <td>{{exp.urea_liter}}</td>
                       <td>{{exp.urea_rate}}</td>
                       <td>{{exp.urea_total}}</td>
-                      <td>{{exp.r_paid_date |date:"d/m/Y"}}</td>
-                      <td>{{exp.r_bill_date |date:"d/m/Y"}}</td>
+                      <td><strong>{{exp.r_paid_date |date:"d/m/Y"}}</strong></td>
+                      <td><strong>{{exp.r_bill_date |date:"d/m/Y"}}</strong></td>
                       <td>{{exp.spare_part}}</td>
                       <td>{{exp.r_amount}}</td>
                       <td>{{exp.part_name}}</td>
                       <td>{{exp.no_piece}}</td>
-                      <td><b>{{exp.end_date|date:"d/m/Y"}}</b></td>
+                      <td><strong>{{exp.end_date|date:"d/m/Y"}}</strong></td>
                 <td><b>₹ {{ exp.amount }}</b></td>
                 <td>
                         <a
@@ -614,37 +598,7 @@
     {% comment %} <a class="btn btn-danger mx-2" href="{% url 'end_trip' trip_id=trip.trip_id %}">End Trip</a> {% endcomment %}
 
     </div> 
-    <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">End Trip Date</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      <form action='end_trip' method="POST">
-       {%csrf_token%}
-       <div class="col-lg-12 mb-3">
-            <label for="label11" class="form-label fw-bold"
-              >Date</label
-            >
-            <input
-              type="date"
-              name="end_time"
-              class="form-control  border-2"
-              id="label11"
-            />
-          </div>
-       </form>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a  class="btn btn-primary" href="{% url 'end_trip' trip_id=trip.trip_id %}">Save</a>
-      </div>
-    </div>
-  </div>
-</div>
+
 </body>
       </div>
     </div>
@@ -669,52 +623,7 @@
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
-{% comment %} <script>
-        function calculateTotal1() {
-     // Get the values of the input fields by their IDs
-       let allowance1 = parseFloat(document.getElementById('allowance1').value) || 0;
-       let allowance2 = parseFloat(document.getElementById('allowance2').value) || 0;
-       let allowance3 = parseFloat(document.getElementById('allowance3').value) || 0;
-       let allowance4 = parseFloat(document.getElementById('allowance4').value) || 0;
 
-       let total = allowance1 + allowance2 + allowance3 + allowance4;
-       document.getElementById('totalamount1').value = total;
-      }
-    </script>
-<script>
-       function calculate_Total() {
-    // Get the values of the input fields by their IDs
-       let liters = parseFloat(document.getElementById('liter').value) ;
-       let rates = parseFloat(document.getElementById('rate').value) ;
-       
-
-       let total2 = liters * rates;
-       document.getElementById('totalamount2').value = total2;
-    }
-
-</script>
-
-
-
-  <script>
-       function calculateTotal(){
-       // Get the values of the input fields by their IDs
-       let liter = parseFloat(document.getElementById('Uliter').value) ;
-       let rates = parseFloat(document.getElementById('Urate').value) ;
-
-       
-
-       let totals = liter * rates;
-       document.getElementById('Utotal_amount').value = totals;
-
-           // Sum up all the totals
-       let total = totalAllowance + totalDiesel + totalUrea + totalAmount;
-
-       // Display the total expense in the respective field or section
-       document.getElementById('totalExpenseDisplay').textContent = "Total Expense: ₹" + total.toFixed(2);
-    }
-
-  </script> {% endcomment %}
   <script>
   function calculateTotal() {
     // Get the values from all input fields and calculate their sum.
@@ -740,9 +649,12 @@
 
     // Get actual shortage amount
     let totalAmount = parseFloat(document.getElementById('totalamount').value) || 0;
+   
+    // Get Toll amount
+    let tollAmount = parseFloat(document.getElementById('toll').value) || 0;
     
     // Sum up all the totals
-    let total = totalAllowance + totalDiesel + totalUrea + totalAmount;
+    let total = totalAllowance + totalDiesel + totalUrea + totalAmount + tollAmount;
 
     // Display the total value
     document.getElementById('totalAllowance').value = totalAllowance.toFixed(2);

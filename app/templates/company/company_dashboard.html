@@ -1,0 +1,12 @@
+<h2>Welcome {{ request.user.username }}</h2>
+<a href="{% url 'create_order' %}">➕ Create New Order</a>
+<hr>
+{% for order in orders %}
+  <p><strong>Order:</strong> {{ order.order_details }}</p>
+  {% if order.response %}
+    <p><strong>Admin Reply:</strong> {{ order.response }}</p>
+  {% else %}
+    <p><em>No reply yet</em></p>
+  {% endif %}
+  <hr>
+{% endfor %}

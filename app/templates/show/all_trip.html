@@ -30,10 +30,14 @@
  
       <th scope="col">id</th>
       <th scope="col">Tanker_No</th>
+      <th scope="col">Driver_Name</th>
       <th scope="col">Trip_Date</th>
       <th scope="col">From Address</th>
       <th scope="col">To Address</th>
-      <th scope="col">Grand Total</th>
+      <th scope="col">Grand_Total</th>
+      <th scope="col">Trip_Fixed_Amount</th>
+      <th scope="col">Profit</th>
+      <th scope="col">Loss</th>
          <th scope="col">Action </th>
         {% comment %} <th scope="col">Paid_To</th>
           <th scope="col">Paid_By</th>
@@ -61,10 +65,14 @@
      
       <td>{{ts.trip_id}}</td>
       <td>{{ts.tanker}}</td>
+      <td>{{ts.drivername}}</td>
       <td>{{ts.trip_date|date:"d-m-y"}}</td>
           <td>{{ts.from_id}}</td>
           <td>{{ts.To_id}}</td> 
-          <td><strong>{{ts.total_expense}}</strong> </td> 
+          <td class="text-center"><strong>{{ts.total_expense}}</strong> </td> 
+          <td class="text-center"><strong>{{ts.f_trip|default_if_none:"0"}}</strong> </td> 
+          <td><strong>00</strong> </td> 
+          <td><strong>00 </strong> </td>
           
            {% comment %} <td>
                     {% if ts.end_time %}
@@ -112,16 +120,16 @@
   </main>
   <!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong>. All Rights Reserved</strong>
-    </div>
-    <div class="credits">
-      Designed by <a href="#"><strong>J N Roadlines</strong></a>
-    </div>
-  </footer>
-  <!-- End Footer -->
+    <!-- ======= Footer ======= -->
+    <footer class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
 
   <a
     href="#"

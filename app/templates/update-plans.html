@@ -31,7 +31,7 @@
           <div class="row">
            <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Vehicle No</label>
-             <input class="form-control" name="tankerno" list="datalistOptions" value="{{planupdate.tankerno}}" id="exampleDataList" placeholder="Search to vehicle no...">
+             <input class="form-control" name="tankerno" list="datalistOptions" id="tanker_number" onchange="fetchCapacity()" value="{{planupdate.tankerno}}" id="exampleDataList" placeholder="Search to vehicle no..." >
                <datalist id="datalistOptions" class="shadow-sm border-0" >
                 {% for v in vehicle %}
                  <option value="{{v.vehicle_name}}">{{vehicle_name }}</option>
@@ -73,13 +73,14 @@
               >Tanker Capacity
             </label>
            <div class="input-group mb-3">
-                <select class="form-select" name="tanker_capacity" id="lable2"  value={{planupdate.tanker_capacity}}>
-                <option value="30MT" {% if planupdate.tanker_capacity == '30MT' %}selected{% endif %}>30MT</option>
-                <option value="34MT" {% if planupdate.tanker_capacity == '34MT' %}selected{% endif %}>34MT</option>
-                <option value="28MT" {% if planupdate.tanker_capacity == '28MT' %}selected{% endif %}>28MT</option>
-                <option value="25MT" {% if planupdate.tanker_capacity == '25MT' %}selected{% endif %}>25MT</option>
-                <option value="15MT" {% if planupdate.tanker_capacity == '15MT' %}selected{% endif %}>15MT</option>
-                </select>
+            <input
+              type="text"
+              name="tanker_capacity"
+              class="form-control border-2"
+              id="capacity_output"
+              value={{planupdate.tanker_capacity}}
+              Readonly
+            />
               </div>
           </div>
           <div class="col-lg-4 mb-3">
@@ -140,4 +141,14 @@
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
+    <script>
+  function fetchCapacity() {
+    const number = document.getElementById("tanker_number").value;
+    fetch(`/get_capacity/?vehicle_name=${number}`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("capacity_output").value = data.tankercap || "Not found";
+      });
+  }
+</script>
   </body>

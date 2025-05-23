@@ -43,12 +43,17 @@
                       <th>Chassise_No</th>
                       <th>Engine_No</th>
                       <th>Insurance_Date</th>
+                      <th>Insurance_Paper</th>
                       <th>State_Permit</th>
+                      <th>State_Permit_Paper</th>
                       <th>National_Permit</th>
+                      <th>National_Permit_Paper</th>
                       <th>Fitness</th>
+                      <th>Fitness_Paper</th>
                       <th>Tax_Date</th>
+                      <th>Tax_Paper</th>
                       <th>PUC_Date</th>
-                      <th>Vehicle_Image</th>
+                      <th>PUC_Paper</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -59,28 +64,77 @@
                       <td>{{forloop.counter }}</td>
                       <td>{{v.vehicle_name }}</td>
                       <td>{{v.tankercap}}</td>
-                      
                       <td>{{v.owner_name }}</td>
                       <td>{{v.making_year |date:"d/m/Y" }}</td>
                       <td>{{v.chassise_no }}</td>
                       <td>{{v.engine_no }}</td>
                       <td>{{v.insurance_date |date:"d/m/Y" }}</td>
-                      <td>{{v.state_permit |date:"d/m/Y" }}</td>
-                      <td>{{v.national_permit |date:"d/m/Y" }}</td>
-                      <td>{{v.fitness_date |date:"d/m/Y" }}</td>
-                      <td>{{v.tax_date |date:"d/m/Y" }}</td>
-                      <td>{{v.puc_date |date:"d/m/Y" }}</td>
-                     
-                    <td>
-                       {% if v.vehicle_img %}
-                      <!-- Image exists -->
-                      <img src="{{ v.vehicle_img.url }}" alt="Vehicle Image" width="100">
-                      <a href="{{ v.vehicle_img.url }}" download>Download</a>
-                      {% else %}
-                     <!-- No image available -->
-                     <p>No image available</p>
-                     {% endif %}
+                             <td>
+                   {% if v.insurance_img %}
+                   {% comment %} <img src="{{ v.insurance_img.url }}" alt="Insurance" width="100"><br /> {% endcomment %}
+                    <a href="{{ v.insurance_img.url }}" target="_blank">View</a><br>
+                    <a href="{{ v.insurance_img.url }}" download>Download</a>
+                    {% else %}
+                     No Insurance_Paper available
+                   {% endif %}
+
                     </td>
+
+                      <td>{{v.state_permit |date:"d/m/Y" }}</td>
+                                <td>
+                   {% if v.state_img %}
+                   {% comment %} <img src="{{ v.state_img.url }}" alt="State_Permit" width="100"><br /> {% endcomment %}
+                   <a href="{{ v.insurance_img.url }}" target="_blank">View</a><br>
+                    <a href="{{ v.state_img.url }}" download>Download</a>
+                    {% else %}
+                     No State_Permit_Paper available
+                   {% endif %}
+
+                    </td>
+                      <td>{{v.national_permit |date:"d/m/Y" }}</td>
+                       <td>
+                   {% if v.national_img %}
+                   {% comment %} <img src="{{ v.national_img.url }}" alt="National_Permit_Paper" width="100"><br /> {% endcomment %}
+                   <a href="{{ v.national_img.url }}" target="_blank">View</a><br>
+                    <a href="{{ v.national_img.url }}" download>Download</a>
+                    {% else %}
+                     No National_Permit_Paper available
+                   {% endif %}
+
+                    </td>
+                      <td>{{v.fitness_date |date:"d/m/Y" }}</td>
+                         <td>
+                   {% if v.fitness_img %}
+                   {% comment %} <img src="{{ v.fitness_img.url }}" alt="Fitness_Paper" width="100"><br /> {% endcomment %}
+                    <a href="{{ v.fitness_img.url }}" target="_blank">View</a><br>
+                    <a href="{{ v.fitness_img.url }}" download>Download</a>
+                    {% else %}
+                     No Fitness_Paper available
+                   {% endif %}
+
+                    </td>
+                      <td>{{v.tax_date |date:"d/m/Y" }}</td>
+                        <td>
+                   {% if v.tax_img %}
+                   {% comment %} <img src="{{ v.tax_img.url }}" alt="Tax_Paper" width="100"><br /> {% endcomment %}
+                    <a href="{{ v.tax_img.url }}" target="_blank">View</a><br>
+                    <a href="{{ v.tax_img.url }}" download>Download </a>
+                    {% else %}
+                     No Tax_Paper available
+                   {% endif %}
+
+                    </td>
+                      <td>{{v.puc_date |date:"d/m/Y" }}</td>
+                      
+                  
+                        <td>
+                   {% if v.puc_img %}
+                   {% comment %} <img src="{{ v.puc_img.url }}" alt="PUC_Paper" width="100"><br /> {% endcomment %}
+                    <a href="{{ v.puc_img.url }}" target="_blank">View</a><br>
+                    <a href="{{ v.puc_img.url }}" download>Download</a>
+                    {% else %}
+                     No PUC_Paper available
+                   {% endif %}     
                     <td>
                       {% if v.status == 'Sold' %}
                       <span class="badge bg-danger">Sold</span>
@@ -89,16 +143,11 @@
                        <span class="badge bg-success">Running</span>
                        {% endif %}
                     </td>
-
-
-                      
-               
-
                       <td>
                         <a href="{% url 'up-vehicle' v.id  %}" class="text-success"
                           ><i class="bi bi-pencil-square fs-5"></i
                         ></a>
-                        <a href="{% url 'd-vehicle' v.id  %}" class="text-danger"
+                        <a href="{% url 'd-vehicle' v.id  %}" class="text-danger" onclick="return confirmDelete()"
                           ><i class="bi bi-trash3-fill fs-5"></i></a>
                       </td>
                     </tr>
@@ -115,20 +164,31 @@
   </main>
   <!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong>. All Rights Reserved</strong>
-    </div>
-    <div class="credits">
-      Designed by <a href="#"><strong>J N Roadlines</strong></a>
-    </div>
-  </footer>
-  <!-- End Footer -->
+    <!-- ======= Footer ======= -->
+    <footer class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
 
   <a
     href="#"
     class="back-to-top d-flex align-items-center justify-content-center"
     ><i class="bi bi-arrow-up-short"></i
   ></a>
+
+    <script>
+    function confirmDelete() {
+      var result = confirm("Are you sure you want to delete this data ?");
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  </script>
 </body>

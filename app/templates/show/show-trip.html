@@ -65,6 +65,7 @@
                       <th>Loaded_Qty</th>
                       <th>Unloaded_Qty</th>
                       <th>Total_Shortages_Qty</th>
+                      <th>Allowed_Percent</th>
                       <th>Shortages_allowed_against loaded Qty</th>
                       <th>Return_Qty</th>
                       <th>Remark</th>
@@ -75,23 +76,24 @@
                     {% for s in show %}
                     <tr>
                       <td>{{forloop.counter }}</td>
-                      <td>{{s.tankerno }}</td>
+                      <td>{{s.plan.tankerno }}</td>
 
                       <td>{{s.From_address }}</td>
                       <td>{{s.To_address}}</td>
                       <td>{{s.drivername }}</td>
                       <td>{{s.tank_capacity }}</td>
-                      <td>{{s.arrival_time|date:"d/m/y P" }}</td>
+                      <td>{{s.arrival_time|date:"d/m/y h:i A" }}</td>
                       <td>{{s.dispatch_time|date:"d/m/y P" }}</td>
                       <td>{{s.reach_time|date:"d/m/y P" }}</td>
                       <td>{{s.unload_time|date:"d/m/y P" }}</td>
                       <td>{{s.lr_num }}</td>
                       <td>{{s.lr_date |date:"d/m/Y" }}</td>
                       <td>{{s.freight_bill}}</td>
-                      <td>{{s.freight_date |date:"d/m/Y" }}</td>
+                      <td>{{s.freight_date |date:"d/m/Y" }}</td> 
                       <td>{{s.loaded_qty}}</td>
                       <td>{{s.unload_qty}}</td>
                       <td>{{s.short_qty}}</td>
+                      <td>{{s.percent}}</td>
                       <td>{{s.short_allow}}</td>
                       <td>{{s.return_qty}}</td>
                       <td>{{s.remark}}</td>
@@ -125,16 +127,16 @@
   </main>
   <!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong>. All Rights Reserved</strong>
-    </div>
-    <div class="credits">
-      Designed by <a href="#"><strong>J N Roadlines</strong></a>
-    </div>
-  </footer>
-  <!-- End Footer -->
+    <!-- ======= Footer ======= -->
+    <footer class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
 
   <a
     href="#"

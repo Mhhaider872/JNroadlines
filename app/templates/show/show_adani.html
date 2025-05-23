@@ -75,7 +75,7 @@
                     {% for s in adani %}
                     <tr>
                       <td>{{forloop.counter }}</td>
-                      <td>{{s.tankerno}}</td>
+                      <td>{{s.plan.tankerno}}</td>
                       <td>{{s.From_address }}</td>
                       <td>{{s.To_address}}</td>
                       <td>{{s.drivername }}</td>
@@ -97,12 +97,12 @@
 
                       <td>
                         <a
-                          href="#"
+                          href="{% url 'up-adani' s.id %}"
                           class="text-success mx-2"
                           ><i class="bi bi-pencil-square fs-5"></i
                         ></a>
                         <a
-                          href="#"
+                          href="{% url 'del-adani' s.id %}"
                           class="text-danger"
                           onclick="return confirmDelete()"
                           ><i class="bi bi-trash3-fill fs-5"></i
@@ -125,16 +125,16 @@
   </main>
   <!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong>. All Rights Reserved</strong>
-    </div>
-    <div class="credits">
-      Designed by <a href="#"><strong>J N Roadlines</strong></a>
-    </div>
-  </footer>
-  <!-- End Footer -->
+    <!-- ======= Footer ======= -->
+    <footer class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
 
   <a
     href="#"

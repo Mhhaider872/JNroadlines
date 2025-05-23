@@ -692,7 +692,7 @@ h6 {
 }
 
 .sidebar-nav .nav-link i {
-  font-size: 16px;
+  font-size: 18px;
   margin-right: 10px;
   color: #4154f1;
 }
@@ -826,13 +826,13 @@ h6 {
 }
 
 .dashboard .revenue-card .card-icon {
-  color: #2eca6a;
-  background: #e0f8e9;
+  /* color: #2eca6a; */
+  background: #f6f6fe;
 }
 
 .dashboard .customers-card .card-icon {
-  color: #ff771d;
-  background: #ffecdf;
+  /* color: #ff771d; */
+  background: #f6f6fe;
 }
 
 /* Activity */

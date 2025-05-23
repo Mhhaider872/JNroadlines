@@ -40,74 +40,45 @@
         <form  method="POST">
         {% csrf_token %}
           <div class="row">
-            <div class="col-lg-4 mb-3">
-              <label for="lable1" class="form-label fw-bold"
-                >Vehicle No</label
-              >
            
-               <input class="form-control" value="{{tankerno}}" name="tankerno" id="exampleDataList" placeholder="Search to vehicle no..." readonly>
+
+
+           
+           
+           <div class="col-lg-4 mb-3">
+              <label for="tankerno" class="form-label fw-bold">Tanker No</label>
+              <select id="tankerno" name="tankerno" class="form-select">
+             <option value="">-- Select Tanker --</option>
+              {% for plan in plans %}
+              <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
+              {% endfor %}
+              </select>
+            
             </div>
 
 
             <div class="col-lg-4 mb-3">
-              <label for="lable2" class="form-label fw-bold"
-                >From Address</label
-              >
-              <div class="input-group mb-3">
-                 <input
+            <label for="fadd" class="form-label fw-bold">From Address</label>
+            <input type="text" class="form-control" id="From_address" name="From_address" readonly>
               
-              class="form-control"
-              name="From_address"
-              min="0"
-              id="label6"
-             
-              value="{{From_address}}"
-               readonly
-            />
-              </div>
             </div>
             <div class="col-lg-4 mb-3">
-              <label for="lable3" class="form-label fw-bold"
-                >To Address</label
-              >
-      
-               <input
-              
-              class="form-control"
-              name="To_address"
-              min="0"
-              id="label6"
-               value="{{To_address}}"
-              readonly
-            />
+              <label for="toadd" class="form-label fw-bold">To Address</label>
+              <input type="text" class="form-control" id="To_address" name="To_address" readonly>
             </div>
              <div class="col-lg-4 mb-3">
-            <label for="label" class="form-label fw-bold"
-              >Driver Name</label
-            >
-            <input
-           
-              class="form-control"
-              name="drivername"
-              min="0"
-              id="label"
-              value="{{drivername}}"
-              readonly
-            />
+             <label for="driver" class="form-label fw-bold">Driver Name</label>
+             <input type="text" class="form-control" id="drivername" name="drivername" readonly>
+            </div>
+          <div class="col-lg-4 mb-3">
+           <label for="tanker" class="form-label fw-bold">Tanker Capacity</label>
+            <input type="text" class="form-control" id="tanker_capacity" name="tank_capacity" readonly>
           </div>
-           <div class="col-lg-4 mb-3">
-            <label for="label6" class="form-label fw-bold"
-              >Tanker Capacity</label
-            >
-            <input
+          <div class="col-lg-4 mb-3">
+           <label for="tdate" class="form-label fw-bold">Trip Date</label>
+
+            <input type="text" class="form-control" id="dispatch_Date" name="dispatch_Date" readonly>
            
-              class="form-control"
-              name="tank_capacity"
-              min="0"
-              id="label6"
-              value="{{tanker_capacity}}"
-              readonly
-            />
           </div>
           <div class="col-lg-4 mb-3">
             <label for="label4" class="form-label fw-bold"
@@ -254,7 +225,7 @@
               >Freight Bill no.</label
             >
             <input
-              type="number"
+              type="text"
               name="freight_bill"
               class="form-control"
               id="label19"
@@ -286,7 +257,7 @@
         </div>
         <div class="col-lg-4 mb-3">
             <label for="label14" class="form-label fw-bold"
-              >Total Shortages Qty</label
+              >Shortages / Excess Qty</label
             >
             <input type="number" class="form-control" id="totalshort" name="short_qty" readonly>
         </div>
@@ -330,7 +301,7 @@
         </div>
         <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-success px-4 mx-2">Add</button>
-            <a href="#" class="btn btn-info px-4">View</a>
+            <a href="{% url 'show-adani'  %}" class="btn btn-info px-4">View</a>
         </div>
         </form>
       </div>
@@ -346,12 +317,12 @@
     <!-- End #main -->
 
     <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="copyright">
-        &copy; Copyright <strong>. All Rights Reserved</strong>
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
       </div>
       <div class="credits">
-        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
       </div>
     </footer>
     <!-- End Footer -->
@@ -361,76 +332,88 @@
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
-{% comment %} <script>
-        function calculateTotalShort() {
-            // Get the values of disqty and unlodqty from the form
-            var disqty = document.getElementById("disqty").value;
-            var unlodqty = document.getElementById("unlodqty").value;
 
-
-            // Calculate totalshort only if both values are numbers
-            if (disqty && unlodqty) {
-                var totalshort = parseInt(disqty) - parseInt(unlodqty);
-                document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
-            }
-        }
-    </script> {% endcomment %}
-  {% comment %} <script>
-     function calculateTotalShort() {
-    // Get the values of disqty, unlodqty, and totalshort
-    var disqty = document.getElementById("disqty").value;
-    var unlodqty = document.getElementById("unlodqty").value;
-    var shortallow = document.getElementById("shortallow").value;
-    
-    // Ensure values are numbers
-    if (disqty && unlodqty) {
-        // Calculate totalshort and update it
-        totalshort = parseInt(disqty) - parseInt(unlodqty);
-        document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
-    }
-    
-   // Calculate and update the Loaded Qty Percent
-   if (percente && disqty) {
-        var loadedQtyPercent = (parseInt(disqty) * parseFloat(percente)) / 100;
-        var result = parseInt(loadedQtyPercent * 100);
-
-    
-        document.getElementById("loadedQtyPercent").value = result;
-    }  
-
-    }
-  </script> {% endcomment %}
 
 <script>
   function calculateTotalShort() {
-      // Get the values of disqty and unlodqty from the form
-      var disqty = document.getElementById("disqty").value;
-      var unlodqty = document.getElementById("unlodqty").value;
+    // Get the values of disqty and unlodqty from the form
+    var disqty = document.getElementById("disqty").value;
+    var unlodqty = document.getElementById("unlodqty").value;
 
-      // Ensure that disqty and unlodqty have values and are numbers
-      if (disqty && unlodqty) {
-          // Calculate totalshort (disqty - unlodqty)
-          var totalshort = parseInt(disqty) - parseInt(unlodqty);
+    // Ensure that disqty and unlodqty have values and are valid numbers
+    if (disqty && unlodqty && !isNaN(disqty) && !isNaN(unlodqty)) {
+      // Calculate totalshort (unlodqty - disqty)
+      var totalshort = parseInt(unlodqty) - parseInt(disqty);
 
-          // Update the totalshort input field
-          document.getElementById("totalshort").value = totalshort;
+      // Update the totalshort input field
+      document.getElementById("totalshort").value = totalshort;
 
-          // Subtract 50 from totalshort and update the shortallow field
-          var shortallow = totalshort - 50;
+      // Initialize shortallow
+      var shortallow = totalshort;
 
-          // Set the result in the shortallow field
-          document.getElementById("shortallow").value = shortallow;
-
-          // Check if totalshort is 0
-          if (totalshort === 0) {
-              // Optionally, disable fields or set default values if needed
-              document.getElementById("shortallow").value = 0;  // Reset shortallow
-           
+      // Check if totalshort is exactly 0
+      if (totalshort >= -50) {
+            shortallow = 0;
+          } 
+      else{
+            shortallow = totalshort - (-50); // or totalshort + 60
           }
-      }
+
+      // Set the result in the shortallow field
+      document.getElementById("shortallow").value = shortallow;
+    }
   }
 </script>
 
 
-  </body>
+<script>
+document.getElementById("tankerno").addEventListener("change", function() {
+    let planId = this.value;
+
+    if (planId) {
+        fetch(`/get_plan_details/?plan_id=${planId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("drivername").value = data.drivername || '';
+                document.getElementById("From_address").value = data.From_address || '';
+                document.getElementById("To_address").value = data.To_address || '';
+                document.getElementById("tanker_capacity").value = data.tanker_capacity || '';
+                //document.getElementById("dispatch_Date").value = data.dispatch_Date || '';
+                // Convert date to DD/MM/YYYY
+                if (data.dispatch_Date) {
+                const dateOnly = data.dispatch_Date.split('T')[0]; // "2025-04-15"
+                const [year, month, day] = dateOnly.split('-');
+                const formattedDate = `${day}/${month}/${year}`; // "15/04/2025"
+                document.getElementById("dispatch_Date").value = formattedDate;
+               } 
+            });
+    } else {
+        document.getElementById("drivername").value = '';
+        document.getElementById("From_address").value = '';
+        document.getElementById("To_address").value = '';
+        document.getElementById("tanker_capacity").value = '';
+        document.getElementById("dispatch_Date").value = '';
+    }
+});
+</script>
+
+<script>
+  function formatTimeLabel4() {
+    const input = document.getElementById("label4").value;
+    if (!input) return;
+
+    const date = new Date(input);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 becomes 12
+    const mins = minutes < 10 ? '0' + minutes : minutes;
+
+    const formattedTime = `${hours}:${mins} ${ampm}`;
+    document.getElementById("formattedTimeLabel4").innerText = `Selected Time: ${formattedTime}`;
+  }
+</script>
+</body>
 

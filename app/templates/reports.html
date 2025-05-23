@@ -19,7 +19,20 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Datatables</h5>
-
+<form method="get" class="row g-3 mb-3">
+  <div class="col-md-3">
+    <label for="from_date" class="form-label fw-bold">From Date</label>
+    <input type="date" name="from_date" id="from_date" class="form-control" value="{{ request.GET.from_date }}">
+  </div>
+  <div class="col-md-3">
+    <label for="to_date" class="form-label fw-bold">To Date</label>
+    <input type="date" name="to_date" id="to_date" class="form-control" value="{{ request.GET.to_date }}">
+  </div>
+  <div class="col-md-2 d-flex align-items-end">
+    <button type="submit" class="btn btn-sm btn-primary mx-3 px-5">Filter</button>
+    <a href="{% url 'report-show' %}" class="btn btn-sm btn-danger px-5">Clear</a>
+  </div>
+</form>
               <!-- Table with stripped rows -->
               <div class="table-responsive">
                <table class="table datatable" id="dataTable">
@@ -116,7 +129,7 @@
                     {% endif %} 
                 </td> {% endcomment %}
                      <td class="text-center"><b>₹ {{trip.total_expense }}</b></td>
-                     <td class="text-center"><b>₹ {{trip.total_expense }}</b></td>
+                     <td class="text-center"><b>₹ 00.00</b></td>
                       
                       {% comment %} <td class="text-center">
                       <a
@@ -139,7 +152,7 @@
                     </tr>
                      <tr>
                       <td colspan="34"><b>Bill Grand Total:</b></td>
-                      <td class="text-center"><b>₹ {{ grand_total}}.00</b></td>
+                      <td class="text-center"><b>₹ 00.00</b></td>
                     </tr>
                     <tr>
                       <td colspan="34"><b> Total Profit:</b></td>

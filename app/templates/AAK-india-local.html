@@ -39,57 +39,53 @@
           {% csrf_token %}
           <div class="row">
             <div class="col-lg-4 mb-3">
-              <label for="lable1" class="form-label fw-bold"
-                >Vehicle No</label
-              >
-           
-               <input class="form-control" value="{{tankerno}}" name="tankerno" id="lable1" placeholder="Search to vehicle no..." readonly>
+              <label for="tankerno" class="form-label fw-bold">Tanker No</label>
+              <select id="tankerno" name="tankerno" class="form-select">
+             <option value="">-- Select Tanker --</option>
+              {% for plan in plans %}
+              <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
+              {% endfor %}
+              </select>
+            
             </div>
 
 
             <div class="col-lg-4 mb-3">
-              <label for="lable2" class="form-label fw-bold"
-                >From (Consignor)</label
-              >
-             
-                 <input
-              
-              class="form-control"
-              name="From_address"
-              min="0"
-              id="label2"
-             
-              value="{{From_address}}"
-               readonly
-            />
+            <label for="fadd" class="form-label fw-bold">From Address</label>
+            <input type="text" class="form-control" id="From_address" name="From_address" readonly>
               
             </div>
             <div class="col-lg-4 mb-3">
-              <label for="lable3" class="form-label fw-bold"
-                >TO (Consignee)</label
-              >
-               <input
-              
-              class="form-control"
-              name="To_address"
-              min="0"
-              id="label3"
-               value="{{To_address}}"
-              readonly
-            />
+              <label for="toadd" class="form-label fw-bold">To Address</label>
+              <input type="text" class="form-control" id="To_address" name="To_address" readonly>
             </div>
-          
+             <div class="col-lg-4 mb-3">
+             <label for="driver" class="form-label fw-bold">Driver Name</label>
+             <input type="text" class="form-control" id="drivername" name="drivername" readonly>
+            </div>
           <div class="col-lg-4 mb-3">
-            <label for="label4" class="form-label fw-bold"
-              >Arrival at Loading Point (Plant) Date & Time</label
-            >
-            <input
-              type="datetime-local"
-              name="arrival_time"
-              class="form-control"
-              id="label4"
-            />
+           <label for="tanker" class="form-label fw-bold">Tanker Capacity</label>
+            <input type="text" class="form-control" id="tanker_capacity" name="tank_capacity" readonly>
           </div>
+          <div class="col-lg-4 mb-3">
+           <label for="tdate" class="form-label fw-bold">Trip Date</label>
+
+            <input type="text" class="form-control" id="dispatch_Date" name="dispatch_Date" readonly>
+           
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label4" class="form-label fw-bold">
+             Arrival at Loading Point (Plant) Date & Time
+             </label>
+              <input
+               type="datetime-local"
+               name="arrival_time"
+               class="form-control"
+               id="label4"
+               
+               onchange="formatTimeLabel4()"  
+               />
+               </div>
           <div class="col-lg-4 mb-3">
             <label for="label5" class="form-label fw-bold"
               >Dispatched date & time</label
@@ -101,21 +97,17 @@
               id="label5"
             />
           </div>
-        <div class="col-lg-4 mb-3">
-            <label for="label6" class="form-label fw-bold"
-              >Tanker Capacity</label
+          <div class="col-lg-4 mb-3">
+            <label for="label9" class="form-label fw-bold"
+              >Reached date & time</label
             >
-             <input
-           
+            <input
+              type="datetime-local"
+              name="reach_time"
               class="form-control"
-              name="tank_capacity"
-              min="0"
-              id="label6"
-              value="{{tanker_capacity}}"
-              readonly
+              id="label9"
             />
           </div>
-
           <div class="col-lg-4 mb-3">
             <label for="loadganesh" class="form-label fw-bold"
               >Vehicle Kilometer at 
@@ -145,17 +137,7 @@ the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
             />
           </div>
          
-           <div class="col-lg-4 mb-3">
-            <label for="label9" class="form-label fw-bold"
-              >Reached date & time</label
-            >
-            <input
-              type="datetime-local"
-              name="reach_time"
-              class="form-control"
-              id="label9"
-            />
-          </div>
+           
 
           <div class="col-lg-4 mb-3">
             <label for="unloadganesh" class="form-label fw-bold">Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ganesh Sir )</label>
@@ -198,10 +180,9 @@ Per Trip (As per Ganesh Sir)</label>
               type="number"
               class="form-control"
               name="trip_ganesh"
-              min="0"
               id="totalganesh"
-       
               oninput="calculateTotalShort()"
+              readonly
             />
           </div>
            <div class="col-lg-4 mb-3">
@@ -211,10 +192,9 @@ Per Trip (As per Ashok Mama )</label>
               type="number"
               class="form-control"
               name="trip_mama"
-              min="0"
               id="totalmama"
-              
               oninput="calculateTotalShort()"
+              readonly
             />
           </div>
         
@@ -222,7 +202,7 @@ Per Trip (As per Ashok Mama )</label>
         <div class="col-lg-4 mb-3">
             <label for="label15" class="form-label fw-bold">LR No</label>
             <input
-              type="number"
+              type="text"
               class="form-control"
               name="lr_num"
               min="0"
@@ -234,7 +214,7 @@ Per Trip (As per Ashok Mama )</label>
               >LR Received Date</label
             >
             <input
-              type="text"
+              type="date"
               name="lr_date"
               class="form-control"
               id="label16"
@@ -257,28 +237,32 @@ Per Trip (As per Ashok Mama )</label>
               >Freight Bill Date</label
             >
             <input
-              type="datetime-local"
+              type="date"
               class="form-control"
               name="freight_date"
               id="label18"
             />
         </div>
         <div class="col-lg-4 mb-3">
-            <label for="disqty" class="form-label fw-bold">Loaded Qty</label>
+            <label for="label13" class="form-label fw-bold">Loaded Qty</label>
             <input type="number" class="form-control" id="disqty" name="loaded_qty" value="{{t.totalshort}}" oninput="calculateTotalShort()">
         </div>
+     <div class="col-lg-4 mb-3">
+            <label for="label13" class="form-label fw-bold">Allow Percentage</label>
+            <input type="number" class="form-control" id="shortallow" name="percent" value="{{t.totalshort}}" oninput="calculateTotalShort()" step="0.01">
+        </div> 
           <div class="col-lg-4 mb-3">
-            <label for="unlodqty" class="form-label fw-bold">Unloaded Qty</label>
+            <label for="label13" class="form-label fw-bold">Unloaded Qty</label>
             <input type="number" class="form-control" id="unlodqty" name="unload_qty" value="{{t.totalshort}}" oninput="calculateTotalShort()">
         </div>
         <div class="col-lg-4 mb-3">
-            <label for="totalshort" class="form-label fw-bold"
-              >Total Shortages Qty</label
+            <label for="label14" class="form-label fw-bold"
+              >Shortages / Excess Qty</label
             >
             <input type="number" class="form-control" id="totalshort" name="short_qty" readonly>
         </div>
         <div class="col-lg-4 mb-3">
-            <label for="shortQty" class="form-label fw-bold"
+            <label for="label15" class="form-label fw-bold"
               >Shortages allowed against loaded Qty</label
             >
             <input
@@ -286,8 +270,7 @@ Per Trip (As per Ashok Mama )</label>
               class="form-control"
               name="short_allow"
               min="0"
-              id="shortQty"
-              
+              id="loadedQtyPercent" name="loadedQtyPercent" oninput="calculateTotalShort()" readonly
             />
         </div>
         <div class="col-lg-4 mb-3">
@@ -348,46 +331,88 @@ Per Trip (As per Ashok Mama )</label>
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
+
 <script>
-    function calculateTotalShort() {
-        // Get the values of disqty and unlodqty from the form
-        var disqty = document.getElementById("disqty").value;
-        var unlodqty = document.getElementById("unlodqty").value;
+function calculateTotalShort() {
+    // Get the values of disqty, unlodqty, and shortallow
+    var disqty = parseFloat(document.getElementById("disqty").value) || 0;
+    var unlodqty = parseFloat(document.getElementById("unlodqty").value) || 0;
+    var shortallow = parseFloat(document.getElementById("shortallow").value) || 0;
 
-        var loadganesh = document.getElementById("loadganesh").value;
-        var unloadganesh = document.getElementById("unloadganesh").value;
+    // Calculate totalshort
+    var totalshort = unlodqty - disqty;
+    document.getElementById("totalshort").value = totalshort.toFixed(2);
 
-        var loadmama = document.getElementById("loadmama").value;
-        var unloadmama = document.getElementById("unloadmama").value;
-      
-        // Calculate totalshort only if both values are numbers
-        if (disqty && unlodqty) {
-            // Calculate totalshort
-            var totalshort = parseInt(disqty) - parseInt(unlodqty);
+    // Calculate allowed shortage (percentage of loaded quantity)
+    var loadedQtyPercent = (disqty * shortallow) / 100;
+    document.getElementById("loadedQtyPercent").value = loadedQtyPercent.toFixed(2);
 
-            // Multiply disqty by 0.2 to get shortQty
-            var shortQty = disqty * 0.2 /100;
+    // Load / Unload Ganesh
+    var loadganesh = parseFloat(document.getElementById("loadganesh").value) || 0;
+    var unloadganesh = parseFloat(document.getElementById("unloadganesh").value) || 0;
+    var totalganesh = unloadganesh - loadganesh;
+    document.getElementById("totalganesh").value = totalganesh;
 
-            // Display totalshort and shortQty in the input fields
-            document.getElementById("totalshort").value = totalshort; // Display the total short value
-            document.getElementById("shortQty").value = shortQty; // Display the multiplied shortQty value
-        }
-        if (loadganesh && unloadganesh) {
-            // Calculate totalshort
-            var totalganesh = +parseInt(loadganesh) - parseInt(unloadganesh);
+    // Load / Unload Mama
+    var loadmama = parseFloat(document.getElementById("loadmama").value) || 0;
+    var unloadmama = parseFloat(document.getElementById("unloadmama").value) || 0;
+    var totalmama = unloadmama - loadmama;
+    document.getElementById("totalmama").value = totalmama;
 
-            // Display totalshort and shortQty in the input fields
-            document.getElementById("totalganesh").value = totalganesh; // Display the total short value
-        }
-        if (loadmama && unloadmama) {
-            // Calculate totalshort
-            var totalmama = +parseInt(loadmama) - parseInt(unloadmama);
-
-            // Display totalshort and shortQty in the input fields
-            document.getElementById("totalmama").value = totalmama; // Display the total short value
-        }
-    }
+    // Optional: If shortQty is something you want to store (e.g., difference)
+    var shortQty = totalshort;
+    document.getElementById("shortQty").value = shortQty.toFixed(2);
+}
 </script>
 
+<script>
+document.getElementById("tankerno").addEventListener("change", function() {
+    let planId = this.value;
+
+    if (planId) {
+        fetch(`/get_plan_details/?plan_id=${planId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("drivername").value = data.drivername || '';
+                document.getElementById("From_address").value = data.From_address || '';
+                document.getElementById("To_address").value = data.To_address || '';
+                document.getElementById("tanker_capacity").value = data.tanker_capacity || '';
+                //document.getElementById("dispatch_Date").value = data.dispatch_Date || '';
+                // Convert date to DD/MM/YYYY
+                if (data.dispatch_Date) {
+                const dateOnly = data.dispatch_Date.split('T')[0]; // "2025-04-15"
+                const [year, month, day] = dateOnly.split('-');
+                const formattedDate = `${day}/${month}/${year}`; // "15/04/2025"
+                document.getElementById("dispatch_Date").value = formattedDate;
+               } 
+            });
+    } else {
+        document.getElementById("drivername").value = '';
+        document.getElementById("From_address").value = '';
+        document.getElementById("To_address").value = '';
+        document.getElementById("tanker_capacity").value = '';
+        document.getElementById("dispatch_Date").value = '';
+    }
+});
+</script>
+
+<script>
+  function formatTimeLabel4() {
+    const input = document.getElementById("label4").value;
+    if (!input) return;
+
+    const date = new Date(input);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 becomes 12
+    const mins = minutes < 10 ? '0' + minutes : minutes;
+
+    const formattedTime = `${hours}:${mins} ${ampm}`;
+    document.getElementById("formattedTimeLabel4").innerText = `Selected Time: ${formattedTime}`;
+  }
+</script>
   </body>
 </html>

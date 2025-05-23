@@ -40,24 +40,24 @@
   <div class="container">
     <div class="row">
     <div class="col-lg-12 form-div">
-    <form  method="POST">
+    <form  method="POST" autocomplete="off">
       {% csrf_token %}
           <div class="row">
          <div class="col-lg-4 mb-3">
-            <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
-             <input class="form-control" list="datalistOptions" id="exampleDataList" name="tankerno" placeholder="Search to vehicle no..." required>
-               <datalist id="datalistOptions" class="border-2">
-                {% for t in tankno %}
-                 <option value="{{t.tankerno}}">{{t.tankerno }}</option>
-                {% endfor %}
+            <label for="exampleDataList1" class="form-label fw-bold">Tanker No</label>
+             <input class="form-control" list="datalistOptions1" id="exampleDataList1" name="tankerno" placeholder="Search to vehicle no..." required>
+               <datalist id="datalistOptions1" class="border-2">
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
                 </datalist>
               </div>
         <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
              <input class="form-control" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
                <datalist id="driverslist" class="border-2" >
-                  {% for d in driver %}
-                 <option value="{{d.drivername}}">{{d.drivername }}</option>
+                  {% for d in dname %}
+                 <option value="{{d.name}}">S/O {{d.fname }}</option>
                 {% endfor %}
                 </datalist>
         </div>
