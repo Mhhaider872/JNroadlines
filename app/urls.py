@@ -221,9 +221,9 @@ urlpatterns =[
 
 
        #=======================VVF TALOJA Bill=============================================
-    path('Vvf-taloja-bill/', views.vvft_bill_bill, name='create_vvf_taloja'),
-    # path('Aak_Inword_invoices/', views.aakin_list, name='Aak_Inword_list'),
-    # path('Aak_Inword/<int:invoice_id>/', views.aakin_detail, name='Aak_Inword_detail'),
+    path('Vvf-taloja-bill/', views.vvft_bill, name='create_vvf_taloja'),
+    path('vvft_invoices/', views.vvftinvoice_list, name='vvft_list'),
+    path('vvf_t/<int:invoice_id>/', views.vvft_detail, name='vvft_detail'),
 
   
 ]

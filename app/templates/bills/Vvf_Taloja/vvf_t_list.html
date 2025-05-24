@@ -6,7 +6,7 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle py-3">
-      <h1>Ashland Invoice Lists</h1>
+      <h1>VVF Taloja Invoice Lists</h1>
       {% comment %} <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
@@ -44,14 +44,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                   {% for invoice in ainvoice %}
+                   {% for invoice in vvfinvoice %}
     <tr>
         <td>{{ invoice.invoice_number }}</td>
         <td>{{ invoice.date }}</td>
         <td>{{ invoice.company }}</td>
         <td>{{ invoice.grand_total }}</td>
         <td>
-            <a href="{% url 'ainvoice_detail' invoice.id %}">View Bill</a>
+            <a href="{% url 'vvft_detail' invoice.id %}">View Bill</a>
         </td>
     </tr>
     {% endfor %}

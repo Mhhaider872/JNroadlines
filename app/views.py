@@ -3265,8 +3265,8 @@ def ashland_bill(request):
 
 
 def Ainvoice_list(request):
-    ginvoice = AInvoice.objects.all().order_by('date')  # Latest invoice first
-    return render(request, 'bills/Ashland/ashland_list.html', {'ginvoice': ginvoice})
+    ainvoice = AInvoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/Ashland/ashland_list.html', {'ainvoice': ainvoice})
 
 
 def Ainvoice_detail(request, invoice_id):
@@ -3473,6 +3473,36 @@ def aakin_detail(request, invoice_id):
 
 
 #========================VVF TALOJA BILL====================================================
+def generate_bill_no():
+    now = datetime.now()  # <-- correct function call
+    month = f"{now.month:02d}"  # Zero-padded month (e.g., 05)
+    year = now.year
+    random_number = random.randint(1000, 9999)  # 4-digit random
+
+    # Financial year logic
+    if now.month >= 4:  # April se new financial year
+        fy_start = str(year)[-2:]
+        fy_end = str(year + 1)[-2:]
+    else:
+        fy_start = str(year - 1)[-2:]
+        fy_end = str(year)[-2:]
+
+    financial_year = f"{fy_start}-{fy_end}"
+
+    # Final bill number
+    bill_no = f"{random_number}/VT/{month}/{financial_year}"
+    return bill_no
+
+
+def extract_gst_code(gst_number):
+    return gst_number[:2] if gst_number and isinstance(gst_number, str) and len(gst_number) >= 2 else ''
+
+
+def extract_state(address):
+    try:
+        return address.split(',')[-1].strip().lower()
+    except:
+        return ''
 
 def vvft_bill(request):
     if request.method == "POST":
@@ -3486,9 +3516,9 @@ def vvft_bill(request):
         From_add = request.POST.get('From_add')
         To_add = request.POST.get('To_add')
         date_dis = request.POST.get('date_dis')
-        unload = request.POST.get('unload')
-        short = request.POST.get('short')
-        retn = request.POST.get('retn')
+        # unload = request.POST.get('unload')
+        # short = request.POST.get('short')
+        # retn = request.POST.get('retn')
         lr_no = request.POST.get('lr_no')
         Fo_date = request.POST.get('Fo_date')
         To_date = request.POST.get('To_date')
@@ -3516,13 +3546,13 @@ def vvft_bill(request):
             gst=gst,
             pan=pan,
             tanker=tanker,
-            tanker_cap=tanker_cap,
+            # tanker_cap=tanker_cap,
             From_add=From_add,
             To_add=To_add,
             date_dis=date_dis,
-            unload=unload,
-            short=short,
-            retn=retn,
+            # unload=unload,
+            # short=short,
+            # retn=retn,
             lr_no=lr_no,
             sac=sac if sac else 0,
             charges=charges if total_d else None,
@@ -3548,6 +3578,7 @@ def vvft_bill(request):
                 unit_price = float(unit_prices[i])
                 line_total = quantity * unit_price
                 subtotal += line_total
+                
 
                 vvft_Item.objects.create(
                     invoice=invoice,
@@ -3610,8 +3641,7 @@ def vvft_bill(request):
 
         fright_total = round(basic_amount + cgst + sgst + igst, 2)
         grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
-
-            # Check decimal part
+       # Check decimal part
         decimal_part = grand_total - int(grand_total)
 
         # Add 1 rupee if decimal part > 0.50
@@ -3622,7 +3652,6 @@ def vvft_bill(request):
 
         #  final output looks like 1000.00 format
         formatted_total = "{:.2f}".format(grand_total)
-        
 
 
 
@@ -3638,27 +3667,26 @@ def vvft_bill(request):
         invoice.g_total = g_total
         invoice.fright_total = fright_total 
         invoice.grand_total = formatted_total
-        # invoice. total_in_words = num2words(formatted_total)
         invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "") + "ONLY"
         invoice.save()
         messages.success(request, 'Bill generate successfully !!')
 
-        return redirect('Aak_Inword_list')
+        return redirect('vvft_list')
 
     vehicle = Add_Vehicle.objects.all()
     company = companydetails.objects.all()
     dname = NewDriver_Details.objects.all()
     context = {'vehicle': vehicle, 'company': company, 'dname': dname}
 
-    return render(request, 'bills/Aak_Inword/aak_india.html', context)
+    return render(request, 'bills/Vvf_Taloja/vvf_t.html', context)
 
 
-def aakin_list(request):
-    invoices = Aak_in_Invoice.objects.all().order_by('date')  # Latest invoice first
-    return render(request, 'bills/Aak_Inword/aakin_list.html', {'invoices': invoices})
+def vvftinvoice_list(request):
+    vvfinvoice = vvft_Invoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/Vvf_Taloja/vvf_t_list.html', {'vvfinvoice': vvfinvoice})
 
 
-def aakin_detail(request, invoice_id):
-    invoice = get_object_or_404(Aak_in_Invoice, id=invoice_id)
-    items = Aak_in_Item.objects.filter(invoice=invoice)
-    return render(request, 'bills/Aak_Inword/aakin_detail.html', {'invoice': invoice, 'items': items})
+def vvft_detail(request, invoice_id):
+    invoice = get_object_or_404(vvft_Invoice, id=invoice_id)
+    items = vvft_Item.objects.filter(invoice=invoice)
+    return render(request, 'bills/Vvf_Taloja/vvf_t_detail.html', {'invoice': invoice, 'items': items})
