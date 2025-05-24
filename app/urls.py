@@ -200,9 +200,9 @@ urlpatterns =[
     path('invoice/<int:invoice_id>/', views.invoice_detail, name='invoice_detail'),
 
     #=======================Gemini Bill=============================================
-    path('gemini-bill/', views.gemini_bill, name='create_bill_gemini'),
-    path('gemini_invoices/', views.Ginvoice_list, name='ginvoice_list'),
-    path('gemini/<int:invoice_id>/', views.Ginvoice_detail, name='ginvoice_detail'),
+    # path('gemini-bill/', views.gemini_bill, name='create_bill_gemini'),
+    # path('gemini_invoices/', views.Ginvoice_list, name='ginvoice_list'),
+    # path('gemini/<int:invoice_id>/', views.Ginvoice_detail, name='ginvoice_detail'),
 
      #=======================Gemini Bill=============================================
     path('ashland-bill/', views.ashland_bill, name='create_bill_ashland'),
