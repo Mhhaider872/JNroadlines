@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from django.utils.dateparse import parse_datetime
 from num2words import num2words
+import os
 
 
 
@@ -104,20 +105,7 @@ def showplan(request):
     context={'showplans':showplans}
     return render(request,'show/show-plan.html',context)
 
-# def showplan(request):
-#     # pehle sab plan details la rahe ho
-#     showplans = plandetails.objects.all()
 
-#     # har plan ke latest trip ko nikalne ke liye Subquery
-#     latest_trip = AddTrips.objects.filter(tankerno=OuterRef('pk')).order_by('-arrival_time')
-
-#     showplans = showplans.annotate(
-#         latest_arrival=Subquery(latest_trip.values('arrival_time')[:1]),
-#         latest_reach=Subquery(latest_trip.values('reach_time')[:1]),
-#         latest_unload=Subquery(latest_trip.values('unload_time')[:1]),
-#     )
-
-#     return render(request, 'show-plan.html', {'showplans': showplans})
 
 
 def updateplan(request,id):
@@ -1308,80 +1296,7 @@ def doupdatecompany(request,id):
 
 
 
-# def showallexpense(request):
-#     allExp=Trip_Expense.objects.all()
-#     # endTrip=EndTrip.objects.all()
-#     # Aggregate sums for each field
-#     all_sum = Trip_Expense.objects.aggregate(Sum('r_amount'))['r_amount__sum']
-#     u_sum = Trip_Expense.objects.aggregate(Sum('urea_total'))['urea_total__sum']
-#     d_sum = Trip_Expense.objects.aggregate(Sum('total_diesel'))['total_diesel__sum']
-#     t_sum = Trip_Expense.objects.aggregate(Sum('total_amount'))['total_amount__sum']
-#     a_sum = Trip_Expense.objects.aggregate(Sum('amount'))['amount__sum']
-    
-#     # Calculate the total of all sums (if the sum is None, it defaults to 0)
-#     total_sum = (all_sum or 0) + (u_sum or 0) + (d_sum or 0) + (t_sum or 0) + (a_sum or 0)
-    
-#     # Context to send to the template
-#     context = {
-#         'allExp': allExp,
-#         # 'endTrip':endTrip,
-#         'all_sum': all_sum,
-#         'u_sum': u_sum,
-#         'd_sum': d_sum,
-#         't_sum': t_sum,
-#         'a_sum': a_sum,
-#         'total_sum': total_sum  # total_sum includes the sum of all individual sums
-#     }
-#     return render(request,'show/show_all_expense.html',context)
 
-
-
-
-# def allexpensedelete(request,id):
-#     Exp_del=Trip_Expense.objects.get(pk=id)
-#     Exp_del.delete()
-#     return redirect('all-expense')
-
-
-
-
-# def addEndTrip(request):
-#     tripend =Trip_Expense.objects.all().last()  
-#     if tripend: 
-#         trip_tanker = tripend.trip_tanker
-#         tripdate = tripend.tripdate
-#         drivername=tripend.drivername
-#     else:
-#         trip_tanker = tripdate =  'Data not available'
-#     if request.method =="POST":
-#         tank_ends = request.POST['tank_ends']
-#         date = request.POST['date']
-#         driver = request.POST['driver']
-#         end_Date = request.POST['end_Date']
-        
-#         if End_Trip.objects.filter(tank_ends=tank_ends,end_Date=end_Date).exists():
-#            messages.error(request, 'Trip End already!!')
-#            return redirect('add-trip-end')
-#         else:
-#            d_end=End_Trip(tank_ends=tank_ends,date=date,driver=driver,end_Date=end_Date)
-#            d_end.save()
-#            messages.success(request, 'Trip End successfully !!')
-
-#     context = {
-#         'trip_tanker': trip_tanker,
-#         'tripdate':  tripdate,
-#         'drivername':drivername
-      
-#     }       
-#     return render(request, 'end-trip-date.html',context)
-       
-    
-
-
-# def showEndTrip(request):
-#     showend=End_Trip.objects.all()
-#     context={'showend':showend}
-#     return render(request,'show-trip-end.html',context)
 
 
 def all_bill(request):
@@ -1389,173 +1304,6 @@ def all_bill(request):
     return render(request,'all-bills.html')
 
 
-
-# def generate_bill_no():
-#     months=now().month
-#     year = now().year
-#     random_number = random.randint(1000, 9999)
-#     bill_no = f"{random_number}/JN/0{months}/{year}"
-#     return bill_no
-
-
-# def Aak_bills(request):
-#     # bill =.objects.latest('bill_no')
-#     bill = AAkIndia.objects.filter().last()
-#     total_sum = bill.total or 0
-#     total_d_sum = bill.total_d or 0
-# # Sum of both totals
-#     total_sum = total_sum + total_d_sum
-#     total_in_words = num2words(total_sum)
-#     context = {'bill': bill, 'total_sum': total_sum,'total_in_words': total_in_words}
-#     return render(request,'bills/akk_india_bill.html',context)
-# # def generate_bill_no():
-# #     # Generate a simple bill number using the current year and a random number
-# #     year = now().year
-# #     random_number = random.randint(1000, 9999)
-# #     bill_no = f"J.N/{random_number}/{year}"
-# #     return bill_no
-
-
-# def gemini_bill(request):
-#     if request.method == "POST":
-#         # Get the date for the invoice
-#         date = request.POST.get('date')
-#         company = request.POST.get('company')
-#         gst = request.POST.get('gst')
-#         pan = request.POST.get('pan')
-#         tanker = request.POST.get('tanker')
-#         tanker_cap = request.POST.get('tanker_cap')
-#         From_add = request.POST.get('From_add')
-#         To_add = request.POST.get('To_add')
-#         date_dis = request.POST.get('date_dis')
-#         unload = request.POST.get('unload')
-#         short = request.POST.get('short')
-#         retn = request.POST.get('retn')
-#         lr_no = request.POST.get('lr_no')
-#         Fo_date = request.POST.get('Fo_date')
-#         To_date = request.POST.get('To_date')
-#         d_rate = request.POST.get('d_rate')
-#         par_day = request.POST.get('par_day')
-#         total_d = request.POST.get('total_d')
-
-#         # Initialize total amount as 0
-#         total_amount = 0.0
-        
-#         # Get today's date, but exclude the year for the invoice number
-#         today = datetime.date.today()
-#         date_str = today.strftime('%m-%y')  # Format as 'MM-DD'
-
-#         # Generate the base invoice number (e.g., 'INV-03-25')
-#         invoice_prefix = f'{date_str}'
-
-#         # Generate a random 6-digit number (you can change the length or characters)
-#         # random_number = ''.join(random.choices(string.digits, k=4))
-#         # Assume a variable to store the last used number (this would be stored in DB)
-#         last_used_number = 1000  # You can get this from your database or other storage
-
-#         # Increment the counter for the new invoice
-#         random_number = last_used_number + 1
-#         last_used_number = random_number  # Save this updated value back to the database
-
-#          # Combine the invoice prefix with the new sequential number
-#         invoice_number = f'{str(random_number)}-{invoice_prefix}'
-
-#         # Ensure the invoice number is unique
-#         while Invoice.objects.filter(invoice_number=invoice_number).exists():
-#               random_number += 1
-#               invoice_number = f'J N-{str(random_number)}-{invoice_prefix}'
-
-
-#         # Create the invoice object
-#         invoice = Invoice.objects.create(
-#             invoice_number=invoice_number,
-#             date=date,
-#             company=company if company else None,
-#             gst=gst if gst else None,
-#             pan=pan if pan else None,
-#             tanker=tanker if tanker else None,
-#             tanker_cap=tanker_cap if tanker_cap else None,
-#             From_add=From_add if  From_add else None,
-#             To_add=To_add if  To_add else None,
-#             date_dis=date_dis if  date_dis else None,
-#             unload=unload if  unload else None,
-#             short=short if  short else None,
-#             retn=retn if  retn else None,
-#             lr_no=lr_no if lr_no else None,
-#             Fo_date=Fo_date if  Fo_date else None,
-#             To_date=To_date if  To_date else None,
-#             d_rate=d_rate if  d_rate else None,
-#             par_day=par_day if  par_day else None,
-#             total_d=total_d if  total_d else None,
-#             total_amount=total_amount  # This will be updated later
-#         )
-
-#         # Process the items
-#         item_data = request.POST.getlist('item_description')
-#         quantities = request.POST.getlist('item_quantity')
-#         unit_prices = request.POST.getlist('item_unit_price')
-
-#         # Loop through items and add them to the invoice
-#         for i in range(len(item_data)):
-#             quantity = int(quantities[i])
-#             unit_price = float(unit_prices[i])
-
-#             # Calculate the total amount for this item and add it to the invoice
-#             total_item_cost = quantity * unit_price
-#             # Define GST rates for SGST and CGST (6% each)
-#             sgst_rate = 0.06  # 6% SGST
-#             cgst_rate = 0.06  # 6% CGST
-#             # Calculate SGST and CGST
-#             sgst = total_item_cost * sgst_rate
-#             cgst = total_item_cost * cgst_rate
-#             # total_amount += int(total_item_cost) + int(total_d)
-#             total_amount += int(total_item_cost) + int(total_d) + float(sgst) + float(cgst)
-            
-            
-#             # Create Item instance and associate it with the invoice
-#             Item.objects.create(
-#                 invoice=invoice,
-#                 description=item_data[i],
-#                 quantity=quantity,
-#                 unit_price=unit_price
-#             )
-        
-#         # After processing items, update the invoice's total amount
-#         invoice.total_amount = total_amount
-
-#         # Convert the total amount into words
-#         total_in_words = num2words(total_amount).title()
-
-#         # Save the invoice's total amount in words as well, if needed
-#         invoice.total_in_words = total_in_words
-#         invoice.save()
-
-#         # Redirect to the invoice detail page
-#         return redirect('invoice_detail', invoice_id=invoice.id)
-#     company=companydetails.objects.all()
-#     context={'company':company}
-#     return render(request, 'bills/gemini-bill.html', context)
-
-
-
-
-# def  geminidetails(request):
-#      show=Gemini.objects.all()
-#      context={'show':show}
-#      return render(request,'bills/show-gemini-bill.html',context)
-
-
-
-# def bills(request):
-#     # bill = Gemini.objects.latest('bill_no')
-#     bill = Gemini.objects.filter().last()
-#     total_kg_sum = bill.total_kg or 0
-#     union_charge_sum = bill.union_charge or 0
-# # Sum of both totals
-#     total_sum = total_kg_sum + union_charge_sum
-#     total_in_words = num2words(total_sum)
-#     context = {'bill': bill, 'total_sum': total_sum,'total_in_words': total_in_words}
-#     return render(request,'bills/bill.html',context)
 
 
 
@@ -2235,37 +1983,7 @@ def addtolls(request):
     return render(request,'add/add-toll.html', context)
 
 
-# def tolldetails(request):
-#     show=Toll_Details.objects.all()
-#     total_toll_sum =show.aggregate(Sum('amount'))['amount__sum']
-#     context={'show':show,'total_toll_sum':total_toll_sum}
-#     return render(request,'show/show-toll.html',context)
-# def tolldetails(request):
-#     from_date = request.GET.get('from_date')
-#     to_date = request.GET.get('to_date')
 
-#     show = Toll_Details.objects.all()
-
-#     if from_date and to_date:
-#         try:
-#             from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
-#             to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
-#             show = show.filter(trip_date__range=(from_date_obj, to_date_obj))
-#         except ValueError:
-#             pass  # Invalid date format, ignore the filter
-
-#     total_toll_sum = show.aggregate(Sum('amount'))['amount__sum'] or 0
-
-#     context = {
-#         'show': show,
-
-#         'total_toll_sum': total_toll_sum
-#     }
-#     return render(request, 'show/show-toll.html', context)
-from django.shortcuts import render
-from datetime import datetime
-from django.db.models import Sum
-from .models import Toll_Details  # Replace with your actual model name
 
 def tolldetails(request):
     # Get filters from GET parameters
@@ -2382,11 +2100,8 @@ def ordergemini(request):
     return render(request,'client/gemini_form.html')
     
 
-import os
-# def generate_order_id():
-#     date = datetime.now().strftime("%Y")
-#     rand = str(random.randint(100, 999)).zfill(3)
-#     return f"GEM-{rand}{date}"
+
+
 def generate_order_id():
     date = datetime.now().strftime("%Y")
     serial_file = f"serial_{date}.txt"  # Year-wise file
@@ -2507,181 +2222,16 @@ def Billing(request):
 
 
 
-# def adani_bill(request):
-#     if request.method == "POST":
-#         # Step 1: Extract invoice data
-#         date = request.POST.get('date')
-#         company = request.POST.get('company')
-#         gst = request.POST.get('gst')  # This is buyer GST (To GST)
-#         pan = request.POST.get('pan')
-#         tanker = request.POST.get('tanker')
-#         tanker_cap = request.POST.get('tanker_cap')
-#         From_add = request.POST.get('From_add')
-#         To_add = request.POST.get('To_add')
-#         date_dis = request.POST.get('date_dis')
-#         unload = request.POST.get('unload')
-#         short = request.POST.get('short')
-#         retn = request.POST.get('retn')
-#         lr_no = request.POST.get('lr_no')
-#         Fo_date = request.POST.get('Fo_date')
-#         To_date = request.POST.get('To_date')
-#         d_rate = request.POST.get('d_rate')
-#         par_day = request.POST.get('par_day')
-#         total_d = request.POST.get('total_d')
-#         sac = request.POST.get('sac')
-#         charges = request.POST.get('charges')
-#         hsac = request.POST.get('hsac')
-
-#         # Step 2: Generate invoice number
-#         invoice_number = generate_bill_no()
-        
-
-#         if Invoice.objects.filter(date=date,company=company).exists():
-#            messages.error(request, 'Bill already Exists!!')
-#            return redirect('create_bill')
-#         else:
-          
-#         # Step 3: Create empty invoice
-#          invoice = Invoice.objects.create(
-#             invoice_number=invoice_number,
-#             date=date,
-#             company=company,
-#             gst=gst,
-#             pan=pan,
-#             tanker=tanker,
-#             tanker_cap=tanker_cap,
-#             From_add=From_add,
-#             To_add=To_add,
-#             date_dis=date_dis,
-#             unload=unload,
-#             short=short,
-#             retn=retn,
-#             lr_no=lr_no,
-#             sac=sac if sac else 0,
-#             charges=charges if total_d else None,
-#             hsac=hsac if hsac else 0,
-#             Fo_date=Fo_date if Fo_date else None,
-#             To_date=To_date if Fo_date else None,
-#             d_rate=d_rate if total_d else 0,
-#             par_day=par_day if total_d else None,
-#             total_d=total_d if total_d else 0,
-#             total_amount=0.0
-#         )
-
-#         # Step 4: Handle item data
-#         item_data = request.POST.getlist('item_description')
-#         quantities = request.POST.getlist('item_quantity')
-#         unit_prices = request.POST.getlist('item_unit_price')
-
-#         subtotal = 0.0
-
-#         for i in range(len(item_data)):
-#             try:
-#                 quantity = int(quantities[i])
-#                 unit_price = float(unit_prices[i])
-#                 line_total = quantity * unit_price
-#                 subtotal += line_total
-
-#                 Item.objects.create(
-#                     invoice=invoice,
-#                     description=item_data[i],
-#                     quantity=quantity,
-#                     unit_price=unit_price
-#                 )
-#             except (ValueError, IndexError):
-#                 continue
-        
-#         g_amount = float(total_d)  # or Decimal(total_d)
-
-#         #Step 5: Calculate tax
-#         cgst_r = 0.09
-#         sgst_r = 0.09
-#         igst_r = 0.18
-
-#         # GST-based logic
-#         company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
-#         from_gst_code = extract_gst_code(company_gst)  # Your GST
-#         to_gst_code = extract_gst_code(gst)  # Customer GST
-
-#         if from_gst_code == '27' and to_gst_code == '27':
-#             # Intra-state (Maharashtra)
-#             c_gst = round(g_amount * cgst_r, 2)
-#             s_gst = round(g_amount * sgst_r, 2)
-#             i_gst = 0.0
-#         else:
-#             # Inter-state
-#             c_gst = 0.0
-#             s_gst = 0.0
-#             i_gst = round(g_amount * igst_r, 2)
-
-#         g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
-     
-
-        
-
-#         basic_amount = subtotal 
-
-#         cgst_rate = 0.06
-#         sgst_rate = 0.06
-#         igst_rate = 0.12
-
-#         # GST-based logic
-#         company_gst = "27XXXXX0000Z5A" 
-#         from_gst_code = extract_gst_code(company_gst)  # Your GST
-#         to_gst_code = extract_gst_code(gst)  # Customer GST
-
-#         if from_gst_code == '27' and to_gst_code == '27':
-#             # Intra-state (Maharashtra)
-#             cgst = round(basic_amount * cgst_rate, 2)
-#             sgst = round(basic_amount * sgst_rate, 2)
-#             igst = 0.0
-#         else:
-#             # Inter-state
-#             cgst = 0.0
-#             sgst = 0.0
-#             igst = round(basic_amount * igst_rate, 2)
-
-#         fright_total = round(basic_amount + cgst + sgst + igst, 2)
-#         grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
-
-
-
-#         # Step 6: Save tax and total
-#         invoice.c_gst = c_gst
-#         invoice.s_gst = s_gst
-#         invoice.i_gst = i_gst
-#         invoice.total_amount = basic_amount
-#         invoice.cgst = cgst
-#         invoice.sgst = sgst
-#         invoice.igst = igst
-#         invoice.total_d = total_d
-#         invoice.g_total = g_total
-#         invoice.fright_total = fright_total 
-#         invoice.grand_total = grand_total
-#         invoice.save()
-#         messages.success(request, 'Bill generate successfully !!')
-
-#         return redirect('invoice_list')
-
-#     vehicle = Add_Vehicle.objects.all()
-#     company = companydetails.objects.all()
-#     dname = NewDriver_Details.objects.all()
-#     context = {'vehicle': vehicle, 'company': company, 'dname': dname}
-
-#     return render(request, 'bills/adani.html', context)
-
-
-
 
 
 #========================ADANI BILL====================================================
 def generate_bill_no():
-    now = datetime.now()  # <-- correct function call
-    month = f"{now.month:02d}"  # Zero-padded month (e.g., 05)
+    now = datetime.now()  
+    month = f"{now.month:02d}"  
     year = now.year
     random_number = random.randint(1000, 9999)  # 4-digit random
 
-    # Financial year logic
+
     if now.month >= 4:  # April se new financial year
         fy_start = str(year)[-2:]
         fy_end = str(year + 1)[-2:]
@@ -2874,7 +2424,7 @@ def adani_bill(request):
         invoice.fright_total = fright_total 
         invoice.grand_total = formatted_total
         # invoice. total_in_words = num2words(formatted_total)
-        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "") + "ONLY"
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "")+ " " + "ONLY"
         invoice.save()
         messages.success(request, 'Bill generate successfully !!')
 
@@ -2900,192 +2450,192 @@ def invoice_detail(request, invoice_id):
 
 
 #========================GEMINI BILL====================================================
-# def gemini_bill(request):
-#     if request.method == "POST":
-#         # Step 1: Extract invoice data
-#         date = request.POST.get('date')
-#         company = request.POST.get('company')
-#         gst = request.POST.get('gst')  # This is buyer GST (To GST)
-#         pan = request.POST.get('pan')
-#         tanker = request.POST.get('tanker')
-#         tanker_cap = request.POST.get('tanker_cap')
-#         From_add = request.POST.get('From_add')
-#         To_add = request.POST.get('To_add')
-#         date_dis = request.POST.get('date_dis')
-#         # unload = request.POST.get('unload')
-#         # short = request.POST.get('short')
-#         # retn = request.POST.get('retn')
-#         lr_no = request.POST.get('lr_no')
-#         Fo_date = request.POST.get('Fo_date')
-#         To_date = request.POST.get('To_date')
-#         d_rate = request.POST.get('d_rate')
-#         par_day = request.POST.get('par_day')
-#         total_d = request.POST.get('total_d')
-#         sac = request.POST.get('sac')
-#         charges = request.POST.get('charges')
-#         hsac = request.POST.get('hsac')
+def gemini_bill(request):
+    if request.method == "POST":
+        # Step 1: Extract invoice data
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        tanker = request.POST.get('tanker')
+        tanker_cap = request.POST.get('tanker_cap')
+        From_add = request.POST.get('From_add')
+        To_add = request.POST.get('To_add')
+        date_dis = request.POST.get('date_dis')
+        # unload = request.POST.get('unload')
+        # short = request.POST.get('short')
+        # retn = request.POST.get('retn')
+        lr_no = request.POST.get('lr_no')
+        Fo_date = request.POST.get('Fo_date')
+        To_date = request.POST.get('To_date')
+        d_rate = request.POST.get('d_rate')
+        par_day = request.POST.get('par_day')
+        total_d = request.POST.get('total_d')
+        sac = request.POST.get('sac')
+        charges = request.POST.get('charges')
+        hsac = request.POST.get('hsac')
 
-#         # Step 2: Generate invoice number
-#         invoice_number = generate_bill_no()
+        # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
         
 
-#         if GInvoice.objects.filter(date=date,company=company).exists():
-#            messages.error(request, 'Bill already Exists!!')
-#            return redirect('create_bill')
-#         else:
+        if GInvoice.objects.filter(date=date,company=company).exists():
+           messages.error(request, 'Bill already Exists!!')
+           return redirect('create_bill')
+        else:
           
-#         # Step 3: Create empty invoice
-#          invoice = GInvoice.objects.create(
-#             invoice_number=invoice_number,
-#             date=date,
-#             company=company,
-#             gst=gst,
-#             pan=pan,
-#             tanker=tanker,
-#             # tanker_cap=tanker_cap,
-#             From_add=From_add,
-#             To_add=To_add,
-#             date_dis=date_dis,
-#             # unload=unload,
-#             # short=short,
-#             # retn=retn,
-#             lr_no=lr_no,
-#             sac=sac if sac else 0,
-#             charges=charges if total_d else None,
-#             hsac=hsac if hsac else 0,
-#             Fo_date=Fo_date if Fo_date else None,
-#             To_date=To_date if Fo_date else None,
-#             d_rate=d_rate if total_d else 0,
-#             par_day=par_day if total_d else None,
-#             total_d=total_d if total_d else 0,
-#             total_amount=0.0
-#         )
+        # Step 3: Create empty invoice
+         invoice = GInvoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            tanker=tanker,
+            # tanker_cap=tanker_cap,
+            From_add=From_add,
+            To_add=To_add,
+            date_dis=date_dis,
+            # unload=unload,
+            # short=short,
+            # retn=retn,
+            lr_no=lr_no,
+            sac=sac if sac else 0,
+            charges=charges if total_d else None,
+            hsac=hsac if hsac else 0,
+            Fo_date=Fo_date if Fo_date else None,
+            To_date=To_date if Fo_date else None,
+            d_rate=d_rate if total_d else 0,
+            par_day=par_day if total_d else None,
+            total_d=total_d if total_d else 0,
+            total_amount=0.0
+        )
 
-#         # Step 4: Handle item data
-#         item_data = request.POST.getlist('item_description')
-#         quantities = request.POST.getlist('item_quantity')
-#         unit_prices = request.POST.getlist('item_unit_price')
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
 
-#         subtotal = 0.0
+        subtotal = 0.0
 
-#         for i in range(len(item_data)):
-#             try:
-#                 quantity = int(quantities[i])
-#                 unit_price = float(unit_prices[i])
-#                 line_total = quantity * unit_price + 1500
-#                 subtotal += line_total
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price + 1500
+                subtotal += line_total
                 
 
-#                 GItem.objects.create(
-#                     invoice=invoice,
-#                     description=item_data[i],
-#                     quantity=quantity,
-#                     unit_price=unit_price
-#                 )
-#             except (ValueError, IndexError):
-#                 continue
+                GItem.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price
+                )
+            except (ValueError, IndexError):
+                continue
         
-#         g_amount = float(total_d)  # or Decimal(total_d)
+        g_amount = float(total_d)  # or Decimal(total_d)
 
-#         #Step 5: Calculate tax
-#         cgst_r = 0.09
-#         sgst_r = 0.09
-#         igst_r = 0.18
+        #Step 5: Calculate tax
+        cgst_r = 0.09
+        sgst_r = 0.09
+        igst_r = 0.18
 
-#         # GST-based logic
-#         company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
-#         from_gst_code = extract_gst_code(company_gst)  # Your GST
-#         to_gst_code = extract_gst_code(gst)  # Customer GST
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
 
-#         if from_gst_code == '27' and to_gst_code == '27':
-#             # Intra-state (Maharashtra)
-#             c_gst = round(g_amount * cgst_r, 2)
-#             s_gst = round(g_amount * sgst_r, 2)
-#             i_gst = 0.0
-#         else:
-#             # Inter-state
-#             c_gst = 0.0
-#             s_gst = 0.0
-#             i_gst = round(g_amount * igst_r, 2)
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            c_gst = round(g_amount * cgst_r, 2)
+            s_gst = round(g_amount * sgst_r, 2)
+            i_gst = 0.0
+        else:
+            # Inter-state
+            c_gst = 0.0
+            s_gst = 0.0
+            i_gst = round(g_amount * igst_r, 2)
 
-#         g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+        g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
      
 
         
 
-#         basic_amount = subtotal 
+        basic_amount = subtotal 
 
-#         cgst_rate = 0.06
-#         sgst_rate = 0.06
-#         igst_rate = 0.12
+        cgst_rate = 0.06
+        sgst_rate = 0.06
+        igst_rate = 0.12
 
-#         # GST-based logic
-#         company_gst = "27XXXXX0000Z5A" 
-#         from_gst_code = extract_gst_code(company_gst)  # Your GST
-#         to_gst_code = extract_gst_code(gst)  # Customer GST
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
 
-#         if from_gst_code == '27' and to_gst_code == '27':
-#             # Intra-state (Maharashtra)
-#             cgst = round(basic_amount * cgst_rate, 2)
-#             sgst = round(basic_amount * sgst_rate, 2)
-#             igst = 0.0
-#         else:
-#             # Inter-state
-#             cgst = 0.0
-#             sgst = 0.0
-#             igst = round(basic_amount * igst_rate, 2)
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
 
-#         fright_total = round(basic_amount + cgst + sgst + igst, 2)
-#         grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
-#        # Check decimal part
-#         decimal_part = grand_total - int(grand_total)
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
+       # Check decimal part
+        decimal_part = grand_total - int(grand_total)
 
-#         # Add 1 rupee if decimal part > 0.50
-#         if decimal_part > 0.50:
-#           grand_total = int(grand_total) + 1
-#         else:
-#             grand_total = int(grand_total)
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
 
-#         #  final output looks like 1000.00 format
-#         formatted_total = "{:.2f}".format(grand_total)
-
-
-
-#         # Step 6: Save tax and total
-#         invoice.c_gst = c_gst
-#         invoice.s_gst = s_gst
-#         invoice.i_gst = i_gst
-#         invoice.total_amount = basic_amount
-#         invoice.cgst = cgst
-#         invoice.sgst = sgst
-#         invoice.igst = igst
-#         invoice.total_d = total_d
-#         invoice.g_total = g_total
-#         invoice.fright_total = fright_total 
-#         invoice.grand_total = formatted_total
-#         invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "") + "ONLY"
-#         invoice.save()
-#         messages.success(request, 'Bill generate successfully !!')
-
-#         return redirect('ginvoice_list')
-
-#     vehicle = Add_Vehicle.objects.all()
-#     company = companydetails.objects.all()
-#     dname = NewDriver_Details.objects.all()
-#     context = {'vehicle': vehicle, 'company': company, 'dname': dname}
-
-#     return render(request, 'bills/gemini.html', context)
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
 
 
-# def Ginvoice_list(request):
-#     ginvoice = GInvoice.objects.all().order_by('date')  # Latest invoice first
-#     return render(request, 'bills/gemini_list.html', {'ginvoice': ginvoice})
+
+        # Step 6: Save tax and total
+        invoice.c_gst = c_gst
+        invoice.s_gst = s_gst
+        invoice.i_gst = i_gst
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.total_d = total_d
+        invoice.g_total = g_total
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "")+ " " + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('ginvoice_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/gemini.html', context)
 
 
-# def Ginvoice_detail(request, invoice_id):
-#     invoice = get_object_or_404(GInvoice, id=invoice_id)
-#     items = GItem.objects.filter(invoice=invoice)
-#     return render(request, 'bills/gemini_details.html', {'invoice': invoice, 'items': items})
+def Ginvoice_list(request):
+    ginvoice = GInvoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/gemini_list.html', {'ginvoice': ginvoice})
+
+
+def Ginvoice_detail(request, invoice_id):
+    invoice = get_object_or_404(GInvoice, id=invoice_id)
+    items = GItem.objects.filter(invoice=invoice)
+    return render(request, 'bills/gemini_details.html', {'invoice': invoice, 'items': items})
 
 
 #========================Ashland BILL====================================================
@@ -3446,7 +2996,7 @@ def aakin_bill(request):
         invoice.fright_total = fright_total 
         invoice.grand_total = formatted_total
         # invoice. total_in_words = num2words(formatted_total)
-        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "") + "ONLY"
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "")+ " " + "ONLY"
         invoice.save()
         messages.success(request, 'Bill generate successfully !!')
 
@@ -3473,7 +3023,7 @@ def aakin_detail(request, invoice_id):
 
 
 #========================VVF TALOJA BILL====================================================
-def generate_bill_no():
+def generate_bills_no():
     now = datetime.now()  # <-- correct function call
     month = f"{now.month:02d}"  # Zero-padded month (e.g., 05)
     year = now.year
@@ -3490,7 +3040,7 @@ def generate_bill_no():
     financial_year = f"{fy_start}-{fy_end}"
 
     # Final bill number
-    bill_no = f"{random_number}/VT/{month}/{financial_year}"
+    bill_no = f"{random_number}/JN/{month}/{financial_year}"
     return bill_no
 
 
@@ -3530,7 +3080,7 @@ def vvft_bill(request):
         hsac = request.POST.get('hsac')
 
         # Step 2: Generate invoice number
-        invoice_number = generate_bill_no()
+        invoice_number = generate_bills_no()
         
 
         if vvft_Invoice.objects.filter(date=date,company=company).exists():
@@ -3667,7 +3217,7 @@ def vvft_bill(request):
         invoice.g_total = g_total
         invoice.fright_total = fright_total 
         invoice.grand_total = formatted_total
-        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "") + "ONLY"
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "")+ " " + "ONLY"
         invoice.save()
         messages.success(request, 'Bill generate successfully !!')
 
@@ -3690,3 +3240,384 @@ def vvft_detail(request, invoice_id):
     invoice = get_object_or_404(vvft_Invoice, id=invoice_id)
     items = vvft_Item.objects.filter(invoice=invoice)
     return render(request, 'bills/Vvf_Taloja/vvf_t_detail.html', {'invoice': invoice, 'items': items})
+
+
+#==============================TASTY BITE EATABLES LTD===========================================
+def tasty_bill(request):
+    if request.method == "POST":
+        # Step 1: Extract invoice data
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        tanker = request.POST.get('tanker')
+        tanker_cap = request.POST.get('tanker_cap')
+        From_add = request.POST.get('From_add')
+        To_add = request.POST.get('To_add')
+        date_dis = request.POST.get('date_dis')
+        unload = request.POST.get('unload')
+        short = request.POST.get('short')
+        retn = request.POST.get('retn')
+        lr_no = request.POST.get('lr_no')
+        Fo_date = request.POST.get('Fo_date')
+        To_date = request.POST.get('To_date')
+        d_rate = request.POST.get('d_rate')
+        par_day = request.POST.get('par_day')
+        total_d = request.POST.get('total_d')
+        sac = request.POST.get('sac')
+        charges = request.POST.get('charges')
+        hsac = request.POST.get('hsac')
+
+        # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
+        
+
+        if TB_Invoice.objects.filter(date=date,company=company).exists():
+           messages.error(request, 'Bill already Exists!!')
+           return redirect('create_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = TB_Invoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            tanker=tanker,
+            tanker_cap=tanker_cap,
+            From_add=From_add,
+            To_add=To_add,
+            date_dis=date_dis,
+            unload=unload,
+            short=short,
+            retn=retn,
+            lr_no=lr_no,
+            sac=sac if sac else 0,
+            charges=charges if total_d else None,
+            hsac=hsac if hsac else 0,
+            Fo_date=Fo_date if Fo_date else None,
+            To_date=To_date if Fo_date else None,
+            d_rate=d_rate if total_d else 0,
+            par_day=par_day if total_d else None,
+            total_d=total_d if total_d else 0,
+            total_amount=0.0
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price
+                subtotal += line_total
+
+                TB_Item.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price
+                )
+            except (ValueError, IndexError):
+                continue
+        
+        g_amount = float(total_d)  # or Decimal(total_d)
+
+        #Step 5: Calculate tax
+        cgst_r = 0.09
+        sgst_r = 0.09
+        igst_r = 0.18
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            c_gst = round(g_amount * cgst_r, 2)
+            s_gst = round(g_amount * sgst_r, 2)
+            i_gst = 0.0
+        else:
+            # Inter-state
+            c_gst = 0.0
+            s_gst = 0.0
+            i_gst = round(g_amount * igst_r, 2)
+
+        g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+     
+
+        
+
+        basic_amount = subtotal 
+
+        cgst_rate = 0.06
+        sgst_rate = 0.06
+        igst_rate = 0.12
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
+
+            # Check decimal part
+        decimal_part = grand_total - int(grand_total)
+
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
+
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
+        
+
+
+
+        # Step 6: Save tax and total
+        invoice.c_gst = c_gst
+        invoice.s_gst = s_gst
+        invoice.i_gst = i_gst
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.total_d = total_d
+        invoice.g_total = g_total
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        # invoice. total_in_words = num2words(formatted_total)
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "")+ " " + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('tasty_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/Tasty_Bite/Tasty_bite.html', context)
+
+
+def tasty_list(request):
+    tbnvoices = TB_Invoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/Tasty_Bite/Tasty_list.html', {'tbnvoices': tbnvoices})
+
+
+def tasty_detail(request, invoice_id):
+    invoice = get_object_or_404(TB_Invoice, id=invoice_id)
+    items = TB_Item.objects.filter(invoice=invoice)
+    return render(request, 'bills/Tasty_Bite/Tasty_detail.html', {'invoice': invoice, 'items': items})
+
+
+
+#============================VISWAAT CHEMICALS LTD ======================================
+def viswaat_bill(request):
+    if request.method == "POST":
+        # Step 1: Extract invoice data
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        tanker = request.POST.get('tanker')
+        tanker_cap = request.POST.get('tanker_cap')
+        From_add = request.POST.get('From_add')
+        To_add = request.POST.get('To_add')
+        date_dis = request.POST.get('date_dis')
+        # unload = request.POST.get('unload')
+        # short = request.POST.get('short')
+        # retn = request.POST.get('retn')
+        lr_no = request.POST.get('lr_no')
+        Fo_date = request.POST.get('Fo_date')
+        To_date = request.POST.get('To_date')
+        d_rate = request.POST.get('d_rate')
+        par_day = request.POST.get('par_day')
+        total_d = request.POST.get('total_d')
+        sac = request.POST.get('sac')
+        charges = request.POST.get('charges')
+        hsac = request.POST.get('hsac')
+
+        # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
+        
+
+        if VC_Invoice.objects.filter(date=date,company=company).exists():
+           messages.error(request, 'Bill already Exists!!')
+           return redirect('create_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = VC_Invoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            tanker=tanker,
+            # tanker_cap=tanker_cap,
+            From_add=From_add,
+            To_add=To_add,
+            date_dis=date_dis,
+            # unload=unload,
+            # short=short,
+            # retn=retn,
+            lr_no=lr_no,
+            sac=sac if sac else 0,
+            charges=charges if total_d else None,
+            hsac=hsac if hsac else 0,
+            Fo_date=Fo_date if Fo_date else None,
+            To_date=To_date if Fo_date else None,
+            d_rate=d_rate if total_d else 0,
+            par_day=par_day if total_d else None,
+            total_d=total_d if total_d else 0,
+            total_amount=0.0
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price
+                subtotal += line_total
+                
+
+                VC_Item.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price
+                )
+            except (ValueError, IndexError):
+                continue
+        
+        g_amount = float(total_d)  # or Decimal(total_d)
+
+        #Step 5: Calculate tax
+        cgst_r = 0.09
+        sgst_r = 0.09
+        igst_r = 0.18
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            c_gst = round(g_amount * cgst_r, 2)
+            s_gst = round(g_amount * sgst_r, 2)
+            i_gst = 0.0
+        else:
+            # Inter-state
+            c_gst = 0.0
+            s_gst = 0.0
+            i_gst = round(g_amount * igst_r, 2)
+
+        g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+     
+
+        
+
+        basic_amount = subtotal 
+
+        cgst_rate = 0.06
+        sgst_rate = 0.06
+        igst_rate = 0.12
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst + g_total, 2)
+       # Check decimal part
+        decimal_part = grand_total - int(grand_total)
+
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
+
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
+
+
+
+        # Step 6: Save tax and total
+        invoice.c_gst = c_gst
+        invoice.s_gst = s_gst
+        invoice.i_gst = i_gst
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.total_d = total_d
+        invoice.g_total = g_total
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "")+ " " + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('vs_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/Viswaat_Chemicals/viswaat.html', context)
+
+
+def viswaat_list(request):
+    vinvoice = VC_Invoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/Viswaat_Chemicals/viswaat_list.html', {'vinvoice': vinvoice})
+
+
+def viswaat_detail(request, invoice_id):
+    invoice = get_object_or_404(VC_Invoice, id=invoice_id)
+    items = VC_Item.objects.filter(invoice=invoice)
+    return render(request, 'bills/Viswaat_Chemicals/viswaat_detail.html', {'invoice': invoice, 'items': items})

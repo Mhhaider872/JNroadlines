@@ -1,4 +1,5 @@
 
+
 <!-- @format -->
 
 {% include 'base.html' %}
@@ -6,7 +7,7 @@
   <body>
     <main id="main" class="main">
       <div class="pagetitle py-3">
-        <h1>Gemini</h1>
+        <h1>Tasty Bite Ltd</h1>
         {% comment %} <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -20,7 +21,7 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title text-center">Gemini Invoice</h5>
+                <h5 class="card-title text-center">Tasty Bite Ltd Invoice</h5>
                  {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
@@ -113,27 +114,27 @@
             <label for="item_description" class="form-label fw-bold">HSN/SAC :</label>
             <input type="number" class="form-control border-2" name="sac" value="996791">
             </div>
-            {% comment %} <div class="col-lg-3 mb-3">
+            <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Chargable QTY K.G :</label>
             <input type="text" class="form-control border-2" name="item_quantity" >
-            </div> {% endcomment %}
-             <div class="col-lg-3 mb-3">
-            <label for="item_description" class="form-label fw-bold">Total K.G :</label>
-            <input type="number" class="form-control border-2" name="item_quantity"  id="disqty" oninput="calculateTotalShort()" >
             </div>
-             {% comment %} <div class="col-lg-3 mb-3">
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Loaded QTY K.G :</label>
+            <input type="number" class="form-control border-2" name="tanker_cap"  id="disqty" oninput="calculateTotalShort()" >
+            </div>
+             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Unloaded QTY K.G :</label>
             <input type="number" class="form-control border-2" name="unload" id="unlodqty" oninput="calculateTotalShort()">
-            </div> {% endcomment %}
-             {% comment %} <div class="col-lg-3 mb-3">
+            </div>
+             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">
 Shortages / Excess Qty K.G :</label>
             <input type="number" class="form-control border-2" id="totalshort" name="short">
-            </div> {% endcomment %}
-            {% comment %} <div class="col-lg-3 mb-3">
+            </div>
+            <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Return QTY K.G :</label>
             <input type="number" class="form-control border-2" name="retn">
-            </div> {% endcomment %}
+            </div>
             {% comment %} <div class="col-lg-3 mb-3">
             <label for="item_quantity" class="form-label fw-bold">Quantity:</label>
             <input type="number" name="item_quantity" value="1" class="form-control border-2" required>
@@ -142,16 +143,15 @@ Shortages / Excess Qty K.G :</label>
             <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
             <input type="number" step="0.01" name="item_unit_price" class="form-control border-2" required>
             </div>
-            <div>
-             <button type="button" onclick="addItem()" class="btn btn-danger px-4 btn-sm">Add +</button>
-            </div>
-            <hr>
-           
+            
         
          </div>
         </div>
     </div>
-     <h5 class="card-title">Detention & Other Charges</h5>
+    <div>
+    <button type="button" onclick="addItem()" class="btn btn-danger px-4 btn-sm">Add +</button>
+    </div>
+    <hr>
             <div class="col-lg-3 mb-3">
             <label for="Fo" class="form-label fw-bold"
               >Charges Name :</label
@@ -256,7 +256,7 @@ Shortages / Excess Qty K.G :</label>
 <div class="btn-div text-center py-4">
     
     <button type="submit" class="btn btn-success px-4">Create Invoice</button>
-    <a href="{% url 'ginvoice_list' %}" class="btn btn-primary px-4">View Invoice</a>
+    <a href="{% url 'tasty_list' %}" class="btn btn-primary px-4">View Invoice</a>
     </div>
     
 </form>
@@ -344,41 +344,40 @@ Shortages / Excess Qty K.G :</label>
             <label for="item_description" class="form-label fw-bold">LR No :</label>
             <input type="text" class="form-control border-2" name="lr_no">
             </div>
-            <div class="col-lg-3 mb-3">
+             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">HSN/SAC :</label>
             <input type="number" class="form-control border-2" name="sac" value="996791">
             </div>
-            {% comment %} <div class="col-lg-3 mb-3">
-            <label for="item_description" class="form-label fw-bold">Tanker Capacity K.G :</label>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Chargable QTY K.G :</label>
             <input type="text" class="form-control border-2" name="item_quantity" >
-            </div> {% endcomment %}
-             <div class="col-lg-3 mb-3">
-            <label for="item_description" class="form-label fw-bold">Total K.G :</label>
-            <input type="number" class="form-control border-2 disqty_row" name="item_quantity">
             </div>
-             {% comment %} <div class="col-lg-3 mb-3">
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Loaded QTY K.G :</label>
+            <input type="number" class="form-control border-2 disqty_row" name="tanker_cap"  oninput="calculateShort()" >
+            </div>
+             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Unloaded QTY K.G :</label>
             <input type="number" class="form-control border-2 unlodqty_row" name="unload"  oninput="calculateShort()">
-            </div> {% endcomment %}
-             {% comment %} <div class="col-lg-3 mb-3">
+            </div>
+             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">
 Shortages / Excess Qty K.G :</label>
             <input type="number" class="form-control border-2 totalshort_row"  name="short">
-            </div> {% endcomment %}
-             <div class="col-lg-3 mb-3">
-            <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
-            <input type="number" step="0.01" name="item_unit_price" class="form-control border-2" required>
             </div>
-              
-            {% comment %} <div class="col-lg-3 mb-3">
+            <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Return QTY K.G :</label>
             <input type="number" class="form-control border-2" name="retn">
-            </div> {% endcomment %}
+            </div>
             {% comment %} <div class="col-lg-3 mb-3">
             <label for="item_quantity" class="form-label fw-bold">Quantity:</label>
             <input type="number" name="item_quantity" value="1" class="form-control border-2" required>
             </div> {% endcomment %}
-           
+            <div class="col-lg-3 mb-3">
+            <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
+            <input type="number" step="0.01" name="item_unit_price" class="form-control border-2" required>
+            </div>
+              
 
           </div>
           
@@ -386,7 +385,7 @@ Shortages / Excess Qty K.G :</label>
         document.getElementById('items').appendChild(itemDiv);
     }
 </script>
-{% comment %} <script>
+<script>
     function calculateTotalShort() {
         // Get the values of disqty, unlodqty, and shortallow
         var disqty = document.getElementById("disqty").value;
@@ -402,8 +401,8 @@ Shortages / Excess Qty K.G :</label>
 
         
     }
-</script> {% endcomment %}
-{% comment %} <script>
+</script>
+<script>
   function calculateShort() {
     // Get all loaded and unloaded quantity inputs
     var disqtyElements = document.querySelectorAll('.disqty_row');
@@ -422,7 +421,7 @@ Shortages / Excess Qty K.G :</label>
         totalshortElements[i].value = totalshort_row >= 0 ? totalshort_row : 0; // Set to 0 if negative
     }
 }
-</script> {% endcomment %}
+</script>
   <script>
     function Total() {
         // Get the values of the input fields by their IDs

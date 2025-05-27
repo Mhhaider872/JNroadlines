@@ -200,11 +200,11 @@ urlpatterns =[
     path('invoice/<int:invoice_id>/', views.invoice_detail, name='invoice_detail'),
 
     #=======================Gemini Bill=============================================
-    # path('gemini-bill/', views.gemini_bill, name='create_bill_gemini'),
-    # path('gemini_invoices/', views.Ginvoice_list, name='ginvoice_list'),
-    # path('gemini/<int:invoice_id>/', views.Ginvoice_detail, name='ginvoice_detail'),
+    path('gemini-bill/', views.gemini_bill, name='create_bill_gemini'),
+    path('gemini_invoices/', views.Ginvoice_list, name='ginvoice_list'),
+    path('gemini/<int:invoice_id>/', views.Ginvoice_detail, name='ginvoice_detail'),
 
-     #=======================Gemini Bill=============================================
+     #=======================Ashland Bill=============================================
     path('ashland-bill/', views.ashland_bill, name='create_bill_ashland'),
     path('ashland_invoices/', views.Ainvoice_list, name='ainvoice_list'),
     path('ashland/<int:invoice_id>/', views.Ainvoice_detail, name='ainvoice_detail'),
@@ -220,10 +220,23 @@ urlpatterns =[
     path('Aak_Inword/<int:invoice_id>/', views.aakin_detail, name='Aak_Inword_detail'),
 
 
-       #=======================VVF TALOJA Bill=============================================
+    #=======================VVF TALOJA Bill=============================================
     path('Vvf-taloja-bill/', views.vvft_bill, name='create_vvf_taloja'),
     path('vvft_invoices/', views.vvftinvoice_list, name='vvft_list'),
     path('vvf_t/<int:invoice_id>/', views.vvft_detail, name='vvft_detail'),
+    
+
+    #=======================Viswaat Chemicals Bill=============================================
+    path('viswaat-bill/', views.viswaat_bill, name='create_bill_viswaat'),
+    path('viswaat_invoices/', views.viswaat_list, name='vs_list'),
+    path('viswaat/<int:invoice_id>/', views.viswaat_detail, name='vs_invoice_detail'),
+
+   
+
+    #=======================Tasty bite Bill=============================================
+    path('tasty-bill/', views.tasty_bill, name='tasty_bill'),
+    path('tasty_invoices/', views.tasty_list, name='tasty_list'),
+    path('tasty_invoice/<int:invoice_id>/', views.tasty_detail, name='tasty_invoice_detail'),
 
   
 ]

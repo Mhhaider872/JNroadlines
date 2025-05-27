@@ -238,7 +238,7 @@
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
                   <div class="filter">
-                    <a class="icon" href="#" 
+                    <a class="icon" href="{% url "create_vvf_taloja" %}" 
                       ><i class="bi bi-three-dots"></i
                     >
                   </div>
@@ -263,7 +263,62 @@
                 </div>
               </div>
               <!-- End Loan-->
+              <div class="col-lg-3 col-md-12">
+                <div class="card info-card revenue-card">
+                  <div class="filter">
+                    {% comment %} <a class="icon" href="{% url 'all-trip' %}"  {% endcomment %}
+                    <a class="icon" href="{% url "create_bill_viswaat" %}"
+                      ><i class="bi bi-three-dots"></i
+                    >
+                  </div>
 
+                  <div class="card-body">
+                    <h5 class="card-title">
+                     Viswaat Chemicals Pvt Ltd
+                    </h5>
+
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                      <i class="bi bi-receipt"></i>
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
+                      </div>
+                      <div class="ps-3">
+                        <h6>0</h6>
+                      </div>
+                    </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+               <div class="col-lg-3 col-md-12">
+                <div class="card info-card revenue-card">
+                  <div class="filter">
+                    <a class="icon" href="{% url "tasty_bill" %}" 
+                      ><i class="bi bi-three-dots"></i
+                    >
+                  </div>
+
+                  <div class="card-body">
+                    <h5 class="card-title">
+                  Tasty Bite Eatables Ltd
+                    </h5>
+
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                      <i class="bi bi-receipt"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>0</h6>
+                      </div>
+                    </div>
+                    </a>
+                  </div>
+                </div>
+              </div> 
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
@@ -293,36 +348,9 @@
                   </div>
                 </div>
               </div>
-              <!-- End R Card -->
-   
-              {% comment %} <div class="col-lg-3 col-md-12">
-                <div class="card info-card revenue-card">
-                  <div class="filter">
-                    <a class="icon" href="{% url 'add-trip-end' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Trip End
-                    </h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                     <i class="bi bi-sign-stop"></i>
-                        <i class="bi bi-currency-rupee"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>0</h6>
-                      </div>
-                    </div>
-                    </a>
-                  </div>
-                </div>
-              </div> {% endcomment %}
+             <!-- End R Card -->
+                
+    
        
 
               <!-- Customers Card -->
