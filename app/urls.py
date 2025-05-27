@@ -238,6 +238,11 @@ urlpatterns =[
     path('tasty_invoices/', views.tasty_list, name='tasty_list'),
     path('tasty_invoice/<int:invoice_id>/', views.tasty_detail, name='tasty_invoice_detail'),
 
+      #=======================Aak India INword Bill=============================================
+    path('Aak_outword-bill/', views.aakout_bill, name='create_bill_Aak_outword'),
+    path('Aak_outword_invoices/', views.aakout_list, name='Aak_outword_list'),
+    path('Aak_outword/<int:invoice_id>/', views.aakout_detail, name='Aak_outword_detail'),
+
   
 ]
 

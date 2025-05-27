@@ -92,28 +92,26 @@
 
   <div class="table-responsive">
   <table class="table table-bordered table-sm">
-   <thead>
-        <tr class="table-head">
+   <thead style="font-size:8px">
+        <tr>
             <th>Sr No.</th>
              <th>Tanker No.</th>
               <th>Dispatch Date</th>
               
                  <th>LR No.</th>
                  <th>HSN/SAC Code</th>
-                  <th>Total (KG)</th>
-                   {% comment %} <th>Loaded QTY(KG)</th>
+                  <th>Chargable QTY(KG)</th>
+                   <th>Loaded QTY(KG)</th>
                     <th>Unloaded QTY(KG)</th>
-                     <th>Excess/ Shortage QTY(KG) </th> {% endcomment %}
-                      {% comment %} <th>Return QTY(KG)</th> {% endcomment %}
-                       
+                     <th>Excess/ Shortage QTY(KG) </th>
+                      <th>Return QTY(KG)</th>
                        <th>Rate Per(KG)</th>
-                       <th>From Address</th>
+             <th>From Address</th>
                 <th>To Address</th>
-          
             <th>Freight Rs.</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="font-size:8px">
         {% for item in items %}
         <tr>
             <td>{{ item.description}}</td>
@@ -121,23 +119,22 @@
             <td>{{ item.f_add}}</td>
             <td>{{ item.t_add}}</td>
             <td>{{ item.lr_no}}</td>{% endcomment %}
-            <td width="200px">{{invoice.tanker}}</td>
+            <td width="300px">{{invoice.tanker}}</td>
             <td width="100px">{{invoice.date_dis|date:"d/m/Y"}}</td>
             
             <td width="100px">{{invoice.lr_no}}</td>
             <td width="100px">{{invoice.sac}}</td>
             <td width="100px">{{ item.quantity }}</td>
-            {% comment %} <td>{{invoice.tanker_cap}} </td> {% endcomment %}
-            {% comment %} <td>{{ invoice.unload }}</td>
-            <td>{{ invoice.short }}</td> {% endcomment %}
-            {% comment %} <td>{{ invoice.retn }}</td> {% endcomment %}
-            
+            <td width="100px">{{invoice.tanker_cap}} </td>
+            <td width="100px">{{ invoice.unload }}</td>
+            <td width="100px">{{ invoice.short }}</td>
+            <td width="100px">{{ invoice.retn }}</td>
            
             <td width="100px"><strong>{{ item.unit_price }}</strong></td>
-  <td width="200px">{{invoice.From_add}}</td>
+  
+            <td width="200px">{{invoice.From_add}}</td>
             <td width="200px">{{invoice.To_add}}</td>
-      
-            <td><strong>₹{{ item.total_price }}</strong></td>
+            <td width="100px"><strong>₹{{ item.total_price }}</strong></td>
         </tr>
         {% endfor %}
         <tr>
@@ -151,13 +148,11 @@
             <td></td>
             <td></td>
             <td></td>
-            
-       
-        
+            <td></td>
+            <td></td>
         </tr>
         <tr>
- 
-
+         <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -168,72 +163,83 @@
             <td></td>
             <td></td>
             <td></td>
-            
+            <td></td>
         </tr>
         
                     <tr>
          <td></td>
-            <td colspan="7"></td>
+            <td colspan="9"></td>
             
        
-            <td ><strong>Sub-Total</strong></td>
-             <td><strong>₹{{invoice.total_amount}}</strong></td>
+            <td colspan="3"><strong>Sub-Total</strong></td>
+             <td><strong>₹{{invoice.total_amount }}</strong></td>
 
         
         </tr>
       
                     <tr>
          <td></td>
-            <td colspan="7"></td>
+            <td colspan="9"></td>
             
        
-            <td ><strong>OUTPUT SGST @ 6% </strong></td>
+            <td colspan="3"><strong>OUTPUT SGST @ 6% </strong></td>
              <td>₹{{ invoice.cgst }}</td>
 
         
         </tr>
         <tr>
          <td></td>
-            <td colspan="7"></td>
+            <td colspan="9"></td>
 
-            <td><strong>OUTPUT CGST @ 6%</strong></td>
+            <td colspan="3"><strong>OUTPUT CGST @ 6%</strong></td>
             <td>₹{{ invoice.sgst }}</td>
         </tr>
          <tr>
          <td></td>
-            <td colspan="7"></td>
+            <td colspan="9"></td>
 
-            <td><strong>OUTPUT IGST @ 12%</strong></td>
+            <td colspan="3"><strong>OUTPUT IGST @ 12%</strong></td>
             <td>₹{{ invoice.igst }}</td>
         </tr>
         <tr>
          <td></td>
-            <td colspan="7"></td>
+            <td colspan="9"></td>
 
-            <td  class="fw-bold"><strong>Total</strong></td>
+            <td colspan="3" class="fw-bold"><strong>Total (1)</strong></td>
              <td class="fw-bold"><strong>₹{{ invoice.fright_total }}</strong></td>
         </tr>
         <tr>
   <td></td>
-  <td colspan="7"></td>
-  <td ></td>
+  <td colspan="9"></td>
+  <td colspan="3"></td>
   <td></td>
         </tr>
         <tr>
          <td></td>
             <td colspan="4"><strong>{{ invoice.charges }}</strong></td>
-            <td colspan="3">{% if invoice.charges %}<strong>  SAC Code-</strong> {{invoice.hsac}}{% else %}
+            <td colspan="5">{% if invoice.charges %}<strong>  SAC Code-</strong> {{invoice.hsac}}{% else %}
     <strong></strong>
 {% endif %}</td>
- 
+           
             
-              <td></td>
+            
+            {% comment %} <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td> {% endcomment %}
+            <td  colspan="3" ></td>
+            <td>{% if invoice.charges %}<strong>₹{{invoice.total_d}}</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
         </tr>
 
 
         <tr>
                    <td></td>
-                     <td colspan="7">{% if invoice.charges %}
+                     <td colspan="9">{% if invoice.Fo_date %}
      <strong>( {{invoice.Fo_date|date:"d/m/Y"}}  To {{invoice.To_date|date:"d/m/Y"}} = {{invoice.par_day}} Day)    ( Rs-{{invoice.d_rate}} /- Per day  *  {{invoice.par_day}} Days )</strong>
 {% else %}
     <strong></strong>
@@ -243,24 +249,22 @@
                   <td></td>
                    <td></td> 
                     <td></td>{% endcomment %}
-                   
+                     <td  colspan="3"></td>
                
                    
-                    <td>{% if invoice.charges %}<strong>₹{{invoice.total_d}}</strong>{% else %}
-    <strong></strong>
-{% endif %}</td>
+                    <td></td>
                  
 
                   </tr>
                    <tr>
                    <td></td>
-                     <td colspan="7"> </td> 
+                     <td colspan="9"> </td> 
                 {% comment %} <td></td>
                  <td></td>
                   <td></td>
                    <td></td> 
                     <td></td>{% endcomment %}
-                     <td  >{% if invoice.charges %}<strong>Sub-Total</strong>{% else %}
+                     <td  colspan="3">{% if invoice.charges %}<strong>Sub-Total</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
                
@@ -273,10 +277,10 @@
                   </tr>
                   <tr>
          <td></td>
-            <td colspan="7"></td>
+            <td colspan="9"></td>
             
        
-            <td >{% if invoice.charges %}<strong>OUTPUT SGST @ 9%</strong>{% else %}
+            <td colspan="3" >{% if invoice.charges %}<strong>OUTPUT SGST @ 9%</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
              <td>{% if invoice.charges %}₹{{invoice.s_gst}} {% else %}
@@ -287,9 +291,9 @@
         </tr>
         <tr>
          <td></td>
-            <td colspan="7"></td>
+            <td colspan="9"></td>
 
-            <td >{% if invoice.charges %}<strong>OUTPUT CGST @ 9%</strong>{% else %}
+            <td colspan="3" >{% if invoice.charges %}<strong>OUTPUT CGST @ 9%</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
             <td>{% if invoice.charges %}₹{{invoice.c_gst}} {% else %}
@@ -298,9 +302,9 @@
         </tr>
          <tr>
          <td></td>
-            <td colspan="7"></td>
+            <td colspan="9"></td>
 
-            <td >{% if invoice.charges %}<strong>OUTPUT IGST @ 18%</strong>{% else %}
+            <td colspan="3" >{% if invoice.charges %}<strong>OUTPUT IGST @ 18%</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
             <td>{% if invoice.charges %}₹{{invoice.i_gst}} {% else %}
@@ -309,9 +313,9 @@
         </tr>
          <tr>
          <td></td>
-            <td colspan="7"></td>
+            <td colspan="9"></td>
 
-            <td   class="fw-bold">{% if invoice.charges %}<strong>Total</strong>{% else %}
+            <td colspan="3"  class="fw-bold">{% if invoice.charges %}<strong>Total(2)</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
              <td class="fw-bold">{% if invoice.charges %}<strong>₹{{invoice.g_total}}</strong>{% else %}
@@ -319,12 +323,11 @@
 {% endif %}</td>
         </tr>
 
-      
           <tr>
           <td></td> 
-          <td colspan="7">
+          <td colspan="9">
           
-            <td><strong>ROUNDED TO RS :</strong></td> 
+            <td colspan="3" ><strong>ROUNDED TO RS:</strong></td> 
        
             <td class="fw-bold"><strong>₹{{ invoice.grand_total }}</strong></td>
         </tr>
@@ -339,24 +342,24 @@
             <p>No bill data available.</p>
               
           {% endif %} {% endcomment %}
-            <p class="pb-2"><strong>AMOUNT IN WORDS :{{invoice.total_in_words|upper }}</strong></p>
+            <p class="pb-2"><strong>AMOUNT IN WORDS : {{invoice.total_in_words|upper }}</strong></p>
             {% comment %} <p><strong>NOTES -:</strong> "GST on this Invoice is to be paid under Reverse Charge Mechanism by the recipient of the Service."</p>
         
              <p><strong>NOTES -:</strong> "I/We hereby declare that though our aggregate turnover in any preceding financial year 2017-18 onwards is more than the aggregate turnover notified under sub-rule( 4 ) of rule 48, we are not required to prepare an invoice in terms of the provisions of the said sub-rule. "</p> {% endcomment %}
         
-        <p><strong>NOTES -:</strong> " We are registered under MSME ".</p>
-         <p class="py-3"><strong>FOR : J N Roadlines LLP</strong></p>
+        <p><strong>NOTES : </strong> " We are registered under MSME ".</p>
+        <p class="py-3"><strong>FOR : J N Roadlines LLP</strong></p>
         </div>
-        {% comment %} <div class="col-lg-8">
-          <p class="float-end"><strong>FOR : J. N. Roadlines</strong></p>
+        <div class="col-lg-8">
+          
 
+{% comment %} <br>
 <br>
 <br>
-<br>
-<br>
+<br> {% endcomment %}
 
-           <p class="float-end"><strong>Authorised Signatory</strong></p>
-        </div> {% endcomment %}
+           {% comment %} <p class="float-end"><strong>Authorised Signatory</strong></p> {% endcomment %}
+        </div>
       </div>
 
         
