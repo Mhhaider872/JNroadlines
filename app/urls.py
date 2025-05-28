@@ -184,7 +184,7 @@ urlpatterns =[
 
 
     #=================Fresh Order Url===============
-    path('order_by_gemini/', views.freshgemini, name='fresh-ogemini'),
+    path('order_by_gemini/', views.freshgemini, name='fresh-ogemini'), 
     path('plan_gemini/', views.plangemini, name='plan-ogemini'),
     
     
@@ -238,10 +238,14 @@ urlpatterns =[
     path('tasty_invoices/', views.tasty_list, name='tasty_list'),
     path('tasty_invoice/<int:invoice_id>/', views.tasty_detail, name='tasty_invoice_detail'),
 
-      #=======================Aak India INword Bill=============================================
+    #=======================Aak India INword Bill=============================================
     path('Aak_outword-bill/', views.aakout_bill, name='create_bill_Aak_outword'),
     path('Aak_outword_invoices/', views.aakout_list, name='Aak_outword_list'),
     path('Aak_outword/<int:invoice_id>/', views.aakout_detail, name='Aak_outword_detail'),
+    #=======================KND BUSINESS Bill=============================================
+    path('KND-bill/', views.knd_bill, name='create_bill_knd'),
+    path('knd_invoices/', views.knd_list, name='KND_list'),
+    path('KND/<int:invoice_id>/', views.knd_detail, name='KND_invoice_detail'),
 
   
 ]
