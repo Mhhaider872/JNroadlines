@@ -247,6 +247,11 @@ urlpatterns =[
     path('knd_invoices/', views.knd_list, name='KND_list'),
     path('KND/<int:invoice_id>/', views.knd_detail, name='KND_invoice_detail'),
 
+    #=======================SHRI RISHABH Bill=============================================
+    path('shri-bill/', views.shri_bill, name='sr_bill'),
+    path('shri_invoices/', views.shri_list, name='sr_list'),
+    path('shri_invoice/<int:invoice_id>/', views.shri_detail, name='sr_invoice_detail'),
+
   
 ]
 

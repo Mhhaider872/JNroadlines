@@ -58,3 +58,8 @@ admin.site.register(TB_Invoice)
 admin.site.register(VC_Invoice)
 admin.site.register(VC_Item)
 admin.site.register(AO_Invoice)
+admin.site.register(SR_Invoice)
+admin.site.register(vvft_Invoice)
+admin.site.register(KND_Invoice)
+
+

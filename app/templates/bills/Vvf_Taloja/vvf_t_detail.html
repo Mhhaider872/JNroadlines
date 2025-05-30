@@ -27,14 +27,16 @@
         <div class="text-center">
         <h1>J N ROADLINES LLP</h1>
         <p class="text-uppercase fw-bold">Fleet Owners & Transport Contractors</p>
-        <p class="text-uppercase fw-bold" style="padding:0px 150px">
-          1402,Orion west, 13th floor, 2nd Gaothan Lane,
-          Santacruz Railway Station Road, Opp Bhagwan Cutpiece, Mumbai-400054
+           <p class="text-uppercase fw-bold" style="padding:0px 150px">
+          1402,Orion west, 13th floor, cTS no. h/250, 251, Station Road,
+           Opp Bhagwan store, Santacruz west Mumbai-400054, Maharashtra
         </p>
         <p><strong>Phone No :</strong> 9833209818</p><br>
         <p class="text-decoration-underline"><strong>GSTIN No :</strong>27AAVFJ3706F1Z5</p>
           <p class="text-decoration-underline"><strong>PAN No :</strong> AAVFJ3706F</p>
-        <p class="text-decoration-underline"><strong>UDYAM No : </strong>  UDYAM-MH-18-0022141</p>
+        <p class="text-decoration-underline"><strong>UDYAM No : </strong>
+
+UDYAM-MH-19-0347131</p>
         {% comment %} <p><strong>FSSAI LICENSE No : </strong> 11521006000010</p> {% endcomment %}
 
         </div>
@@ -52,8 +54,8 @@
         <div class="conpany-div">
             <p><strong>To </strong></p>
             <div style="width:300px"><p><strong>{{ invoice.company}}</strong></p></div>
-            <p><strong>GSTIN No : </strong> {{ invoice.gst }}</p>
-            <p><strong>PAN No : </strong> {{ invoice.pan }}</p>
+            <p><strong>GSTIN No :  {{ invoice.gst }}</strong></p>
+            <p><strong>PAN No :  {{ invoice.pan }}</strong></p>
         </div>
         
         <div>
@@ -339,14 +341,14 @@
             <p>No bill data available.</p>
               
           {% endif %} {% endcomment %}
-            <p class="pb-2"><strong>AMOUNT IN WORDS :{{invoice.total_in_words|upper }}</strong></p>
+            <p class="text-decoration-underline pb-2"><strong>AMOUNT IN WORDS :{{invoice.total_in_words|upper }}</strong></p>
             {% comment %} <p><strong>NOTES -:</strong> "GST on this Invoice is to be paid under Reverse Charge Mechanism by the recipient of the Service."</p>
         
              <p><strong>NOTES -:</strong> "I/We hereby declare that though our aggregate turnover in any preceding financial year 2017-18 onwards is more than the aggregate turnover notified under sub-rule( 4 ) of rule 48, we are not required to prepare an invoice in terms of the provisions of the said sub-rule. "</p> {% endcomment %}
         
-        <p><strong>NOTES -: "We are registered under MSME".</strong></p>
-        <p><strong>NOTES -: Wheather Tax Payable on Reverse Charge Basis (Yes/No)- NO.</strong></p>
-        <p class="mb-4"><strong>NOTES -: We have taken registration under the Cgst Act, 2017 and have exercised the option to pay tax on services of GTA in relation to trnasport of goods supplied by us during the Financial Year 2025-26 under forward charge.</strong></p>
+        <p class="text-decoration-underline"><strong>NOTES -: "We are registered under MSME".</strong></p>
+        <p class="text-decoration-underline"><strong>NOTES -: Wheather Tax Payable on Reverse Charge Basis (Yes/No)- NO.</strong></p>
+        <p class="text-decoration-underline mb-4"><strong>NOTES -: We have taken registration under the Cgst Act, 2017 and have exercised the option to pay tax on services of GTA in relation to trnasport of goods supplied by us during the Financial Year 2025-26 under forward charge.</strong></p>
         <p>Thanking you</p>
          <p>Yours gaithfully,</p>
         

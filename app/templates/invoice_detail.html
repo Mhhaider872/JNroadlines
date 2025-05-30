@@ -26,13 +26,13 @@
         <h1>J N ROADLINES LLP</h1>
         <p class="text-uppercase fw-bold">Fleet Owners & Transport Contractors</p>
         <p class="text-uppercase fw-bold" style="padding:0px 150px">
-          1402,Orion west, 13th floor, 2nd Gaothan Lane,
-          Santacruz Railway Station Road, Opp Bhagwan Cutpiece, Mumbai-400054
+          1402,Orion west, 13th floor, cTS no. h/250, 251, Station Road,
+           Opp Bhagwan store, Santacruz west Mumbai-400054, Maharashtra
         </p>
         <p><strong>Phone No :</strong> 9833209818</p><br>
         <p class="text-decoration-underline"><strong>GSTIN No :</strong>27AAVFJ3706F1Z5</p>
           <p class="text-decoration-underline"><strong>PAN No :</strong> AAVFJ3706F</p>
-        <p class="text-decoration-underline"><strong>UDYAM No : </strong>  UDYAM-MH-18-0022141</p>
+        <p class="text-decoration-underline"><strong>UDYAM No : </strong>  UDYAM-MH-19-0347131</p>
         {% comment %} <p><strong>FSSAI LICENSE No : </strong> 11521006000010</p> {% endcomment %}
 
         </div>
@@ -50,8 +50,8 @@
         <div class="conpany-div">
             <p><strong>To </strong></p>
             <div style="width:300px"><p><strong>{{ invoice.company}}</strong></p></div>
-            <p><strong>GSTIN No : </strong> {{ invoice.gst }}</p>
-            <p><strong>PAN No : </strong> {{ invoice.pan }}</p>
+            <p><strong>GSTIN No :{{ invoice.gst }}</strong></p>
+            <p><strong>PAN No :{{ invoice.pan }}</strong></p>
         </div>
         
         <div>
@@ -339,13 +339,13 @@
             <p>No bill data available.</p>
               
           {% endif %} {% endcomment %}
-            <p class="pb-2"><strong>AMOUNT IN WORDS : {{invoice.total_in_words|upper }}</strong></p>
+            <p class="pb-2 text-decoration-underline" ><strong>AMOUNT IN WORDS : {{invoice.total_in_words|upper }}</strong></p>
             {% comment %} <p><strong>NOTES -:</strong> "GST on this Invoice is to be paid under Reverse Charge Mechanism by the recipient of the Service."</p>
         
              <p><strong>NOTES -:</strong> "I/We hereby declare that though our aggregate turnover in any preceding financial year 2017-18 onwards is more than the aggregate turnover notified under sub-rule( 4 ) of rule 48, we are not required to prepare an invoice in terms of the provisions of the said sub-rule. "</p> {% endcomment %}
         
-        <p><strong>NOTES : </strong> " We are registered under MSME ".</p>
-        <p class="py-3"><strong>FOR : J N Roadlines LLP</strong></p>
+        <p class="text-decoration-underline"><strong>NOTES :  " We are registered under MSME ".</strong></p>
+        <p class="py-3 text-decoration-underline"><strong>FOR : J N Roadlines LLP</strong></p>
         </div>
         <div class="col-lg-8">
           
