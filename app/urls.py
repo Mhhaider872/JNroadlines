@@ -148,8 +148,8 @@ urlpatterns =[
     path('do_update_expense/<int:id>/',views.do_update,name='do-exp-update'),
     path('delete_exp/<int:id>',views.delete_expense,name='delete-exp'),
 
-
-    # path('end_trip/<str:trip_id>/', views.end_trip, name='end_trip'),
+    #===================Modify file================================
+    path('end_trip/<str:trip_id>/', views.end_trip, name='end_trip'),
 
 
 
@@ -251,6 +251,15 @@ urlpatterns =[
     path('shri-bill/', views.shri_bill, name='sr_bill'),
     path('shri_invoices/', views.shri_list, name='sr_list'),
     path('shri_invoice/<int:invoice_id>/', views.shri_detail, name='sr_invoice_detail'),
+
+
+
+
+
+    #=======================SUNDER AGRO Bill=============================================
+    path('sunder-bill/', views.sun_bill, name='sagro_bill'),
+    path('sunder_invoices/', views.sunder_list, name='sagro_list'),
+    path('sunder_invoice/<int:invoice_id>/', views.sunder_detail, name='sagro_detail'),
 
   
 ]

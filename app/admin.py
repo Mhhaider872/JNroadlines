@@ -36,8 +36,7 @@ admin.site.register(Clientgemini)
 ##-------Bill ------------##
 admin.site.register(Gemini)
 admin.site.register(AAkIndia)
-admin.site.register(Ashland)
-admin.site.register(harkaran)
+
 
 # admin.site.register(Trip)
 
@@ -61,5 +60,6 @@ admin.site.register(AO_Invoice)
 admin.site.register(SR_Invoice)
 admin.site.register(vvft_Invoice)
 admin.site.register(KND_Invoice)
+admin.site.register(SAInvoice)
 
 

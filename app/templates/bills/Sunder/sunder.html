@@ -1,11 +1,4 @@
 
-<!-- create_invoice.html -->
-
-
-
-
-
-
 
 <!-- @format -->
 
@@ -14,7 +7,7 @@
   <body>
     <main id="main" class="main">
       <div class="pagetitle py-3">
-        <h1>Ashland</h1>
+        <h1>Sunder Agro Industries</h1>
         {% comment %} <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -28,7 +21,7 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title text-center">Ashland Invoice</h5>
+                <h5 class="card-title text-center">Sunder Agro Industries Invoice</h5>
                  {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
@@ -40,7 +33,7 @@
   </div>
 {% endif %}
 
-<form method="POST">
+<form method="POST" autocomplete="off">
     {% csrf_token %}
     <div class="row">
      {% comment %} <div class="col-lg-3 mb-3">
@@ -126,7 +119,7 @@
             <input type="text" class="form-control border-2" name="item_quantity" >
             </div> {% endcomment %}
              <div class="col-lg-3 mb-3">
-            <label for="item_description" class="form-label fw-bold">Loaded QTY K.G:</label>
+            <label for="item_description" class="form-label fw-bold">Total K.G :</label>
             <input type="number" class="form-control border-2" name="item_quantity"  id="disqty" oninput="calculateTotalShort()" >
             </div>
              {% comment %} <div class="col-lg-3 mb-3">
@@ -148,192 +141,28 @@ Shortages / Excess Qty K.G :</label>
             </div> {% endcomment %}
             <div class="col-lg-3 mb-3">
             <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
-            <input type="number" step="any" name="item_unit_price" class="form-control border-2" required>
+            <input type="number" step="0.01" name="item_unit_price" class="form-control border-2" required>
             </div>
             <div>
-              <button type="button" onclick="addItem()" class="btn btn-danger btn-sm px-4 ">Add + </button>
+             <button type="button" onclick="addItem()" class="btn btn-danger px-4 btn-sm">Add +</button>
             </div>
+            <hr>
            
         
          </div>
         </div>
     </div>
-     <hr>
-       <div id="charge-container">
-    <div class="row g-3 mb-3 charge-row">
-      <div class="col-lg-3">
-        <label class="form-label fw-bold"> Charges</label>
-        <select class="form-select" name="charges_tank">
-          <option value="">Select</option>
-          <option value="Tanker Cleaning Services">Tanker Cleaning Services</option>
-           <option value="Detention Charges">Detention Charges</option>
-        </select>
-      </div>
-
-      <div class="col-lg-2">
-        <label class="form-label fw-bold">HSN/SAC</label>
-        <select class="form-select" name="hsac">
-          <option value="">Select</option>
-          <option value="998534">998534</option>
-         <option value="996749">996749</option> 
-     <option value="998534">998534</option> 
-     <option value="996601">996601</option>
-    <option value="No GST">No GST</option> 
-        </select>
-      </div>
- <div class="col-lg-3 mb-3">
-            <label for="label5" class="form-label fw-bold"
-              >From </label
-            >
-            <input
-              type="date"
-              name="Fo_date"
-              class="form-control"
-              id="Fo_date"
-            />
-        </div>
-         <div class="col-lg-3 mb-3">
-            <label for="label5" class="form-label fw-bold"
-              >To</label
-            >
-            <input
-              type="date"
-              name="To_date"
-              class="form-control"
-              id="To_date"
-            />
-        </div>
-      <div class="col-lg-2">
-        <label class="form-label fw-bold">Rate</label>
-        <input type="number" class="form-control rate" name="rate" oninput="calculateTotal(this)">
-      </div>
-
-      <div class="col-lg-2">
-        <label class="form-label fw-bold">Per Day</label>
-        <input type="number" class="form-control day" name="par_day" oninput="calculateTotal(this)">
-      </div>
-
-      <div class="col-lg-2">
-        <label class="form-label fw-bold">Total</label>
-        <input type="number" class="form-control total" name="total_d" readonly>
-      </div>
-
-      <div class="col-lg-1 d-flex align-items-end">
-        <button type="button" class="btn btn-danger" onclick="removeRow(this)">X</button>
-      </div>
-    </div>
-  </div>
-<div >
-  <button type="button" class="btn btn-success mb-3" onclick="addRow()">+ Add Row</button>
-</div>
-            {% comment %} <h5 class="card-title">Detention & Other Charges</h5>
-            <div class="col-lg-3 mb-3">
-            <label for="tank" class="form-label fw-bold"
-            
-              > Tanker Cleaning Charges :</label
-            ><select id="tank" class="form-select" name="tcharges">
-    <option value="">Select</option>
-     <option value="Detention Charges">Detention Charges</option>
-    <option value="Union Charges">Union Charges</option>
-    <option value="Double Driver Charges">Double Driver Charges</option> 
-    <option value="Tanker Cleaning Services">Tanker Cleaning Services</option>
-     <option value="Storage & Reshuffling Oil">Storage & Reshuffling Oil</option>
-    <option value="Local Trip- 1 Lakhs Charges As a Rent">Local Trip- 1 Lakhs Charges As a Rent</option>
-     <option value="Extra Diesel, Toll, Urea-( No GST)">Extra Diesel, Toll, Urea-( No GST)</option>
-    <option value="Local Trip- Toll, Diesel-( No GST)">Local Trip- Toll, Diesel-( No GST)</option> 
-    </select>
-           
-        </div>
-        <div class="col-lg-3 mb-3">
-            <label for="ac" class="form-label fw-bold"
-              >HSN/SAC:</label
-            >
-            <select id="ac" class="form-select" name="thsac">
-    <option value="">Select</option> {% endcomment %}
-    {% comment %} <option value="996749">996749</option> {% endcomment %}
-    {% comment %} <option value="998534">998534</option> {% endcomment %}
-    {% comment %} <option value="996601">996601</option>
-    <option value="No GST">No GST</option> {% endcomment %}
-   
-    {% comment %} </select>
-        </div> {% endcomment %}
-        {% comment %} <div class="col-lg-3 mb-3">
-            <label for="label5" class="form-label fw-bold"
-              >From </label
-            >
-            <input
-              type="date"
-              name="Fo_date"
-              class="form-control"
-              id="Fo_date"
-            />
-        </div>
-         <div class="col-lg-3 mb-3">
-            <label for="label5" class="form-label fw-bold"
-              >To</label
-            >
-            <input
-              type="date"
-              name="To_date"
-              class="form-control"
-              id="To_date"
-            />
-        </div> {% endcomment %}
-         {% comment %} <div class="col-lg-3 mb-3">
-            <label for="label18" class="form-label fw-bold">Rate </label>
-            <input
-              type="number"
-              class="form-control"
-              name="t_rate"
-              min="0"
-              id="perrate"
-              oninput="Total()"
-            />
-        </div>
-        <div class="col-lg-3 mb-3">
-            <label for="label19" class="form-label fw-bold"> Per Day</label>
-            <input
-              type="number"
-              class="form-control"
-              name="tpar_day"
-              min="0"
-              id="day"
-              oninput="Total()"
-            />
-        </div>
-     
-         <div class="col-lg-3 mb-3">
-            <label for="label20" class="form-label fw-bold"
-              >Total</label
-            >
-            <input
-              type="number"
-              name="total_t"
-              class="form-control"
-              id="totals"
-              oninput="Total()"
-               min="0"
-               value="0"
-               readonly
-            />
-         </div> {% endcomment %}
-
-            {% comment %} <h5 class="card-title">Detention Charges</h5>
+     <h5 class="card-title">Detention & Other Charges</h5>
             <div class="col-lg-3 mb-3">
             <label for="Fo" class="form-label fw-bold"
-              > Detention Charges :</label
+              >Charges Name :</label
             ><select id="Fo" class="form-select" name="charges">
     <option value="">Select</option>
-    <option value="Detention Charges">Detention Charges</option> {% endcomment %}
-    {% comment %} 
-    <option value="Union Charges">Union Charges</option>
+    <option value="Detention Charges">Detention Charges</option>
+    {% comment %} <option value="Union Charges">Union Charges</option>
     <option value="Double Driver Charges">Double Driver Charges</option> {% endcomment %}
-    {% comment %} <option value="Tanker Cleaning Services">Tanker Cleaning Services</option> {% endcomment %}
-    {% comment %} <option value="Storage & Reshuffling Oil">Storage & Reshuffling Oil</option>
-    <option value="Local Trip- 1 Lakhs Charges As a Rent">Local Trip- 1 Lakhs Charges As a Rent</option>
-     <option value="Extra Diesel, Toll, Urea-( No GST)">Extra Diesel, Toll, Urea-( No GST)</option>
-    <option value="Local Trip- Toll, Diesel-( No GST)">Local Trip- Toll, Diesel-( No GST)</option> {% endcomment %}
-    {% comment %} </select>
+    
+    </select>
            
         </div>
         <div class="col-lg-3 mb-3">
@@ -342,13 +171,11 @@ Shortages / Excess Qty K.G :</label>
             >
             <select id="sac" class="form-select" name="hsac">
     <option value="">Select</option>
-     <option value="996749">996749</option> {% endcomment %}
-    {% comment %} <option value="996749">996749</option> {% endcomment %}
-    {% comment %} <option value="998534">998534</option> {% endcomment %}
-    {% comment %} <option value="996601">996601</option>
-    <option value="No GST">No GST</option> {% endcomment %}
+    <option value="996749">996749</option>
+    <option value="998534">998534</option>
    
-    {% comment %} </select>
+   
+    </select>
         </div>
         <div class="col-lg-3 mb-3">
             <label for="label5" class="form-label fw-bold"
@@ -379,8 +206,8 @@ Shortages / Excess Qty K.G :</label>
               class="form-control"
               name="d_rate"
               min="0"
-              id="perrat"
-              oninput="Total2()"
+              id="perrate"
+              oninput="Total()"
             />
         </div>
         <div class="col-lg-3 mb-3">
@@ -390,8 +217,8 @@ Shortages / Excess Qty K.G :</label>
               class="form-control"
               name="par_day"
               min="0"
-              id="days"
-              oninput="Total2()"
+              id="day"
+              oninput="Total()"
             />
         </div>
      
@@ -403,19 +230,14 @@ Shortages / Excess Qty K.G :</label>
               type="number"
               name="total_d"
               class="form-control"
-              id="total"
-              oninput="Total2()"
+              id="totals"
+              oninput="Total()"
                min="0"
                value="0"
                readonly
             />
-         </div> {% endcomment %}
-  
-
-
-
+        </div>
     </div>
-    
     {% comment %} <div class="col-lg-3">
 
     <select id="item-select" class="form-select" onchange="addItemRowFromDropdown()">
@@ -430,7 +252,7 @@ Shortages / Excess Qty K.G :</label>
 <div class="btn-div text-center py-4">
     
     <button type="submit" class="btn btn-success px-4">Create Invoice</button>
-    <a href="{% url 'ainvoice_list' %}" class="btn btn-primary px-4">View Invoice</a>
+    <a href="{% url 'sagro_list' %}" class="btn btn-primary px-4">View Invoice</a>
     </div>
     
 </form>
@@ -443,11 +265,6 @@ Shortages / Excess Qty K.G :</label>
             <a href="{% url 'showplan' %}" class="btn btn-success px-4">View</a>
           </div> {% endcomment %}
         </form>
-        {% comment %} <form method="POST">
-  {% csrf_token %}
-
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form> {% endcomment %}
       </div>
     </div>
   </div>
@@ -532,7 +349,7 @@ Shortages / Excess Qty K.G :</label>
             <input type="text" class="form-control border-2" name="item_quantity" >
             </div> {% endcomment %}
              <div class="col-lg-3 mb-3">
-            <label for="item_description" class="form-label fw-bold">Loaded QTY K.G:</label>
+            <label for="item_description" class="form-label fw-bold">Total K.G :</label>
             <input type="number" class="form-control border-2 disqty_row" name="item_quantity">
             </div>
              {% comment %} <div class="col-lg-3 mb-3">
@@ -557,7 +374,8 @@ Shortages / Excess Qty K.G :</label>
             <label for="item_quantity" class="form-label fw-bold">Quantity:</label>
             <input type="number" name="item_quantity" value="1" class="form-control border-2" required>
             </div> {% endcomment %}
-            
+           
+
           </div>
           
         `;
@@ -601,21 +419,6 @@ Shortages / Excess Qty K.G :</label>
     }
 }
 </script> {% endcomment %}
-  <script>
-    function Total2() {
-        // Get the values of the input fields by their IDs
-        let perrat = parseFloat(document.getElementById('perrat').value);
-        let days = parseFloat(document.getElementById('days').value);
-
-        // If either kg or rate is NaN (not a number), don't calculate the total
-        if (isNaN(perrat) || isNaN( days)) {
-            document.getElementById('total').value = ''; // Clear the total field if invalid input
-        } else {
-            let total = perrat * days;
-            document.getElementById('total').value = total; // Display the total in the input field
-        }
-    }
-</script>
   <script>
     function Total() {
         // Get the values of the input fields by their IDs
@@ -661,30 +464,6 @@ Shortages / Excess Qty K.G :</label>
     }
   }
 </script>
-<script>
-function addRow() {
-  const container = document.getElementById("charge-container");
-  const firstRow = document.querySelector(".charge-row");
-  const newRow = firstRow.cloneNode(true);
 
-  newRow.querySelectorAll("input").forEach(input => input.value = "");
-  newRow.querySelectorAll("select").forEach(select => select.value = "");
-  container.appendChild(newRow);
-}
-
-function removeRow(button) {
-  const allRows = document.querySelectorAll(".charge-row");
-  if (allRows.length > 1) {
-    button.closest(".charge-row").remove();
-  }
-}
-
-function calculateTotal(element) {
-  const row = element.closest(".charge-row");
-  const rate = parseFloat(row.querySelector(".rate").value) || 0;
-  const day = parseFloat(row.querySelector(".day").value) || 0;
-  row.querySelector(".total").value = rate * day;
-}
-</script>
 
 </body>
