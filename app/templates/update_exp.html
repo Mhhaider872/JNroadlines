@@ -4,7 +4,7 @@
   <body>
 <main id="main" class="main">
       <div class="pagetitle">
-         <h1>Add Expense</h1>
+         <h1>Update Expense</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
@@ -46,7 +46,7 @@
        </div>
 <div class="col-lg-3 mb-3">
         <label for="amount" class="form-label fw-bold">Amount :</label>
-        <input type="number" class="form-control border-2" step="0.01" id="total" name="amount" oninput="calculateTotal()" value="{{ exp.amount }}"  required>
+        <input type="number" class="form-control border-2" step="any" id="total" name="amount" oninput="calculateTotal()" value="{{ exp.amount }}"  required>
        </div>
        
 <div class="col-lg-3 mb-3">
@@ -172,7 +172,8 @@
               type="number"
               name="toll_amount"
               class="form-control border-2"
-              id="label11"
+              id="toll"
+              oninput="calculateTotal()"
               value="{{exp.toll_amount}}"
               step="any"
             />
@@ -236,6 +237,7 @@
               name="amount_given"
               class="form-control border-2"
               id="additionalAmount"
+              step="any"
               oninput="calculateTotal()"
               value="{{exp.amount_given}}"
             />
@@ -264,6 +266,7 @@
                class="form-control border-2"
                id="rate"
                min="0"
+               step="any"
               oninput="calculateTotal()"
               value="{{exp.rate}}"
             />
@@ -335,6 +338,7 @@
                class="form-control border-2"
                id="Urate"
                min="0"
+               step="any"
               oninput="calculateTotal()"
               value="{{exp.urea_rate}}"
             />
@@ -440,6 +444,7 @@
                class="form-control border-2"
                id="totalamount"
                min="0"
+               step="any"
                oninput="calculateTotal()"
                value="{{exp.r_amount|default_if_none:"0"}}"
             />
@@ -554,8 +559,11 @@
     // Get actual shortage amount
     let totalAmount = parseFloat(document.getElementById('totalamount').value) || 0;
     
+     // Get Toll amount
+    let tollAmount = parseFloat(document.getElementById('toll').value) || 0;
+    
     // Sum up all the totals
-    let total = totalAllowance + totalDiesel + totalUrea + totalAmount;
+    let total = totalAllowance + totalDiesel + totalUrea + totalAmount + tollAmount;
 
     // Display the total value
     document.getElementById('totalAllowance').value = totalAllowance.toFixed(2);

@@ -1,0 +1,62 @@
+
+    .chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 300px;
+      width: 500px;
+      margin: 100px auto;
+      border-left: 2px solid #333;
+      border-bottom: 2px solid #333;
+      padding: 10px;
+    }
+
+    .bar {
+      width: 50px;
+      background-color: #4CAF50;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .bar1 { height: 60px; background-color: #2196F3; }
+    .bar2 { height: 120px; background-color: #f44336; }
+    .bar3 { height: 200px; background-color: #FF9800; }
+    .bar4 { height: 150px; background-color: #9C27B0; }
+
+
+       .pie-chart {
+      width: 200px;
+      height: 200px;
+      background: conic-gradient(
+        #4CAF50 0% 40%,     /* Green - 40% */
+        #2196F3 40% 70%,    /* Blue - 30% */
+        #f44336 70% 100%    /* Red - 30% */
+      );
+      border-radius: 50%;
+      margin: 50px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .legend {
+      width: 200px;
+      margin: 0 auto;
+      font-family: sans-serif;
+    }
+
+    .legend div {
+      margin-bottom: 8px;
+    }
+
+    .legend span {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .green { background-color: #4CAF50; }
+    .blue { background-color: #2196F3; }
+    .red { background-color: #f44336; }

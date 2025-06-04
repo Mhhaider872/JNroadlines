@@ -1639,8 +1639,8 @@ def Login(request):
             login(request, user)  # Log the user in
 
              # Username ke hisaab se redirect
-            if user.username == 'haider':
-                return redirect('udashboard')  # isko URL me define karo
+            if user.username == 'Mhaider':
+                return redirect('inventory-dashboard')  # isko URL me define karo
             elif user.username == 'Pooja':
                 return redirect('ldashboard')  # isko bhi define karo
             elif user.username == 'Gemini':
@@ -4406,3 +4406,109 @@ def sunder_detail(request, invoice_id):
     invoice = get_object_or_404(SAInvoice, id=invoice_id)
     items = SAItem.objects.filter(invoice=invoice)
     return render(request, 'bills/Sunder/sunder_detail.html', {'invoice': invoice, 'items': items})
+
+
+
+    #=======================INVENTORY MANAGEMENT SYSTEM=============================================
+
+
+def inventroy_system(request):
+    items=Items.objects.count()
+    context={'items':items}
+    
+    return render(request, 'Inventory/dashboard.html',context)
+
+
+def inventroy_form(request):
+    if request.method == "POST":
+        item_name = request.POST.get('item_name')
+        item_qty = request.POST.get('item_qty')
+        item_date = request.POST.get('item_date')  
+        vendor_name = request.POST.get('vendor_name')
+        item=Items.objects.create(item_name=item_name,item_qty=item_qty,item_date=item_date,vendor_name=vendor_name if vendor_name else None)
+        item.save()
+        return redirect('show-item')
+    return render(request, 'Inventory/inventory.html')
+
+
+
+def show_item(request):
+     item_name = request.GET.get(' item_name')
+     vendor_name = request.GET.get('vendor_name')
+     item_date = request.GET.get('item_date')
+    
+     showitem=Items.objects.all()
+
+     if item_name:
+        showitem = showitem.filter(item_name__icontains=item_name)
+
+     if vendor_name:
+        showitem = showitem.filter(vendor_name__icontains=vendor_name)
+
+     if item_date:
+        showitem = showitem.filter(item_date__icontains=item_date)
+
+     context={'showitem':showitem}
+     return render(request,'Inventory/show_item.html',context)
+
+
+
+def delete_item(request,id):
+    itemdelete=Items.objects.get(pk=id)
+    itemdelete.delete()
+    return redirect('show-item')
+
+
+
+
+
+
+
+
+def service_form(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        quantity = int(request.POST.get('quantity'))
+        tanker = request.POST.get('tanker')
+        person_name= request.POST.get('person_name')
+        used_on= request.POST.get('used_on')
+
+        try:
+            item = Items.objects.get(id=item_id)
+
+            if item.item_qty >= quantity:
+                # Create UsedItem entry
+                UsedItem.objects.create(item=item, quantity=quantity,tanker=tanker,person_name=person_name,used_on=used_on)
+                # Update store quantity
+                item.item_qty -= quantity
+                item.save()
+                messages.success(request, 'Item used successfully!')
+            else:
+                messages.error(request, 'Not enough quantity in store.')
+
+        except Item.DoesNotExist:
+            messages.error(request, 'Item not found.')
+
+        return redirect('show-useitem')  # Replace with your view name or URL
+
+    else:
+        vehicle=Add_Vehicle.objects.all()
+        item=Items.objects.all()
+        context={'vehicle':vehicle,'item':item}
+        return render(request, 'Inventory/service.html',context)
+
+
+def show_useitem(request):
+    itemused=UsedItem.objects.all()
+    context={'itemused':itemused}
+    return render(request, 'Inventory/show_useitem.html',context)
+    
+
+
+def tool_form(request):
+    
+    return render(request, 'Inventory/tool.html')
+
+def inout_form(request):
+    
+    return render(request, 'Inventory/Vehicle_Inout.html')

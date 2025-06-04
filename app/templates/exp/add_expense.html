@@ -93,7 +93,7 @@
        </div>
 <div class="col-lg-3 mb-3">
         <label for="amount" class="form-label fw-bold">Amount :</label>
-        <input type="number" class="form-control border-2" step="0.01" id="total" name="amount" oninput="calculateTotal()" required>
+        <input type="number" class="form-control border-2" step="any" id="total" name="amount" oninput="calculateTotal()" required>
        </div>
        
 <div class="col-lg-3 mb-3">
@@ -284,6 +284,7 @@
               type="number"
               name="amount_given"
               class="form-control border-2"
+               step="any"
               id="additionalAmount"
               oninput="calculateTotal()"
             />
@@ -311,7 +312,7 @@
                class="form-control border-2"
                id="rate"
                min="0"
-               step="0.01"
+               step="any"
               oninput="calculateTotal()"
             />
           </div>
@@ -325,6 +326,7 @@
               class="form-control border-2"
               id="totalDiesel"
               min="0"
+              step="any"
               oninput="calculateTotal()"
             />
           </div>
@@ -365,6 +367,7 @@
               class="form-control border-2"
               id="Uliter"
               min="0"
+              step="any"
               oninput="calculateTotal()"
             />
         </div>
@@ -378,7 +381,7 @@
                class="form-control border-2"
                id="Urate"
                min="0"
-               step="0.01"
+               step="any"
               oninput="calculateTotal()"
             />
           </div>
@@ -392,6 +395,7 @@
               class="form-control border-2"
               id="totalUrea"
               min="0"
+              step="any"
               oninput="calculateTotal()"
             />
           </div>

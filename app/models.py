@@ -469,7 +469,7 @@ class Expense(models.Model):
     subCategory=models.CharField(max_length=200, null=True, blank=True)
     # paid_by=models.CharField(max_length=200)
     paid_to=models.CharField(max_length=200 ,null=True, blank=True)
-    amount_given=models.IntegerField(null=True, blank=True)
+    amount_given=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     liters=models.IntegerField(null=True, blank=True)
     rate=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     total_diesel=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -1330,3 +1330,23 @@ class SAItem(models.Model):
     def __str__(self):
         return self.description
     
+
+
+#=================================Inventory Management ============================================
+class Items(models.Model):
+     item_name=models.CharField(max_length=200)
+     item_qty= models.PositiveIntegerField(default=0)
+     item_date=models.DateField()
+     vendor_name=models.CharField(max_length=200)
+
+     def __str__(self):
+        return self.item_name
+
+class UsedItem(models.Model):
+    item = models.ForeignKey(Items, on_delete=models.CASCADE)
+    # item_use=models.CharField(max_length=200,null=True)
+    tanker=models.CharField(max_length=200)
+    quantity =models.PositiveIntegerField(default=0)
+    person_name=models.CharField(max_length=200)
+    # date = models.DateField(auto_now_add=True)
+    used_on = models.DateTimeField(auto_now_add=True)

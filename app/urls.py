@@ -261,6 +261,24 @@ urlpatterns =[
     path('sunder_invoices/', views.sunder_list, name='sagro_list'),
     path('sunder_invoice/<int:invoice_id>/', views.sunder_detail, name='sagro_detail'),
 
+
+    #=======================INVENTORY MANAGEMENT SYSTEM=============================================
+    path('inventory/', views.inventroy_system, name='inventory-dashboard'),
+    path('inventory_form/', views.inventroy_form, name='inventory-form'),
+    
+    path('service_form/', views.service_form, name='service-form'),
+    path('show_useitem/', views.show_useitem, name='show-useitem'),
+    
+    path('tool_form/', views.tool_form, name='tool-form'),
+    path('Inout_form/', views.inout_form, name='Inout-form'),
+
+
+    #==================Show Items====================================
+    path('item_count/', views.show_item, name='show-item'),
+    path('Show_items/', views.show_item, name='show-item'),
+    path('delete_items/<int:id>', views.delete_item, name='delete-item'),
+    
+
   
 ]
 

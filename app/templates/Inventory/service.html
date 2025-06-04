@@ -1,0 +1,112 @@
+
+
+<!-- @format -->
+
+{% include 'Inventory/base.html' %}
+{% load static %}
+  <body style="background:white;">
+    <main id="main" class="main">
+      <div class="pagetitle py-3">
+        <h1>Add Use Items</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card py-5" style="background:#001861;">
+              <div class="card-body py-4">
+                {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
+
+
+ <section class="main-sec" >
+ {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 form-div">
+        <form  method="POST" autocomplete="off">
+          {% csrf_token %}
+          <div class="row">
+                <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold text-white">Tanker No</label>
+             <input class="form-control rounded-0" list="datalistOptions" id="exampleDataList" name="tanker"   placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+           {% comment %} <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold text-white">Tanker No</label>
+             <input type="text" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Tanker No">
+          </div> {% endcomment %}
+            <div class="col-lg-3 mb-3">
+            <label for="item" class="form-label fw-bold text-white">Item Name</label>
+         <select class="form-control" name="item_id" required>
+  <option disabled selected>-- Select Item --</option>
+  {% for i in item %}
+    <option value="{{ i.id }}">{{ i.item_name }} (Available: {{ i.item_qty }})</option>
+  {% endfor %}
+</select>
+
+            </div>
+   <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold text-white">Quantity</label>
+             <input type="number" class="form-control rounded-0" name="quantity"  id="tanker_number" placeholder="Quantity">
+          </div>
+  
+   <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold text-white">Person Name</label>
+             <input type="text" class="form-control rounded-0" name="person_name"  id="tanker_number" placeholder="Person Name">
+          </div>
+          
+          <div class="btn-div text-center py-2">
+            <button type="submit" class="btn btn-success px-4">Add</button>
+            <a href="#" class="btn btn-info px-4">View</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+      <!-- ======= Footer ======= -->
+    <footer class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>J N Roadlines LLP</strong> All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong> JTECH VENTURES</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+
+</body>

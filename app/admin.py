@@ -63,3 +63,9 @@ admin.site.register(KND_Invoice)
 admin.site.register(SAInvoice)
 
 
+admin.site.register(Items)
+admin.site.register(UsedItem)
+
+
+
+
