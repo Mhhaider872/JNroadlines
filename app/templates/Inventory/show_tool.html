@@ -1,5 +1,6 @@
 
 
+
 <!-- @format -->
 
 {% comment %} {% include 'base2.html' %} {% endcomment %}
@@ -43,15 +44,15 @@
               {% endif %}
   <form method="get" class="row g-3 mb-2 py-5">
   <div class="col-md-3">
-    <label class="form-label fw-bold">Item Name</label>
+    <label class="form-label fw-bold">Tool Name</label>
     <input type="text" name="item_name" class="form-control" value="{{ request.GET.item_name }}">
   </div>
   <div class="col-md-3">
-    <label class="form-label fw-bold">Person Name</label>
+    <label class="form-label fw-bold">Purchase From</label>
     <input type="text" name="vendor_name" class="form-control" value="{{ request.GET.vendor_name}}">
   </div>
   <div class="col-md-3">
-    <label class="form-label fw-bold">Item Use Date</label>
+    <label class="form-label fw-bold">Date</label>
     <input type="date" name="item_date" class="form-control" value="{{ request.GET.item_date }}">
   </div>
 
@@ -64,23 +65,23 @@
                 <thead>
                   <tr>
                     <th>Sr_No.</th>
-                    <th>Tanker Number</th>
-                    <th>Item name</th>
+                    <th>Tool Name</th>
                     <th>Quantity</th>
-                    <th>Person Name</th>
-                    <th>Used Date & Time</th>
+              
+                    <th>Purchase From</th>
+                    <th>Date</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for u in itemused %}
+                  {% for t in showtool %}
                   <tr>
-                    <td class="text-center">{{forloop.counter }}</td>
-                    <td>{{u.tanker }}</td>
-                    <td>{{u.item }}</td>
-                    <td class="text-center">{{u.quantity }}</td>
-                    <td>{{u.person_name }}</td>
-                    <td>{{u.used_on|date:"d/m/y P" }}</td>
+                    <td >{{forloop.counter }}</td>
+                    <td>{{t.tool_name }}</td>
+                    <td >{{t.tool_qty}}</td>
+                    <td >{{t.vendor_name}}</td>
+
+                    <td>{{t.tool_date|date:"d/m/y" }}</td>
                 <td>
                       <a
                         href="#"

@@ -1,6 +1,7 @@
 
 
 
+
 <!-- @format -->
 
 {% include 'Inventory/base.html' %}
@@ -8,7 +9,7 @@
   <body style="background:white;">
     <main id="main" class="main">
       <div class="pagetitle py-3">
-        <h1>Add Tools Used</h1>
+        <h1>Tanker Servicing Form</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -42,31 +43,37 @@
         <form  method="POST" autocomplete="off">
           {% csrf_token %}
           <div class="row">
-              {% comment %} <div class="col-lg-3 mb-3">
-            <label for="item" class="form-label fw-bold text-white">Tanker No</label>
-             <input type="text" class="form-control rounded-0" name="item_name"  id="item" placeholder="Tanker No">
-          </div> {% endcomment %}
            <div class="col-lg-3 mb-3">
-            <label for="item" class="form-label fw-bold text-white">Tool Name</label>
-             <input type="text" class="form-control rounded-0" name="tool_name"  id="item" placeholder="Itme Name">
+            <label for="tanker_number" class="form-label fw-bold text-white">Tanker No</label>
+             <input type="text" class="form-control rounded-0" name="tanke"  id="tanker_number" placeholder="Tanker No">
           </div>
             <div class="col-lg-3 mb-3">
-            <label for="tanker" class="form-label fw-bold text-white">Quantity</label>
-             <input type="number" class="form-control rounded-0" name="tool_qty"  id="tanker" placeholder="Quantity">
+            <label for="tanker_number" class="form-label fw-bold text-white">Owner Name</label>
+             <input type="text" class="form-control rounded-0" name="driver"  id="tanker_number" placeholder="Owner Name">
           </div>
-           <div class="col-lg-3 mb-3">
-            <label for="number" class="form-label fw-bold text-white">Purchase From</label>
-             <input type="text" class="form-control rounded-0" name="vendor_name"  id="number" placeholder="Purchase From">
+   <div class="col-lg-3 mb-3">
+           
+            <label for="tanker_number" class="form-label fw-bold text-white">Service Type</label>
+      <select class="form-control rounded-0" id="serviceType" name="serviceType">
+        <option value="Select Type">-----Select Type----</option>
+        <option value="oilChange">Oil Change</option>
+        <option value="brakeCheck">Brake Check</option>
+        <option value="engineRepair">Engine Repair</option>
+        <option value="fullService">Full Service</option>
+      </select>
           </div>
   
-             <div class="col-lg-3 mb-3">
-            <label for="vendor" class="form-label fw-bold text-white">Date</label>
-             <input type="date" class="form-control rounded-0" name="tool_date"  id="vendor" placeholder="Vendor Name">
+   <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold text-white">Service Date</label>
+             <input type="date" class="form-control rounded-0" name="outtitme"  id="tanker_number" placeholder="Vendor Name">
           </div>
-          
+             <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold text-white">Additional Remarks</label>
+             <textarea class="form-control rounded-0" id="remarks" name="remarks" rows="4" placeholder="Remark"></textarea>
+          </div>
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-success px-4">Add</button>
-            <a href="{% url "tool-show" %}" class="btn btn-light px-4">View</a>
+            <a href="#" class="btn btn-light px-4">View</a>
           </div>
         </form>
       </div>

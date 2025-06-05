@@ -269,15 +269,22 @@ urlpatterns =[
     path('service_form/', views.service_form, name='service-form'),
     path('show_useitem/', views.show_useitem, name='show-useitem'),
     
-    path('tool_form/', views.tool_form, name='tool-form'),
+    path('tool_form/', views.tools_form, name='tool-form'),
+    path('show_tool/', views.tools_show, name='tool-show'),
+
+    path('add_usetool/', views.use_tool, name='usetool-show'),
+
     path('Inout_form/', views.inout_form, name='Inout-form'),
+    path('Inout_show/', views.tankertime_show, name='Inout-show'),
 
 
     #==================Show Items====================================
     path('item_count/', views.show_item, name='show-item'),
     path('Show_items/', views.show_item, name='show-item'),
     path('delete_items/<int:id>', views.delete_item, name='delete-item'),
-    
+
+
+    path('add_service/', views.tanker_service, name='add-service'),
 
   
 ]

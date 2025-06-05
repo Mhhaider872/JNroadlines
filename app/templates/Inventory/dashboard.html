@@ -25,7 +25,7 @@
           <div class="col-lg-12">
             <div class="row">
                <!-- Sales Card -->
-              <div class="col-lg-3 col-md-12">
+              <div class="col-lg-4 col-md-12">
                 <div class="card info-card sales-card">
                   <div class="filter">
                     <a class="icon" href="{% url "show-item" %}" 
@@ -52,16 +52,16 @@
               </div>
               <!-- End Sales Card -->
               <!-- Order Card -->
-              <div class="col-lg-3 col-md-12">
+              <div class="col-lg-4 col-md-12">
                 <div class="card info-card sales-card">
                   <div class="filter">
-                    <a class="icon" href="#" 
+                    <a class="icon" href="{% url "show-useitem" %}" 
                       ><i class="bi bi-three-dots"></i
                     >
                   </div>
 
                   <div class="card-body">
-                    <h5 class="card-title">Items Used</h5>
+                    <h5 class="card-title">View Use Items</h5>
 
                     <div class="d-flex align-items-center">
                       <div
@@ -82,17 +82,17 @@
 
               <!-- Revenue Card -->
               
-              <div class="col-lg-3 col-md-12">
+              <div class="col-lg-4 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
-                    <a class="icon" href="#" 
+                    <a class="icon" href="{% url "tool-show" %}" 
                       ><i class="bi bi-three-dots"></i
                     >
                   </div>
 
                   <div class="card-body">
                     <h5 class="card-title">
-                     Tools Used 
+                     View Tools
                     </h5>
 
                     <div class="d-flex align-items-center">
@@ -111,9 +111,37 @@
                 </div>
               </div>
 
+              <div class="col-lg-4 col-md-12">
+                <div class="card info-card revenue-card">
+                  <div class="filter">
+                    <a class="icon" href="#" 
+                      ><i class="bi bi-three-dots"></i
+                    >
+                  </div>
+
+                  <div class="card-body">
+                    <h5 class="card-title">
+                     View Used Tools
+                    </h5>
+
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                       <i class="bi bi-check-square-fill text-success"></i>
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
+                      </div>
+                      <div class="ps-3">
+                        <h6>0</h6>
+                      </div>
+                    </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
 
 
- <div class="col-lg-3 col-md-12">
+ <div class="col-lg-4 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
                     <a class="icon" href="#" 
@@ -142,7 +170,7 @@
                 </div>
               </div>
 
- <div class="col-lg-3 col-md-12">
+ <div class="col-lg-4 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
                     <a class="icon" href="#" 

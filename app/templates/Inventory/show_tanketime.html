@@ -1,5 +1,7 @@
 
 
+
+
 <!-- @format -->
 
 {% comment %} {% include 'base2.html' %} {% endcomment %}
@@ -43,15 +45,15 @@
               {% endif %}
   <form method="get" class="row g-3 mb-2 py-5">
   <div class="col-md-3">
-    <label class="form-label fw-bold">Item Name</label>
+    <label class="form-label fw-bold">Tanker No</label>
     <input type="text" name="item_name" class="form-control" value="{{ request.GET.item_name }}">
   </div>
   <div class="col-md-3">
-    <label class="form-label fw-bold">Person Name</label>
+    <label class="form-label fw-bold">In Time</label>
     <input type="text" name="vendor_name" class="form-control" value="{{ request.GET.vendor_name}}">
   </div>
   <div class="col-md-3">
-    <label class="form-label fw-bold">Item Use Date</label>
+    <label class="form-label fw-bold">Out Time</label>
     <input type="date" name="item_date" class="form-control" value="{{ request.GET.item_date }}">
   </div>
 
@@ -64,23 +66,34 @@
                 <thead>
                   <tr>
                     <th>Sr_No.</th>
-                    <th>Tanker Number</th>
-                    <th>Item name</th>
-                    <th>Quantity</th>
-                    <th>Person Name</th>
-                    <th>Used Date & Time</th>
+                    <th width="200">Tanker No</th>
+                    <th width="200">Driver Name</th>
+                    <th width="200">Tanker Type</th>
+                    <th width="200">Tanker Capacity</th>
+                    <th width="300">Tanker Condition</th>
+                    <th width="300">Purpose of Entry</th>
+                     <th width="300">Fire Extinguisher Present</th>
+                       <th width="300">Safety Kit Present</th>
+              
+                    <th width="300">In Time & Date</th>
+                    <th width="300">Out Time & Date</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for u in itemused %}
+                  {% for t in showtool %}
                   <tr>
-                    <td class="text-center">{{forloop.counter }}</td>
-                    <td>{{u.tanker }}</td>
-                    <td>{{u.item }}</td>
-                    <td class="text-center">{{u.quantity }}</td>
-                    <td>{{u.person_name }}</td>
-                    <td>{{u.used_on|date:"d/m/y P" }}</td>
+                    <td >{{forloop.counter }}</td>
+                    <td width="200">{{t.tanke }}</td>
+                    <td width="200">{{t.driver}}</td>
+                    <td width="200">{{t.tankertype}}</td>
+                    <td width="200" >{{t.tankercapacity}}</td>
+                    <td width="200">{{t.tankercondition}}</td>
+                     <td width="200" >{{t.entry}}</td>
+                     <td width="200">{{t.fire}}</td>
+                     <td width="200">{{t.kit}}</td>
+                    <td width="200">{{t.intitme|date:"d/m/y P" }}</td>
+                    <td width="200">{{t.outtitme|date:"d/m/y P" }}</td>
                 <td>
                       <a
                         href="#"

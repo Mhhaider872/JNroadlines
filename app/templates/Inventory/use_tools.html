@@ -37,46 +37,75 @@
              {% endfor %}
              </div>
              {% endif %}
-               <div class="container ">
-              <div class="row">
+             <div class="container ">
+           
                <div class="col-lg-12 form-div">
-               <form  method="POST" autocomplete="off">
-               {% csrf_token %}
-               <div class="col-lg-3 mb-3">
-               <label for="tanker_number" class="form-label fw-bold text-white">Tool Name</label>
-               <input type="text" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Tool Name">
-               </div>
-               <div class="col-lg-3 mb-3">
-               <label for="tanker_number" class="form-label fw-bold text-white">Tool Quantity</label>
-               <input type="number" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Tool Quantity">
-               </div>
-               <div class="col-lg-3 mb-3">
-               <label for="tanker_number" class="form-label fw-bold text-white">Person  Name</label>
-               <input type="text" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Person Name">
-               </div>
-               <div class="col-lg-3 mb-3">
-               <label for="tanker_number" class="form-label fw-bold text-white">Date</label>
-               <input type="Date" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" >
-               </div>
-                 <div class="col-lg-3 mb-3">
-               <label for="tanker_number" class="form-label fw-bold text-white">Tanker No</label>
-               <input type="text" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Tanker No" >
-               </div>
+  <form method="POST" autocomplete="off">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-3 mb-3">
+      <label for="employeeName" class="form-label fw-bold text-white">Tool Name</label>
+      <input type="text" class="form-control rounded-0" id="employeeName" name="employeeName" placeholder="Tool Name">
+    </div>
 
-                <div class="btn-divpy-2 text-center">
-                <button type="submit" class="btn btn-success px-4 me-4">Add</button>
-                <a href="#" class="btn btn-info px-4">View</a>
-            
-                </form>
-              </div>
-                </div>
-     
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="col-lg-3 mb-3">
+      <label for="employeeId" class="form-label fw-bold text-white">Person Name</label>
+      <input type="text" class="form-control rounded-0" id="employeeId" name="employeeId" placeholder="Person Name">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label for="toolCategory" class="form-label fw-bold text-white">Tool Category</label>
+      <select class="form-control rounded-0" id="toolCategory" name="toolCategory">
+        <option value="manual">Manual</option>
+        <option value="electric">Electric</option>
+        <option value="safety">Safety</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label for="toolCondition" class="form-label fw-bold text-white">Tool Condition</label>
+      <select class="form-control rounded-0" id="toolCondition" name="toolCondition">
+        <option value="ok">OK</option>
+        <option value="repair">Needs Repair</option>
+        <option value="damaged">Damaged</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    
+
+    <div class="col-lg-3 mb-3">
+      <label for="timeOut" class="form-label fw-bold text-white">Tool Taken Time</label>
+      <input type="datetime-local" class="form-control rounded-0" id="timeOut" name="timeOut">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label for="expectedReturn" class="form-label fw-bold text-white">Expected Return Time</label>
+      <input type="datetime-local" class="form-control rounded-0" id="expectedReturn" name="expectedReturn">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label for="issuedBy" class="form-label fw-bold text-white">Issued By</label>
+      <input type="text" class="form-control rounded-0" id="issuedBy" name="issuedBy" placeholder="Issued By">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-4 mb-3">
+      <label for="purpose" class="form-label fw-bold text-white">Purpose of Use</label>
+      <textarea class="form-control rounded-0" id="purpose" name="purpose" rows="4" placeholder="Text Message"></textarea>
+    </div>
+  </div>
+
+  <div class="text-center py-2">
+    <button type="submit" class="btn btn-success px-4 me-4">Add</button>
+    <a href="#" class="btn btn-info px-4">View</a>
+       </div>
+     </form>
+
+        
       </section>
     </main>
     

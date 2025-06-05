@@ -8,7 +8,7 @@
   <body style="background:white;">
     <main id="main" class="main">
       <div class="pagetitle py-3">
-        <h1>Add Vechicle In & Out Time Date</h1>
+        <h1>Add Vechicle Entry Form</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -44,25 +44,88 @@
           <div class="row">
            <div class="col-lg-3 mb-3">
             <label for="tanker_number" class="form-label fw-bold text-white">Tanker No</label>
-             <input type="text" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Tanker No">
+             <input type="text" class="form-control rounded-0" name="tanke"  id="tanker_number" placeholder="Tanker No">
           </div>
             <div class="col-lg-3 mb-3">
             <label for="tanker_number" class="form-label fw-bold text-white">Driver Name</label>
-             <input type="number" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Driver Name">
+             <input type="text" class="form-control rounded-0" name="driver"  id="tanker_number" placeholder="Driver Name">
           </div>
    <div class="col-lg-3 mb-3">
             <label for="tanker_number" class="form-label fw-bold text-white">IN Time & Date</label>
-             <input type="datetime-local" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Purchase Date">
+             <input type="datetime-local" class="form-control rounded-0" name="intitme"  id="tanker_number" placeholder="Purchase Date">
           </div>
-  
-   <div class="col-lg-3 mb-3">
+
+             <div class="col-lg-3 mb-3">
+           
+            <label for="tanker_number" class="form-label fw-bold text-white">Tanker Type</label>
+      <select class="form-control rounded-0" id="serviceType" name="tankertype">
+        <option value="Select Type">-----Select Type----</option>
+        <option value="Milk">Milk</option>
+        <option value="Oil">Oil</option>
+        <option value="Chocolate">Chocolate</option>
+        <option value="Other">Other</option>
+        
+      </select>
+          </div>
+        <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold text-white">Tanker Capacity</label>
+             <input type="text" class="form-control rounded-0" name="tankercapacity"  id="tanker_number" placeholder="Tanker Capacity">
+          </div>
+           <div class="col-lg-3 mb-3">
+           
+            <label for="tanker_number" class="form-label fw-bold text-white">Tanker Condition</label>
+      <select class="form-control rounded-0" id="serviceType" name="tankercondition">
+        <option value="Select Type">-----Select Type----</option>
+        <option value="Clean">Clean</option>
+        <option value="Dirty">Dirty</option>
+        <option value="Damaged">Damaged</option>
+        <option value="Other">Other</option>
+        
+      </select>
+          </div>
+
+              <div class="col-lg-3 mb-3">
+           
+            <label for="tanker_number" class="form-label fw-bold text-white">Purpose of Entry</label>
+      <select class="form-control rounded-0" id="serviceType" name="entry">
+        <option value="Select Type">-----Select Type----</option>
+        <option value="Loaded">Loaded</option>
+        <option value="Unloaded">Unloaded</option>
+        <option value="Washing">Washing</option>
+        <option value="Other">Other</option>
+        
+      </select>
+          </div>
+
+        <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold text-white">Fire Extinguisher Present</label>
+      <select class="form-control rounded-0" id="serviceType" name="fire">
+        <option value="Select Type">-----Select Type----</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+          </div>
+
+
+           <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold text-white">Safety Kit Present
+</label>
+      <select class="form-control rounded-0" id="serviceType" name="kit">
+        <option value="Select Type">-----Select Type----</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+          </div>
+
+
+          <div class="col-lg-3 mb-3">
             <label for="tanker_number" class="form-label fw-bold text-white">OUT Time & Date</label>
-             <input type="datetime-local" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Vendor Name">
+             <input type="datetime-local" class="form-control rounded-0" name="outtitme"  id="tanker_number" placeholder="Vendor Name">
           </div>
           
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-success px-4">Add</button>
-            <a href="#" class="btn btn-info px-4">View</a>
+            <a href="{% url "Inout-show" %}" class="btn btn-light px-4">View</a>
           </div>
         </form>
       </div>

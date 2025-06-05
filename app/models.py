@@ -1350,3 +1350,23 @@ class UsedItem(models.Model):
     person_name=models.CharField(max_length=200)
     # date = models.DateField(auto_now_add=True)
     used_on = models.DateTimeField(auto_now_add=True)
+
+
+class Tools(models.Model):
+     tool_name=models.CharField(max_length=200)
+     tool_qty= models.PositiveIntegerField(default=0)
+     tool_date=models.DateField()
+     vendor_name=models.CharField(max_length=200)
+
+
+class Inout(models.Model):
+    tanke=models.CharField(max_length=200)
+    driver=models.CharField(max_length=200)
+    intitme=models.DateTimeField(null=True)
+    outtitme=models.DateTimeField(null=True)
+    tankertype=models.CharField(max_length=200,null=True)
+    tankercapacity=models.CharField(max_length=200,null=True)
+    tankercondition=models.CharField(max_length=200,null=True)
+    entry=models.CharField(max_length=200,null=True)
+    fire=models.CharField(max_length=200,null=True)
+    kit=models.CharField(max_length=200,null=True)

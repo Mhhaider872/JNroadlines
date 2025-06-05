@@ -41,7 +41,7 @@
         <form  method="POST" autocomplete="off">
           {% csrf_token %}
           <div class="row">
-                <div class="col-lg-3 mb-3">
+                <div class="col-lg-2 mb-3">
             <label for="exampleDataList" class="form-label fw-bold text-white">Tanker No</label>
              <input class="form-control rounded-0" list="datalistOptions" id="exampleDataList" name="tanker"   placeholder="Search to vehicle no...">
                <datalist id="datalistOptions" >
@@ -54,9 +54,9 @@
             <label for="tanker_number" class="form-label fw-bold text-white">Tanker No</label>
              <input type="text" class="form-control rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Tanker No">
           </div> {% endcomment %}
-            <div class="col-lg-3 mb-3">
+            <div class="col-lg-4 mb-3">
             <label for="item" class="form-label fw-bold text-white">Item Name</label>
-         <select class="form-control" name="item_id" required>
+         <select class="form-control rounded-0" name="item_id" required>
   <option disabled selected>-- Select Item --</option>
   {% for i in item %}
     <option value="{{ i.id }}">{{ i.item_name }} (Available: {{ i.item_qty }})</option>
@@ -76,7 +76,7 @@
           
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-success px-4">Add</button>
-            <a href="#" class="btn btn-info px-4">View</a>
+            <a href="{% url "show-useitem" %}" class="btn btn-light px-4">View</a>
           </div>
         </form>
       </div>

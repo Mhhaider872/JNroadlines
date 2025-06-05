@@ -4419,6 +4419,8 @@ def inventroy_system(request):
     return render(request, 'Inventory/dashboard.html',context)
 
 
+#======================ADD ITEM ITEM FORM===========================
+
 def inventroy_form(request):
     if request.method == "POST":
         item_name = request.POST.get('item_name')
@@ -4461,7 +4463,7 @@ def delete_item(request,id):
 
 
 
-
+#====================== USED ITEM FORM===========================
 
 
 
@@ -4505,10 +4507,99 @@ def show_useitem(request):
     
 
 
-def tool_form(request):
-    
+#======================TOOLS FORM===========================
+
+def tools_form(request):
+    if request.method == "POST":
+        tool_name = request.POST.get('tool_name')
+        tool_qty = request.POST.get('tool_qty')
+        tool_date = request.POST.get('tool_date')  
+        vendor_name = request.POST.get('vendor_name')
+        tool=Tools.objects.create(tool_name=tool_name,tool_qty=tool_qty,tool_date=tool_date,vendor_name=vendor_name if vendor_name else None)
+        tool.save()
+        messages.success(request,"Tool Add Successfuly !")
+        return redirect('tool-show')
     return render(request, 'Inventory/tool.html')
 
+
+
+def tools_show(request):
+     item_name = request.GET.get(' item_name')
+     vendor_name = request.GET.get('vendor_name')
+     item_date = request.GET.get('item_date')
+    
+     showtool=Tools.objects.all()
+
+     if item_name:
+        showitem = showitem.filter(item_name__icontains=item_name)
+
+     if vendor_name:
+        showitem = showitem.filter(vendor_name__icontains=vendor_name)
+
+     if item_date:
+        showitem = showitem.filter(item_date__icontains=item_date)
+
+     context={'showtool':showtool}
+     return render(request,'Inventory/show_tool.html',context)
+
+#======================USED TOOLS FORM===========================
+
+
+def use_tool(request):
+    return render(request, 'Inventory/use_tools.html')
+
+
+
+#======================VEHICLE INOUT TIME===========================
+
+
+
 def inout_form(request):
+    if request.method == "POST":
+        tanke = request.POST.get('tanke')
+        driver = request.POST.get('driver')
+        tankertype = request.POST.get('tankertype')
+        tankercapacity = request.POST.get('tankercapacity')
+        tankercondition = request.POST.get('tankercondition')
+        entry = request.POST.get('entry')
+        fire = request.POST.get('fire')
+        kit = request.POST.get('kit')
+        
+
+
+        intitme = request.POST.get('intitme')  
+        outtitme = request.POST.get('outtitme')
+        tool=Inout.objects.create(tanke=tanke,driver=driver,tankertype=tankertype,tankercapacity=tankercapacity,tankercondition=tankercondition,entry=entry,fire=fire,kit=kit,intitme=intitme,outtitme=outtitme if outtitme else None)
+        tool.save()
+        messages.success(request,"Tanker Entry Date & Time Add Successfuly !")
+        return redirect('Inout-show')
     
     return render(request, 'Inventory/Vehicle_Inout.html')
+
+
+
+def tankertime_show(request):
+     item_name = request.GET.get(' item_name')
+     vendor_name = request.GET.get('vendor_name')
+     item_date = request.GET.get('item_date')
+    
+     showtool=Inout.objects.all()
+
+     if item_name:
+        showitem = showitem.filter(item_name__icontains=item_name)
+
+     if vendor_name:
+        showitem = showitem.filter(vendor_name__icontains=vendor_name)
+
+     if item_date:
+        showitem = showitem.filter(item_date__icontains=item_date)
+
+     context={'showtool':showtool}
+     return render(request,'Inventory/show_tanketime.html',context)
+
+
+
+def tanker_service(request):
+
+    
+    return render(request, 'Inventory/tanker_service.html')

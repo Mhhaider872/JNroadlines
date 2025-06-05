@@ -65,6 +65,7 @@ admin.site.register(SAInvoice)
 
 admin.site.register(Items)
 admin.site.register(UsedItem)
+admin.site.register(Tools)
 
 
 
