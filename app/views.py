@@ -1319,6 +1319,7 @@ def start_trip(request):
             To_id = request.POST.get('To_id')
             drivername = request.POST.get('drivername')
             f_trip = request.POST.get('f_trip')
+            pending_trip = request.POST.get('pending_trip')
 
             # Check if a trip with this trip_id already exists
             existing_trip = Trip.objects.filter(trip_id=trip_id).first()
@@ -1331,11 +1332,12 @@ def start_trip(request):
                 trip = Trip.objects.create(
                     trip_id=trip_id,
                     tanker=tanker,
-                    trip_date=trip_date,
+                    trip_date=trip_date if trip_date else None,
                     from_id=from_id,
                     To_id=To_id,
                     drivername=drivername,
-                    f_trip=f_trip if f_trip else None
+                    f_trip=f_trip if f_trip else None,
+                    pending_trip=pending_trip if pending_trip else 'Actual trip'
                 )
                 # After creating the trip, redirect to the 'add_expense' page for the newly created trip
                 return redirect('add_expense', trip_id=trip.trip_id)
@@ -1625,7 +1627,7 @@ def SignUp(request):
 
 
 
-
+#=========================LOGIN SYSTEM=========================================
 
 def Login(request):
     if request.method == 'POST':  # Make sure the method is POST
@@ -1641,7 +1643,7 @@ def Login(request):
              # Username ke hisaab se redirect
             if user.username == 'Mhaider':
                 return redirect('inventory-dashboard')  # isko URL me define karo
-            elif user.username == 'Pooja':
+            elif user.username == 'Pratiksha':
                 return redirect('ldashboard')  # isko bhi define karo
             elif user.username == 'Gemini':
                 return redirect('gemini')  # isko bhi define karo

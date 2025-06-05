@@ -435,6 +435,7 @@ class Trip(models.Model):
     from_id = models.CharField(max_length=50, null=True, blank=True )
     To_id = models.CharField(max_length=50, null=True, blank=True )
     drivername = models.CharField(max_length=50, null=True, blank=True )
+    pending_trip = models.CharField(max_length=50, null=True, blank=True )
     f_trip =models.IntegerField(null=True, blank=True)
     total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     

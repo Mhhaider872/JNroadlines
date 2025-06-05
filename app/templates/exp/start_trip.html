@@ -118,14 +118,25 @@
             />
           </div>
           <div class="col-lg-3 mb-3">
-            <label for="label12" class="form-label fw-bold"
+            <label for="status" class="form-label fw-bold"
+              >Pending Trip </label
+            >
+            <select id="status" name="pending_trip" class="form-control border-2">
+            <option value="" selected>Select</option>
+            <option value="Empty" >Empty</option>
+            <option value="Pending">Pending</option>
+            {% comment %} <option value="Add Trip">Add Trip</option> {% endcomment %}
+           </select>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="label13" class="form-label fw-bold"
               >Trip Fixed Amount</label
             >
             <input
               type="number"
               name="f_trip"
               class="form-control  border-2"
-              id="label12"
+              id="label13"
               min="0"
               value="0"
              

@@ -69,7 +69,7 @@
        
                     <td>
                    {% if d.img %}
-                   <img src="{{ d.img.url }}" alt="Image" width="100"><br />
+                   <a href="{{ d.img.url }}" target="_blank">View</a><br>
                     <a href="{{ d.img.url }}" download>Download File</a>
                     {% else %}
                      No image available

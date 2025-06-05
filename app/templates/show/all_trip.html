@@ -34,6 +34,7 @@
       <th scope="col">Trip_Date</th>
       <th scope="col">From Address</th>
       <th scope="col">To Address</th>
+      <th scope="col">Status</th>
       <th scope="col">Grand_Total</th>
       <th scope="col">Trip_Fixed_Amount</th>
       <th scope="col">Profit</th>
@@ -69,6 +70,7 @@
       <td>{{ts.trip_date|date:"d-m-y"}}</td>
           <td>{{ts.from_id}}</td>
           <td>{{ts.To_id}}</td> 
+          <td><span class="badge text-bg-info">{{ts.pending_trip}}</span></td> 
           <td class="text-center"><strong>{{ts.total_expense}}</strong> </td> 
           <td class="text-center"><strong>{{ts.f_trip|default_if_none:"0"}}</strong> </td> 
           <td><strong>00</strong> </td> 

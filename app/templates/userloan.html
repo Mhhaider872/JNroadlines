@@ -1,7 +1,7 @@
 
 <!-- @format -->
 
-{% include 'dashboard/base_loan.html' %}
+{% include 'pratiksha_base.html' %}
 {% load static %}
 
   <body>
@@ -18,12 +18,13 @@
       </div>
       <!-- End Page Title -->
 
-      <section class="section dashboard py-5">
+      <section class="section dashboard">
           <!-- Left side columns -->
           <div class="col-lg-12">
             <div class="row">
+          
               <!-- Sales Card -->
-              {% comment %} <div class="col-lg-3 col-md-12">
+              <div class="col-lg-3 col-md-12">
                 <div class="card info-card sales-card">
                   <div class="filter">
                     <a class="icon" href="{% url 'showplan' %}" 
@@ -47,11 +48,11 @@
                     </a>
                   </div>
                 </div>
-              </div> {% endcomment %}
+              </div>
               <!-- End Sales Card -->
 
               <!-- Revenue Card -->
-              {% comment %} <div class="col-lg-3 col-md-12">
+              <div class="col-lg-3 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
                     <a class="icon" href="{% url 'showtrip' %}" 
@@ -69,7 +70,7 @@
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
                       <i class="bi bi-skip-start-circle"></i>
-             
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
                       <div class="ps-3">
                         <h6>{{trip}}</h6>
@@ -78,10 +79,10 @@
                     </a>
                   </div>
                 </div>
-              </div> {% endcomment %}
+              </div>
 
 
-              {% comment %} <div class="col-lg-3 col-md-12">
+              <div class="col-lg-3 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
                     <a class="icon" href="{% url 'Aak-Local' %}" 
@@ -99,7 +100,7 @@
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
                       <i class="bi bi-skip-start-circle"></i>
-                  
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
                       
                       <div class="ps-3">
@@ -110,10 +111,10 @@
                     </a>
                    </div>
                  </div>
-              </div> {% endcomment %}
+              </div>
               <!-- End Revenue Card -->
 
-              {% comment %} <div class="col-lg-3 col-md-12">
+              <div class="col-lg-3 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
                     <a class="icon" href="{% url 'show-gemini-details' %}" 
@@ -131,6 +132,7 @@
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
                       <i class="bi bi-skip-start-circle"></i>
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
                       
                       <div class="ps-3">
@@ -141,9 +143,9 @@
                     </a>
                    </div>
                  </div>
-              </div> {% endcomment %}
-                {% comment %} <div class="col-lg-3 col-md-12">
-                 <div class="card info-card revenue-card">
+              </div>
+             <div class="col-lg-3 col-md-12">
+                <div class="card info-card revenue-card">
                   <div class="filter">
                     <a class="icon" href="{% url 'show-gemini-details' %}" 
                       ><i class="bi bi-three-dots"></i
@@ -160,7 +162,7 @@
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
                       <i class="bi bi-skip-start-circle"></i>
-                        
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
                       
                       <div class="ps-3">
@@ -171,12 +173,13 @@
                     </a>
                    </div>
                  </div>
-              </div> {% endcomment %}
+              </div>
 
 
-              {% comment %} <div class="col-lg-3 col-md-12">
+              <div class="col-lg-3 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
+                    {% comment %} <a class="icon" href="{% url 'all-trip' %}"  {% endcomment %}
                     <a class="icon" href="{% url 'trip' %}"
                       ><i class="bi bi-three-dots"></i
                     >
@@ -192,7 +195,7 @@
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
                       <i class="bi bi-folder-plus"></i>
-                       
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
                       <div class="ps-3">
                         <h6>{{trip_exp}}</h6>
@@ -201,42 +204,14 @@
                     </a>
                   </div>
                 </div>
-              </div> {% endcomment %}
+              </div>
               <!-- End R Card -->
-   
-              {% comment %} <div class="col-lg-3 col-md-12">
-                <div class="card info-card revenue-card">
-                  <div class="filter">
-                    <a class="icon" href="{% url 'add-trip-end' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Trip End
-                    </h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                     <i class="bi bi-sign-stop"></i>
-                        <i class="bi bi-currency-rupee"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>0</h6>
-                      </div>
-                    </div>
-                    </a>
-                  </div>
-                </div>
-              </div> {% endcomment %}
+  
        
 
               <!-- Customers Card -->
 
-              {% comment %} <div class="col-lg-3 col-md-12">
+              <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
                   <div class="filter">
                     <a class="icon" href="{% url 'show-vehicle' %}" 
@@ -262,122 +237,13 @@
                     </a>
                   </div>
                 </div>
-              </div> {% endcomment %}
+              </div>
               <!-- End Customers Card -->
               
-               <!--  Loan -->
-                <div class="col-lg-6 col-md-12">
-                  <div class="card info-card customers-card">
-                  <div class="filter">
-                    <a class="icon" href="{% url 'loandetails' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Loan
-                    </h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                      <i class="bi bi-person-vcard"></i>
-                        
-                      </div>
-                      <div class="ps-3">
-                        <h6>0</h6>
-                      </div>
-                    </div>
-                    </a>
-                  </div>
-                </div>
+             
+          
               </div>
-              <!-- End Loan-->
-              {% comment %} <div class="col-lg-3 col-md-12">
-                <div class="card info-card customers-card">
-                  <div class="filter">
-                   <a class="icon" href="{% url 'report-show' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                     Reports
-                    </h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                        <i class="bi bi-receipt"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>{{trip_exp}}</h6>
-                        
-                      </div>
-                    </div>
-                  </div>
-                  </a>
-                </div>
-              </div> {% endcomment %}
-               <div class="col-lg-6 col-md-12">
-                 <div class="card info-card customers-card">
-                  <div class="filter">
-                   <a class="icon" href="{% url 'add-toll' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                     Add Toll
-                    </h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                        <i class="bi bi-align-start"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>0</h6>
-                        
-                      </div>
-                    </div>
-                  </div>
-                  </a>
-                </div>
-              </div> 
-               {% comment %} <div class="col-lg-3 col-md-12">
-                <div class="card info-card customers-card">
-                  <div class="filter">
-                   <a class="icon" href="{% url 'vehicle-track' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                     Vehicle Tracking
-                    </h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                        <i class="bi bi-map"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>0</h6>
-                        
-                      </div>
-                    </div>
-                  </div>
-                  </a>
-                </div>
-              </div> {% endcomment %}
+             
       </div>
   </section>
    
