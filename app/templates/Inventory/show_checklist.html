@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inspection Records</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Inspection Records</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Driver</th>
+                <th>Vehicle</th>
+                <th>Brakes</th>
+                <th>Lights</th>
+                <th>Tyres</th>
+                <th>Horn</th>
+                <th>Wipers</th>
+                <th>Mirrors</th>
+                <th>Oil</th>
+                <th>Coolant</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in inspections %}
+            <tr>
+                <td>{{ item.inspection_date }}</td>
+                <td>{{ item.driver_name }}</td>
+                <td>{{ item.vehicle_number }}</td>
+                <td>{{ item.brakes|yesno:"✓,✗" }}</td>
+                <td>{{ item.lights|yesno:"✓,✗" }}</td>
+                <td>{{ item.tires|yesno:"✓,✗" }}</td>
+                <td>{{ item.horn|yesno:"✓,✗" }}</td>
+                <td>{{ item.wipers|yesno:"✓,✗" }}</td>
+                <td>{{ item.mirrors|yesno:"✓,✗" }}</td>
+                <td>{{ item.oil|yesno:"✓,✗" }}</td>
+                <td>{{ item.coolant|yesno:"✓,✗" }}</td>
+                <td>{{ item.remarks }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="12">No records found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="#">Back to Form</a>
+</body>
+</html>

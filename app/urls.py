@@ -273,6 +273,7 @@ urlpatterns =[
     path('show_tool/', views.tools_show, name='tool-show'),
 
     path('add_usetool/', views.use_tool, name='usetool-show'),
+    path('show_usetool/', views.usetool_show, name='tool-show'),
 
     path('Inout_form/', views.inout_form, name='Inout-form'),
     path('Inout_show/', views.tankertime_show, name='Inout-show'),
@@ -285,7 +286,9 @@ urlpatterns =[
 
 
     path('add_service/', views.tanker_service, name='add-service'),
-
+    path('show_service/', views.show_service, name='show-service'),
+    path('check_list/', views.check_list, name='check-list'),
+    path('show_list/', views.show_list, name='show-list'),
   
 ]
 

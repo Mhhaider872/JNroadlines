@@ -4545,10 +4545,48 @@ def tools_show(request):
      return render(request,'Inventory/show_tool.html',context)
 
 #======================USED TOOLS FORM===========================
-
-
 def use_tool(request):
+    if request.method == "POST":
+        try:
+           tool_name = request.POST.get('tool_name')
+           person_name = request.POST.get('person_name')
+           tool_category = request.POST.get('tool_category')  
+           tool_condition = request.POST.get('tool_condition')
+           tool_take = request.POST.get('tool_take')
+           tool_return = request.POST.get('tool_return')
+           issue = request.POST.get('issue')
+           use_of = request.POST.get('use_of')
+           tool=Usetool.objects.create(tool_name=tool_name,person_name=person_name,tool_category=tool_category,tool_condition=tool_condition,tool_take=tool_take,tool_return=tool_return,issue=issue,use_of=use_of)
+           tool.save()
+           messages.success(request,"Used Tool Add Successfuly !")
+           return redirect('tool-show')
+        
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            return redirect('tool-show')
+
+
     return render(request, 'Inventory/use_tools.html')
+
+def usetool_show(request):
+     item_name = request.GET.get(' item_name')
+     vendor_name = request.GET.get('vendor_name')
+     item_date = request.GET.get('item_date')
+    
+     usetool=Usetool.objects.all()
+
+     if item_name:
+        showitem = showitem.filter(item_name__icontains=item_name)
+
+     if vendor_name:
+        showitem = showitem.filter(vendor_name__icontains=vendor_name)
+
+     if item_date:
+        showitem = showitem.filter(item_date__icontains=item_date)
+
+     context={'usetool':usetool}
+     return render(request,'Inventory/show_usetools.html',context)
+
 
 
 
@@ -4566,9 +4604,6 @@ def inout_form(request):
         entry = request.POST.get('entry')
         fire = request.POST.get('fire')
         kit = request.POST.get('kit')
-        
-
-
         intitme = request.POST.get('intitme')  
         outtitme = request.POST.get('outtitme')
         tool=Inout.objects.create(tanke=tanke,driver=driver,tankertype=tankertype,tankercapacity=tankercapacity,tankercondition=tankercondition,entry=entry,fire=fire,kit=kit,intitme=intitme,outtitme=outtitme if outtitme else None)
@@ -4602,6 +4637,32 @@ def tankertime_show(request):
 
 
 def tanker_service(request):
-
+    if request.method == "POST":
+        tanke = request.POST.get('tanke')
+        owner_name = request.POST.get('owner_name')
+        type = request.POST.get('type')
+        date = request.POST.get('date')
+        remark = request.POST.get('remark')
+     
+        service=Service.objects.create(tanke=tanke,owner_name=owner_name,type=type,date=date,remark=remark)
+        service.save()
+        messages.success(request,"Tanker Service Add Successfuly !")
+        return redirect('show-service')
     
     return render(request, 'Inventory/tanker_service.html')
+
+
+def show_service(request):
+    showservice=Service.objects.all()
+    context={'showservice':showservice}
+    return render(request, 'Inventory/service_show.html',context)
+
+#======================SHOW CHECK LIST=====================
+def check_list(request):
+
+    return render(request, 'Inventory/vehicle_check.html')
+
+
+def show_list(request):
+
+    return render(request, 'Inventory/show_checklist.html')

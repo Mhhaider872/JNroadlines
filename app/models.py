@@ -1359,6 +1359,22 @@ class Tools(models.Model):
      tool_date=models.DateField()
      vendor_name=models.CharField(max_length=200)
 
+#===================USE TOOLS MODEL ==========================
+
+class Usetool(models.Model):
+    tool_name=models.CharField(max_length=200)
+    person_name=models.CharField(max_length=200)
+    tool_category=models.CharField(max_length=200,null=True)
+    tool_condition=models.CharField(max_length=200,null=True)
+    tool_take=models.DateTimeField(null=True)
+    tool_return=models.DateTimeField(null=True)
+    issue=models.CharField(max_length=200,null=True)
+    use_of=models.TextField()
+
+
+
+
+
 
 class Inout(models.Model):
     tanke=models.CharField(max_length=200)
@@ -1371,3 +1387,14 @@ class Inout(models.Model):
     entry=models.CharField(max_length=200,null=True)
     fire=models.CharField(max_length=200,null=True)
     kit=models.CharField(max_length=200,null=True)
+
+
+
+#================TANKER SERVICE RECORD=====================
+
+class Service(models.Model):
+    tanke=models.CharField(max_length=200)
+    owner_name=models.CharField(max_length=200)
+    type=models.CharField(max_length=200)
+    date=models.DateTimeField(null=True)
+    remark=models.TextField()

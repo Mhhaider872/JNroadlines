@@ -120,7 +120,7 @@
             <input type="number" class="form-control border-2" id="totalshort" name="short_kg" step="0.01" readonly>
         </div>
            <div class="col-lg-4 mb-3">
-            <label for="label13" class="form-label fw-bold">Allow Qty in K.G</label>
+            <label for="label13" class="form-label fw-bold">Allow Percentage</label>
             <input type="number" class="form-control border-2" id="shortallow" name="allow_kg" value="{{t.totalshort}}" oninput="calculateTotalShort()" step="0.01">
         </div> 
         <div class="col-lg-4 mb-3">
@@ -281,7 +281,8 @@
      // Ensure the Allow Percentage (shortallow) and Loaded Qty (disqty) are valid numbers
      if (disqty && shortallow) {
          // Calculate and update the shortages allowed (as percentage of loaded qty)
-         var loadedQtyPercent = (parseFloat(disqty) - parseFloat(shortallow));
+          
+         var loadedQtyPercent = (parseFloat(disqty) * parseFloat(shortallow)) / 100;
          document.getElementById("loadedQtyPercent").value = loadedQtyPercent; // Round to 2 decimal places 
      }
 

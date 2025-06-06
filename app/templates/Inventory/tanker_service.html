@@ -49,12 +49,12 @@
           </div>
             <div class="col-lg-3 mb-3">
             <label for="tanker_number" class="form-label fw-bold text-white">Owner Name</label>
-             <input type="text" class="form-control rounded-0" name="driver"  id="tanker_number" placeholder="Owner Name">
+             <input type="text" class="form-control rounded-0" name="owner_name"  id="tanker_number" placeholder="Owner Name">
           </div>
    <div class="col-lg-3 mb-3">
            
-            <label for="tanker_number" class="form-label fw-bold text-white">Service Type</label>
-      <select class="form-control rounded-0" id="serviceType" name="serviceType">
+            <label for="serviceType" class="form-label fw-bold text-white">Service Type</label>
+      <select class="form-control rounded-0" id="serviceType" name="type">
         <option value="Select Type">-----Select Type----</option>
         <option value="oilChange">Oil Change</option>
         <option value="brakeCheck">Brake Check</option>
@@ -64,16 +64,16 @@
           </div>
   
    <div class="col-lg-3 mb-3">
-            <label for="tanker_number" class="form-label fw-bold text-white">Service Date</label>
-             <input type="date" class="form-control rounded-0" name="outtitme"  id="tanker_number" placeholder="Vendor Name">
+            <label for="service_date" class="form-label fw-bold text-white">Service Date</label>
+             <input type="date" class="form-control rounded-0" name="date"  id="service_date" placeholder="Vendor Name">
           </div>
              <div class="col-lg-3 mb-3">
-            <label for="tanker_number" class="form-label fw-bold text-white">Additional Remarks</label>
-             <textarea class="form-control rounded-0" id="remarks" name="remarks" rows="4" placeholder="Remark"></textarea>
+            <label for="remarks" class="form-label fw-bold text-white">Additional Remarks</label>
+             <textarea class="form-control rounded-0" id="remarks" name="remark" rows="4" placeholder="Remark"></textarea>
           </div>
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-success px-4">Add</button>
-            <a href="#" class="btn btn-light px-4">View</a>
+            <a href="{% url "show-service" %}" class="btn btn-light px-4">View</a>
           </div>
         </form>
       </div>

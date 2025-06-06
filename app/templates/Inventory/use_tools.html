@@ -44,18 +44,18 @@
   {% csrf_token %}
   <div class="row">
     <div class="col-lg-3 mb-3">
-      <label for="employeeName" class="form-label fw-bold text-white">Tool Name</label>
-      <input type="text" class="form-control rounded-0" id="employeeName" name="employeeName" placeholder="Tool Name">
+      <label for="ToolName" class="form-label fw-bold text-white">Tool Name</label>
+      <input type="text" class="form-control rounded-0" id="ToolName" name="tool_name" placeholder="Tool Name">
     </div>
 
     <div class="col-lg-3 mb-3">
-      <label for="employeeId" class="form-label fw-bold text-white">Person Name</label>
-      <input type="text" class="form-control rounded-0" id="employeeId" name="employeeId" placeholder="Person Name">
+      <label for="person" class="form-label fw-bold text-white">Person Name</label>
+      <input type="text" class="form-control rounded-0" id="person" name="person_name" placeholder="Person Name">
     </div>
 
     <div class="col-lg-3 mb-3">
       <label for="toolCategory" class="form-label fw-bold text-white">Tool Category</label>
-      <select class="form-control rounded-0" id="toolCategory" name="toolCategory">
+      <select class="form-control rounded-0" id="toolCategory" name="tool_category">
         <option value="manual">Manual</option>
         <option value="electric">Electric</option>
         <option value="safety">Safety</option>
@@ -65,7 +65,7 @@
 
     <div class="col-lg-3 mb-3">
       <label for="toolCondition" class="form-label fw-bold text-white">Tool Condition</label>
-      <select class="form-control rounded-0" id="toolCondition" name="toolCondition">
+      <select class="form-control rounded-0" id="toolCondition" name="tool_condition">
         <option value="ok">OK</option>
         <option value="repair">Needs Repair</option>
         <option value="damaged">Damaged</option>
@@ -78,30 +78,30 @@
 
     <div class="col-lg-3 mb-3">
       <label for="timeOut" class="form-label fw-bold text-white">Tool Taken Time</label>
-      <input type="datetime-local" class="form-control rounded-0" id="timeOut" name="timeOut">
+      <input type="datetime-local" class="form-control rounded-0" id="timeOut" name="tool_take">
     </div>
 
     <div class="col-lg-3 mb-3">
       <label for="expectedReturn" class="form-label fw-bold text-white">Expected Return Time</label>
-      <input type="datetime-local" class="form-control rounded-0" id="expectedReturn" name="expectedReturn">
+      <input type="datetime-local" class="form-control rounded-0" id="expectedReturn" name="tool_return">
     </div>
 
     <div class="col-lg-3 mb-3">
       <label for="issuedBy" class="form-label fw-bold text-white">Issued By</label>
-      <input type="text" class="form-control rounded-0" id="issuedBy" name="issuedBy" placeholder="Issued By">
+      <input type="text" class="form-control rounded-0" id="issuedBy" name="issuedBy" placeholder="issue">
     </div>
   </div>
 
   <div class="row">
     <div class="col-lg-4 mb-3">
       <label for="purpose" class="form-label fw-bold text-white">Purpose of Use</label>
-      <textarea class="form-control rounded-0" id="purpose" name="purpose" rows="4" placeholder="Text Message"></textarea>
+      <textarea class="form-control rounded-0" id="purpose" name="use_of" rows="4" placeholder="Text Message"></textarea>
     </div>
   </div>
 
   <div class="text-center py-2">
     <button type="submit" class="btn btn-success px-4 me-4">Add</button>
-    <a href="#" class="btn btn-info px-4">View</a>
+    <a href="{% url "tool-show" %}" class="btn btn-info px-4">View</a>
        </div>
      </form>
 
