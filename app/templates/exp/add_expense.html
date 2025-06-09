@@ -101,7 +101,7 @@
              <input class="form-control border-2" name="from_via" list="datalistOptions3" id="exampleDataList3" placeholder="Search to...">
                <datalist id="datalistOptions3">
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div>
@@ -110,7 +110,7 @@
              <input class="form-control border-2" name="To_via" list="datalistOptions" id="exampleDataList" placeholder="Search to...">
                <datalist id="datalistOptions">
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                  {% endfor %}
                 </datalist>
           </div> 

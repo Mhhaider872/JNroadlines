@@ -618,11 +618,11 @@ class Addloan(models.Model):
 
 class DriverLoan(models.Model):
     tankerno=models.CharField(max_length=100)
-    From_address=models.CharField(max_length=200)
-    To_address=models.CharField(max_length=200)
-    drivername=models.CharField(max_length=100)
-    trip_date=models.DateField(null=True, blank=True)
-    date=models.DateField(null=True, blank=True)
+    From_address=models.CharField(max_length=200,null=True)
+    To_address=models.CharField(max_length=200,null=True)
+    drivername=models.CharField(max_length=100,null=True)
+    trip_date=models.DateField(null=True)
+    date=models.DateField(null=True)
     load=models.IntegerField(null=True, blank=True)
     unload=models.IntegerField(null=True, blank=True)
     short_kg=models.IntegerField(null=True, blank=True)

@@ -1542,6 +1542,7 @@ def do_update(request,id):
      upexpense.end_date=end_date or None
 
      upexpense.save()
+     upexpense.trip.calculate_total_expense() 
      messages.success(request, 'Expense updated successfully!')
      return redirect('add_expense', trip_id=trip_id)
 
@@ -1773,7 +1774,7 @@ def AddDriverLoan(request):
       previous_loan = request.POST['previous_loan']
       loan_amount = request.POST['loan_amount']
       total = request.POST['total']
-      if  DriverLoan.objects.filter(tankerno=tankerno,trip_date=trip_date,date=date).exists():
+      if  DriverLoan.objects.filter(tankerno=tankerno,drivername=drivername).exists():
           messages.error(request, 'Driver Loan exists !!')
           return redirect('drivers-loan')
       else:
@@ -4507,6 +4508,10 @@ def show_useitem(request):
     context={'itemused':itemused}
     return render(request, 'Inventory/show_useitem.html',context)
     
+def delete_useite(request,id):
+    dell=UsedItem.objects.get(pk=id)
+    dell.delete()
+    return redirect('show-useitem')
 
 
 #======================TOOLS FORM===========================
@@ -4520,7 +4525,7 @@ def tools_form(request):
         tool=Tools.objects.create(tool_name=tool_name,tool_qty=tool_qty,tool_date=tool_date,vendor_name=vendor_name if vendor_name else None)
         tool.save()
         messages.success(request,"Tool Add Successfuly !")
-        return redirect('tool-show')
+        return redirect('tools-show')
     return render(request, 'Inventory/tool.html')
 
 
@@ -4544,6 +4549,11 @@ def tools_show(request):
      context={'showtool':showtool}
      return render(request,'Inventory/show_tool.html',context)
 
+
+def delete_tool(request,id):
+    deltools=Tools.objects.get(pk=id)
+    deltools.delete()
+    return redirect('tools-show')
 #======================USED TOOLS FORM===========================
 def use_tool(request):
     if request.method == "POST":
@@ -4587,7 +4597,10 @@ def usetool_show(request):
      context={'usetool':usetool}
      return render(request,'Inventory/show_usetools.html',context)
 
-
+def delete_usetool(request,id):
+    deltools=Usetool.objects.get(pk=id)
+    deltools.delete()
+    return redirect('tool-show')
 
 
 #======================VEHICLE INOUT TIME===========================
@@ -4634,7 +4647,12 @@ def tankertime_show(request):
      context={'showtool':showtool}
      return render(request,'Inventory/show_tanketime.html',context)
 
+def delete_tanktime(request,id):
+    deltools=Inout.objects.get(pk=id)
+    deltools.delete()
+    return redirect('Inout-show')
 
+#====================TANKER SERVICES =================================
 
 def tanker_service(request):
     if request.method == "POST":

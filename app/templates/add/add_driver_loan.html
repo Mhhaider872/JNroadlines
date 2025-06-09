@@ -69,7 +69,7 @@
           </div>
               <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
-             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers..." required>
+             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
                <datalist id="driverslist">
                   {% for d in dname %}
                  <option value="{{d.name}}">{{d.fname }}</option>
@@ -115,7 +115,7 @@
           
         <div class="col-lg-4 mb-3">
             <label for="label14" class="form-label fw-bold"
-              > Shortages In K.G</label
+              > Shortage/Excess In K.G</label
             >
             <input type="number" class="form-control border-2" id="totalshort" name="short_kg" step="0.01" readonly>
         </div>
@@ -125,18 +125,30 @@
         </div> 
         <div class="col-lg-4 mb-3">
             <label for="label15" class="form-label fw-bold"
-              >Actual Shortages Amount</label
+              >Allow Percentage in Qty</label
             >
             <input
               type="number"
               class="form-control border-2"
               name="actual_short"
               min="0"
-              id="loadedQtyPercent" name="loadedQtyPercent" oninput="calculateTotalShort()" step="0.01" readonly
+              id="loadedQtyPercent" name="loadedQtyPercent" oninput="calculateTotalShort()" step="0.01"
+            />
+        </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label220" class="form-label fw-bold">Total KG On Driver Loan </label>
+            <input
+              type="number"
+              class="form-control border-2"
+              name="short_allow_rate"
+              min="0"
+              id="short_allow_rate"
+              oninput="calculateTotalShort()" 
+              readonly
             />
         </div>
         <div class="col-lg-4 mb-3">
-            <label for="label22" class="form-label fw-bold">Rate </label>
+            <label for="label23" class="form-label fw-bold">Rate For Driver </label>
             <input
               type="number"
               class="form-control border-2"
@@ -146,17 +158,17 @@
               oninput="calculateTotalShort()" step="0.01"
             />
         </div>
-          <div class="col-lg-4 mb-3">
-            <label for="label16" class="form-label fw-bold">Shortage Amount </label>
+        <div class="col-lg-4 mb-3">
+            <label for="label16" class="form-label fw-bold">Actual Shortage Amount </label>
             <input
               type="number"
               class="form-control border-2"
               name="short_amount"
               min="0"
-              id="short_allow_rate"
+              id="as_amount"
               oninput="calculateTotalShort()" step="0.01"
             />
-        </div>
+        </div> 
          {% comment %} <div class="col-lg-4 mb-3">
             <label for="label16" class="form-label fw-bold">Shortage Amount</label>
             <input
@@ -181,6 +193,20 @@
               id="pervious"
              
               oninput="calculateTotalShort()"
+            />
+        </div>
+        <div class="col-lg-4 mb-3">
+            <label for="label211" class="form-label fw-bold"
+              >Actual Amount</label
+            >
+            <input
+              type="number"
+              class="form-control border-2"
+              name="loan_amount"
+              min="0"
+              id="label211"
+              oninput="calculateTotalShort()"
+              readonly
             />
         </div>
         <div class="col-lg-4 mb-3">
@@ -268,13 +294,16 @@
      var deductedLoan = document.getElementById("label21").value;
      var pervious = document.getElementById("pervious").value;
      var total_loan = document.getElementById("total_loan").value;
+     var loadedQtyPercent = document.getElementById("loadedQtyPercent").value;
+     
+     
             
      
      // Ensure values are numbers and disqty and unlodqty are available
      // var loadedQtyPercent = (parseFloat(disqty) - parseFloat(shortallow));
      if (disqty && unlodqty) {
          // Calculate totalshort and update it
-         var totalshort = parseInt(unlodqty) - parseInt(disqty) ;
+         var totalshort =parseInt(disqty) - parseInt(unlodqty)  ;
          document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
      }
 
@@ -287,23 +316,36 @@
      }
 
      // Ensure rate is a valid number
-     if (rate && loadedQtyPercent) {
+     if (totalshort && loadedQtyPercent) {
          // Calculate and update the shortage allowance rate
-         var short_allow_rate = (parseFloat(rate) * parseFloat(loadedQtyPercent));
+         var short_allow_rate = (parseFloat(totalshort) - parseFloat(loadedQtyPercent));
          document.getElementById("short_allow_rate").value = short_allow_rate.toFixed(2); // Round to 2 decimal places 
      }
      
+        // Ensure rate is a valid number
+     if (rate && short_allow_rate) {
+        
+           var as_amount = (parseFloat(rate) * parseFloat(short_allow_rate));
+           document.getElementById("as_amount").value = as_amount.toFixed(2); // Round to 2 decimal places 
+     }
 
     // Check if the values are valid numbers before calculation
-    if (short_allow_rate && deductedLoan) {
-        var totalLoan = parseInt(short_allow_rate) - parseInt(deductedLoan);
+   // if (short_allow_rate && deductedLoan) {
+       // var totalLoan = parseInt(short_allow_rate) - parseInt(deductedLoan);
         // Display the calculated total loan in the total_loan input field
-        document.getElementById("total_loan").value = totalLoan; // Round to 2 decimal places
+        //document.getElementById("total_loan").value = totalLoan; // Round to 2 decimal places
+    //}
+    if (pervious && as_amount) {
+        var label211= parseInt(pervious) + parseInt(as_amount);
+        
+        // Display the calculated total loan in the total_loan input field
+        document.getElementById("label211").value = label211; // Round to 2 decimal places
     }
-    if (pervious && total_loan) {
-        var total_loan = parseInt(pervious) + parseInt(total_loan);
+    
+    if (deductedLoan && label211) {
+        var total_loan = parseInt(deductedLoan) - parseInt(label211);
         // Display the calculated total loan in the total_loan input field
-        document.getElementById("total_loan").value = total_loan; // Round to 2 decimal places
+        document.getElementById("total_loan").value = total_loan; // Round to 2 decimal places   
     }
  }
 

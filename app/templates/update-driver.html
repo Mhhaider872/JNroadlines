@@ -116,7 +116,12 @@
              <label  class="form-label fw-bold"
                 >Upload Image</label
               >
-            <input type="file" name="img" class="form-control"  value="{{ updatedriver.img }}">
+               {% if updatedriver.img %}
+                   <a href="{{ updatedriver.img.url }}" target="_blank">{{ updatedriver.img }}</a><br>
+                    {% else %}
+                     No image available
+                   {% endif %}
+            <input type="file" name="img" class="form-control">
            </div>
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-info px-4">Update</button>

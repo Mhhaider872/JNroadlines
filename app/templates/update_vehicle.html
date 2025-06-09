@@ -92,7 +92,12 @@
                 >Insurance Paper</label
               >
               {% comment %} <input type="file" name="img" class="form-control" accept=".pdf"> {% endcomment %}
-           <input type="file" name="insurance_img" class="form-control border-2" id="label6" accept=".pdf" value="{{ upvehicle.insurance_img }}">
+              {% if upvehicle.insurance_img %}
+                   <a href="{{ upvehicle.insurance_img }}" target="_blank">{{ upvehicle.insurance_img }}</a><br>
+                    {% else %}
+                     No Files
+                   {% endif %}
+           <input type="file" name="insurance_img" class="form-control border-2" id="label6" accept=".pdf" >
          </div>
          
           <div class="col-lg-3 mb-3">
@@ -111,7 +116,12 @@
            <label for="lable8" class="form-label fw-bold"
                 >State Permit Paper</label
               >
-           <input type="file" name="state_img" class="form-control border-2" id="label8" accept=".pdf" value="{{ upvehicle.state_img }}">
+                {% if upvehicle.state_img  %}
+                   <a href="{{ upvehicle.state_img}}" target="_blank">{{ upvehicle.state_img  }}</a><br>
+                    {% else %}
+                     No Files
+                   {% endif %}
+           <input type="file" name="state_img" class="form-control border-2" id="label8" accept=".pdf" >
          </div>
 
 
@@ -136,7 +146,12 @@
            <label for="lable10" class="form-label fw-bold"
                 >National Permit Paper</label
               >
-           <input type="file" name="national_img" class="form-control border-2" id="label10" accept=".pdf" value="{{ upvehicle.national_img}}">
+              {% if  upvehicle.national_img  %}
+                   <a href="{{  upvehicle.national_img}}" target="_blank">{{  upvehicle.national_img}}</a><br>
+                    {% else %}
+                     No Files
+                   {% endif %}
+           <input type="file" name="national_img" class="form-control border-2" id="label10" accept=".pdf">
          </div>
           
           <div class="col-lg-3 mb-3">
@@ -156,7 +171,12 @@
            <label for="lable12" class="form-label fw-bold"
                 >Fitness Paper</label
               >
-           <input type="file" name="fitness_img" class="form-control border-2" id="label12" accept=".pdf" value="{{ upvehicle.fitness_img }}">
+              {% if  upvehicle.fitness_img  %}
+                   <a href="{{  upvehicle.fitness_img}}" target="_blank">{{ upvehicle.fitness_img}}</a><br>
+                    {% else %}
+                     No Files
+                   {% endif %}
+           <input type="file" name="fitness_img" class="form-control border-2" id="label12" accept=".pdf" >
          </div>
           
           <div class="col-lg-3 mb-3">
@@ -176,7 +196,12 @@
            <label for="lable14" class="form-label fw-bold"
                 >Tax Paper</label
               >
-           <input type="file" name="tax_img" class="form-control border-2" id="label14" accept=".pdf" value="{{ upvehicle.tax_img }}">
+              {% if  upvehicle.tax_img  %}
+                   <a href="{{upvehicle.tax_img}}" target="_blank">{{ upvehicle.tax_img}}</a><br>
+                    {% else %}
+                     No Files
+                   {% endif %}
+           <input type="file" name="tax_img" class="form-control border-2" id="label14" accept=".pdf">
          </div>
          
           <div class="col-lg-3 mb-3">
@@ -195,7 +220,12 @@
         <label for="lable16" class="form-label fw-bold"
                 >PUC Paper</label
               >
-        <input type="file" name="puc_img" class="form-control border-2" id="label16" accept=".pdf" value="{{ upvehicle.puc_img }}">
+               {% if  upvehicle.puc_img  %}
+                   <a href="{{upvehicle.puc_img}}" target="_blank">{{ upvehicle.puc_img}}</a><br>
+                    {% else %}
+                     No Files
+                   {% endif %}
+        <input type="file" name="puc_img" class="form-control border-2" id="label16" accept=".pdf" >
       </div>
           
             <div class="col-lg-4 mb-3">

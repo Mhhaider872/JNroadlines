@@ -97,7 +97,7 @@
              <input class="form-control" name="From_address"  value="{{Exp_up.From_address}}" list="datalistOptions1"  id="exampleDataList1" placeholder="Search Company...">
                <datalist id="datalistOptions1" class="shadow-sm border-0" >
                 {% for c in company %}
-                 <option value="{{c.name}},{{c.city}}"></option>
+                 <option value="{{c.name}},{{c.short_name}}"></option>
                 {% endfor %}
                 </datalist>
           </div>
@@ -116,7 +116,7 @@
              <input class="form-control" name="To_address"  value="{{Exp_up.To_address}}" list="datalistOptions2" id="exampleDataList2" placeholder="Search Company...">
                <datalist id="datalistOptions2" class="shadow-sm border-0" >
                 {% for c in company %}
-                 <option value="{{c.name}}, {{c.city}}"></option>
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
                 {% endfor %}
                 </datalist>
           </div>
