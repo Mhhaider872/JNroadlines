@@ -70,7 +70,7 @@
                             <i class="bi bi-check-square-fill text-success"></i>
                       </div>
                       <div class="ps-3">
-                        <h6>0</h6>
+                        <h6>{{useitem}}</h6>
                       </div>
                     </div>
                     </a>
@@ -85,7 +85,7 @@
               <div class="col-lg-4 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
-                    <a class="icon" href="{% url "tool-show" %}" 
+                    <a class="icon" href="{% url "tools-show" %}" 
                       ><i class="bi bi-three-dots"></i
                     >
                   </div>
@@ -103,7 +103,7 @@
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
                       <div class="ps-3">
-                        <h6>0</h6>
+                        <h6>{{tool}}</h6>
                       </div>
                     </div>
                     </a>
@@ -114,7 +114,7 @@
               <div class="col-lg-4 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
-                    <a class="icon" href="#" 
+                    <a class="icon" href="{% url "tool-show" %}" 
                       ><i class="bi bi-three-dots"></i
                     >
                   </div>
@@ -132,7 +132,7 @@
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
                       <div class="ps-3">
-                        <h6>0</h6>
+                        <h6>{{usetool}}</h6>
                       </div>
                     </div>
                     </a>
@@ -144,7 +144,7 @@
  <div class="col-lg-4 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
-                    <a class="icon" href="#" 
+                    <a class="icon" href="{% url "Inout-show" %}" 
                       ><i class="bi bi-three-dots"></i
                     >
                   </div>
@@ -173,7 +173,7 @@
  <div class="col-lg-4 col-md-12">
                 <div class="card info-card revenue-card">
                   <div class="filter">
-                    <a class="icon" href="#" 
+                    <a class="icon" href="{% url "show-service" %}" 
                       ><i class="bi bi-three-dots"></i
                     >
                   </div>

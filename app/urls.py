@@ -291,6 +291,7 @@ urlpatterns =[
 
     path('add_service/', views.tanker_service, name='add-service'),
     path('show_service/', views.show_service, name='show-service'),
+    path('delete_service/<int:id>', views.delete_service, name='delete-service'),
     path('check_list/', views.check_list, name='check-list'),
     path('show_list/', views.show_list, name='show-list'),
   

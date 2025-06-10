@@ -61,6 +61,8 @@ def dashboard(request):
     triplocal=AakLocal.objects.count()
     trip_exp=Trip.objects.count()
     salary=Driver_salary.objects.count()
+    company=companydetails.objects.count()
+    driver=NewDriver_Details.objects.count()
 
     context = {
         'plan':plan,
@@ -72,7 +74,9 @@ def dashboard(request):
         'salary':salary,
         'tripgemini':tripgemini,
         'tripadani':tripadani,
-        'triplocal':triplocal
+        'triplocal':triplocal,
+        'company':company,
+        'driver':driver
     }
     return render(request,'index.html',context)
 
@@ -872,10 +876,11 @@ def doupdatedriver(request,id):
      updatedriver.licencenumber=licencenumber
      updatedriver.issuedates=issuedates
      updatedriver.trdates=trdates
-     updatedriver.img=img
+     if img:
+        updatedriver.img=img
      updatedriver.fname=fname
      updatedriver.save()
-     messages.success(request, "Driver update deleted successfully.")
+     messages.success(request, "Driver Update successfully.")
      return redirect('showdrivers')
 
 
@@ -4411,13 +4416,15 @@ def sunder_detail(request, invoice_id):
     return render(request, 'bills/Sunder/sunder_detail.html', {'invoice': invoice, 'items': items})
 
 
-
-    #=======================INVENTORY MANAGEMENT SYSTEM=============================================
+#=======================INVENTORY MANAGEMENT SYSTEM=============================================
 
 
 def inventroy_system(request):
     items=Items.objects.count()
-    context={'items':items}
+    useitem=UsedItem.objects.count()
+    tool=Tools.objects.count()
+    usetool=Usetool.objects.count()
+    context={'items':items,'useitem':useitem,'tool':tool,'usetool':usetool}
     
     return render(request, 'Inventory/dashboard.html',context)
 
@@ -4674,6 +4681,12 @@ def show_service(request):
     showservice=Service.objects.all()
     context={'showservice':showservice}
     return render(request, 'Inventory/service_show.html',context)
+
+
+def delete_service(request,id):
+    deltools=Service.objects.get(pk=id)
+    deltools.delete()
+    return redirect('show-service')
 
 #======================SHOW CHECK LIST=====================
 def check_list(request):

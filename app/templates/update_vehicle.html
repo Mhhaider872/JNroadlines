@@ -93,7 +93,7 @@
               >
               {% comment %} <input type="file" name="img" class="form-control" accept=".pdf"> {% endcomment %}
               {% if upvehicle.insurance_img %}
-                   <a href="{{ upvehicle.insurance_img }}" target="_blank">{{ upvehicle.insurance_img }}</a><br>
+                   <a href="{{ upvehicle.insurance_img.url }}" target="_blank">View</a><br>
                     {% else %}
                      No Files
                    {% endif %}
@@ -117,7 +117,7 @@
                 >State Permit Paper</label
               >
                 {% if upvehicle.state_img  %}
-                   <a href="{{ upvehicle.state_img}}" target="_blank">{{ upvehicle.state_img  }}</a><br>
+                   <a href="{{ upvehicle.state_img.url}}" target="_blank">View</a><br>
                     {% else %}
                      No Files
                    {% endif %}
@@ -147,7 +147,7 @@
                 >National Permit Paper</label
               >
               {% if  upvehicle.national_img  %}
-                   <a href="{{  upvehicle.national_img}}" target="_blank">{{  upvehicle.national_img}}</a><br>
+                   <a href="{{  upvehicle.national_img.url}}" target="_blank">View</a><br>
                     {% else %}
                      No Files
                    {% endif %}
@@ -172,7 +172,7 @@
                 >Fitness Paper</label
               >
               {% if  upvehicle.fitness_img  %}
-                   <a href="{{  upvehicle.fitness_img}}" target="_blank">{{ upvehicle.fitness_img}}</a><br>
+                   <a href="{{  upvehicle.fitness_img.url}}" target="_blank">View</a><br>
                     {% else %}
                      No Files
                    {% endif %}
@@ -197,7 +197,7 @@
                 >Tax Paper</label
               >
               {% if  upvehicle.tax_img  %}
-                   <a href="{{upvehicle.tax_img}}" target="_blank">{{ upvehicle.tax_img}}</a><br>
+                   <a href="{{upvehicle.tax_img.url}}" target="_blank">View</a><br>
                     {% else %}
                      No Files
                    {% endif %}
@@ -221,7 +221,7 @@
                 >PUC Paper</label
               >
                {% if  upvehicle.puc_img  %}
-                   <a href="{{upvehicle.puc_img}}" target="_blank">{{ upvehicle.puc_img}}</a><br>
+                   <a href="{{upvehicle.puc_img.url}}" target="_blank">View</a><br>
                     {% else %}
                      No Files
                    {% endif %}
