@@ -43,9 +43,23 @@
   <form method="POST" autocomplete="off">
   {% csrf_token %}
   <div class="row">
-    <div class="col-lg-3 mb-3">
+    {% comment %} <div class="col-lg-3 mb-3">
       <label for="ToolName" class="form-label fw-bold text-white">Tool Name</label>
       <input type="text" class="form-control rounded-0" id="ToolName" name="tool_name" placeholder="Tool Name">
+    </div> {% endcomment %}
+        <div class="col-lg-3 mb-3">
+            <label for="ToolName" class="form-label fw-bold text-white">Item Name</label>
+         <select class="form-control rounded-0" id="ToolName" name="tool_id" required>
+  <option disabled selected>-- Select Tools --</option>
+   {% for i in tool_name %}
+    <option value="{{ i.id}}">{{ i.tool_name }} (Available: {{ i.tool_qty }})</option>
+  {% endfor %}
+</select>
+
+            </div>
+     <div class="col-lg-3 mb-3">
+      <label for="qty" class="form-label fw-bold text-white">Quantity</label>
+      <input type="number" class="form-control rounded-0" id="qty" name="qty" step="any" placeholder="Quantity">
     </div>
 
     <div class="col-lg-3 mb-3">
@@ -53,7 +67,7 @@
       <input type="text" class="form-control rounded-0" id="person" name="person_name" placeholder="Person Name">
     </div>
 
-    <div class="col-lg-3 mb-3">
+    {% comment %} <div class="col-lg-3 mb-3">
       <label for="toolCategory" class="form-label fw-bold text-white">Tool Category</label>
       <select class="form-control rounded-0" id="toolCategory" name="tool_category">
         <option value="manual">Manual</option>
@@ -61,7 +75,7 @@
         <option value="safety">Safety</option>
         <option value="other">Other</option>
       </select>
-    </div>
+    </div> {% endcomment %}
 
     <div class="col-lg-3 mb-3">
       <label for="toolCondition" class="form-label fw-bold text-white">Tool Condition</label>

@@ -1364,9 +1364,10 @@ class Tools(models.Model):
 #===================USE TOOLS MODEL ==========================
 
 class Usetool(models.Model):
-    tool_name=models.CharField(max_length=200)
+    tool=models.ForeignKey(Tools, on_delete=models.CASCADE)
     person_name=models.CharField(max_length=200)
-    tool_category=models.CharField(max_length=200,null=True)
+    qty=models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    # tool_category=models.CharField(max_length=200,null=True)
     tool_condition=models.CharField(max_length=200,null=True)
     tool_take=models.DateTimeField(null=True)
     tool_return=models.DateTimeField(null=True)

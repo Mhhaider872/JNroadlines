@@ -12,7 +12,7 @@ from django.core.mail import send_mail
 from django.utils.dateparse import parse_datetime
 from num2words import num2words
 import os
-
+from decimal import Decimal, InvalidOperation
 
 
 
@@ -4591,25 +4591,51 @@ def delete_tool(request,id):
 def use_tool(request):
     if request.method == "POST":
         try:
-           tool_name = request.POST.get('tool_name')
-           person_name = request.POST.get('person_name')
-           tool_category = request.POST.get('tool_category')  
-           tool_condition = request.POST.get('tool_condition')
-           tool_take = request.POST.get('tool_take')
-           tool_return = request.POST.get('tool_return')
-           issue = request.POST.get('issue')
-           use_of = request.POST.get('use_of')
-           tool=Usetool.objects.create(tool_name=tool_name,person_name=person_name,tool_category=tool_category,tool_condition=tool_condition,tool_take=tool_take,tool_return=tool_return,issue=issue,use_of=use_of)
-           tool.save()
-           messages.success(request,"Used Tool Add Successfuly !")
-           return redirect('tool-show')
-        
+            tool_id = request.POST.get('tool_id')
+            person_name = request.POST.get('person_name')
+            tool_condition = request.POST.get('tool_condition')
+            tool_take = request.POST.get('tool_take')
+            tool_return = request.POST.get('tool_return')
+            issue = request.POST.get('issue')
+            use_of = request.POST.get('use_of')
+            qty_str = request.POST.get('qty')
+
+
+            try:
+                qty = Decimal(qty_str)
+            except (InvalidOperation, TypeError):
+                messages.error(request, "Invalid quantity.")
+                return redirect('tool-show')
+
+            tool = Tools.objects.get(id=int(tool_id))
+
+            if tool.tool_qty >= qty:
+                Usetool.objects.create(
+                    tool=tool,
+                    person_name=person_name,
+                    tool_condition=tool_condition,
+                    tool_take=tool_take,
+                    tool_return=tool_return,
+                    issue=issue,
+                    use_of=use_of,
+                    qty=qty
+                )
+                tool.tool_qty-= qty
+                tool.save()
+                messages.success(request, "Used Tool added successfully!")
+            else:
+                messages.error(request, "Not enough tool quantity available.")
+
+        except Tools.DoesNotExist:
+            messages.error(request, "Tool not found.")
         except Exception as e:
             messages.error(request, f"An error occurred: {str(e)}")
-            return redirect('tool-show')
 
+        return redirect('tool-show')
 
-    return render(request, 'Inventory/use_tools.html')
+    tool_name =Tools.objects.all()
+    context = {'tool_name': tool_name}
+    return render(request, 'Inventory/use_tools.html', context)
 
 def usetool_show(request):
      item_name = request.GET.get(' item_name')
