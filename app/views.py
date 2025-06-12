@@ -1365,6 +1365,29 @@ def start_trip(request):
     return render(request, 'exp/start_trip.html', context)
 
 
+def update_trip(request, trip_id):
+    trip = get_object_or_404(Trip, trip_id=trip_id)
+
+    if request.method == 'POST':
+        try:
+            trip.tanker = request.POST.get('tanker')
+            trip.trip_date = request.POST.get('trip_date')
+            trip.from_id = request.POST.get('from_id')
+            trip.To_id = request.POST.get('To_id')
+            trip.drivername = request.POST.get('drivername')
+            trip.f_trip = request.POST.get('f_trip') or None
+            trip.pending_trip = request.POST.get('pending_trip') 
+            trip.save()
+
+            messages.success(request, 'Trip updated successfully.')
+            return redirect('trip')
+
+        except Exception as e:
+            messages.error(request, f"Update failed: {str(e)}")
+            return redirect('trip')
+
+    return render(request, 'update_starttrip.html',{'trip': trip})
+
 
 
 
@@ -4470,7 +4493,10 @@ def delete_item(request,id):
     itemdelete.delete()
     return redirect('show-item')
 
-
+def update_tool(request,id):
+    updateitem=Items.objects.get(pk=id)
+    context={'updateitem':updateitem}
+    return render(request,'Inventory/update_item.html',context)
 
 
 #====================== USED ITEM FORM===========================
@@ -4697,3 +4723,9 @@ def check_list(request):
 def show_list(request):
 
     return render(request, 'Inventory/show_checklist.html')
+
+
+def gate_pass(request):
+
+    return render(request, 'Inventory/gate_pass.html')
+

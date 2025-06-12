@@ -142,6 +142,8 @@ urlpatterns =[
 
 
     path('start/', views.start_trip, name='start_trip'),
+    path('update-trip/<str:trip_id>/', views.update_trip, name='update_trip'),
+
 
     path('add_expense/<str:trip_id>/', views.add_expense, name='add_expense'),
     path('update_expense/<int:id>/',views.update_exp,name='update-exp'),
@@ -265,8 +267,8 @@ urlpatterns =[
     #=======================INVENTORY MANAGEMENT SYSTEM=============================================
     path('inventory/', views.inventroy_system, name='inventory-dashboard'),
     path('inventory_form/', views.inventroy_form, name='inventory-form'),
-    
     path('service_form/', views.service_form, name='service-form'),
+
     path('show_useitem/', views.show_useitem, name='show-useitem'),
     path('delete_useitem/<int:id>', views.delete_useite, name='del-useitem'),
 
@@ -287,6 +289,7 @@ urlpatterns =[
     path('item_count/', views.show_item, name='show-item'),
     path('Show_items/', views.show_item, name='show-item'),
     path('delete_items/<int:id>', views.delete_item, name='delete-item'),
+    path('update_items/<int:id>', views.update_tool, name='update-item'),
 
 
     path('add_service/', views.tanker_service, name='add-service'),
@@ -294,6 +297,9 @@ urlpatterns =[
     path('delete_service/<int:id>', views.delete_service, name='delete-service'),
     path('check_list/', views.check_list, name='check-list'),
     path('show_list/', views.show_list, name='show-list'),
+
+
+    path('gatepass/', views.gate_pass, name='gate-pass'),
   
 ]
 

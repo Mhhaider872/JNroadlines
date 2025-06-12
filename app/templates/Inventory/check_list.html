@@ -1,109 +1,9 @@
-{% comment %} 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Heavy Vehicle Checklist Form</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f8;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    .checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .checkbox-item {
-      flex: 1 1 45%;
-      background: #f9f9f9;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    input[type="text"], input[type="date"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    .submit-btn {
-      margin-top: 25px;
-      background: #007BFF;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      width: 100%;
-    }
-    .submit-btn:hover {
-      background: #0056b3;
-    }
-  </style>
-</head>
-<body>
-
-<div class="container">
-  <h2>Heavy Vehicle Checklist</h2>
-  
-  <form>
-    <label for="driverName">Driver Name:</label>
-    <input type="text" id="driverName" name="driverName" required>
-
-    <label for="vehicleNumber">Vehicle Number:</label>
-    <input type="text" id="vehicleNumber" name="vehicleNumber" required>
-
-    <label for="date">Date of Inspection:</label>
-    <input type="date" id="date" name="date" required>
-
-    <label>Checklist:</label>
-    <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="brakes"><label for="brakes">Brakes</label></div>
-      <div class="checkbox-item"><input type="checkbox" id="lights"><label for="lights">Lights & Indicators</label></div>
-      <div class="checkbox-item"><input type="checkbox" id="tires"><label for="tires">Tyres</label></div>
-      <div class="checkbox-item"><input type="checkbox" id="horn"><label for="horn">Horn</label></div>
-      <div class="checkbox-item"><input type="checkbox" id="wipers"><label for="wipers">Wipers</label></div>
-      <div class="checkbox-item"><input type="checkbox" id="mirrors"><label for="mirrors">Mirrors</label></div>
-      <div class="checkbox-item"><input type="checkbox" id="oil"><label for="oil">Engine Oil Level</label></div>
-      <div class="checkbox-item"><input type="checkbox" id="coolant"><label for="coolant">Coolant Level</label></div>
-    </div>
-
-    <label for="remarks">Remarks (if any):</label>
-    <input type="text" id="remarks" name="remarks">
-
-    <button type="submit" class="submit-btn">Submit Checklist</button>
-  </form>
-</div>
-
-</body>
-</html> {% endcomment %}
 
 
 
 
 
-{% include 'Inventory/base_checklist.html' %} 
+{% include 'base_bill.html' %} 
 {% load static %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <body>
@@ -162,13 +62,13 @@
   <table class="table table-bordered table-sm">
    <thead>
         <tr class="table-head text-center">
-            <th class="fs-1">Sr No.</th>
+            <th>Sr No.</th>
              <th>Parameters to be checked</th>
               <th>Ok</th>
                  <th>Not Ok</th>
                  <th>Observation if any</th>
         </tr>
-    </thead >
+    </thead>
     <tbody>
         <tr>
             <td class="text-center">1</td>
@@ -237,7 +137,7 @@
             <td class="text-center">10</td>
             <td>Tyre condition (Physical condition with visible)</td>
                  <td class="text-center"><i class="bi bi-square"></i></td>
-            <td class="text-center"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1"></td>
+            <td class="text-center"><i class="bi bi-square"></i></td>
             <td></td>
         </tr>
         <tr>

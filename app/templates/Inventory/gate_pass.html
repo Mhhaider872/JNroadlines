@@ -1,0 +1,176 @@
+
+
+
+
+
+
+{% include 'base_bill.html' %} 
+{% load static %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<body>
+  <main  class="main">
+
+    <!-- End Page Title -->
+    <section class="section-invoice">
+    <div class="invoice" >
+      <div class="py-2">
+
+        <div class="text-center">
+                <div class="d-flex align-items-center justify-content-center " href="#"
+          ><img
+            src="{% static '/img/logo_2.png' %}"
+            alt="My image"
+           style="width:80px;"
+        /><img
+            src="{% static '/img/logo_1.png' %}"
+            alt="My image"
+            class="d-none d-sm-block d-lg-inline"
+            style="width:160px"
+        /></div>
+        <h6 class="py-3"><strong>TANKER GATE PASS</strong?</h6> 
+        {% comment %} <h1>J N ROADLINES LLP</h1> {% endcomment %}
+        {% comment %} <p class="text-uppercase fw-bold">Fleet Owners & Transport Contractors</p>
+        <p class="text-uppercase fw-bold" style="padding:0px 150px">
+          1402,Orion west, 13th floor, 2nd Gaothan Lane,
+          Santacruz Railway Station Road, Opp Bhagwan Cutpiece, Mumbai-400054
+        </p> {% endcomment %}
+        {% comment %} <p><strong>Phone No :</strong> 9833209818</p><br>
+        <p class="text-decoration-underline"><strong>GSTIN No :</strong>27AAVFJ3706F1Z5</p>
+          <p class="text-decoration-underline"><strong>PAN No :</strong> AAVFJ3706F</p>
+        <p class="text-decoration-underline"><strong>UDYAM No : </strong>  UDYAM-MH-18-0022141</p> {% endcomment %}
+        {% comment %} <p><strong>FSSAI LICENSE No : </strong> 11521006000010</p> {% endcomment %}
+
+        </div>
+        
+        
+          
+          {% comment %} <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?data=https%3A%2F%2Fexample.com%2Finvoices%2F1234.pdf"> {% endcomment %}
+
+
+     
+      </div>
+
+    {% comment %} <div class="main-head py-4">
+
+        <div class="conpany-div">
+         
+            
+            <p><strong>Vehicle NO : _____________________________________ </strong></p>
+        </div>
+        
+        <div>
+            <p class="pra-bill"><strong>Date :________________________</strong></p><br>
+            <p class="pra-bill"><strong>Time :________________________</strong></p>
+
+        </div>
+
+</div> {% endcomment %}
+
+     
+
+
+
+  <div class="div-table py-0">
+  <div class="table-responsive">
+  <table class="table table-bordered table-lg">
+   {% comment %} <thead>
+        <tr class="table-head text-center">
+            <th>Date </th>
+             <th></th>
+              <th>Time</th>
+                 <th></th>
+              
+        </tr>
+    </thead> {% endcomment %}
+    <tbody>
+        <tr>
+     <td  width="100px" style="font-size:14px"><b>Date :</b></td>
+             <td style="font-size:14px"></td>
+              <td width="100px" style="font-size:14px"><b>Time </b></td>
+                 <td style="font-size:14px"></td>
+        </tr>
+        <td width="100px" style="font-size:14px"><b>Vehicle No </b></td>
+             <td style="font-size:14px"></td>
+              <td width="100px" style="font-size:14px"><b> Driver Name</b></td>
+                 <td style="font-size:14px"></td>
+        </tr>
+         </tr>
+        <td width="100px" style="font-size:14px"><b>In Time</b></td>
+        <td style="font-size:14px"></td>
+         <td width="100px" style="font-size:14px"><b>Out Time</b></td>
+        <td style="font-size:14px"></td>
+        </tr>
+      
+
+        
+    
+    </tbody>
+</table>
+
+<br>
+<br>
+<br>
+<br>
+ <table class="table table-bordered table-lg">
+   {% comment %} <thead>
+        <tr class="table-head text-center">
+            <th>Date </th>
+             <th></th>
+              <th>Time</th>
+                 <th></th>
+              
+        </tr>
+    </thead> {% endcomment %}
+    <tbody>
+        <tr class="text-center">
+     <td width="100px" style="font-size:14px"><b>IN</b></td>
+             <td style="font-size:14px"></td>
+              <td width="100px" style="font-size:14px"><b>OUT</b></td>
+                 <td style="font-size:14px"></td>
+        </tr>
+        <tr >
+        <td width="100px" style="font-size:14px"><b>Jack</b></td>
+             <td style="font-size:14px">Yes / No</td>
+              <td width="100px" style="font-size:14px"> <b>Jack</b></td>
+                 <td style="font-size:14px">Yes / No</td>
+        </tr>
+             <tr >
+        <td width="100px" style="font-size:14px"><b>Tommy</b></td>
+             <td style="font-size:14px">Yes / No</td>
+              <td width="100px" style="font-size:14px"><b> Tommy</b></td>
+                 <td style="font-size:14px">Yes / No</td>
+        </tr>
+          <tr>
+        <td width="100px" style="font-size:14px"><b>Stepney</b></td>
+             <td style="font-size:14px">Yes / No</td>
+              <td width="100px" style="font-size:14px"> <b>Stepney</b></td>
+                 <td style="font-size:14px">Yes / No</td>
+        </tr>
+
+      
+
+        
+    
+    </tbody>
+</table>
+             
+  </div>
+ 
+
+        
+
+
+     
+            <div class="btn-print" style="display: flex; gap: 10px;">
+
+  <button class="print-row-btn" onclick="window.print()">
+     <i class="bi bi-printer fs-4 text-white"></i>
+  </button>
+
+</div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+

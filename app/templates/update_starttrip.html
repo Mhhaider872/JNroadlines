@@ -1,0 +1,144 @@
+
+{% comment %} <!-- start_trip.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Trip</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <h1>Start a New Trip</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="trip_id">Tanker No.</label>
+        <input type="text" class="form-control" id="trip_id" name="trip_id" required>
+        <button type="submit" class="btn btn-danger my-3">Start Trip</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
+<!-- @format --> {% endcomment %}
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+<main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Add Start Trip</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+               
+                <h5 class="card-title">Update Start Trip</h5>
+
+    <form method="POST">
+     {% csrf_token %}
+       {% comment %} <div class="col-lg-4 mb-3">
+        <label for="trip_id">Tanker No.</label>
+        <input type="text" class="form-control" id="trip_id" name="trip_id" required>
+        </div> {% endcomment %}
+        <div class="row">
+          <div class="col-lg-3 mb-3">
+            <label for="trip_id" class="form-label fw-bold">Trip id</label>
+             <input type="text" class="form-control"  id="trip_id" name="trip_id" value="{{trip.trip_id}}"  readonly>
+             </div>
+         <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
+             <input class="form-control"  id="tanker" name="tanker" value="{{trip.tanker}}"    placeholder="Search to vehicle no..." >
+              
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">Drivers Name</label>
+             <input class="form-control border-2" id="exampleDataList2" name="drivername"  value="{{trip.drivername}}"  placeholder="Search to drivers...">
+           
+             </div>
+          <div class="col-lg-3 mb-3">
+            <label for="exampleDataList3" class="form-label fw-bold">From Address</label>
+             <input class="form-control border-2" name="from_id"  id="exampleDataList3" value="{{trip.from_id}}"  placeholder="Search to...">
+           
+          </div>
+<div class="col-lg-3 mb-3">
+            <label for="exampleDataList4" class="form-label fw-bold">To Address</label>
+             <input class="form-control border-2" name="To_id"  value="{{trip.To_id}}"  id="exampleDataList" placeholder="Search to...">
+          
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Trip Date</label
+            >
+            <input
+              type="date"
+              name="trip_date"
+              class="form-control  border-2"
+              id="label11"
+              value="{{trip.trip_date|date:'Y-m-d'}}" 
+            />
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="status" class="form-label fw-bold"
+              >Pending Trip </label
+            >
+             <input
+              type="text"
+              name="pending_trip"
+              class="form-control  border-2"
+              id="label11"
+              value="{{trip.pending_trip}}" 
+            />
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="label13" class="form-label fw-bold"
+              >Trip Fixed Amount</label
+            >
+            <input
+              type="number"
+              name="f_trip"
+              class="form-control  border-2"
+              id="label13"
+              min="0"
+              value="0"
+             
+            />
+          </div>
+          </div>
+        <button type="submit" class="btn btn-info my-3"> Update</button>
+
+        
+    </form>
+
+
+</main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+
+
+  </body>

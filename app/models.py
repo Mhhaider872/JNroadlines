@@ -54,6 +54,7 @@ class plandetails(models.Model):
     tanker_capacity=models.CharField(max_length=200)
     dispatch_Date=models.DateField(null=True,blank=True)
     status=models.CharField(max_length=100)
+    used_on = models.DateTimeField(auto_now_add=True,null=True)
 
 
     def save(self, *args, **kwargs):
@@ -438,6 +439,7 @@ class Trip(models.Model):
     pending_trip = models.CharField(max_length=50, null=True, blank=True )
     f_trip =models.IntegerField(null=True, blank=True)
     total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    used_on = models.DateTimeField(auto_now_add=True,null=True)
     
     # start_time = models.DateTimeField(auto_now_add=True)
     # end_time = models.DateField(null=True, blank=True)
@@ -1355,7 +1357,7 @@ class UsedItem(models.Model):
 
 class Tools(models.Model):
      tool_name=models.CharField(max_length=200)
-     tool_qty= models.PositiveIntegerField(default=0)
+     tool_qty= models.DecimalField(max_digits=10, decimal_places=2)
      tool_date=models.DateField()
      vendor_name=models.CharField(max_length=200)
 

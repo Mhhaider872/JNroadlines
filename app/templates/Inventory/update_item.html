@@ -1,6 +1,5 @@
 
 
-
 <!-- @format -->
 
 {% include 'Inventory/base.html' %}
@@ -8,7 +7,7 @@
   <body style="background:white;">
     <main id="main" class="main">
       <div class="pagetitle py-3">
-        <h1>Add Tools Used</h1>
+        <h1>Update Items</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -42,31 +41,27 @@
         <form  method="POST" autocomplete="off">
           {% csrf_token %}
           <div class="row">
-              {% comment %} <div class="col-lg-3 mb-3">
-            <label for="item" class="form-label fw-bold text-white">Tanker No</label>
-             <input type="text" class="form-control rounded-0" name="item_name"  id="item" placeholder="Tanker No">
-          </div> {% endcomment %}
            <div class="col-lg-3 mb-3">
-            <label for="item" class="form-label fw-bold text-white">Tool Name</label>
-             <input type="text" class="form-control rounded-0" name="tool_name"  id="item" placeholder="Itme Name">
+            <label for="item" class="form-label fw-bold text-white">Itme Name</label>
+             <input type="text" class="form-control rounded-0" name="item_name"  id="item" placeholder="Itme Name" value={{updateitem.item_name}}>
           </div>
             <div class="col-lg-3 mb-3">
             <label for="tanker" class="form-label fw-bold text-white">Quantity</label>
-             <input type="number" class="form-control rounded-0" name="tool_qty" step="any"  id="tanker" placeholder="Quantity">
+             <input type="number" class="form-control rounded-0" name="item_qty"  id="tanker" placeholder="Quantity" value={{updateitem.item_qty}}>
           </div>
-           <div class="col-lg-3 mb-3">
-            <label for="number" class="form-label fw-bold text-white">Purchase From</label>
-             <input type="text" class="form-control rounded-0" name="vendor_name"  id="number" placeholder="Purchase From">
+   <div class="col-lg-3 mb-3">
+            <label for="number" class="form-label fw-bold text-white">Purchase Date</label>
+             <input type="date" class="form-control rounded-0" name="item_date"  id="number" placeholder="Purchase Date" value={{updateitem.item_date|date:'Y-m-d'}}>
           </div>
   
              <div class="col-lg-3 mb-3">
-            <label for="vendor" class="form-label fw-bold text-white">Date</label>
-             <input type="date" class="form-control rounded-0" name="tool_date"  id="vendor" placeholder="Vendor Name">
+            <label for="vendor" class="form-label fw-bold text-white">Purchase From</label>
+             <input type="text" class="form-control rounded-0" name="vendor_name"  id="vendor" placeholder="Vendor Name" value={{updateitem.vendor_name}}>
           </div>
           
           <div class="btn-div text-center py-2">
-            <button type="submit" class="btn btn-success px-4">Add</button>
-            <a href="{% url "tools-show" %}" class="btn btn-light px-4">View</a>
+            <button type="submit" class="btn btn-info px-4">Update</button>
+            {% comment %} <a href="{% url "show-item" %}" class="btn btn-light px-4">View</a> {% endcomment %}
           </div>
         </form>
       </div>
