@@ -61,18 +61,30 @@
           </div>
           <div class="col-lg-3 mb-3">
             <label for="exampleDataList2" class="form-label fw-bold">Drivers Name</label>
-             <input class="form-control border-2" id="exampleDataList2" name="drivername"  value="{{trip.drivername}}"  placeholder="Search to drivers...">
-           
+             <input class="form-control border-2" id="exampleDataList2" list="driverslist" name="drivername"  value="{{trip.drivername}}"  placeholder="Search to drivers...">
+               <datalist id="driverslist" class="shadow-sm border-0" >
+                  {% for d in dname %}
+                 <option value="{{d.name}}">{{d.fname }}</option>
+                {% endfor %}
+                </datalist>
              </div>
           <div class="col-lg-3 mb-3">
             <label for="exampleDataList3" class="form-label fw-bold">From Address</label>
-             <input class="form-control border-2" name="from_id"  id="exampleDataList3" value="{{trip.from_id}}"  placeholder="Search to...">
-           
+             <input class="form-control border-2" name="from_id" list="datalistOptions1"  id="exampleDataList3" value="{{trip.from_id}}"  placeholder="Search to...">
+               <datalist id="datalistOptions1" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
           </div>
 <div class="col-lg-3 mb-3">
             <label for="exampleDataList4" class="form-label fw-bold">To Address</label>
-             <input class="form-control border-2" name="To_id"  value="{{trip.To_id}}"  id="exampleDataList" placeholder="Search to...">
-          
+             <input class="form-control border-2" name="To_id" list="datalistOptions2"  value="{{trip.To_id}}"  id="exampleDataList" placeholder="Search to...">
+                <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
           </div>
           <div class="col-lg-3 mb-3">
             <label for="label11" class="form-label fw-bold"

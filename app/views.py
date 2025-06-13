@@ -1385,8 +1385,12 @@ def update_trip(request, trip_id):
         except Exception as e:
             messages.error(request, f"Update failed: {str(e)}")
             return redirect('trip')
-
-    return render(request, 'update_starttrip.html',{'trip': trip})
+    vehicle=Add_Vehicle.objects.all()
+    # dname=DriverName.objects.all()
+    company=companydetails.objects.all()
+    dname=NewDriver_Details.objects.all()
+    context={'vehicle':vehicle,'company':company,'dname':dname,'trip': trip}
+    return render(request, 'update_starttrip.html',context)
 
 
 
