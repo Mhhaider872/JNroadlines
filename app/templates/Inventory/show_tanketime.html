@@ -10,7 +10,7 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle py-2">
-      <h1>Item Lists</h1>
+      <h1>In Out Lists</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
@@ -68,9 +68,9 @@
                     <th>Sr_No.</th>
                     <th width="200">Tanker No</th>
                     <th width="200">Driver Name</th>
-                    <th width="200">Tanker Type</th>
-                    <th width="200">Tanker Capacity</th>
-                    <th width="300">Tanker Condition</th>
+                    {% comment %} <th width="200">Tanker Type</th> {% endcomment %}
+                    {% comment %} <th width="200">Tanker Capacity</th> {% endcomment %}
+                  <th width="300">Tanker Condition</th>
                     <th width="300">Purpose of Entry</th>
                      <th width="300">Fire Extinguisher Present</th>
                        <th width="300">Safety Kit Present</th>
@@ -86,9 +86,9 @@
                     <td >{{forloop.counter }}</td>
                     <td width="200">{{t.tanke }}</td>
                     <td width="200">{{t.driver}}</td>
-                    <td width="200">{{t.tankertype}}</td>
-                    <td width="200" >{{t.tankercapacity}}</td>
-                    <td width="200">{{t.tankercondition}}</td>
+                    {% comment %} <td width="200">{{t.tankertype}}</td> {% endcomment %}
+                    {% comment %} <td width="200" >{{t.tankercapacity}}</td>{% endcomment %}
+                    <td width="200">{{t.tankercondition}}</td> 
                      <td width="200" >{{t.entry}}</td>
                      <td width="200">{{t.fire}}</td>
                      <td width="200">{{t.kit}}</td>

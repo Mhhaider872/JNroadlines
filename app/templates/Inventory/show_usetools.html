@@ -9,7 +9,7 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle py-2">
-      <h1>Item Lists</h1>
+      <h1>Used Tools Lists</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
@@ -67,7 +67,7 @@
                     <th>Sr_No.</th>
                     <th>Tool Name</th>
                     <th>Person Name</th>
-                    <th>Tool Category</th>
+                    {% comment %} <th>Tool Category</th> {% endcomment %}
                     <th>Tool Condition</th>
                     <th>Tool Taken Time</th>
                     <th>Expected Return Time</th>
@@ -82,7 +82,7 @@
                     <td class="text-center">{{forloop.counter }}</td>
                     <td>{{t.tool.tool_name }}</td>
                     <td>{{t.person_name }}</td>
-                    <td class="text-center">{{t.tool_category}}</td>
+                    {% comment %} <td class="text-center">{{t.tool_category}}</td> {% endcomment %}
                     <td>{{t.tool_condition }}</td>
                     <td>{{t.tool_take|date:"d/m/y P" }}</td>
                     <td>{{t.tool_return|date:"d/m/y P" }}</td>
