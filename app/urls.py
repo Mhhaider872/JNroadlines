@@ -211,9 +211,9 @@ urlpatterns =[
     path('ashland_invoices/', views.Ainvoice_list, name='ainvoice_list'),
     path('ashland/<int:invoice_id>/', views.Ainvoice_detail, name='ainvoice_detail'),
     #=======================Cargill Bill=============================================
-    # path('cargill-bill/', views.cargill_bill, name='create_bill_cargill'),
-    # path('cargill_invoices/', views.cainvoice_list, name='cinvoice_list'),
-    # path('cargill/<int:invoice_id>/', views.cainvoice_detail, name='cinvoice_detail'),
+    path('cargill-bill/', views.cargill_bill, name='create_bill_cargill'),
+    path('cargill_invoices/', views.cargill_list, name='cinvoice_list'),
+    path('cargill/<int:invoice_id>/', views.cargill_detail, name='cinvoice_detail'),
 
 
       #=======================Aak India INword Bill=============================================

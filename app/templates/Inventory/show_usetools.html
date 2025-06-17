@@ -1,8 +1,4 @@
 
-
-
-<!-- @format -->
-
 {% comment %} {% include 'base2.html' %} {% endcomment %}
 {% include 'Inventory/base.html' %}
 {% load static %}
@@ -67,7 +63,7 @@
                     <th>Sr_No.</th>
                     <th>Tool Name</th>
                     <th>Person Name</th>
-                    {% comment %} <th>Tool Category</th> {% endcomment %}
+                    <th>Quantity</th> 
                     <th>Tool Condition</th>
                     <th>Tool Taken Time</th>
                     <th>Expected Return Time</th>
@@ -82,7 +78,7 @@
                     <td class="text-center">{{forloop.counter }}</td>
                     <td>{{t.tool.tool_name }}</td>
                     <td>{{t.person_name }}</td>
-                    {% comment %} <td class="text-center">{{t.tool_category}}</td> {% endcomment %}
+                   <td class="text-center">{{t.qty}}</td>
                     <td>{{t.tool_condition }}</td>
                     <td>{{t.tool_take|date:"d/m/y P" }}</td>
                     <td>{{t.tool_return|date:"d/m/y P" }}</td>

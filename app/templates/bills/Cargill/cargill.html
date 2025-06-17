@@ -83,9 +83,22 @@
                 </datalist>
             </div>
             <div class="col-lg-3 mb-3">
-            <label for="item_description" class="form-label fw-bold">Dispatch Date :</label>
-            <input type="date" class="form-control border-2" name="date_dis">
+            <label for="item_description" class="form-label fw-bold">Dispatch Date & Time :</label>
+            <input type="datetime-local" class="form-control border-2" name="date_dis">
             </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Reach Date & Time :</label>
+            <input type="datetime-local" class="form-control border-2" name="date_rec">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Unload Date & Time :</label>
+            <input type="datetime-local" class="form-control border-2" name="date_un">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Days</label>
+            <input type="text" class="form-control border-2" name="day">
+            </div>
+            
             <div class="col-lg-3 mb-3">
             <label for="exampleDataList3" class="form-label fw-bold">From Address :</label>
             <input type="text" class="form-control border-2" name="From_add" list="datalistOptions3" id="exampleDataList3" placeholder="Search From Address...">
@@ -158,19 +171,19 @@ Shortages / Excess Qty K.G :</label>
             <label for="Fo" class="form-label fw-bold"
               >Charges Name :</label
             ><select id="Fo" class="form-select" name="charges">
-    <option value="">Select</option>
-    <option value="Detention Charges">Detention Charges</option>
+    <option value="ADD (RS.)">ADD (RS.)</option>
+    {% comment %} <option value="Detention Charges">Detention Charges</option>
     <option value="Union Charges">Union Charges</option>
     <option value="Double Driver Charges">Double Driver Charges</option>
     <option value="Tanker Cleaning Services">Tanker Cleaning Services</option>
     <option value="Storage & Reshuffling Oil">Storage & Reshuffling Oil</option>
     <option value="Local Trip- 1 Lakhs Charges As a Rent">Local Trip- 1 Lakhs Charges As a Rent</option>
      <option value="Extra Diesel, Toll, Urea-( No GST)">Extra Diesel, Toll, Urea-( No GST)</option>
-    <option value="Local Trip- Toll, Diesel-( No GST)">Local Trip- Toll, Diesel-( No GST)</option>
+    <option value="Local Trip- Toll, Diesel-( No GST)">Local Trip- Toll, Diesel-( No GST)</option> {% endcomment %}
     </select>
            
         </div>
-        <div class="col-lg-3 mb-3">
+        {% comment %} <div class="col-lg-3 mb-3">
             <label for="sac" class="form-label fw-bold"
               >HSN/SAC:</label
             >
@@ -182,8 +195,8 @@ Shortages / Excess Qty K.G :</label>
     <option value="No GST">No GST</option>
    
     </select>
-        </div>
-        <div class="col-lg-3 mb-3">
+        </div> {% endcomment %}
+        {% comment %} <div class="col-lg-3 mb-3">
             <label for="label5" class="form-label fw-bold"
               >From </label
             >
@@ -204,7 +217,7 @@ Shortages / Excess Qty K.G :</label>
               class="form-control"
               id="To_date"
             />
-        </div>
+        </div> {% endcomment %}
          <div class="col-lg-3 mb-3">
             <label for="label18" class="form-label fw-bold">Rate </label>
             <input
@@ -243,18 +256,8 @@ Shortages / Excess Qty K.G :</label>
                readonly
             />
         </div>
-    </div>
-    {% comment %} <div class="col-lg-3">
-
-    <select id="item-select" class="form-select" onchange="addItemRowFromDropdown()">
-    <option value="">Charges</option>
-    <option value="item1">Detention Charges</option>
-    <option value="item3">Union Charges</option>
-    <option value="item2">Double Driver Charges</option>
-    <option value="item2">Tanker Cleaning Charges</option>
-    
-    </select>
-    </div> {% endcomment %}
+        
+        
 <div class="btn-div text-center py-4">
     
     <button type="submit" class="btn btn-success px-4">Create Invoice</button>
@@ -440,6 +443,21 @@ Shortages / Excess Qty K.G :</label>
         } else {
             let total = perrate * day;
             document.getElementById('totals').value = total; // Display the total in the input field
+        }
+    }
+</script>
+  <script>
+    function Totals() {
+        // Get the values of the input fields by their IDs
+        let perrates = parseFloat(document.getElementById('perrates').value);
+        let days = parseFloat(document.getElementById('days').value);
+
+        // If either kg or rate is NaN (not a number), don't calculate the total
+        if (isNaN(perrates) || isNaN( days)) {
+            document.getElementById('totals').value = ''; // Clear the total field if invalid input
+        } else {
+            let total = perrates * days;
+            document.getElementById('total').value = total; // Display the total in the input field
         }
     }
 </script>
