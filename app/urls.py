@@ -255,7 +255,10 @@ urlpatterns =[
     path('shri_invoice/<int:invoice_id>/', views.shri_detail, name='sr_invoice_detail'),
 
 
-
+    #=======================VINAY ENTERPRISES Bill=============================================
+    path('vinay-bill/', views.vinay_bill, name='vin_bill'),
+    path('vinay_invoices/', views.vinay_list, name='vin_list'),
+    path('vinay_invoice/<int:invoice_id>/', views.vinay_detail, name='vin_detail'),
 
 
     #=======================SUNDER AGRO Bill=============================================

@@ -68,6 +68,7 @@ admin.site.register(UsedItem)
 admin.site.register(Tools)
 admin.site.register(Usetool)
 admin.site.register(CRInvoice)
+admin.site.register(VE_Invoice)
 
 
 
