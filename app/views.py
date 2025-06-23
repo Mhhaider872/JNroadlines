@@ -1244,7 +1244,7 @@ def company_details(request):
           messages.error(request, 'Company already exists !!')
           return redirect('company-details')
       else:
-          cname=companydetails(name=name,area_name=area_name,state=state,city=city if city else None,pincode=pincode if pincode else None,gst=gst if gst else None,pan=pan if pan else None,contact_no=contact_no if contact_no else None,short_name=short_name if short_name else None)
+          cname=companydetails(name=name,area_name=area_name,state=state if state else None,city=city if city else None,pincode=pincode if pincode else None,gst=gst if gst else None,pan=pan if pan else None,contact_no=contact_no if contact_no else None,short_name=short_name if short_name else None)
           cname.save()
           messages.success(request, 'Company details added successfully !!') 
           return redirect('s-company')
@@ -5179,3 +5179,34 @@ def gate_pass(request):
     return render(request, 'Inventory/gate_pass.html')
 
 
+#=========================PROFIT & LOSS===========================================
+def profit(request):
+    if request.method=="POST":
+      tanker=request.POST.get("tanker")
+      from_add=request.POST.get("from_add")
+      to_add=request.POST.get("to_add")
+      trip=request.POST.get("trip")
+      bill=request.POST.get("bill")
+      company=request.POST.get("company")
+      expese=request.POST.get("expese")
+      bill_amount=request.POST.get("bill_amount")
+      total=request.POST.get("total")
+
+      profit=Profit.objects.create(tanker=tanker,from_add=from_add,to_add=to_add,trip=trip,bill=bill,company=company,expese=expese,bill_amount=bill_amount,total=total)
+      profit.save()
+      messages.success(request,"Data Add Successfuly !")
+      return redirect('show_pro')
+    vehicle=Add_Vehicle.objects.all()
+    company=companydetails.objects.all()
+    context={'vehicle':vehicle,'company':company}
+    return render(request, 'profit_loss.html',context)
+
+def Showprofit(request):
+    showprofit=Profit.objects.all()
+    context={'showprofit':showprofit}
+    return render(request,'show_profit.html',context)
+
+
+
+def tally(request):
+    return render(request,'Tally_bill.html')

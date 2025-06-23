@@ -1,10 +1,11 @@
+
 <!-- @format -->
 
 {% include 'base2.html' %} {% load static %}
 <body>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Plan Details</h1>
+      <h1>Profit & Loss Details</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
@@ -37,36 +38,37 @@
                 {% endfor %}
               </div>
               {% endif %}
-              <table class="table table-dark datatable" id="Record">
+              <table class="table datatable" id="Record">
                 <thead>
                   <tr>
                     <th>Sr_No.</th>
                     <th>Tanker_No</th>
-                    <th>Driver_Name</th>
                     <th>From_Address</th>
                     <th>To_Address</th>
-                    <th>Tanker_Capacity</th>
-                    <th>Dispatch_Date</th>
-                    <th>Status</th>
-                    <th>Created_at</th>
-
+                    <th>Trip_Date</th>
+                    <th>Bill_Date</th>
+                    <th>Company</th>
+                    <th>Expense_Amount</th>
+                    <th>Bill_Amount</th>
+                    <th>Profit_&_Loss</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for p in showplans %}
+                  {% for p in showprofit %}
                   <tr>
                     <td>{{forloop.counter }}</td>
-                    <td>{{p.tankerno }}</td>
-                    <td>{{p.drivername }}</td>
-                    <td>{{p.From_address }}</td>
-                    <td>{{p.To_address}}</td>
-                    <td>{{p.tanker_capacity }}</td>
-                    <td>{{ p.dispatch_Date|date:"d/m/Y" }}</td>
-                    <td>
-                      <span class="badge bg-success">{{p.status}}</span>
-                    </td>
-                    <td>{{ p.used_on|date:"d/m/Y P" }}</td>
+                    <td>{{p.tanker}}</td>
+                    <td>{{p.from_add}}</td>
+                    <td>{{p.to_add }}</td>
+
+                    <td>{{ p.trip|date:"d/m/Y" }}</td>
+                    <td>{{ p.bill|date:"d/m/Y" }}</td>
+                     <td>{{p.company}}</td>
+                      <td>{{p.expese}}</td>
+                       <td>{{p.bill_amount }}</td>
+                        <td>{{p.total}}</td>
+                  
                     
                     <td>
                       <a

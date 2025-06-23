@@ -1526,3 +1526,17 @@ class Service(models.Model):
     type=models.CharField(max_length=200)
     date=models.DateTimeField(null=True)
     remark=models.TextField()
+
+
+
+#==========================PROFIT & LOSS==============================
+class Profit(models.Model):
+    tanker=models.CharField(max_length=200)
+    from_add=models.CharField(max_length=200)
+    to_add=models.CharField(max_length=200)
+    trip=models.DateField()
+    bill=models.DateField()
+    company=models.CharField(max_length=200)
+    expese=models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    bill_amount=models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total=models.DecimalField(max_digits=10, decimal_places=2, default=0)

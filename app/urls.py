@@ -303,6 +303,11 @@ urlpatterns =[
 
 
     path('gatepass/', views.gate_pass, name='gate-pass'),
+    
+    #==========================PROFIT & LOSS=====================
+    path('profit_loss/', views.profit, name='profit'),
+    path('show_profit/', views.Showprofit, name='show_pro'),
+    path('tally-bill/', views.tally, name='tally_bill'),
   
 ]
 

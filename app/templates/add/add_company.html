@@ -93,7 +93,7 @@
              
              </select> {% endcomment %}
              <label for="state" class="form-label fw-bold" >Select State:</label>
-              <input class="form-control border-2" list="statelist" id="state" name="state" placeholder="Select state..." required>
+              <input class="form-control border-2" list="statelist" id="state" name="state" placeholder="Select state..." >
                <datalist id="statelist" class="shadow-sm border-0" >
                   <option value="">Select State</option>
                  {% for s in state%}
@@ -105,7 +105,7 @@
 
            <div class="col-lg-4 mb-3"> 
           <label for="city" class="form-label fw-bold">Select City:</label>
-          <input class="form-control border-2" list="citylist" id="city" name="city" placeholder="Select city..." required>
+          <input class="form-control border-2" list="citylist" id="city" name="city" placeholder="Select city...">
                <datalist id="citylist" class="shadow-sm border-0" >
                  <option value="">Select City</option>
                  {% for s in city%}
