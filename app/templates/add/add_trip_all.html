@@ -54,7 +54,7 @@
         <form  method="POST">
         {% csrf_token %}
           <div class="row">
-              <div class="col-lg-4 mb-3">
+              {% comment %} <div class="col-lg-4 mb-3">
               <label for="tankerno" class="form-label fw-bold">Tanker No</label>
               <select id="tankerno" name="tankerno" class="form-select">
              <option value="">-- Select Tanker --</option>
@@ -63,7 +63,17 @@
               {% endfor %}
               </select>
             
-            </div>
+            </div> {% endcomment %}
+            <div class="col-lg-4 mb-3">
+  <label for="tankerno" class="form-label fw-bold">Tanker No</label>
+  <input list="tankers" id="tankerno" name="tankerno" class="form-control" placeholder="Search Tanker No" />
+  <datalist id="tankers">
+    {% for plan in plans %}
+    <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
+    {% endfor %}
+  </datalist>
+</div>
+
 
 
             <div class="col-lg-4 mb-3">
