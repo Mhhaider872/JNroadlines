@@ -76,6 +76,20 @@
                 {% endfor %}
                 </datalist>
              </div>
+              <div class="col-lg-4 mb-3">
+            <label for="driverloan" class="form-label fw-bold"
+              >Driver Loan</label
+            >
+            <input
+              type="text"
+              class="form-control border-2"
+              name="driverloan"
+              min="0"
+              id="driverloan"
+              oninput="calculateTotalShort()"
+              readonly
+            />
+        </div>
            <div class="col-lg-4 mb-3">
             <label for="label6" class="form-label fw-bold"
               >Trip Date</label
@@ -219,7 +233,7 @@
               name="loan_amount"
               min="0"
               id="label21"
-              value={{shortage.actual_amount}}
+              value={{shortage.actual_amount|default:"0"}}
               oninput="calculateTotalShort()"
             />
         </div>
@@ -295,6 +309,8 @@
      var pervious = document.getElementById("pervious").value;
      var total_loan = document.getElementById("total_loan").value;
      var loadedQtyPercent = document.getElementById("loadedQtyPercent").value;
+     var driverloanVal = document.getElementById("driverloan").value;
+     var previousVal = document.getElementById("pervious").value;
      
      
             
@@ -347,6 +363,12 @@
         // Display the calculated total loan in the total_loan input field
         document.getElementById("total_loan").value = total_loan; // Round to 2 decimal places   
     }
+     if (driverloanVal && previousVal) {
+         var driverloan = parseInt(driverloanVal) + parseInt(previousVal);
+         document.getElementById("driverloan").value = driverloan;
+      }
+      
+    
  }
 
 </script>
@@ -360,7 +382,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const driverInput = document.querySelector('input[name="drivername"]');
-    const previousLoanInput = document.getElementById('pervious');
+    const totalLoanInput = document.getElementById('driverloan'); // Change here
 
     driverInput.addEventListener('change', function () {
         const driverName = this.value;
@@ -370,8 +392,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.shortage !== undefined) {
-                        previousLoanInput.value = data.shortage;
-                        calculateTotalShort(); // Optional: recalculate loan
+                        totalLoanInput.value = data.shortage; // Set loan directly in Total field
+                        calculateTotalShort(); // Optional: if needed
                     }
                 })
                 .catch(error => {
@@ -380,7 +402,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-</script>
 
+</script>
   </body>
 

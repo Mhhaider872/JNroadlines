@@ -273,6 +273,12 @@ urlpatterns =[
     path('rion_invoice/<int:invoice_id>/', views.rion_detail, name='rion_detail'),
 
 
+    #=======================NHT & COMPANY Bill=============================================
+    path('NHT-bill/', views.NHT_bill, name='NHT_bill'),
+    path('NHT_invoices/', views.NHT_list, name='NHT_list'),
+    path('NHT_invoice/<int:invoice_id>/', views.NHT_detail, name='NHT_detail'),
+
+
     #=======================INVENTORY MANAGEMENT SYSTEM=============================================
     path('inventory/', views.inventroy_system, name='inventory-dashboard'),
     path('inventory_form/', views.inventroy_form, name='inventory-form'),
