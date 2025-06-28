@@ -73,9 +73,6 @@
     {% endfor %}
   </datalist>
 </div>
-
-
-
             <div class="col-lg-4 mb-3">
             <label for="fadd" class="form-label fw-bold">From Address</label>
             <input type="text" class="form-control" id="From_address" name="From_address" readonly>
@@ -108,6 +105,8 @@
                name="arrival_time"
                class="form-control"
                id="label4"
+                min="2025-01-01T00:00"
+                max="2030-12-31T23:59"
                
                onchange="formatTimeLabel4()"  
                />
@@ -121,6 +120,8 @@
               name="dispatch_time"
               class="form-control"
               id="label5"
+              min="2025-01-01T00:00"
+              max="2030-12-31T23:59"
             />
           </div>
          
@@ -135,52 +136,10 @@
               name="reach_time"
               class="form-control"
               id="label5"
+              min="2025-01-01T00:00"
+              max="2030-12-31T23:59"
             />
-          </div>
-{% comment %} 
-          <div class="col-lg-4 mb-3">
-            <label for="label8" class="form-label fw-bold">Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ashok mama )</label>
-            <input
-              type="text"
-              class="form-control"
-              name="product"
-              min="0"
-              id="label8"
-            />
-          </div> {% endcomment %}
-          {% comment %} <div class="col-lg-4 mb-3">
-            <label for="label5" class="form-label fw-bold"
-              >Vehicle Date & Time when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  </label
-            >
-            <input
-              type="datetime-local"
-              name="ardate"
-              class="form-control"
-              id="label5"
-            />
-          </div> {% endcomment %}
-          {% comment %} <div class="col-lg-4 mb-3">
-            <label for="label9" class="form-label fw-bold">Vehicle Kilometer Per Trip (As per Ganesh Sir)  </label>
-            <input
-              type="number"
-              class="form-control"
-              name="traday"
-              min="0"
-              id="label9"
-            />
-          </div> {% endcomment %}
-
-        {% comment %} <div class="col-lg-4 mb-3">
-            <label for="label9" class="form-label fw-bold">Vehicle Kilometer Per Trip (As per Ashok Mama )  </label>
-            <input
-              type="number"
-              class="form-control"
-              name="traday"
-              min="0"
-              id="label9"
-            />
-          </div> {% endcomment %}
-        
+          </div>  
           <div class="col-lg-4 mb-3">
             <label for="label12" class="form-label fw-bold"
               >Unloading date & time</label
@@ -190,6 +149,8 @@
               name="unload_time"
               class="form-control shadow-sm border-0"
               id="label12"
+              min="2025-01-01T00:00"
+              max="2030-12-31T23:59"
             />
         </div>
         
@@ -212,6 +173,8 @@
               name="lr_date"
               class="form-control"
               id="label18"
+              min="2025-01-01"
+              max="2030-12-31"
             />
         </div>
          <div class="col-lg-4 mb-3">
@@ -235,6 +198,8 @@
               class="form-control"
               name="freight_date"
               id="label20"
+              min="2025-01-01"
+              max="2030-12-31"
             />
         </div>
         <div class="col-lg-4 mb-3">
@@ -436,6 +401,7 @@ document.getElementById("tankerno").addEventListener("change", function() {
 <script>
   function formatTimeLabel4() {
     const input = document.getElementById("label4").value;
+    const input = document.getElementById("label4").value;
     if (!input) return;
 
     const date = new Date(input);
@@ -451,5 +417,17 @@ document.getElementById("tankerno").addEventListener("change", function() {
     document.getElementById("formattedTimeLabel4").innerText = `Selected Time: ${formattedTime}`;
   }
 </script>
+{% comment %} <script>
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const hh = String(today.getHours()).padStart(2, '0');
+  const min = String(today.getMinutes()).padStart(2, '0');
+
+  const currentDateTime = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+  document.getElementById('label4').value = currentDateTime;
+</script> {% endcomment %}
+
   </body>
 

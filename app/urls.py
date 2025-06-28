@@ -267,6 +267,12 @@ urlpatterns =[
     path('sunder_invoice/<int:invoice_id>/', views.sunder_detail, name='sagro_detail'),
 
 
+    #=======================RION REFOIL Bill=============================================
+    path('rion-bill/', views.rion_bill, name='rion_bill'),
+    path('rion_invoices/', views.rion_list, name='rion_list'),
+    path('rion_invoice/<int:invoice_id>/', views.rion_detail, name='rion_detail'),
+
+
     #=======================INVENTORY MANAGEMENT SYSTEM=============================================
     path('inventory/', views.inventroy_system, name='inventory-dashboard'),
     path('inventory_form/', views.inventroy_form, name='inventory-form'),
@@ -308,7 +314,10 @@ urlpatterns =[
     path('profit_loss/', views.profit, name='profit'),
     path('show_profit/', views.Showprofit, name='show_pro'),
     path('tally-bill/', views.tally, name='tally_bill'),
-  
+    path('api/get-driver-shortage/', views.get_driver_shortage, name='get-driver-shortage'),
+    
+
+    
 ]
 
 

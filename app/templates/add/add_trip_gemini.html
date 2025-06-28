@@ -40,7 +40,7 @@
         <form  method="POST">
         {% csrf_token %}
           <div class="row">
-           <div class="col-lg-4 mb-3">
+           {% comment %} <div class="col-lg-4 mb-3">
               <label for="tankerno" class="form-label fw-bold">Tanker No</label>
               <select id="tankerno" name="tankerno" class="form-select">
              <option value="">-- Select Tanker --</option>
@@ -49,7 +49,16 @@
               {% endfor %}
               </select>
             
-            </div>
+            </div> {% endcomment %}
+          <div class="col-lg-4 mb-3">
+            <label for="tankerno" class="form-label fw-bold">Tanker No</label>
+            <input list="tankers" id="tankerno" name="tankerno" class="form-control" placeholder="Search Tanker No" />
+            <datalist id="tankers">
+            {% for plan in plans %}
+            <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
+           {% endfor %}
+           </datalist>
+          </div>
 
 
             <div class="col-lg-4 mb-3">
@@ -84,6 +93,8 @@
               name="arrival_time"
               class="form-control"
               id="label4"
+              min="2025-01-01T00:00"
+              max="2030-12-31T23:59"
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -95,6 +106,8 @@
               name="dispatch_time"
               class="form-control"
               id="label5"
+              min="2025-01-01T00:00"
+              max="2030-12-31T23:59"
             />
           </div>
          
@@ -136,52 +149,11 @@
               name="reach_time"
               class="form-control"
               id="label5"
+              min="2025-01-01T00:00"
+              max="2030-12-31T23:59"
             />
           </div>
-{% comment %} 
-          <div class="col-lg-4 mb-3">
-            <label for="label8" class="form-label fw-bold">Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ashok mama )</label>
-            <input
-              type="text"
-              class="form-control"
-              name="product"
-              min="0"
-              id="label8"
-            />
-          </div> {% endcomment %}
-          {% comment %} <div class="col-lg-4 mb-3">
-            <label for="label5" class="form-label fw-bold"
-              >Vehicle Date & Time when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  </label
-            >
-            <input
-              type="datetime-local"
-              name="ardate"
-              class="form-control"
-              id="label5"
-            />
-          </div> {% endcomment %}
-          {% comment %} <div class="col-lg-4 mb-3">
-            <label for="label9" class="form-label fw-bold">Vehicle Kilometer Per Trip (As per Ganesh Sir)  </label>
-            <input
-              type="number"
-              class="form-control"
-              name="traday"
-              min="0"
-              id="label9"
-            />
-          </div> {% endcomment %}
 
-        {% comment %} <div class="col-lg-4 mb-3">
-            <label for="label9" class="form-label fw-bold">Vehicle Kilometer Per Trip (As per Ashok Mama )  </label>
-            <input
-              type="number"
-              class="form-control"
-              name="traday"
-              min="0"
-              id="label9"
-            />
-          </div> {% endcomment %}
-        
           <div class="col-lg-4 mb-3">
             <label for="label12" class="form-label fw-bold"
               >Unloading date & time</label
@@ -191,6 +163,8 @@
               name="unload_time"
               class="form-control shadow-sm border-0"
               id="label12"
+              min="2025-01-01T00:00"
+              max="2030-12-31T23:59"
             />
         </div>
         
@@ -213,6 +187,8 @@
               name="lr_date"
               class="form-control"
               id="label18"
+              min="2025-01-01"
+              max="2030-12-31"
             />
         </div>
          <div class="col-lg-4 mb-3">
@@ -236,6 +212,8 @@
               class="form-control"
               name="freight_date"
               id="label20"
+              min="2025-01-01"
+              max="2030-12-31"
             />
         </div>
         <div class="col-lg-4 mb-3">

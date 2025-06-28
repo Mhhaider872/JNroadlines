@@ -102,11 +102,12 @@
               name="dispatch_Date"
               class="form-control border-2"
               id="dateInput"
+              maxlength="10"
             />
           </div>
            <div class="col-lg-4 mb-3">
            <label for="id_status" class="form-label fw-bold">Status</label>
-           <select id="id_status" name="status" class="form-control border-2">
+           <select id="id_status" name="status"  class="form-control border-2">
             <option value="DISPATCH" selected>Dispatch</option>
            </select>
            </div> 
@@ -164,4 +165,14 @@
     const currentDate = `${yyyy}-${mm}-${dd}`;
     document.getElementById('dateInput').value = currentDate;
   </script>
+  <script>
+  const dateInput = document.getElementById("dateInput");
+
+  dateInput.addEventListener("input", function () {
+    // Limit to 10 characters
+    if (this.value.length > 10) {
+      this.value = this.value.slice(0, 10);
+    }
+  });
+</script>
 </body>

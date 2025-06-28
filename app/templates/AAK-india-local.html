@@ -38,7 +38,7 @@
         <form  method="POST">
           {% csrf_token %}
           <div class="row">
-            <div class="col-lg-4 mb-3">
+            {% comment %} <div class="col-lg-4 mb-3">
               <label for="tankerno" class="form-label fw-bold">Tanker No</label>
               <select id="tankerno" name="tankerno" class="form-select">
              <option value="">-- Select Tanker --</option>
@@ -47,7 +47,20 @@
               {% endfor %}
               </select>
             
+            </div> {% endcomment %}
+
+            <div class="col-lg-4 mb-3">
+             <label for="tankerno" class="form-label fw-bold">Tanker No</label>
+             <input list="tankers" id="tankerno" name="tankerno" class="form-control" placeholder="Search Tanker No" />
+             <datalist id="tankers">
+             {% for plan in plans %}
+              <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
+             {% endfor %}
+             </datalist>
             </div>
+            
+
+
 
 
             <div class="col-lg-4 mb-3">
@@ -82,7 +95,8 @@
                name="arrival_time"
                class="form-control"
                id="label4"
-               
+                min="2025-01-01T00:00"
+                max="2030-12-31T23:59"
                onchange="formatTimeLabel4()"  
                />
                </div>
@@ -95,6 +109,8 @@
               name="dispatch_time"
               class="form-control"
               id="label5"
+               min="2025-01-01T00:00"
+                max="2030-12-31T23:59"
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -106,6 +122,8 @@
               name="reach_time"
               class="form-control"
               id="label9"
+               min="2025-01-01T00:00"
+                max="2030-12-31T23:59"
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -170,6 +188,8 @@ the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
               name="returned"
               min="0"
               id="label2"
+               min="2025-01-01T00:00"
+                max="2030-12-31T23:59"
             />
           </div>
 
@@ -218,6 +238,8 @@ Per Trip (As per Ashok Mama )</label>
               name="lr_date"
               class="form-control"
               id="label16"
+              min="2025-01-01"
+              max="2030-12-31"
             />
         </div>
          <div class="col-lg-4 mb-3">
@@ -241,6 +263,8 @@ Per Trip (As per Ashok Mama )</label>
               class="form-control"
               name="freight_date"
               id="label18"
+              min="2025-01-01"
+              max="2030-12-31"
             />
         </div>
         <div class="col-lg-4 mb-3">
