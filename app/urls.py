@@ -163,6 +163,8 @@ urlpatterns =[
     path('all_trip/', views.AllTrip, name='trip'),
     path('delete_all_trip/<int:id>', views.del_allTrip, name='delete-trip'),
 
+    #======================WEBSITE ====================================
+
     # path('create-invoice/', views.create_invoice, name='create_invoice'),
     # path('invoice/<int:invoice_id>/', views.invoice_detail, name='invoice_detail'),
 
@@ -277,6 +279,16 @@ urlpatterns =[
     path('NHT-bill/', views.NHT_bill, name='NHT_bill'),
     path('NHT_invoices/', views.NHT_list, name='NHT_list'),
     path('NHT_invoice/<int:invoice_id>/', views.NHT_detail, name='NHT_detail'),
+
+    #=======================MURLIWALA TRADERS Bill=============================================
+    path('murli-bill/', views.murli_bill, name='murli_bill'),
+    path('murli_invoices/', views.murli_list, name='murli_list'),
+    path('murli_invoice/<int:invoice_id>/', views.murli_detail, name='murli_detail'),
+
+    #=======================MALANI TRADING Bill=============================================
+    path('malani-bill/', views.malani_bill, name='malani_bill'),
+    path('malani_invoices/', views.malani_list, name='malani_list'),
+    path('malani_invoice/<int:invoice_id>/', views.malani_detail, name='malani_detail'),
 
 
     #=======================INVENTORY MANAGEMENT SYSTEM=============================================

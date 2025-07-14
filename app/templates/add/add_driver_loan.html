@@ -141,13 +141,11 @@
             <label for="label15" class="form-label fw-bold"
               >Allow Percentage in Qty</label
             >
-            <input
-              type="number"
-              class="form-control border-2"
-              name="actual_short"
-              min="0"
-              id="loadedQtyPercent" name="loadedQtyPercent" oninput="calculateTotalShort()" step="0.01"
-            />
+            <input type="number" class="form-control border-2"
+       name="actual_short"
+       id="loadedQtyPercent"
+       oninput="calculateTotalShort()" step="0.01" />
+
         </div>
           <div class="col-lg-4 mb-3">
             <label for="label220" class="form-label fw-bold">Total KG On Driver Loan </label>
@@ -298,91 +296,47 @@
         }
     </script> {% endcomment %}
 <script>
-    function calculateTotalShort() {
-     // Get the values of disqty, unlodqty, shortallow, and rate
-     var disqty = document.getElementById("disqty").value;
-     var unlodqty = document.getElementById("unlodqty").value;
-     var shortallow = document.getElementById("shortallow").value;
-     var rate = document.getElementById("label22").value;  // Add this line to fetch the rate
-     var short_allow_rate = document.getElementById("short_allow_rate").value;
-     var deductedLoan = document.getElementById("label21").value;
-     var pervious = document.getElementById("pervious").value;
-     var total_loan = document.getElementById("total_loan").value;
-     var loadedQtyPercent = document.getElementById("loadedQtyPercent").value;
-     var driverloanVal = document.getElementById("driverloan").value;
-     var previousVal = document.getElementById("pervious").value;
-     
-     
-            
-     
-     // Ensure values are numbers and disqty and unlodqty are available
-     // var loadedQtyPercent = (parseFloat(disqty) - parseFloat(shortallow));
-     if (disqty && unlodqty) {
-         // Calculate totalshort and update it
-         var totalshort =parseInt(disqty) - parseInt(unlodqty)  ;
-         document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
-     }
+function calculateTotalShort() {
+    // Input fields with default 0
+    var disqty = parseFloat(document.getElementById("disqty").value) || 0;
+    var unlodqty = parseFloat(document.getElementById("unlodqty").value) || 0;
+    var shortallow = parseFloat(document.getElementById("shortallow").value) || 0;
+    var rate = parseFloat(document.getElementById("label22").value) || 0;
+    var deductedLoan = parseFloat(document.getElementById("label21").value) || 0; // Trip Loan
+    var previousLoan = parseFloat(document.getElementById("pervious").value) || 0;
+    var driverLoan = parseFloat(document.getElementById("driverloan").value) || 0;
 
-     // Ensure the Allow Percentage (shortallow) and Loaded Qty (disqty) are valid numbers
-     if (disqty && shortallow) {
-         // Calculate and update the shortages allowed (as percentage of loaded qty)
-          
-         var loadedQtyPercent = (parseFloat(disqty) * parseFloat(shortallow)) / 100;
-         document.getElementById("loadedQtyPercent").value = loadedQtyPercent; // Round to 2 decimal places 
-     }
+    // 1. Shortage
+    var totalshort = disqty - unlodqty;
+    document.getElementById("totalshort").value = totalshort.toFixed(2);
 
-     // Ensure rate is a valid number
-     if (totalshort && loadedQtyPercent) {
-         // Calculate and update the shortage allowance rate
-         var short_allow_rate = (parseFloat(totalshort) - parseFloat(loadedQtyPercent));
-         document.getElementById("short_allow_rate").value = short_allow_rate.toFixed(2); // Round to 2 decimal places 
-     }
-     
-        // Ensure rate is a valid number
-     if (rate && short_allow_rate) {
-        
-           var as_amount = (parseFloat(rate) * parseFloat(short_allow_rate));
-           document.getElementById("as_amount").value = as_amount.toFixed(2); // Round to 2 decimal places 
-     }
+    // 2. Allowed Shortage in Qty
+    var loadedQtyPercent = (disqty * shortallow) / 100;
+    document.getElementById("loadedQtyPercent").value = loadedQtyPercent.toFixed(2);
 
-    // Check if the values are valid numbers before calculation
-   // if (short_allow_rate && deductedLoan) {
-       // var totalLoan = parseInt(short_allow_rate) - parseInt(deductedLoan);
-        // Display the calculated total loan in the total_loan input field
-        //document.getElementById("total_loan").value = totalLoan; // Round to 2 decimal places
-    //}
-    if (pervious && as_amount) {
-        var label211= parseInt(pervious) + parseInt(as_amount);
-        
-        // Display the calculated total loan in the total_loan input field
-        document.getElementById("label211").value = label211; // Round to 2 decimal places
-    }
-    
-    if (deductedLoan && label211) {
-        var total_loan =parseInt(label211) - parseInt(deductedLoan);
-        // Display the calculated total loan in the total_loan input field
-        document.getElementById("total_loan").value = total_loan; // Round to 2 decimal places   
-    }
-     if (driverloanVal && previousVal) {
-         var driverloan = parseInt(driverloanVal) + parseInt(previousVal);
-         document.getElementById("driverloan").value = driverloan;
-      }
-      
-    
- }
+    // 3. Final shortage (chargeable)
+    var short_allow_rate = totalshort - loadedQtyPercent;
+    document.getElementById("short_allow_rate").value = short_allow_rate.toFixed(2);
 
+    // 4. Shortage amount to be deducted
+    var shortageAmount = short_allow_rate * rate;
+    document.getElementById("as_amount").value = shortageAmount.toFixed(2);
+
+    // 5. Actual amount = previous loan + shortage amount
+    var actualAmount = previousLoan + shortageAmount;
+    document.getElementById("label211").value = actualAmount.toFixed(2);
+
+    // 6. Total = driver loan + previous - trip loan
+    var finalTotal = (driverLoan + previousLoan) - deductedLoan;
+    document.getElementById("total_loan").value = finalTotal.toFixed(2);
+}
 </script>
 
-<script>
-    document.getElementById('company-select').addEventListener('change', function() {
-        var selectedUrl = this.value;  // Get the selected URL
-        window.location.href = selectedUrl;  // Redirect to the selected URL
-    });
-</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const driverInput = document.querySelector('input[name="drivername"]');
-    const totalLoanInput = document.getElementById('driverloan'); // Change here
+    const totalLoanInput = document.getElementById('driverloan');
 
     driverInput.addEventListener('change', function () {
         const driverName = this.value;
@@ -392,8 +346,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.shortage !== undefined) {
-                        totalLoanInput.value = data.shortage; // Set loan directly in Total field
-                        calculateTotalShort(); // Optional: if needed
+                        totalLoanInput.value = data.shortage;
+                        calculateTotalShort();
                     }
                 })
                 .catch(error => {
@@ -402,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
 </script>
+
   </body>
 
