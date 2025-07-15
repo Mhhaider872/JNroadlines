@@ -291,6 +291,28 @@ urlpatterns =[
     path('malani_invoice/<int:invoice_id>/', views.malani_detail, name='malani_detail'),
 
 
+    #=========================PATEL TRADERS Bill=============================================
+    path('patel-bill/', views.patel_bill, name='patel_bill'),
+    path('patel_invoices/', views.patel_list, name='patel_list'),
+    path('patel_invoice/<int:invoice_id>/', views.patel_detail, name='patel_detail'),
+
+
+
+    #=========================KOP AGRO TECH Bill=============================================
+    path('KOP-bill/', views.KOP_bill, name='KOP_bill'),
+    path('KOP_invoices/', views.KOP_list, name='KOP_list'),
+    path('KOP_invoice/<int:invoice_id>/', views.KOP_detail, name='KOP_detail'),
+
+
+    #=========================HABHIT WELLNESS Bill=============================================
+    # path('habit-bill/', views.habit_bill, name='habit_bill'),
+    # path('habit_invoices/', views.habit_list, name='habit_list'),
+    # path('habit_invoice/<int:invoice_id>/', views.habit_detail, name='habit_detail'),
+
+    
+
+
+
     #=======================INVENTORY MANAGEMENT SYSTEM=============================================
     path('inventory/', views.inventroy_system, name='inventory-dashboard'),
     path('inventory_form/', views.inventroy_form, name='inventory-form'),

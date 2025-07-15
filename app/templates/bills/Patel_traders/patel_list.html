@@ -1,11 +1,12 @@
 
+
 <!-- @format -->
 
 {% include 'base2.html' %} {% load static %}
 <body>
   <main id="main" class="main">
     <div class="pagetitle py-3">
-      <h1>Murliwala Traders Lists</h1>
+      <h1>Patel Traders Lists</h1>
       {% comment %} <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
@@ -43,14 +44,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                   {% for invoice in invoices %}
+                   {% for invoice in tbnvoices %}
     <tr>
         <td>{{ invoice.invoice_number }}</td>
         <td>{{ invoice.date }}</td>
         <td>{{ invoice.company }}</td>
         <td>{{ invoice.grand_total }}</td>
         <td>
-            <a href="{% url 'murli_detail' invoice.id %}">View Bill</a>
+            <a href="{% url 'patel_detail' invoice.id %}">View Bill</a>
         </td>
     </tr>
     {% endfor %}

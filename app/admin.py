@@ -74,3 +74,4 @@ admin.site.register(Profit)
 
 
 
+
