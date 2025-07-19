@@ -202,7 +202,10 @@ urlpatterns =[
     path('create-bill/', views.adani_bill, name='create_bill'),
     path('invoices/', views.invoice_list, name='invoice_list'),
     path('invoice/<int:invoice_id>/', views.invoice_detail, name='invoice_detail'),
-
+    #=========================Adani (KAKINADA) Bill=============================================
+    path('adaniK-bill/', views.adk_bill, name='adaniK_bill'),
+    path('adaniK_invoices/', views.adk_list, name='adaniK_list'),
+    path('adaniK_invoice/<int:invoice_id>/', views.adk_detail, name='adaniK_detail'),
     #=======================Gemini Bill=============================================
     path('gemini-bill/', views.gemini_bill, name='create_bill_gemini'),
     path('gemini_invoices/', views.Ginvoice_list, name='ginvoice_list'),
@@ -309,6 +312,32 @@ urlpatterns =[
     # path('habit_invoices/', views.habit_list, name='habit_list'),
     # path('habit_invoice/<int:invoice_id>/', views.habit_detail, name='habit_detail'),
 
+
+    #=========================DHANLAXMI EDIBLES PVT Bill=============================================
+    path('dhanlaxmi-bill/', views.dhan_bill, name='dhanlaxmi_bill'),
+    path('dhanlaxmi_invoices/', views.dhan_list, name='dhanlaxmi_list'),
+    path('dhanlaxmi_invoice/<int:invoice_id>/', views.dhan_detail, name='dhanlaxmi_detail'),
+    
+    
+    #=========================BARRY CALLEBAUT PVT Bill=============================================
+    path('barry-bill/', views.barry_bill, name='barry_bill'),
+    path('barry_invoices/', views.barry_list, name='barry_list'),
+    path('barry_invoice/<int:invoice_id>/', views.barry_detail, name='barry_detail'),
+
+
+    #=========================CARGILL BHIMASAR Bill=============================================
+    path('cargill-bhimasar-bill/', views.bhima_bill, name='bhima_bill'),
+    path('cargill-bhimasar_invoices/', views.bhima_list, name='bhima_list'),
+    path('cargill-bhimasar_invoice/<int:invoice_id>/', views.bhima_detail, name='bhima_detail'),
+
+
+    #=========================CARGILL KURKUMBH Bill=============================================
+    path('kurkumbh-bill/', views.kurkm_bill, name='kurkumbh_bill'),
+    path('kurkumbh_invoices/', views.kurkm_list, name='kurkumbh_list'),
+    path('kurkumbh-bhimasar_invoice/<int:invoice_id>/', views.kurkm_detail, name='kurkumbh_detail'),
+
+    
+    
     
 
 

@@ -70,6 +70,8 @@ admin.site.register(Usetool)
 admin.site.register(CRInvoice)
 admin.site.register(VE_Invoice)
 admin.site.register(Profit)
+admin.site.register(DE_Invoice)
+admin.site.register(BC_Invoice)
 
 
 
