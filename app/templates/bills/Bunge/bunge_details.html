@@ -1,4 +1,6 @@
 
+
+
 {% include 'base_tally.html' %} 
 {% load static %}
 <style>
@@ -20,7 +22,7 @@
      <tbody>
      <tr>
      
-      <td class="p-0" rowspan="4" width="400px"><h1 class="fs-3">J N ROADLINES LLP</h1>
+      <td rowspan="4" width="400px"><h1 class="fs-3">J N ROADLINES LLP</h1>
         {% comment %} <p class="text-uppercase fw-bold">Fleet Owners & Transport Contractors</p> {% endcomment %}
            <p class="text-uppercase">
           1402,Orion west, 13th floor, cTS no. h/250, 251, Station Road,
@@ -31,14 +33,14 @@
         <p><strong>GSTIN No :</strong>27AAVFJ3706F1Z5</p>
           <p ><strong>PAN No :</strong> AAVFJ3706F</p>
         <p ><strong>UDYAM No : </strong>UDYAM-MH-19-0347131</p></td>
-      <td colspan="2"><strong>Invoice No: {{ invoice.invoice_number }}</strong></td>
-      <td colspan="2"><strong>Date : {{ invoice.date|date:"d/m/Y"  }}</strong></td>
+      <td colspan="2"><strong>Invoice No: {{ invoice.invoice_number }} </strong></td>
+      <td colspan="2"><strong>Date : {{ invoice.date|date:"d/m/Y"  }} </strong></td>
     </tr>
     <tr>
       
 
-      <td colspan="2" rowspan="3" ><strong>Dispatch From : <p class="text-uppercase"> {{invoice.From_add}} </strong></p></td>
-      <td colspan="2" rowspan="3"><strong>To Destination : <p class="text-uppercase">{{invoice.To_add}} </strong></p></td>
+      <td colspan="2" rowspan="3" ><strong>Dispatch From :</strong> <p class="text-uppercase"> {{invoice.From_add}} </p></td>
+      <td colspan="2" rowspan="3"><strong>To Destination :</strong> <p class="text-uppercase">{{invoice.To_add}} </p></td>
     </tr>
 
  
@@ -56,7 +58,7 @@
     </tr>
     <tr>
      
-      <td rowspan="4"><h1>Bill To - </h1><p class="text-uppercase"><strong>{{ invoice.company}}</strong></p>
+      <td rowspan="4"><h1>Bill To - </h1><br><p class="text-uppercase"><strong>{{ invoice.company}}</strong></p>
         {% comment %} <p class="text-uppercase fw-bold">Fleet Owners & Transport Contractors</p> {% endcomment %}
            {% comment %} <p class="text-uppercase">
           1402,Orion west, 13th floor, cTS no. h/250, 251, Station Road,
@@ -95,21 +97,21 @@
   <table class="table table-bordered table-sm m-0">
    <thead>
         <tr>
-            <th width="50px" style="font-weight:600;">Sr No.</th>
+            <th style="font-weight:600;">Sr No.</th>
              {% comment %} <th>Tanker No.</th> {% endcomment %}
-              <th style="font-weight:600;" >Dispatch Date</th>
+              <th width="100px" style="font-weight:600;" >Dispatch Date</th>
               
                  {% comment %} <th>LR No.</th> {% endcomment %}
-                 <th  style="font-weight:600;">HSN/SAC Code</th>
-                  <th style="font-weight:600;">Total (KG)</th>
-                   {% comment %} <th width="100px" style="font-weight:200;">Loaded QTY(KG)</th>
-                    <th width="100px" style="font-weight:200;">Unloaded QTY(KG)</th>
-                     <th width="100px" style="font-weight:200;">Excess/ Shortage QTY(KG) </th>
-                      <th width="100px" style="font-weight:200;">Return QTY(KG)</th> {% endcomment %}
-                       <th  style="font-weight:600;">Rate Per(KG)</th>
+                 <th width="100px" style="font-weight:600;">HSN/SAC Code</th>
+                  <th width="200px" style="font-weight:600;">Chargable QTY(KG)</th>
+                   <th width="200px" style="font-weight:600;">Loaded QTY(KG)</th>
+                    <th width="200px" style="font-weight:600;">Unloaded QTY(KG)</th>
+                     <th width="200px" style="font-weight:600;">Excess/ Shortage QTY(KG) </th>
+                      <th width="100px" style="font-weight:600;">Return QTY(KG)</th>
+                       <th width="200px" style="font-weight:600;">Rate Per(KG)</th>
                     {% comment %} <th>From Address</th>
                 <th>To Address</th> {% endcomment %}
-            <th  style="font-weight:600;">Freight Rs.</th>
+            <th width="100px" style="font-weight:600;">Freight Rs.</th>
         </tr>
     </thead>
     <tbody >
@@ -124,10 +126,10 @@
             {% comment %} <td width="100px">{{invoice.lr_no}}</td> {% endcomment %}
             <td width="100px">{{invoice.sac}}</td>
             <td width="100px">{{ item.quantity }}</td>
-            {% comment %} <td width="100px">{{invoice.tanker_cap}} </td> {% endcomment %}
-            {% comment %} <td width="100px">{{ invoice.unload }}</td>
+            <td width="100px">{{invoice.tanker_cap}} </td>
+            <td width="100px">{{ invoice.unload }}</td>
             <td width="100px">{{ invoice.short }}</td>
-            <td width="100px">{{ invoice.retn }}</td> {% endcomment %}
+            <td width="100px">{{ invoice.retn }}</td>
              
             <td width="100px">{{ item.unit_price }}</td>
             {% comment %} <td width="200px">{{invoice.From_add}}</td>
@@ -137,19 +139,25 @@
         {% endfor %}
         <tr>
      
-       
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-           
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
            
           
         </tr>
         <tr>
-   
+     
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -162,10 +170,10 @@
         
                     <tr>
          <td></td>
-            <td colspan="3"></td>
+            <td colspan="5"></td>
             
        
-            <td colspan="1"><strong>Sub-Total</strong></td>
+            <td colspan="3"><strong>Sub-Total</strong></td>
              <td><strong>₹{{invoice.total_amount }}</strong></td>
 
         
@@ -173,45 +181,45 @@
       
                     <tr>
          <td></td>
-            <td colspan="3"></td>
+            <td colspan="5"></td>
             
        
-            <td colspan="1"><strong>OUTPUT SGST @ 6% </strong></td>
-             <td>₹{{ invoice.cgst }}</td>
+            <td colspan="3"><strong>OUTPUT SGST @ 6% </strong></td>
+             <td>₹{{ invoice.cgst|default:"0.00"|floatformat:2 }}</td>
 
         
         </tr>
         <tr>
          <td></td>
-            <td colspan="3"></td>
+            <td colspan="5"></td>
 
-            <td colspan="1"><strong>OUTPUT CGST @ 6%</strong></td>
-            <td>₹{{ invoice.sgst }}</td>
+            <td colspan="3"><strong>OUTPUT CGST @ 6%</strong></td>
+            <td>₹{{ invoice.sgst|default:"0.00"|floatformat:2 }}</td>
         </tr>
          <tr>
          <td></td>
-            <td colspan="3"></td>
+            <td colspan="5"></td>
 
-            <td colspan="1"><strong>OUTPUT IGST @ 12%</strong></td>
-            <td>₹{{ invoice.igst }}</td>
+            <td colspan="3"><strong>OUTPUT IGST @ 12%</strong></td>
+            <td>₹{{ invoice.igst|default:"0.00"|floatformat:2 }}</td>
         </tr>
         <tr>
          <td></td>
-            <td colspan="3"></td>
+            <td colspan="5"></td>
 
-            <td colspan="1" class="fw-bold"><strong>Total</strong></td>
+            <td colspan="3" class="fw-bold"><strong>Total</strong></td>
              <td class="fw-bold"><strong>₹{{ invoice.fright_total }}</strong></td>
         </tr>
         <tr>
   <td></td>
+  <td colspan="5"></td>
   <td colspan="3"></td>
-  <td colspan="1"></td>
   <td></td>
         </tr>
         <tr>
          <td></td>
             <td colspan="3"><strong>{{ invoice.charges }}</strong></td>
-            <td colspan="1">{% if invoice.charges %}<strong>  SAC Code-</strong> {{invoice.hsac}}{% else %}
+            <td colspan="2">{% if invoice.charges %}<strong>  SAC Code-</strong> {{invoice.hsac}}{% else %}
     <strong></strong>
 {% endif %}</td>
            
@@ -224,8 +232,8 @@
             <td></td>
             <td></td>
             <td></td> {% endcomment %}
-       
-            <td>{% if invoice.charges %}<strong>₹{{invoice.total_d}}</strong>{% else %}
+            <td  colspan="3" ></td>
+            <td>{% if invoice.charges %}<strong>₹{{invoice.total_d|default:"0.00"|floatformat:2}}</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
         </tr>
@@ -233,7 +241,7 @@
 
         <tr>
                    <td></td>
-                     <td colspan="3">{% if invoice.Fo_date %}
+                     <td colspan="5">{% if invoice.Fo_date %}
      <strong>( {{invoice.Fo_date|date:"d/m/Y"}}  To {{invoice.To_date|date:"d/m/Y"}} = {{invoice.par_day}} Day)    ( Rs-{{invoice.d_rate}} /- Per day  *  {{invoice.par_day}} Days )</strong>
 {% else %}
 
@@ -243,24 +251,24 @@
                   <td></td>
                    <td></td> 
                     <td></td>{% endcomment %}
-                     <td colspan="1"></td>
+                     <td  colspan="3"></td>
                      <td></td>
 
                   </tr>
                    <tr>
                    <td></td>
-                     <td colspan="3"> </td> 
+                     <td colspan="5"> </td> 
                 {% comment %} <td></td>
                  <td></td>
                   <td></td>
                    <td></td> 
                     <td></td>{% endcomment %}
-                     <td  colspan="1">{% if invoice.charges %}<strong>Sub-Total</strong>{% else %}
+                     <td  colspan="3">{% if invoice.charges %}<strong>Sub-Total</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
                
                    
-                    <td>{% if invoice.charges %}<strong>₹{{invoice.total_d}}</strong>{% else %}
+                    <td>{% if invoice.charges %}<strong>₹{{invoice.total_d|default:"0.00"|floatformat:2}}</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
                  
@@ -268,13 +276,13 @@
                   </tr>
                   <tr>
          <td></td>
-            <td colspan="3"></td>
+            <td colspan="5"></td>
             
        
-            <td colspan="1" >{% if invoice.charges %}<strong>OUTPUT SGST @ 9%</strong>{% else %}
+            <td colspan="3" >{% if invoice.charges %}<strong>OUTPUT SGST @ 9%</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
-             <td>{% if invoice.charges %}₹{{invoice.s_gst}} {% else %}
+             <td>{% if invoice.charges %}₹{{invoice.s_gst|default:"0.00"|floatformat:2}} {% else %}
     <strong></strong>
 {% endif %}</td>
 
@@ -282,31 +290,31 @@
         </tr>
         <tr>
          <td></td>
-            <td colspan="3"></td>
+            <td colspan="5"></td>
 
-            <td colspan="1" >{% if invoice.charges %}<strong>OUTPUT CGST @ 9%</strong>{% else %}
+            <td colspan="3" >{% if invoice.charges %}<strong>OUTPUT CGST @ 9%</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
-            <td>{% if invoice.charges %}₹{{invoice.c_gst}} {% else %}
+            <td>{% if invoice.charges %}₹{{invoice.c_gst|default:"0.00"|floatformat:2}} {% else %}
     <strong></strong>
 {% endif %}</td>
         </tr>
          <tr>
          <td></td>
-            <td colspan="3"></td>
+            <td colspan="5"></td>
 
-            <td colspan="1" >{% if invoice.charges %}<strong>OUTPUT IGST @ 18%</strong>{% else %}
+            <td colspan="3" >{% if invoice.charges %}<strong>OUTPUT IGST @ 18%</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
-            <td>{% if invoice.charges %}₹{{invoice.i_gst}} {% else %}
+            <td>{% if invoice.charges %}₹{{invoice.i_gst|default:"0.00"|floatformat:2}} {% else %}
     <strong></strong>
 {% endif %}</td>
         </tr>
          <tr>
          <td></td>
-            <td colspan="3"></td>
+            <td colspan="5"></td>
 
-            <td colspan="1"  class="fw-bold">{% if invoice.charges %}<strong>Total(2)</strong>{% else %}
+            <td colspan="3"  class="fw-bold">{% if invoice.charges %}<strong>Total(2)</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
              <td class="fw-bold">{% if invoice.charges %}<strong>₹{{invoice.g_total}}</strong>{% else %}
@@ -316,12 +324,12 @@
 
           <tr>
           <td></td> 
-          <td colspan="3" ></td>
-    
-            <td colspan="1" ><strong>ROUNDED TO RS:</strong></td> 
+          <td colspan="5">
+          
+            <td colspan="3" ><strong>ROUNDED TO RS:</strong></td> 
        
-            <td class="fw-bold"><strong>₹{{ invoice.grand_total }}</strong></td>
-        </tr>
+            <td class="fw-bold"><strong>₹{{ invoice.grand_total|default:"0.00"|floatformat:2 }}</strong></td>
+        </tr> 
     </tbody>
 </table>
   </div>
@@ -373,7 +381,7 @@
     }, 1000);
   }
 </script>
-
+]
 
 
   

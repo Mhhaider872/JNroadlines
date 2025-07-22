@@ -1,9 +1,12 @@
 
+
+
 {% include 'base_tally.html' %} 
 {% load static %}
 <style>
   * {
-    font-size: 8px !important;
+
+    font-size: 10px !important;
     font-family: "Times New Roman", Times, Georgia, serif;
   }
 </style>
@@ -56,7 +59,7 @@
     </tr>
     <tr>
      
-      <td rowspan="4"><h1>Bill To - </h1><p class="text-uppercase"><strong>{{ invoice.company}}</strong></p>
+      <td rowspan="4"><h1 class="fs-3">Bill To - </h1><p class="text-uppercase"><strong>{{ invoice.company}}</strong></p>
         {% comment %} <p class="text-uppercase fw-bold">Fleet Owners & Transport Contractors</p> {% endcomment %}
            {% comment %} <p class="text-uppercase">
           1402,Orion west, 13th floor, cTS no. h/250, 251, Station Road,
@@ -64,8 +67,8 @@
         </p> {% endcomment %}
 
         {% comment %} <p><strong>Phone No :</strong> 9833209818</p><br> {% endcomment %}
-        <p class="text-uppercase"><strong>GST No :</strong>{{ invoice.gst }}</p>
-        <p class="text-uppercase"><strong>PAN No :</strong> {{ invoice.pan }}</p>
+        <p ><strong>GST No :</strong>{{ invoice.gst }}</p>
+        <p ><strong>PAN No :</strong> {{ invoice.pan }}</p>
         {% comment %} <p ><strong>State Name :</strong> Maharashtra</p> {% endcomment %}
         </td>
       {% comment %} <td colspan="2"><strong>Dispatch Doc No.</strong></td>

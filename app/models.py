@@ -755,7 +755,7 @@ class AKItem(models.Model):
         return self.description
     
 #=======================ASHLAND BILLING SYSTEM ==================================
-class AInvoice(models.Model):
+class ASL_Invoice(models.Model):
     invoice_number = models.CharField(max_length=100)
     date=models.DateField(null=True, blank=True)
     company=models.CharField(max_length=300, null=True, blank=True)
@@ -779,21 +779,23 @@ class AInvoice(models.Model):
     To_date=models.DateField(null=True, blank=True)
     d_rate=models.IntegerField(null=True, blank=True)
     par_day=models.IntegerField(null=True, blank=True)
-    total_d=models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    # t_rate=models.IntegerField(null=True, blank=True)
-    # tpar_day=models.IntegerField(null=True, blank=True)
-    # total_t=models.DecimalField(max_digits=10, decimal_places=2, default=0) 
-    cgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
-    sgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
-    igst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    total_d=models.IntegerField(null=True, blank=True) 
+    cgst = models.FloatField(default=0.0,null=True, blank=True)
+    sgst = models.FloatField(default=0.0,null=True, blank=True)
+    igst = models.FloatField(default=0.0,null=True, blank=True)
     fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     hsac=models.IntegerField(null=True, blank=True)
-    charges_tank=models.CharField(max_length=300, null=True, blank=True)
+    charges=models.CharField(max_length=300, null=True, blank=True)
     c_gst = models.FloatField(default=0.0,null=True, blank=True)
     s_gst = models.FloatField(default=0.0,null=True, blank=True)
     i_gst = models.FloatField(default=0.0,null=True, blank=True)
     g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.FloatField(default=0.0,null=True, blank=True)
+    unloadcharge=models.CharField(max_length=300, null=True, blank=True)
+    unloadrate= models.FloatField(default=0,null=True, blank=True)
+    g_amount= models.FloatField(default=0,null=True, blank=True)
+    tmsid=models.IntegerField(null=True, blank=True)
+    
 
 
     def __str__(self):
@@ -802,13 +804,15 @@ class AInvoice(models.Model):
 
 
 
-class AItem(models.Model):
-    invoice = models.ForeignKey(AInvoice, related_name='items', on_delete=models.CASCADE)
+class ASL_Item(models.Model):
+    invoice = models.ForeignKey(ASL_Invoice, related_name='items', on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
     quantity = models.IntegerField(default=1)
     unit_price = models.DecimalField(max_digits=10, decimal_places=3)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     
+
+
 
     def save(self, *args, **kwargs):
         # Calculate total price for the item
@@ -945,6 +949,70 @@ class Aak_in_Item(models.Model):
     def __str__(self):
         return self.description
 
+
+#=======================AAK INDIA RAIPUR BILLING SYSTEM ==================================
+class AAKR_Invoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    tanker_cap=models.IntegerField(null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    date_dis=models.DateField(null=True, blank=True)
+    # load=models.IntegerField(null=True, blank=True)
+    # rate_kg=models.IntegerField(null=True, blank=True)
+    unload=models.IntegerField(null=True, blank=True)
+    short=models.IntegerField(null=True, blank=True)
+    retn=models.IntegerField(null=True, blank=True)
+    lr_no=models.CharField(max_length=200, null=True, blank=True)
+    sac=models.IntegerField(null=True, blank=True)
+    Fo_date=models.DateField(null=True, blank=True)
+    To_date=models.DateField(null=True, blank=True)
+    d_rate=models.IntegerField(null=True, blank=True)
+    par_day=models.IntegerField(null=True, blank=True)
+    total_d=models.IntegerField(null=True, blank=True) 
+    cgst = models.FloatField(default=0.0,null=True, blank=True)
+    sgst = models.FloatField(default=0.0,null=True, blank=True)
+    igst = models.FloatField(default=0.0,null=True, blank=True)
+    fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    hsac=models.IntegerField(null=True, blank=True)
+    charges=models.CharField(max_length=300, null=True, blank=True)
+    c_gst = models.FloatField(default=0.0,null=True, blank=True)
+    s_gst = models.FloatField(default=0.0,null=True, blank=True)
+    i_gst = models.FloatField(default=0.0,null=True, blank=True)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.FloatField(default=0.0,null=True, blank=True)
+
+
+    def __str__(self):
+        return self.invoice_number
+    
+
+
+
+class AAKR_Item(models.Model):
+    invoice = models.ForeignKey(AAKR_Invoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=3)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+
+
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
+    
 
 #=======================GEMINI BILLING SYSTEM ==================================
 
@@ -2073,6 +2141,71 @@ class BC_Item(models.Model):
 
     def __str__(self):
         return self.description
+
+
+#=======================CARGILL DAVANGER BILLING SYSTEM ==================================
+class CD_Invoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    tanker_cap=models.IntegerField(null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    date_dis=models.DateField(null=True, blank=True)
+    # load=models.IntegerField(null=True, blank=True)
+    # rate_kg=models.IntegerField(null=True, blank=True)
+    unload=models.IntegerField(null=True, blank=True)
+    short=models.IntegerField(null=True, blank=True)
+    retn=models.IntegerField(null=True, blank=True)
+    lr_no=models.CharField(max_length=200, null=True, blank=True)
+    sac=models.IntegerField(null=True, blank=True)
+    Fo_date=models.DateField(null=True, blank=True)
+    To_date=models.DateField(null=True, blank=True)
+    d_rate=models.IntegerField(null=True, blank=True)
+    par_day=models.IntegerField(null=True, blank=True)
+    total_d=models.IntegerField(null=True, blank=True) 
+    cgst = models.FloatField(default=0.0,null=True, blank=True)
+    sgst = models.FloatField(default=0.0,null=True, blank=True)
+    igst = models.FloatField(default=0.0,null=True, blank=True)
+    fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    hsac=models.IntegerField(null=True, blank=True)
+    token=models.IntegerField(null=True, blank=True)
+    charges=models.CharField(max_length=300, null=True, blank=True)
+    c_gst = models.FloatField(default=0.0,null=True, blank=True)
+    s_gst = models.FloatField(default=0.0,null=True, blank=True)
+    i_gst = models.FloatField(default=0.0,null=True, blank=True)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.FloatField(default=0.0,null=True, blank=True)
+
+
+    def __str__(self):
+        return self.invoice_number
+    
+
+
+
+class CD_Item(models.Model):
+    invoice = models.ForeignKey(CD_Invoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=3)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+
+
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
     
 
 #=======================CARGILL BHIMASAR BILLING SYSTEM ==================================
@@ -2202,7 +2335,248 @@ class CK_Item(models.Model):
         return self.description
     
 
+#=======================BUNGE INDIA PVT LTD SYSTEM ==================================
+class BU_Invoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    tanker_cap=models.IntegerField(null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    date_dis=models.DateField(null=True, blank=True)
+    # load=models.IntegerField(null=True, blank=True)
+    # rate_kg=models.IntegerField(null=True, blank=True)
+    unload=models.IntegerField(null=True, blank=True)
+    short=models.IntegerField(null=True, blank=True)
+    retn=models.IntegerField(null=True, blank=True)
+    lr_no=models.CharField(max_length=200, null=True, blank=True)
+    sac=models.IntegerField(null=True, blank=True)
+    Fo_date=models.DateField(null=True, blank=True)
+    To_date=models.DateField(null=True, blank=True)
+    d_rate=models.IntegerField(null=True, blank=True)
+    par_day=models.IntegerField(null=True, blank=True)
+    total_d=models.IntegerField(null=True, blank=True) 
+    cgst = models.FloatField(default=0.0,null=True, blank=True)
+    sgst = models.FloatField(default=0.0,null=True, blank=True)
+    igst = models.FloatField(default=0.0,null=True, blank=True)
+    fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    hsac=models.IntegerField(null=True, blank=True)
+    charges=models.CharField(max_length=300, null=True, blank=True)
+    c_gst = models.FloatField(default=0.0,null=True, blank=True)
+    s_gst = models.FloatField(default=0.0,null=True, blank=True)
+    i_gst = models.FloatField(default=0.0,null=True, blank=True)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.FloatField(default=0.0,null=True, blank=True)
 
+
+    def __str__(self):
+        return self.invoice_number
+    
+
+
+
+class BU_Item(models.Model):
+    invoice = models.ForeignKey(BU_Invoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=3)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+
+
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
+    
+
+#=======================AKM INTERNATIONAL BILLING SYSTEM ==================================
+class AKM_Invoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    tanker_cap=models.IntegerField(null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    date_dis=models.DateField(null=True, blank=True)
+    # load=models.IntegerField(null=True, blank=True)
+    # rate_kg=models.IntegerField(null=True, blank=True)
+    unload=models.IntegerField(null=True, blank=True)
+    short=models.IntegerField(null=True, blank=True)
+    retn=models.IntegerField(null=True, blank=True)
+    lr_no=models.CharField(max_length=200, null=True, blank=True)
+    sac=models.IntegerField(null=True, blank=True)
+    Fo_date=models.DateField(null=True, blank=True)
+    To_date=models.DateField(null=True, blank=True)
+    d_rate=models.IntegerField(null=True, blank=True)
+    par_day=models.IntegerField(null=True, blank=True)
+    total_d=models.IntegerField(null=True, blank=True) 
+    cgst = models.FloatField(default=0.0,null=True, blank=True)
+    sgst = models.FloatField(default=0.0,null=True, blank=True)
+    igst = models.FloatField(default=0.0,null=True, blank=True)
+    fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    hsac=models.IntegerField(null=True, blank=True)
+    charges=models.CharField(max_length=300, null=True, blank=True)
+    c_gst = models.FloatField(default=0.0,null=True, blank=True)
+    s_gst = models.FloatField(default=0.0,null=True, blank=True)
+    i_gst = models.FloatField(default=0.0,null=True, blank=True)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.FloatField(default=0.0,null=True, blank=True)
+
+
+    def __str__(self):
+        return self.invoice_number
+    
+
+
+
+class AKM_Item(models.Model):
+    invoice = models.ForeignKey(AKM_Invoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=3)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+
+
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
+    
+
+#=======================ANJANI AGRO BILLING SYSTEM ==================================
+class ANGInvoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    date_dis=models.DateField(null=True, blank=True)
+    retn=models.IntegerField(null=True, blank=True)
+    lr_no=models.CharField(max_length=200, null=True, blank=True)
+    sac=models.IntegerField(null=True, blank=True)
+    Fo_date=models.DateField(null=True, blank=True)
+    To_date=models.DateField(null=True, blank=True)
+    d_rate=models.IntegerField(null=True, blank=True)
+    par_day=models.IntegerField(null=True, blank=True)
+    total_d=models.DecimalField(max_digits=10, decimal_places=2, default=0) 
+    cgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    sgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    igst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    hsac=models.IntegerField(null=True, blank=True)
+    charges=models.CharField(max_length=300, null=True, blank=True)
+    c_gst = models.FloatField(default=0.0,null=True, blank=True)
+    s_gst = models.FloatField(default=0.0,null=True, blank=True)
+    i_gst = models.FloatField(default=0.0,null=True, blank=True)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+
+    def __str__(self):
+        return self.invoice_number
+    
+
+
+
+class ANGItem(models.Model):
+    invoice = models.ForeignKey(ANGInvoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=3)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
+    
+
+#=======================SIDDHIVINAYAK DATA  BILLING SYSTEM ==================================
+class SVDInvoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    date_dis=models.DateField(null=True, blank=True)
+    retn=models.IntegerField(null=True, blank=True)
+    lr_no=models.CharField(max_length=200, null=True, blank=True)
+    sac=models.IntegerField(null=True, blank=True)
+    Fo_date=models.DateField(null=True, blank=True)
+    To_date=models.DateField(null=True, blank=True)
+    d_rate=models.IntegerField(null=True, blank=True)
+    par_day=models.IntegerField(null=True, blank=True)
+    total_d=models.DecimalField(max_digits=10, decimal_places=2, default=0) 
+    cgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    sgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    igst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    hsac=models.IntegerField(null=True, blank=True)
+    charges=models.CharField(max_length=300, null=True, blank=True)
+    c_gst = models.FloatField(default=0.0,null=True, blank=True)
+    s_gst = models.FloatField(default=0.0,null=True, blank=True)
+    i_gst = models.FloatField(default=0.0,null=True, blank=True)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+
+    def __str__(self):
+        return self.invoice_number
+    
+
+
+
+class SVDItem(models.Model):
+    invoice = models.ForeignKey(SVDInvoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=3)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
+
+ 
 #=================================Inventory Management ============================================
 class Items(models.Model):
      item_name=models.CharField(max_length=200)

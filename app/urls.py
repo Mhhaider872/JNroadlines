@@ -221,10 +221,16 @@ urlpatterns =[
     path('cargill/<int:invoice_id>/', views.cargill_detail, name='cinvoice_detail'),
 
 
-      #=======================Aak India INword Bill=============================================
+      #=======================Aak India INWORD Bill=============================================
     path('Aak_Inword-bill/', views.aakin_bill, name='create_bill_Aak_Inword'),
     path('Aak_Inword_invoices/', views.aakin_list, name='Aak_Inword_list'),
     path('Aak_Inword/<int:invoice_id>/', views.aakin_detail, name='Aak_Inword_detail'),
+
+    
+    #=========================Aak India RAIPUR Bill=============================================
+    path('raipur-bill/', views.raipur_bill, name='raipur_bill'),
+    path('raipur_invoices/', views.raipur_list, name='raipur_list'),
+    path('raipur_invoice/<int:invoice_id>/', views.raipur_detail, name='raipur_detail'),
 
 
     #=======================VVF TALOJA Bill=============================================
@@ -301,7 +307,7 @@ urlpatterns =[
 
 
 
-    #=========================KOP AGRO TECH Bill=============================================
+    #=========================KOP AGRO TECH BILL=============================================
     path('KOP-bill/', views.KOP_bill, name='KOP_bill'),
     path('KOP_invoices/', views.KOP_list, name='KOP_list'),
     path('KOP_invoice/<int:invoice_id>/', views.KOP_detail, name='KOP_detail'),
@@ -313,31 +319,50 @@ urlpatterns =[
     # path('habit_invoice/<int:invoice_id>/', views.habit_detail, name='habit_detail'),
 
 
-    #=========================DHANLAXMI EDIBLES PVT Bill=============================================
+    #=========================DHANLAXMI EDIBLES PVT BILL=============================================
     path('dhanlaxmi-bill/', views.dhan_bill, name='dhanlaxmi_bill'),
     path('dhanlaxmi_invoices/', views.dhan_list, name='dhanlaxmi_list'),
     path('dhanlaxmi_invoice/<int:invoice_id>/', views.dhan_detail, name='dhanlaxmi_detail'),
     
     
-    #=========================BARRY CALLEBAUT PVT Bill=============================================
+    #=========================BARRY CALLEBAUT PVT BILL=============================================
     path('barry-bill/', views.barry_bill, name='barry_bill'),
     path('barry_invoices/', views.barry_list, name='barry_list'),
     path('barry_invoice/<int:invoice_id>/', views.barry_detail, name='barry_detail'),
 
+    #=========================CARGILL DAVANGERE BILL=============================================
+    path('cargill-davangere-bill/', views.davan_bill, name='davan_bill'),
+    path('cargill-davangere-invoices/', views.davan_list, name='davan_lists'),
+    path('cargill-davangere-invoices/<int:invoice_id>/', views.davan_detail, name='davan_detail'),
 
-    #=========================CARGILL BHIMASAR Bill=============================================
+
+    #=========================CARGILL BHIMASAR BILL=============================================
     path('cargill-bhimasar-bill/', views.bhima_bill, name='bhima_bill'),
     path('cargill-bhimasar_invoices/', views.bhima_list, name='bhima_list'),
     path('cargill-bhimasar_invoice/<int:invoice_id>/', views.bhima_detail, name='bhima_detail'),
 
 
-    #=========================CARGILL KURKUMBH Bill=============================================
+    #=========================CARGILL KURKUMBH BILL=============================================
     path('kurkumbh-bill/', views.kurkm_bill, name='kurkumbh_bill'),
     path('kurkumbh_invoices/', views.kurkm_list, name='kurkumbh_list'),
     path('kurkumbh-bhimasar_invoice/<int:invoice_id>/', views.kurkm_detail, name='kurkumbh_detail'),
 
     
-    
+    #=========================BUNGE INDIA BILL=============================================
+    path('bunge-bill/', views.bunge_bill, name='bunge_bill'),
+    path('bunge_invoices/', views.bunge_list, name='bunge_list'),
+    path('bunge_invoice/<int:invoice_id>/', views.bunge_detail, name='bunge_detail'),
+
+    #=========================M/S AKM INTERNATIONAL BILL=============================================
+    path('akm-bill/', views.akm_bill, name='akm_bill'),
+    path('akm_invoices/', views.akm_list, name='akm_list'),
+    path('akm_invoice/<int:invoice_id>/', views.akm_detail, name='akm_detail'),
+
+    #=========================ANJANI AGRO BILL=============================================
+    path('anjani-bill/', views.anjani_bill, name='anjani_bill'),
+    path('anjani_invoices/', views.anjani_list, name='anjani_list'),
+    path('anjani_invoice/<int:invoice_id>/', views.anjani_detail, name='anjani_detail'),
+
     
 
 

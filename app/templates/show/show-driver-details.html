@@ -39,7 +39,7 @@
               </div>
               {% endif %}
               <!-- Table with stripped rows -->
-              <table class="table datatable">
+              <table class="table datatables">
                 <thead>
                   <tr>
                     <th>Sr_No.</th>
@@ -131,4 +131,14 @@
       }
     }
   </script>
+  <script>
+  $(document).ready(function () {
+    $('.datatables').DataTable({
+      "paging": false,           // 🔴 Disable pagination
+      "searching": true,         // Optional: keep searching
+      "ordering": true,          // Optional: keep ordering
+      "info": false              // Optional: remove "Showing X of Y entries"
+    });
+  });
+</script>
 </body>

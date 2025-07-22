@@ -51,7 +51,7 @@ admin.site.register(Trip)
 admin.site.register(TripAdani)
 admin.site.register(AakLocal)
 admin.site.register(GInvoice)
-admin.site.register(AInvoice)
+
 admin.site.register(Aak_in_Invoice)
 admin.site.register(TB_Invoice)
 admin.site.register(VC_Invoice)
@@ -72,7 +72,9 @@ admin.site.register(VE_Invoice)
 admin.site.register(Profit)
 admin.site.register(DE_Invoice)
 admin.site.register(BC_Invoice)
-
+admin.site.register(ASL_Invoice)
+admin.site.register(CD_Invoice)
+admin.site.register(BU_Invoice)
 
 
 
