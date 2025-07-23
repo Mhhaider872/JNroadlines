@@ -1,0 +1,274 @@
+{% include 'base.html' %}
+{% load static %}
+<body>
+<main id="main" class="main">
+  <div class="pagetitle py-3">
+    <h1>VVF INDIA PVT</h1>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <form method="POST" autocomplete="off">
+          {% csrf_token %}
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+
+          <!-- Invoice Info -->
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">VVF INDIA PVT Invoice</h5>
+              <div class="row">
+                <div class="col-md-3">
+                  <label class="form-label fw-bold">Company Name</label>
+                  <input type="text" name="company" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-bold">Date</label>
+                  <input type="date" name="date" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-bold">GST</label>
+                  <input type="text" name="gst" class="form-control">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-bold">PAN</label>
+                  <input type="text" name="pan" class="form-control">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item Table -->
+          <div class="card mt-4">
+            <div class="card-body">
+              <h5 class="card-title">Invoice Items</h5>
+              <div id="items">
+                <div class="item">
+                  <div class="row g-3">
+                    <div class="col-md-2">
+                      <label class="form-label">Description</label>
+                      <input type="text" name="item_description[]" class="form-control" required>
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Tanker No</label>
+                      <input type="text" name="tanker[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Dispatch Date</label>
+                      <input type="date" name="date_dis[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">From</label>
+                      <input type="text" name="From_add[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">To</label>
+                      <input type="text" name="To_add[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">LR No</label>
+                      <input type="text" name="lr_no[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">HSN/SAC</label>
+                      <input type="text" name="sac[]" value="996791" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Chargable Qty (KG)</label>
+                      <input type="number" name="item_quantity[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Loaded Qty</label>
+                      <input type="number" name="tanker_cap[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Unloaded Qty</label>
+                      <input type="number" name="unload[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Short/Excess Qty</label>
+                      <input type="number" name="short[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Return Qty</label>
+                      <input type="number" name="retn[]" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Rate/KG</label>
+                      <input type="number" name="item_unit_price[]" class="form-control" step="0.01">
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <button type="button" class="btn btn-sm btn-danger mt-2" onclick="addItem()">Add +</button>
+            </div>
+          </div>
+           <!-- Existing Charges Section (wrap it like this): -->
+<div id="charges">
+  <div class="row charge">
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">Charges Name:</label>
+      <select class="form-select" name="charges[]">
+        <option value="">Select</option>
+        <option value="Detention Charges">Detention Charges</option>
+        <option value="Union Charges">Union Charges</option>
+        <option value="Double Driver Charges">Double Driver Charges</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">HSN/SAC:</label>
+      <select class="form-select" name="hsac[]">
+        <option value="">Select</option>
+        <option value="996749">996749</option>
+        <option value="998534">998534</option>
+        <option value="996601">996601</option>
+        <option value="No GST">No GST</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">From Date</label>
+      <input type="date" name="Fo_date[]" class="form-control">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">To Date</label>
+      <input type="date" name="To_date[]" class="form-control">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">Rate</label>
+      <input type="number" name="d_rate[]" class="form-control" oninput="calculateChargeTotal(this)">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">Per Day</label>
+      <input type="number" name="par_day[]" class="form-control" oninput="calculateChargeTotal(this)">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">Total</label>
+      <input type="number" name="total_d[]" class="form-control" readonly>
+    </div>
+  </div>
+</div>
+
+<!-- Button to add more charges -->
+<div class="mb-4">
+  <button type="button" class="btn btn-danger btn-sm" onclick="addCharge()">Add Charge +</button>
+</div>
+
+          <!-- Submit -->
+          <div class="text-center py-4">
+            <button type="submit" class="btn btn-success px-4">Create Invoice</button>
+            <a href="{% url 'kurkumbh_list' %}" class="btn btn-secondary px-4">Back to List</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+function addItem() {
+  const container = document.getElementById('items');
+  const newItem = document.createElement('div');
+  newItem.classList.add('item');
+  newItem.innerHTML = `
+    <div class="row g-3">
+      <div class="col-md-2"><input type="text" name="item_description[]" class="form-control" placeholder="Description" required></div>
+      <div class="col-md-2"><input type="text" name="tanker[]" class="form-control" placeholder="Tanker No"></div>
+      <div class="col-md-2"><input type="date" name="date_dis[]" class="form-control"></div>
+      <div class="col-md-2"><input type="text" name="From_add[]" class="form-control" placeholder="From"></div>
+      <div class="col-md-2"><input type="text" name="To_add[]" class="form-control" placeholder="To"></div>
+      <div class="col-md-2"><input type="text" name="lr_no[]" class="form-control" placeholder="LR No"></div>
+      <div class="col-md-2"><input type="text" name="sac[]" class="form-control" value="996791"></div>
+      <div class="col-md-2"><input type="number" name="item_quantity[]" class="form-control" placeholder="Chargable Qty"></div>
+      <div class="col-md-2"><input type="number" name="tanker_cap[]" class="form-control" placeholder="Loaded Qty"></div>
+      <div class="col-md-2"><input type="number" name="unload[]" class="form-control" placeholder="Unloaded Qty"></div>
+      <div class="col-md-2"><input type="number" name="short[]" class="form-control" placeholder="Short Qty"></div>
+      <div class="col-md-2"><input type="number" name="retn[]" class="form-control" placeholder="Return Qty"></div>
+      <div class="col-md-2"><input type="number" name="item_unit_price[]" class="form-control" placeholder="Rate/KG" step="0.01"></div>
+    </div>
+    <hr>
+  `;
+  container.appendChild(newItem);
+}
+</script>
+<script>
+function addCharge() {
+  const chargeContainer = document.getElementById("charges");
+
+  const chargeDiv = document.createElement("div");
+  chargeDiv.classList.add("row", "charge");
+  chargeDiv.innerHTML = `
+    <hr>
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">Charges Name:</label>
+      <select class="form-select" name="charges[]">
+        <option value="">Select</option>
+        <option value="Detention Charges">Detention Charges</option>
+        <option value="Union Charges">Union Charges</option>
+        <option value="Double Driver Charges">Double Driver Charges</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">HSN/SAC:</label>
+      <select class="form-select" name="hsac[]">
+        <option value="">Select</option>
+        <option value="996749">996749</option>
+        <option value="998534">998534</option>
+        <option value="996601">996601</option>
+        <option value="No GST">No GST</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">From Date</label>
+      <input type="date" name="Fo_date[]" class="form-control">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">To Date</label>
+      <input type="date" name="To_date[]" class="form-control">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">Rate</label>
+      <input type="number" name="d_rate[]" class="form-control" oninput="calculateChargeTotal(this)">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">Per Day</label>
+      <input type="number" name="par_day[]" class="form-control" oninput="calculateChargeTotal(this)">
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <label class="form-label fw-bold">Total</label>
+      <input type="number" name="total_d[]" class="form-control" readonly>
+    </div>
+  `;
+  chargeContainer.appendChild(chargeDiv);
+}
+</script>
+<script>
+function calculateChargeTotal(elem) {
+  const row = elem.closest(".charge");
+
+  const rate = parseFloat(row.querySelector('[name="d_rate[]"]').value) || 0;
+  const perDay = parseFloat(row.querySelector('[name="par_day[]"]').value) || 0;
+
+  const total = rate * perDay;
+  row.querySelector('[name="total_d[]"]').value = total;
+}
+</script>
+
+</body>

@@ -206,6 +206,12 @@ urlpatterns =[
     path('adaniK-bill/', views.adk_bill, name='adaniK_bill'),
     path('adaniK_invoices/', views.adk_list, name='adaniK_list'),
     path('adaniK_invoice/<int:invoice_id>/', views.adk_detail, name='adaniK_detail'),
+
+    #=========================Adani (MUNDRA) Bill=============================================
+    path('adani-mundra-bill/', views.amundra_bill, name='adm_bill'),
+    path('adani_mundra_invoices/', views.amundra_list, name='adm_list'),
+    path('adani_mundra_invoice/<int:invoice_id>/', views.amundra_detail, name='adm_detail'),
+
     #=======================Gemini Bill=============================================
     path('gemini-bill/', views.gemini_bill, name='create_bill_gemini'),
     path('gemini_invoices/', views.Ginvoice_list, name='ginvoice_list'),
@@ -312,13 +318,6 @@ urlpatterns =[
     path('KOP_invoices/', views.KOP_list, name='KOP_list'),
     path('KOP_invoice/<int:invoice_id>/', views.KOP_detail, name='KOP_detail'),
 
-
-    #=========================HABHIT WELLNESS Bill=============================================
-    # path('habit-bill/', views.habit_bill, name='habit_bill'),
-    # path('habit_invoices/', views.habit_list, name='habit_list'),
-    # path('habit_invoice/<int:invoice_id>/', views.habit_detail, name='habit_detail'),
-
-
     #=========================DHANLAXMI EDIBLES PVT BILL=============================================
     path('dhanlaxmi-bill/', views.dhan_bill, name='dhanlaxmi_bill'),
     path('dhanlaxmi_invoices/', views.dhan_list, name='dhanlaxmi_list'),
@@ -363,8 +362,34 @@ urlpatterns =[
     path('anjani_invoices/', views.anjani_list, name='anjani_list'),
     path('anjani_invoice/<int:invoice_id>/', views.anjani_detail, name='anjani_detail'),
 
-    
+    #=========================SIDDHIVINAYAK DATA PVT LTD BILL=============================================
+    path('siddhi-bill/', views.siddhi_bill, name='siddhi_bill'),
+    path('siddhi_invoices/', views.siddhi_list, name='siddhi_list'),
+    path('siddhi_invoice/<int:invoice_id>/', views.siddhi_detail, name='siddhi_detail'),
 
+
+    #=========================VISWAAT CHEMICALS LTD BILL=============================================
+    path('viswaat-chemicals-bill/', views.viswaa_bill, name='viswaa_bill'),
+    path('viswaat-chemicals_invoices/', views.viswaa_list, name='viswaa_list'),
+    path('viswaat-chemicals_invoice/<int:invoice_id>/', views.viswaa_detail, name='viswaa_detail'),
+
+    
+    #=========================GRANUELS INDIA BILL=============================================
+    path('granuels-bill/', views.granuels_bill, name='granuel_bill'),
+    path('granuels_invoices/', views.granuels_list, name='granuel_list'),
+    path('granuels_invoice/<int:invoice_id>/', views.granuels_detail, name='granuel_detail'),
+
+
+    #=========================HABHIT WELLNESS BILL=============================================
+    path('habit-bill/', views.habhit_bill, name='habit_bill'),
+    path('habit_invoices/', views.habhit_list, name='habit_list'),
+    path('habit_invoice/<int:invoice_id>/', views.habhit_detail, name='habit_detail'),
+
+
+    #=========================VVF INDIA MULTI BILL=============================================
+    path('vvf-bill/', views.vvfmulti, name='vvf_bill'),
+    # path('habit_invoices/', views.habhit_list, name='habit_list'),
+    # path('habit_invoice/<int:invoice_id>/', views.habhit_detail, name='habit_detail'),
 
 
     #=======================INVENTORY MANAGEMENT SYSTEM=============================================

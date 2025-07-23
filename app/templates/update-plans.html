@@ -39,11 +39,11 @@
                 </datalist> 
           </div>
             <div class="col-lg-4 mb-3">
-            <label for="exampleDataList" class="form-label fw-bold">Driver Name</label>
+            <label for="exampleDataList3" class="form-label fw-bold">Driver Name</label>
              <input class="form-control" list="datalistOptions3" name="drivername" value="{{planupdate.drivername}}" id="exampleDataList" placeholder="Search to driver ..." required>
                <datalist id="datalistOptions3" class="shadow-sm border-0">
                 {% for d in dname %}
-                 <option value="{{d.drivername}}">{{d.drivername }}</option>
+                  <option value="{{d.name}}">{{d.name}}</option>
                  {% endfor %}
                 </datalist>
           </div> 

@@ -1,4 +1,6 @@
 
+
+
 {% include 'base_tally.html' %} 
 {% load static %}
 <style>
@@ -65,8 +67,8 @@
         </p> {% endcomment %}
 
         {% comment %} <p><strong>Phone No :</strong> 9833209818</p><br> {% endcomment %}
-        <p class="text-uppercase" ><strong>GST No :</strong>{{ invoice.gst }}</p>
-        <p class="text-uppercase" ><strong>PAN No :</strong> {{ invoice.pan }}</p>
+        <p ><strong>GST No :</strong>{{ invoice.gst }}</p>
+        <p ><strong>PAN No :</strong> {{ invoice.pan }}</p>
         {% comment %} <p ><strong>State Name :</strong> Maharashtra</p> {% endcomment %}
         </td>
       {% comment %} <td colspan="2"><strong>Dispatch Doc No.</strong></td>
@@ -124,7 +126,7 @@
             
             {% comment %} <td width="100px">{{invoice.lr_no}}</td> {% endcomment %}
             <td width="100px">{{invoice.sac}}</td>
-            <td width="100px">{{ invoice.total_kg }}</td>
+            <td width="100px">{{ item.quantity }}</td>
             {% comment %} <td width="100px">{{invoice.tanker_cap}} </td> {% endcomment %}
             {% comment %} <td width="100px">{{ invoice.unload }}</td>
             <td width="100px">{{ invoice.short }}</td>
@@ -374,11 +376,7 @@
     }, 1000);
   }
 </script>
-
-
-
-  
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   </body>
 

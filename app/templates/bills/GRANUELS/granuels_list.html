@@ -5,7 +5,7 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle py-3">
-      <h1>Habhit Wellness Lists</h1>
+      <h1>Granuels India Lists</h1>
       {% comment %} <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
@@ -43,14 +43,14 @@
                   </tr>
                 </thead>
                 <tbody>
-    {% for invoice in HBinvoice %}
+                   {% for invoice in ginvoice %}
     <tr>
         <td>{{ invoice.invoice_number }}</td>
         <td>{{ invoice.date }}</td>
         <td>{{ invoice.company }}</td>
-        <td>{{ invoice.grand_total  }}</td>
+        <td>{{ invoice.grand_total }}</td>
         <td>
-            <a href="{% url 'habit_detail' invoice.id %}">View Bill</a>
+            <a href="{% url 'granuel_detail' invoice.id %}">View Bill</a>
         </td>
     </tr>
     {% endfor %}

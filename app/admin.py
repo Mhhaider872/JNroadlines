@@ -75,6 +75,10 @@ admin.site.register(BC_Invoice)
 admin.site.register(ASL_Invoice)
 admin.site.register(CD_Invoice)
 admin.site.register(BU_Invoice)
+admin.site.register(ADMInvioce)
+
+
+
 
 
 
