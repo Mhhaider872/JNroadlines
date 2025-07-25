@@ -386,10 +386,10 @@ urlpatterns =[
     path('habit_invoice/<int:invoice_id>/', views.habhit_detail, name='habit_detail'),
 
 
-    #=========================VVF INDIA MULTI BILL=============================================
-    path('vvf-bill/', views.vvfmulti, name='vvf_bill'),
-    # path('habit_invoices/', views.habhit_list, name='habit_list'),
-    # path('habit_invoice/<int:invoice_id>/', views.habhit_detail, name='habit_detail'),
+    #=========================VVF INDIA (BADDI) MULTI BILL=============================================
+    path('vvf_baddi_bill/', views.vvfbaddi_bill, name='baddi_bill'),
+    path('vvf_baddi_invoices/', views.vvfbaddi_list, name='vvf_baddi_list'),
+    path('vvf_baddi_invoice/<int:invoice_id>/', views.vvfbaddi_detail, name='vvf_baddi_detail'),
 
 
     #=======================INVENTORY MANAGEMENT SYSTEM=============================================

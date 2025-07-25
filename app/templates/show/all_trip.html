@@ -54,6 +54,7 @@
       <th scope="col">To Address</th>
       <th scope="col">Status</th>
       <th scope="col">Grand_Total</th>
+      <th scope="col">Trip_End</th>
       <th scope="col">Trip_Fixed_Amount</th>
       <th scope="col">Profit</th>
       <th scope="col">Loss</th>
@@ -91,6 +92,7 @@
           <td>{{ts.To_id}}</td> 
           <td><span class="badge text-bg-info">{{ts.pending_trip}}</span></td> 
           <td class="text-center"><strong>{{ts.total_expense}}</strong> </td> 
+          <td><strong>{{ts.end_trip}}</strong> </td>
           <td class="text-center"><strong>{{ts.f_trip|default_if_none:"0"}}</strong> </td> 
           <td><strong>00</strong> </td> 
           <td><strong>00 </strong> </td>

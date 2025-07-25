@@ -8806,9 +8806,173 @@ def habhit_detail(request, invoice_id):
     items = HItem.objects.filter(invoice=invoice)
     return render(request, 'bills/Habit_welness/Habhit_details.html', {'invoice': invoice, 'items': items})
 
-#=================================VVF INDIA LTD MULTI BILL================================
-def vvfmulti(request):
-    return render(request,'bills/VVF/vvf.html')
+#================================= MULTI BILL================================
+#========================VVF INDIA (BADDI) LTD====================================================
+def generate_bill_VB():
+    now = datetime.now()  
+    month = f"{now.month:02d}"  
+    year = now.year
+    random_number = random.randint(1000, 9999)  # 4-digit random
+
+
+    if now.month >= 4:  # April se new financial year
+        fy_start = str(year)[-2:]
+        fy_end = str(year + 1)[-2:]
+    else:
+        fy_start = str(year - 1)[-2:]
+        fy_end = str(year)[-2:]
+
+    financial_year = f"{fy_start}-{fy_end}"
+
+    # Final bill number
+    bill_no = f"{random_number}/VB/{month}/{financial_year}"
+    return bill_no
+
+
+def vvfbaddi_bill(request):
+    if request.method == "POST":
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        # tanker = request.POST.get('tanker')
+        # From_add = request.POST.get('From_add')
+        # To_add = request.POST.get('To_add')
+        # date_dis = request.POST.get('date_dis')
+        # lr_no = request.POST.get('lr_no')
+        sac = request.POST.get('sac')
+        
+
+         # Step 2: Generate invoice number
+        invoice_number = generate_bill_VB()
+        if VVFMInvoice.objects.filter(date=date,company=company).exists():
+            messages.error(request, 'Bill already Exists!!')
+            return redirect('baddi_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = VVFMInvoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            # tanker=tanker,
+            # From_add=From_add,
+            # To_add=To_add,
+            # date_dis=date_dis,
+            # lr_no=lr_no,
+            sac=sac if sac else 0,
+            total_amount=0.0
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        # New: tanker, lr_no, from_add, to_add per item
+        tanker_list = request.POST.getlist('item_tanker')
+        lr_no_list = request.POST.getlist('item_lr_no')
+        from_add_list = request.POST.getlist('item_From_add')
+        to_add_list = request.POST.getlist('item_To_add')
+        to_date_dis =request.POST.getlist('item_date_dis')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price 
+                subtotal += line_total
+                
+
+                VVFMItem.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price,
+                    tanker=tanker_list[i] if i < len(tanker_list) else '',
+                    lr_no=lr_no_list[i] if i < len(lr_no_list) else '',
+                    From_add=from_add_list[i] if i < len(from_add_list) else '',
+                    To_add=to_add_list[i] if i < len(to_add_list) else '',
+                    date_dis=to_date_dis[i] if i < len(to_date_dis) else '',
+                )
+            except (ValueError, IndexError):
+                continue
+        
+
+        basic_amount = subtotal 
+
+        cgst_rate = 0.06
+        sgst_rate = 0.06
+        igst_rate = 0.12
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst, 2)
+       # Check decimal part
+        decimal_part = grand_total - int(grand_total)
+
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
+
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
+
+
+
+        # Step 6: Save tax and total
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "")+ " " + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('vvf_baddi_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/VVF_Baddi/baddi.html', context)
+
+
+def vvfbaddi_list(request):
+    ginvoice = VVFMInvoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/VVF_Baddi/baddi_list.html', {'ginvoice': ginvoice})
+
+
+def vvfbaddi_detail(request, invoice_id):
+    invoice = get_object_or_404(VVFMInvoice, id=invoice_id)
+    items = VVFMItem.objects.filter(invoice=invoice)
+    return render(request, 'bills/VVF_Baddi/baddi_details.html', {'invoice': invoice, 'items': items})
+
+
 
 #=======================INVENTORY MANAGEMENT SYSTEM=============================================
 
