@@ -2757,7 +2757,7 @@ class GRNItem(models.Model):
 #===============================MULTI LINE BILL============================================
 
 
-#=======================VVF INDIA MULTILINE BILLING SYSTEM ==================================
+#=======================VVF INDIA (BADDI )MULTILINE BILLING SYSTEM ==================================
 class VVFMInvoice(models.Model):
     invoice_number = models.CharField(max_length=100)
     date=models.DateField(null=True, blank=True)
@@ -2805,10 +2805,105 @@ class VVFMItem(models.Model):
     def __str__(self):
         return self.description
     
+#=======================VVF INDIA (TALOJA)MULTILINE BILLING SYSTEM ==================================
+
+#=======================VERTEX SALES MULTILINE BILLING SYSTEM ==================================
+class VERTEXInvoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+   
+    sac=models.IntegerField(null=True, blank=True)
+   
+    cgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    sgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    igst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+
+    def __str__(self):
+        return self.invoice_number
+    
 
 
 
+class VERTEXItem(models.Model):
+    invoice = models.ForeignKey(VERTEXInvoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=3)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
 
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    date_dis=models.DateField(null=True, blank=True)
+    lr_no=models.CharField(max_length=200, null=True, blank=True)
+    
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
+
+#=======================ALLANA MULTILINE BILLING SYSTEM ==================================
+class ALLANAInvoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+    sac=models.IntegerField(null=True, blank=True)
+    cgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    sgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    igst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+
+    def __str__(self):
+        return self.invoice_number
+    
+
+
+
+class ALLANAItem(models.Model):
+    invoice = models.ForeignKey(ALLANAInvoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=3)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+   
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    load=models.IntegerField(null=True, blank=True)
+    unload=models.IntegerField(null=True, blank=True)
+    short=models.IntegerField(null=True, blank=True)
+    retn=models.IntegerField(null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    date_dis=models.DateField(null=True, blank=True)
+    lr_no=models.CharField(max_length=200, null=True, blank=True)
+    
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
 
 
 #=================================Inventory Management ============================================

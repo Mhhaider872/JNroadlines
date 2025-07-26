@@ -391,6 +391,28 @@ urlpatterns =[
     path('vvf_baddi_invoices/', views.vvfbaddi_list, name='vvf_baddi_list'),
     path('vvf_baddi_invoice/<int:invoice_id>/', views.vvfbaddi_detail, name='vvf_baddi_detail'),
 
+    #=========================VVF INDIA (TALOJA) MULTI BILL=============================================
+    # path('vvf_baddi_bill/', views.vvfbaddi_bill, name='baddi_bill'),
+    # path('vvf_baddi_invoices/', views.vvfbaddi_list, name='vvf_baddi_list'),
+    # path('vvf_baddi_invoice/<int:invoice_id>/', views.vvfbaddi_detail, name='vvf_baddi_detail'),
+    
+
+    #=========================VERTEX SALES PVT  MULTI BILL=============================================
+    path('vertex_bill/', views.vertex_bill, name='vertex_bill'),
+    path('vertex_invoices/', views.vertex_list, name='vertex_list'),
+    path('vertex_invoice/<int:invoice_id>/', views.vertex_detail, name='vertex_detail'),
+
+
+    #===========================ALLANA PVT LTD MULTI BILL=============================================
+    path('allana_bill/', views.allana_bill, name='allana_bill'),
+    path('allana_invoices/', views.allana_list, name='allanalist'),
+    path('allana_invoice/<int:invoice_id>/', views.allana_detail, name='allana_detail'),
+    
+
+
+
+
+
 
     #=======================INVENTORY MANAGEMENT SYSTEM=============================================
     path('inventory/', views.inventroy_system, name='inventory-dashboard'),
