@@ -79,6 +79,7 @@ admin.site.register(ADMInvioce)
 admin.site.register(VVFMInvoice)
 admin.site.register(ALLANAInvoice)
 admin.site.register(ALLANAItem)
+admin.site.register(AAKDEInvoice)
 
 
 

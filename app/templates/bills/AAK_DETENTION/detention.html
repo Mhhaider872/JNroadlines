@@ -1,0 +1,458 @@
+
+
+
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle py-3">
+        <h1>AAK INDIA PVT ( DETENTION )</h1>
+        {% comment %} <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav> {% endcomment %}
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title text-center">AAK INDIA PVT ( DETENTION ) Invoice</h5>
+                 {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<form method="POST" autocomplete="off">
+    {% csrf_token %}
+    <div class="row">
+     {% comment %} <div class="col-lg-3 mb-3">
+    <label for="invoice_number" class="form-label fw-bold">Bill No:</label>
+    <input type="text" class="form-control border-2" name="invoice_number"  disabled>
+    </div> {% endcomment %}
+    
+    <div class="col-lg-3 mb-3">
+     <label for="exampleDataList1" class="form-label fw-bold">Company Name:</label>
+     <input class="form-control border-2" name="company" list="datalistOptions1" id="exampleDataList1" placeholder="Search Company Name...">
+               <datalist id="datalistOptions1" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.area_name}}"></option>
+                 {% endfor %}
+                </datalist>
+
+
+
+    {% comment %} <input type="text" class="form-control border-2" name="company"> {% endcomment %}
+    </div>
+     <div class="col-lg-3 mb-3">
+    <label for="date" class="form-label fw-bold">Date:</label>
+    <input type="date" class="form-control border-2" name="date">
+    </div>
+    <div class="col-lg-3 mb-3">
+    <label for="gst" class="form-label fw-bold">GST:</label>
+    <input type="text" name="gst" class="form-control border-2">
+    </div>
+    <div class="col-lg-3 mb-3">
+    <label for="pan" class="form-label fw-bold">PAN:</label>
+    <input type="text" name="pan" class="form-control border-2">
+    </div>
+<hr>
+<h5 class="card-title">Items</h5>
+    <div id="items">
+        <div class="item">
+          <div class="row">
+       
+            <div class="col-lg-3 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">Tanker No :</label>
+            <input type="text" class="form-control border-2" name="item_tanker" list="datalistOptions2" id="exampleDataList2" placeholder="Search Tanker No...">
+            <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Dispatch Date :</label>
+            <input type="date" class="form-control border-2" name="item_date_dis">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="exampleDataList3" class="form-label fw-bold">From Address :</label>
+            <input type="text" class="form-control border-2" name="item_From_add" list="datalistOptions3" id="exampleDataList3" placeholder="Search From Address...">
+            <datalist id="datalistOptions3" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="exampleDataList4" class="form-label fw-bold">To Address :</label>
+            <input type="text" class="form-control border-2" name="item_To_add"  list="datalistOptions4" id="exampleDataList4" placeholder="Search To Address...">
+            <datalist id="datalistOptions4" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">LR No :</label>
+            <input type="text" class="form-control border-2" name="item_lr_no">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">HSN/SAC :</label>
+            <input type="number" class="form-control border-2" name="sac" value="996749">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Chargable QTY K.G :</label>
+            <input type="text" class="form-control border-2" name="item_qty" value="0">
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Loaded QTY K.G :</label>
+            <input type="number" class="form-control border-2" name="item_load"  id="disqty" oninput="calculateTotalShort()" value="0" >
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Unloaded QTY K.G :</label>
+            <input type="number" class="form-control border-2" name="item_unload" id="unlodqty" oninput="calculateTotalShort()" value="0">
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">
+Shortages / Excess Qty K.G :</label>
+            <input type="number" class="form-control border-2" id="totalshort" name="item_short" value="0">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Return QTY K.G :</label>
+            <input type="number" class="form-control border-2" name="item_retn" value="0">
+            </div>
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_quantity" class="form-label fw-bold">Quantity:</label>
+            <input type="number" name="item_quantity" value="1" class="form-control border-2" required>
+            </div> {% endcomment %}
+            <div class="col-lg-3 mb-3">
+            <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
+            <input type="number" step="any" name="item_rate" class="form-control border-2" value="0" >
+            </div>
+               <div class="col-lg-4 mb-3">
+            <label for="item_description" class="form-label fw-bold"></label>
+            <input type="hidden" class="form-control border-2" name="item_description" value="mutliitem">
+            </div>
+            <h5 class="card-title">Detention</h5>
+             <div class="col-lg-3 mb-3">
+            <label for="Fo" class="form-label fw-bold"
+              >Detention Description :</label
+            ><input type="text" class="form-control border-2" name="item_charges" >
+           
+        </div>
+       
+         <div class="col-lg-3 mb-3">
+            <label for="label18" class="form-label fw-bold">Rate </label>
+            <input
+              type="number"
+              class="form-control"
+              name="item_unit_price"
+              min="0"
+              id="perrate"
+            
+            />
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="label19" class="form-label fw-bold"> Per Day</label>
+            <input
+              type="number"
+              class="form-control"
+              name="item_quantity"
+              min="0"
+              id="day"
+              
+            />
+        </div>
+         <div class="col-lg-3 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >From </label
+            >
+            <input
+              type="date"
+              name="item_Fo_date"
+              class="form-control"
+              id="Fo_date"
+            />
+        </div>
+         <div class="col-lg-3 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >To</label
+            >
+            <input
+              type="date"
+              name="item_To_date"
+              class="form-control"
+              id="To_date"
+            />
+        </div>
+     
+         {% comment %} <div class="col-lg-3 mb-3">
+            <label for="label20" class="form-label fw-bold"
+              >Total</label
+            >
+            <input
+              type="number"
+              name="total_d"
+              class="form-control"
+              id="totals"
+              oninput="Total()"
+               min="0"
+               value="0"
+               readonly
+            />
+        </div> {% endcomment %}
+        
+         </div>
+        </div>
+    </div>
+    <div>
+    <button type="button" onclick="addItem()" class="btn btn-danger px-4 btn-sm">Add +</button>
+    </div>
+    <hr>
+           
+<div class="btn-div text-center py-4">
+    
+    <button type="submit" class="btn btn-success px-4">Create Invoice</button>
+    <a href="{% url 'aakdt_list' %}" class="btn btn-primary px-4">View Invoice</a>
+    </div>
+    
+</form>
+
+ 
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+    <script>
+    function addItem() {
+        var itemDiv = document.createElement('div');
+        itemDiv.classList.add('item');
+        itemDiv.innerHTML = `
+         <div class="row">
+         <hr>
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Item Description:</label>
+            <input type="text" name="item_description" class="form-control border-2" required>
+            </div>
+             <div class="col-lg-3 mb-3" class="form-label fw-bold">
+            <label for="item_quantity">Quantity:</label>
+            <input type="number" name="item_quantity" value="1" class="form-control border-2" required>
+            </div>
+             <div class="col-lg-3 mb-3" class="form-label fw-bold">
+            <label for="item_unit_price">Unit Price:</label>
+            <input type="number" step="0.01" name="item_unit_price" class="form-control border-2" required>
+            </div> {% endcomment %}
+
+
+
+
+           
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Tanker No :</label>
+            <input type="text" class="form-control border-2" name="item_tanker">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Dispatch Date :</label>
+            <input type="date" class="form-control border-2" name="item_date_dis">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">From Address :</label>
+            <input type="text" class="form-control border-2" name="item_From_add">
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">To Address :</label>
+            <input type="text" class="form-control border-2" name="item_To_add">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">LR No :</label>
+            <input type="text" class="form-control border-2" name="item_lr_no">
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">HSN/SAC :</label>
+            <input type="number" class="form-control border-2" name="sac" value="996749">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Chargable QTY K.G :</label>
+            <input type="text" class="form-control border-2" name="item_qty" value="0">
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Loaded QTY K.G :</label>
+            <input type="number" class="form-control border-2 disqty_row" name="item_load"  oninput="calculateShort()" value="0" >
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Unloaded QTY K.G :</label>
+            <input type="number" class="form-control border-2 unlodqty_row" name="item_unload"  oninput="calculateShort()" value="0">
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">
+Shortages / Excess Qty K.G :</label>
+            <input type="number" class="form-control border-2 totalshort_row"  name="item_short" value="0">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Return QTY K.G :</label>
+            <input type="number" class="form-control border-2" name="item_retn" value="0">
+            </div>
+            {% comment %} <div class="col-lg-3 mb-3">
+            <label for="item_quantity" class="form-label fw-bold">Quantity:</label>
+            <input type="number" name="item_quantity" value="1" class="form-control border-2" >
+            </div> {% endcomment %}
+            <div class="col-lg-3 mb-3">
+            <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
+            <input type="number" step="any" name="item_rate" class="form-control border-2" value="0" >
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold"></label>
+            <input type="hidden" class="form-control border-2" name="item_description" value="mutliitem">
+            </div>
+              <h5 class="card-title">Detention</h5>
+             <div class="col-lg-3 mb-3">
+            <label for="Fo" class="form-label fw-bold"
+              >Detention Description :</label
+            ><input type="text" class="form-control border-2" name="item_charges" >
+           
+        </div>
+       
+         <div class="col-lg-3 mb-3">
+            <label for="label18" class="form-label fw-bold">Rate </label>
+            <input
+              type="number"
+              class="form-control"
+              name="item_unit_price"
+              min="0"
+              id="perrate"
+
+            />
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="label19" class="form-label fw-bold"> Per Day</label>
+            <input
+              type="number"
+              class="form-control"
+              name="item_quantity"
+              min="0"
+              id="day"
+      
+            />
+        </div>
+         <div class="col-lg-3 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >From </label
+            >
+            <input
+              type="date"
+              name="item_Fo_date"
+              class="form-control"
+              id="Fo_date"
+            />
+        </div>
+         <div class="col-lg-3 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >To</label
+            >
+            <input
+              type="date"
+              name="item_To_date"
+              class="form-control"
+              id="To_date"
+            />
+        </div>
+              
+
+          </div>
+          
+        `;
+        document.getElementById('items').appendChild(itemDiv);
+    }
+</script>
+<script>
+    function calculateTotalShort() {
+        // Get the values of disqty, unlodqty, and shortallow
+        var disqty = document.getElementById("disqty").value;
+        var unlodqty = document.getElementById("unlodqty").value;
+        var totalshort = document.getElementById("totalshort").value;
+
+        // Ensure values are numbers and disqty and unlodqty are available
+        if (disqty && unlodqty) {
+            // Calculate totalshort and update it
+            var totalshort = parseInt(unlodqty) - parseInt(disqty) ;
+            document.getElementById("totalshort").value = totalshort; // Display totalshort in the input field
+        }
+
+        
+    }
+</script>
+<script>
+  function calculateShort() {
+    // Get all loaded and unloaded quantity inputs
+    var disqtyElements = document.querySelectorAll('.disqty_row');
+    var unlodqtyElements = document.querySelectorAll('.unlodqty_row');
+    var totalshortElements = document.querySelectorAll('.totalshort_row');
+
+    // Loop through all the rows
+    for (var i = 0; i < disqtyElements.length; i++) {
+        var disqty_row = parseFloat(disqtyElements[i].value) || 0;
+        var unlodqty_row = parseFloat(unlodqtyElements[i].value) || 0;
+
+        // Calculate the difference (shortage/excess)
+        var totalshort_row = unlodqty_row - disqty_row;
+
+        // Show actual difference, including negative numbers
+        totalshortElements[i].value = totalshort_row;
+    }
+  }
+</script>
+  <script>
+    function Total() {
+        // Get the values of the input fields by their IDs
+        let perrate = parseFloat(document.getElementById('perrate').value);
+        let day = parseFloat(document.getElementById('day').value);
+
+        // If either kg or rate is NaN (not a number), don't calculate the total
+        if (isNaN(perrate) || isNaN( day)) {
+            document.getElementById('totals').value = ''; // Clear the total field if invalid input
+        } else {
+            let total = perrate * day;
+            document.getElementById('totals').value = total; // Display the total in the input field
+        }
+    }
+</script>
+
+
+
+</body>

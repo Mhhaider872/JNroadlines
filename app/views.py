@@ -9302,7 +9302,7 @@ def vertex_detail(request, invoice_id):
     items = VERTEXItem.objects.filter(invoice=invoice)
     return render(request, 'bills/VERTEX/vertex_details.html', {'invoice': invoice, 'items': items})
 
-#====================================VERTEX SALES PVT  LTD MULTI BILL====================================================
+#====================================ALLANA PVT LTD.MULTI BILL====================================================
 def generate_bill_AL():
     now = datetime.now()  
     month = f"{now.month:02d}"  
@@ -9339,7 +9339,7 @@ def allana_bill(request):
         
 
          # Step 2: Generate invoice number
-        invoice_number = generate_bill_no()
+        invoice_number = generate_bill_AL()
         if ALLANAInvoice.objects.filter(date=date,company=company).exists():
             messages.error(request, 'Bill already Exists!!')
             return redirect('allana_bill')
@@ -9476,6 +9476,171 @@ def allana_detail(request, invoice_id):
     invoice = get_object_or_404(ALLANAInvoice, id=invoice_id)
     items = ALLANAItem.objects.filter(invoice=invoice)
     return render(request, 'bills/ALLANA_KHOP/allana_details.html', {'invoice': invoice, 'items': items})
+
+
+#===================================AAK INDIA DETENTION BILL====================================
+def AAKdetention_bill(request):
+    if request.method == "POST":
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        # tanker = request.POST.get('tanker')
+        # From_add = request.POST.get('From_add')
+        # To_add = request.POST.get('To_add')
+        # date_dis = request.POST.get('date_dis')
+        # lr_no = request.POST.get('lr_no')
+        sac = request.POST.get('sac')
+        
+
+         # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
+        if AAKDEInvoice.objects.filter(date=date,company=company).exists():
+            messages.error(request, 'Bill already Exists!!')
+            return redirect('aakdt_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = AAKDEInvoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            # tanker=tanker,
+            # From_add=From_add,
+            # To_add=To_add,
+            # date_dis=date_dis,
+            # lr_no=lr_no,
+            sac=sac if sac else 0,
+            total_amount=0.0
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        # New: tanker, lr_no, from_add, to_add per item
+        tanker_list = request.POST.getlist('item_tanker')
+        lr_no_list = request.POST.getlist('item_lr_no')
+        from_add_list = request.POST.getlist('item_From_add')
+        to_add_list = request.POST.getlist('item_To_add')
+        to_date_dis =request.POST.getlist('item_date_dis')
+        to_load_list=request.POST.getlist('item_load')
+        to_unload_list=request.POST.getlist('item_unload')
+        to_short_list=request.POST.getlist('item_short')
+        to_retn_list=request.POST.getlist('item_retn')
+        to_rate_list=request.POST.getlist('item_rate')
+        to_qty_list=request.POST.getlist('item_qty')
+        to_fo_date_list=request.POST.getlist('item_Fo_date')
+        to_to_date_list=request.POST.getlist('item_To_date')
+        to_charges_list=request.POST.getlist('item_charges')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price 
+                subtotal += line_total
+                
+
+                AAKDEItem.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price,
+                    tanker=tanker_list[i] if i < len(tanker_list) else 'None',
+                    lr_no=lr_no_list[i] if i < len(lr_no_list) else '0',
+                    From_add=from_add_list[i] if i < len(from_add_list) else '',
+                    To_add=to_add_list[i] if i < len(to_add_list) else '',
+                    date_dis = to_date_dis[i] if i < len(to_date_dis) and to_date_dis[i] else 'None',
+                    load=float(to_load_list[i]) if i < len(to_load_list) and to_load_list[i] else 0,
+                    unload=float(to_unload_list[i]) if i < len(to_unload_list) and to_unload_list[i] else 0,
+                    short=float(to_short_list[i]) if i < len(to_short_list) and to_short_list[i] else 0,
+                    retn=float(to_retn_list[i]) if i < len(to_retn_list) and to_retn_list[i] else 0,
+                    rate=to_rate_list[i] if i < len(to_rate_list) and to_rate_list[i] else 0,
+                    qty=to_qty_list[i] if i < len(to_qty_list) and to_qty_list[i] else 0,
+                    Fo_date=to_fo_date_list[i] if i < len(to_fo_date_list) and to_fo_date_list[i] else 0,
+                    To_date=to_to_date_list[i] if i < len(to_to_date_list) and to_to_date_list[i] else 0,
+                    charges=to_charges_list[i] if i < len(to_charges_list) and to_charges_list[i] else 0,
+
+                )
+            except (ValueError, IndexError):
+                continue
+        
+
+        basic_amount = subtotal 
+
+        cgst_rate = 0.09
+        sgst_rate = 0.09
+        igst_rate = 0.18
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst, 2)
+       # Check decimal part
+        decimal_part = grand_total - int(grand_total)
+
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
+
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
+
+
+
+        # Step 6: Save tax and total
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "")+ " " + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('aakdt_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/AAK_DETENTION/detention.html', context)
+
+
+def AAKdetention_list(request):
+    aainvoice = AAKDEInvoice.objects.all().order_by('date')
+    return render(request, 'bills/AAK_DETENTION/detention_list.html', {'aainvoice': aainvoice})
+
+
+
+def AAKdetention_detail(request, invoice_id):
+    invoice = get_object_or_404(AAKDEInvoice, id=invoice_id)
+    items = AAKDEItem.objects.filter(invoice=invoice)
+    return render(request, 'bills/AAK_DETENTION/detention_details.html', {'invoice': invoice, 'items': items})
 
 
 

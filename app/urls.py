@@ -407,6 +407,12 @@ urlpatterns =[
     path('allana_bill/', views.allana_bill, name='allana_bill'),
     path('allana_invoices/', views.allana_list, name='allanalist'),
     path('allana_invoice/<int:invoice_id>/', views.allana_detail, name='allana_detail'),
+
+
+    #===========================AAK INDIA  ( DETENTION ) MULTI BILL=============================================
+    path('aak_detention_bill/', views.AAKdetention_bill, name='aakdt_bill'),
+    path('aak_detention_invoices/', views.AAKdetention_list, name='aakdt_list'),
+    path('aak_detention_invoice/<int:invoice_id>/', views.AAKdetention_detail, name='allana_detail'),
     
 
 
