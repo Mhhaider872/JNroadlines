@@ -413,9 +413,16 @@ urlpatterns =[
     path('aak_detention_bill/', views.AAKdetention_bill, name='aakdt_bill'),
     path('aak_detention_invoices/', views.AAKdetention_list, name='aakdt_list'),
     path('aak_detention_invoice/<int:invoice_id>/', views.AAKdetention_detail, name='allana_detail'),
+
+
+
+    #===========================MORDER FOODS ( DETENTION ) MULTI BILL=============================================
+    path('morde_bill/', views.morde_bill, name='morde_bill'),
+    path('morde_invoices/', views.morde_list, name='morde_list'),
+    path('morde_invoice/<int:invoice_id>/', views.morde_detail, name='morde_detail'),
     
 
-
+ 
 
 
 
