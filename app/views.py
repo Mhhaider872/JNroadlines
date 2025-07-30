@@ -2268,6 +2268,14 @@ def Billing(request):
     return render(request,'billing.html',context)
 
 
+def Multi_bill(request):
+    # adani=Invoice.objects.count()
+    # gemini=GInvoice.objects.count()
+    # akkinword=Aak_in_Invoice.objects.count()
+    # context={'adani':adani,'gemini':gemini,'akkinword':akkinword}
+    return render(request,'multi_bill.html')
+
+
 
 
 
@@ -9861,6 +9869,237 @@ def morde_detail(request, invoice_id):
     return render(request, 'bills/MORDE/morde_details.html', {'invoice': invoice, 'items': items})
 
 
+#===================================AAK INDIA (REIMBURESEMENT ) BILL==================
+# def aakreim_bill(request):
+#     return render(request,'bills/AAK_REIMBURES/AAK.html')
+
+def AAKREM_bill(request):
+    if request.method == "POST":
+        # Step 1: Extract invoice data
+        date = request.POST.get('date')
+        company = request.POST.get('company')
+        gst = request.POST.get('gst')  # This is buyer GST (To GST)
+        pan = request.POST.get('pan')
+        tanker = request.POST.get('tanker')
+        
+        date_from = request.POST.get('date_from')
+        date_to = request.POST.get('date_to')
+       
+        Fo_date = request.POST.get('Fo_date')
+        # To_date = request.POST.get('To_date')
+        # d_rate = request.POST.get('d_rate')
+        # par_day = request.POST.get('par_day')
+        total_d = request.POST.get('total_d')
+        sac = request.POST.get('sac')
+        charges = request.POST.get('charges')
+        hsac = request.POST.get('hsac')
+        # unloadcharge = request.POST.get('unloadcharge')
+        # unloadrate = request.POST.get('unloadrate')
+
+        # Fo_dateD = parse_date(request.POST.get('Fo_dateD'))
+        # To_dateD = parse_date(request.POST.get('To_dateD'))
+        # d_rateD = request.POST.get('d_rateD')
+        # par_dayD = request.POST.get('par_dayD')
+        # totalD = request.POST.get('totalD')
+        # sacD = request.POST.get('sacD')
+        # charges_D = request.POST.get('charges_D')
+        
+
+        # Step 2: Generate invoice number
+        invoice_number = generate_bill_no()
+        
+
+        if AAKRMInvoice.objects.filter(date=date,company=company).exists():
+           messages.error(request, 'Bill already Exists!!')
+           return redirect('AAK_reimbures_bill')
+        else:
+          
+        # Step 3: Create empty invoice
+         invoice = AAKRMInvoice.objects.create(
+            invoice_number=invoice_number,
+            date=date,
+            company=company,
+            gst=gst,
+            pan=pan,
+            tanker=tanker,
+            sac=sac if sac else 0,
+            # unloadcharge=unloadcharge if total_d else None,
+            # unloadrate=unloadrate if total_d else None,
+            charges=charges if total_d else None,
+            hsac=hsac if hsac else 0,
+            Fo_date=Fo_date if Fo_date else None,
+            total_d=total_d if total_d else 0,
+            total_amount=0.0,
+            date_from= date_from if  date_from else 0,
+            date_to= date_to if  date_to else 0,
+            # sacD=sacD if sacD else 0,
+            # Fo_dateD=Fo_dateD if Fo_dateD else 0,
+            # To_dateD=To_dateD if To_dateD else 0,
+            # d_rateD=d_rateD if d_rateD else 0,
+            # par_dayD=par_dayD if par_dayD else 0,
+            # totalD=totalD if totalD else 0,
+            #  date_from= date_from if  date_from else 0,
+        )
+
+        # Step 4: Handle item data
+        item_data = request.POST.getlist('item_description')
+        quantities = request.POST.getlist('item_quantity')
+        unit_prices = request.POST.getlist('item_unit_price')
+
+        tanker_no_list = request.POST.getlist('item_tanker_no')
+        date_list = request.POST.getlist('item_date')
+        from_add_list = request.POST.getlist('item_From_add')
+        to_add_list = request.POST.getlist('item_To_add')
+        to_lrno_list =request.POST.getlist('item_lrno')
+        to_totalkm_list=request.POST.getlist('item_totalkm')
+        to_diesel_list=request.POST.getlist('item_diesel')
+        to_dieselrate_list=request.POST.getlist('item_dieselrate')
+        to_dieselamount_list=request.POST.getlist('item_dieselamount')
+        to_urearate_list=request.POST.getlist('item_urearate')
+        to_ureaamount_list=request.POST.getlist('item_ureaamount')
+        to_toll_list=request.POST.getlist('item_toll')
+        to_totalamount_list=request.POST.getlist('item_totalamount')
+
+        subtotal = 0.0
+
+        for i in range(len(item_data)):
+            try:
+                quantity = int(quantities[i])
+                unit_price = float(unit_prices[i])
+                line_total = quantity * unit_price
+                subtotal += line_total
+
+                AAKRMItem.objects.create(
+                    invoice=invoice,
+                    description=item_data[i],
+                    quantity=quantity,
+                    unit_price=unit_price,
+
+                    tanker_no=tanker_no_list[i] if i < len(tanker_no_list) else '',
+                    date=date_list[i] if i < len(date_list) else '',
+                    From_add=from_add_list[i] if i < len(from_add_list) else '',
+                    To_add=to_add_list[i] if i < len(to_add_list) else '',
+                    lrno = to_lrno_list[i] if i < len(to_lrno_list) and to_lrno_list[i] else None,
+                    totalkm=float(to_totalkm_list[i]) if i < len(to_totalkm_list) and to_totalkm_list[i] else 0,
+                    diesel=float(to_diesel_list[i]) if i < len(to_diesel_list) and to_diesel_list[i] else 0,
+                    dieselrate=float(to_dieselrate_list[i]) if i < len(to_dieselrate_list) and to_dieselrate_list[i] else 0,
+                    dieselamount=float(to_dieselamount_list[i]) if i < len(to_dieselamount_list) and to_dieselamount_list[i] else 0,
+                    urearate=float(to_urearate_list[i]) if i < len(to_urearate_list) and to_urearate_list[i] else 0,
+                    ureaamount=float(to_ureaamount_list[i]) if i < len(to_ureaamount_list) and to_ureaamount_list[i] else 0,
+                    toll=float(to_toll_list[i]) if i < len(to_toll_list) and to_toll_list[i] else 0,
+                    totalamount=float(to_totalamount_list[i]) if i < len(to_totalamount_list) and to_totalamount_list[i] else 0,
+
+                )
+            except (ValueError, IndexError):
+                continue
+        
+        g_amount = float(total_d or 0)  # or Decimal(total_d)   + float( totalD or 0)
+
+        # #Step 5: Calculate tax
+        # cgst_r = 0.09
+        # sgst_r = 0.09
+        # igst_r = 0.18
+
+        # # GST-based logic
+        # company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
+        # from_gst_code = extract_gst_code(company_gst)  # Your GST
+        # to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        # if from_gst_code == '27' and to_gst_code == '27':
+        #     # Intra-state (Maharashtra)
+        #     c_gst = round(g_amount * cgst_r, 2)
+        #     s_gst = round(g_amount * sgst_r, 2)
+        #     i_gst = 0.0
+        # else:
+        #     # Inter-state
+        #     c_gst = 0.0
+        #     s_gst = 0.0
+        #     i_gst = round(g_amount * igst_r, 2)
+
+        # g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
+     
+
+        
+
+        basic_amount = subtotal + float(total_d or 0) 
+
+        cgst_rate = 0.09
+        sgst_rate = 0.09
+        igst_rate = 0.18
+
+        # GST-based logic
+        company_gst = "27XXXXX0000Z5A" 
+        from_gst_code = extract_gst_code(company_gst)  # Your GST
+        to_gst_code = extract_gst_code(gst)  # Customer GST
+
+        if from_gst_code == '27' and to_gst_code == '27':
+            # Intra-state (Maharashtra)
+            cgst = round(basic_amount * cgst_rate, 2)
+            sgst = round(basic_amount * sgst_rate, 2)
+            igst = 0.0
+        else:
+            # Inter-state
+            cgst = 0.0
+            sgst = 0.0
+            igst = round(basic_amount * igst_rate, 2)
+
+        fright_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst , 2)
+
+            # Check decimal part
+        decimal_part = grand_total - int(grand_total)
+
+        # Add 1 rupee if decimal part > 0.50
+        if decimal_part > 0.50:
+          grand_total = int(grand_total) + 1
+        else:
+            grand_total = int(grand_total)
+
+        #  final output looks like 1000.00 format
+        formatted_total = "{:.2f}".format(grand_total)
+        
+        
+
+
+
+        # Step 6: Save tax and total
+        # invoice.c_gst = c_gst
+        # invoice.s_gst = s_gst
+        # invoice.i_gst = i_gst
+        invoice.total_amount = basic_amount
+        invoice.cgst = cgst
+        invoice.sgst = sgst
+        invoice.igst = igst
+        invoice.g_amount = g_amount
+        invoice.total_d = total_d 
+        # invoice.g_total = g_total
+        invoice.fright_total = fright_total 
+        invoice.grand_total = formatted_total
+        # invoice. total_in_words = num2words(formatted_total)
+        invoice. total_in_words =num2words(formatted_total, lang='en_IN').title().replace(",", "")+ " " + "ONLY"
+        invoice.save()
+        messages.success(request, 'Bill generate successfully !!')
+
+        return redirect('AAK_reimbures_list')
+
+    vehicle = Add_Vehicle.objects.all()
+    company = companydetails.objects.all()
+    dname = NewDriver_Details.objects.all()
+    context = {'vehicle': vehicle, 'company': company, 'dname': dname}
+
+    return render(request, 'bills/AAK_REIMBURES/AAK.html', context)
+
+
+
+def AAKREM_list(request):
+    ARinvoice = AAKRMInvoice.objects.all().order_by('date')  # Latest invoice first
+    return render(request, 'bills/AAK_REIMBURES/AAK_list.html', {'ARinvoice': ARinvoice})
+
+
+def AAKREM_detail(request, invoice_id):
+    invoice = get_object_or_404(AAKRMInvoice, id=invoice_id)
+    items = AAKRMItem.objects.filter(invoice=invoice)
+    return render(request, 'bills/AAK_REIMBURES/AAK_details.html', {'invoice': invoice, 'items': items})
 
 #=======================INVENTORY MANAGEMENT SYSTEM=============================================
 

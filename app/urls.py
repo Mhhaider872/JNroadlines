@@ -192,10 +192,12 @@ urlpatterns =[
     path('plan_gemini/', views.plangemini, name='plan-ogemini'),
     
     
+    
 
 
     #======================Billing ULRs===========================================
     path('Billing_page/', views.Billing, name='bill-page'),
+    path('Multi_Billing/', views.Multi_bill, name='multi-page'),
 
 
     #=======================Adani Bill=============================================
@@ -422,7 +424,12 @@ urlpatterns =[
     path('morde_invoice/<int:invoice_id>/', views.morde_detail, name='morde_detail'),
     
 
- 
+    
+    #===============================AAK INDIA PVT ( REIMBURESEMENT ) MULTI BILL=====================================
+    path('AAK_reimbures_bill/', views.AAKREM_bill, name='AAK_reimbures_bill'),
+    path('AAK_reimbures_invoices/', views.AAKREM_list, name='AAK_reimbures_list'),
+    path('AAK_reimbures_invoice/<int:invoice_id>/', views.AAKREM_detail, name='AAK_reimbures_detail'),
+
 
 
 

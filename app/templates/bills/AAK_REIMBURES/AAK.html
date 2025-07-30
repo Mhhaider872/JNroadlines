@@ -1,0 +1,348 @@
+
+
+<!-- @format -->
+
+{% include 'base.html' %}
+{% load static %}
+  <body>
+    <main id="main" class="main">
+      <div class="pagetitle py-3">
+        <h1>AAK INDIA PVT LTD</h1>
+        {% comment %} <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav> {% endcomment %}
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title text-center">AAK INDIA PVT LTD Invoice</h5>
+                 {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-info {{ message.tags }} alert-dismissible fade show" role="alert">
+       <h5 class="text-center"> {{ message }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<form method="POST" autocomplete="off">
+    {% csrf_token %}
+    <div class="row">
+     {% comment %} <div class="col-lg-3 mb-3">
+    <label for="invoice_number" class="form-label fw-bold">Bill No:</label>
+    <input type="text" class="form-control border-2" name="invoice_number"  disabled>
+    </div> {% endcomment %}
+    
+    <div class="col-lg-3 mb-3">
+     <label for="exampleDataList1" class="form-label fw-bold">Company Name:</label>
+     <input class="form-control border-2" name="company" list="datalistOptions1" id="exampleDataList1" placeholder="Search Company Name...">
+               <datalist id="datalistOptions1" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.area_name}}"></option>
+                 {% endfor %}
+                </datalist>
+
+
+
+    {% comment %} <input type="text" class="form-control border-2" name="company"> {% endcomment %}
+    </div>
+     <div class="col-lg-3 mb-3">
+    <label for="date" class="form-label fw-bold">Date:</label>
+    <input type="date" class="form-control border-2" name="date">
+    </div>
+    <div class="col-lg-3 mb-3">
+    <label for="gst" class="form-label fw-bold">GST:</label>
+    <input type="text" name="gst" class="form-control border-2">
+    </div>
+    <div class="col-lg-3 mb-3">
+    <label for="pan" class="form-label fw-bold">PAN:</label>
+    <input type="text" name="pan" class="form-control border-2">
+    </div>
+<hr>
+<h5 class="card-title">Items</h5>
+    <div id="items">
+        <div class="item">
+          <div class="row">
+       
+            <div class="col-lg-3 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">Tanker No :</label>
+            <input type="text" class="form-control border-2" name="tanker" list="datalistOptions2" id="exampleDataList2" placeholder="Search Tanker No...">
+            <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">To Dispatch Date :</label>
+            <input type="date" class="form-control border-2" name="date_to">
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">From Dispatch Date :</label>
+            <input type="date" class="form-control border-2" name="date_from">
+            </div>
+            <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">HSN/SAC :</label>
+            <input type="number" class="form-control border-2" name="sac" value="996791">
+            </div>
+  
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold">Total M.T :</label>
+            <input type="text" class="form-control border-2" name="total_kg"   value="13MT" >
+            </div>
+          
+            <div class="col-lg-3 mb-3">
+            <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
+            <input type="number" step="0.01" name="item_unit_price" class="form-control border-2" value="100000">
+            </div>
+             <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold"></label>
+            <input type="hidden" class="form-control border-2" name="item_quantity" value="1">
+            </div>
+              <div class="col-lg-3 mb-3">
+            <label for="item_description" class="form-label fw-bold"></label>
+            <input type="hidden" class="form-control border-2" name="item_description" value="mutliitem">
+            </div>
+             <h5 class="card-title">Detention & Other Charges</h5>
+            <div class="col-lg-3 mb-3">
+            <label for="Fo" class="form-label fw-bold"
+              >Charges Name :</label
+            ><select id="Fo" class="form-select" name="charges">
+    <option value="">Select</option>
+    <option value="Detention Charges">Detention Charges</option>
+    {% comment %} <option value="Union Charges">Union Charges</option>
+    <option value="Double Driver Charges">Double Driver Charges</option> {% endcomment %}
+    
+    </select>
+           
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="sac" class="form-label fw-bold"
+              >HSN/SAC:</label
+            >
+            <select id="sac" class="form-select" name="hsac">
+    <option value="">Select</option>
+    <option value="996749">996749</option>
+    <option value="998534">998534</option>
+   
+   
+    </select>
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="label5" class="form-label fw-bold"
+              >Date </label
+            >
+            <input
+              type="date"
+              name="Fo_date"
+              class="form-control"
+              id="Fo_date"
+            />
+        </div>
+         
+         <div class="col-lg-3 mb-3">
+            <label for="label18" class="form-label fw-bold">Rate </label>
+            <input
+              type="number"
+              class="form-control"
+              name="total_d"
+              min="0"
+              id="perrate"
+              oninput="Total()"
+            />
+        </div>
+            <div>
+             <button type="button" onclick="addItem()" class="btn btn-danger px-4 btn-sm">Add +</button>
+            </div>
+            <hr>
+           
+        
+         </div>
+        </div>
+    </div>
+    
+    </div>
+<div class="btn-div text-center py-4">
+    
+    <button type="submit" class="btn btn-success px-4">Create Invoice</button>
+    <a href="{% url 'AAK_reimbures_list' %}" class="btn btn-primary px-4">View Invoice</a>
+    </div>
+    
+</form>
+      </div>
+    </div>
+  </div>
+</section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Copyright <strong>. All Rights Reserved</strong>
+      </div>
+      <div class="credits">
+        Designed by <a href="#"><strong>J N Roadlines</strong></a>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+    <script>
+    function addItem() {
+    const itemDiv = document.createElement('div');
+    itemDiv.classList.add('row-item');
+    itemDiv.innerHTML = `
+        <div class="row">
+           <div class="row-item">
+    <div class="row">
+            <div class="col-lg-3 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">Tanker No :</label>
+            <input type="text" class="form-control border-2" name="item_tanker_no" list="datalistOptions2" id="exampleDataList2" placeholder="Search Tanker No...">
+            <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+            </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Date</label>
+            <input type="date" class="form-control border-2" name="item_date">
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">LR No.</label>
+            <input type="number" class="form-control border-2" name="item_lrno">
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label for="exampleDataList3" class="form-label fw-bold">From Address :</label>
+            <input type="text" class="form-control border-2" name="item_From_add" list="datalistOptions3" id="exampleDataList3" placeholder="Search From Address...">
+            <datalist id="datalistOptions3" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+            </div>
+         <div class="col-lg-3 mb-3">
+            <label for="exampleDataList4" class="form-label fw-bold">To Address :</label>
+            <input type="text" class="form-control border-2" name="item_To_add" list="datalistOptions4" id="exampleDataList3" placeholder="Search From Address...">
+            <datalist id="datalistOptions4" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+            </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Total K.M :</label>
+            <input type="number" class="form-control border-2 total_km" name="item_totalkm" oninput="Total()">
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Diesel :</label>
+            <input type="number" class="form-control border-2 diesel" name="item_diesel"  oninput="Total()">
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Diesel Rate :</label>
+            <input type="number" class="form-control border-2 diesel_rate" name="item_dieselrate" step="any" oninput="Total()">
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Diesel Amount :</label>
+            <input type="number" class="form-control border-2 total_rate" name="item_dieselamount" step="any" readonly>
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Urea Rate:</label>
+            <input type="text" class="form-control border-2 urea_rate" name="item_urearate" step="any" oninput="Total()">
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Urea Amount:</label>
+            <input type="number" class="form-control border-2 total_urea" name="item_ureaamount" step="any" readonly>
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Toll Tax:</label>
+            <input type="number" class="form-control border-2 toll" name="item_toll" oninput="Total()">
+        </div>
+        <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Total :</label>
+            <input type="number" step="0.01" class="form-control border-2 all_total" name="item_totalamount" readonly>
+        </div>
+       
+    </div>
+</div>
+
+        </div>
+    `;
+    document.getElementById('items').appendChild(itemDiv);
+}
+
+</script>
+  <script>
+function Total() {
+    const rows = document.querySelectorAll('.row-item');
+
+    rows.forEach(row => {
+        const diesel = parseFloat(row.querySelector('.diesel')?.value) || 0;
+        const diesel_rate = parseFloat(row.querySelector('.diesel_rate')?.value) || 0;
+        const total_km = parseFloat(row.querySelector('.total_km')?.value) || 0;
+        const urea_rate = parseFloat(row.querySelector('.urea_rate')?.value) || 0;
+        const toll = parseFloat(row.querySelector('.toll')?.value) || 0;
+
+        const total_rate = diesel * diesel_rate;
+        const total_urea = total_km * urea_rate;
+        const all_total = total_rate + total_urea + toll;
+
+        row.querySelector('.total_rate').value = total_rate.toFixed(2);
+        row.querySelector('.total_urea').value = total_urea.toFixed(2);
+        row.querySelector('.all_total').value = all_total.toFixed(2);
+    });
+}
+</script>
+
+
+<script>
+  function addItemRowFromDropdown() {
+    var selectedValue = document.getElementById("item-select").value ;
+
+    if (selectedValue !== "") {
+      var itemDiv = document.createElement('div');
+      itemDiv.classList.add('item');
+
+      // Add charge-specific input
+      itemDiv.innerHTML = `
+        <div class="row">
+          <hr>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Charge Description:</label>
+            <input type="text" class="form-control border-2" name="charge_description" value="${selectedValue.replace(/_/g, ' ')}" readonly>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label fw-bold">Amount (₹):</label>
+            <input type="number" class="form-control border-2" name="charge_amount" step="0.01" required>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('items').appendChild(itemDiv);
+
+      // Reset dropdown to default
+      document.getElementById("item-select").value = "";
+    }
+  }
+</script>
+
+
+</body>

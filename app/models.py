@@ -3036,6 +3036,73 @@ class MOR_Item(models.Model):
     def __str__(self):
         return self.description
     
+#==========================AAK INDIA (LOCAL ) SYSTEM ==================================
+class AAKRMInvoice(models.Model):
+    invoice_number = models.CharField(max_length=100)
+    date=models.DateField(null=True, blank=True)
+    company=models.CharField(max_length=300, null=True, blank=True)
+    gst=models.CharField(max_length=300, null=True, blank=True)
+    pan=models.CharField(max_length=300, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    total_in_words = models.CharField(max_length=255, blank=True)
+    tanker=models.CharField(max_length=200, null=True, blank=True)
+    
+    date_to=models.DateField(null=True, blank=True)
+    date_from=models.DateField(null=True, blank=True)
+    sac=models.IntegerField(null=True, blank=True)
+    hsac=models.IntegerField(null=True, blank=True)
+    Fo_date=models.DateField(null=True, blank=True)
+ 
+    total_d=models.DecimalField(max_digits=10, decimal_places=2, default=0) 
+    cgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    sgst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    igst = models.DecimalField(max_digits=10, decimal_places=2, default=0 ,null=True, blank=True)
+    fright_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    charges=models.CharField(max_length=300, null=True, blank=True)
+    c_gst = models.FloatField(default=0.0,null=True, blank=True)
+    s_gst = models.FloatField(default=0.0,null=True, blank=True)
+    i_gst = models.FloatField(default=0.0,null=True, blank=True)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_mt=models.CharField(max_length=300, null=True, blank=True)
+
+
+    def __str__(self):
+        return self.invoice_number
+    
+
+
+
+class AAKRMItem(models.Model):
+    invoice = models.ForeignKey(AAKRMInvoice, related_name='items', on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    quantity = models.IntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    tanker_no=models.CharField(max_length=200, null=True, blank=True)
+    date=models.DateField(null=True, blank=True)
+    From_add=models.CharField(max_length=200, null=True, blank=True)
+    To_add=models.CharField(max_length=200,null=True, blank=True)
+    lrno=models.CharField(max_length=200, null=True, blank=True)
+    totalkm=models.IntegerField(null=True, blank=True)
+    diesel=models.IntegerField(null=True, blank=True)
+    dieselrate = models.DecimalField(max_digits=10, decimal_places=2)
+    dieselamount = models.DecimalField(max_digits=10, decimal_places=2)
+    urearate = models.DecimalField(max_digits=10, decimal_places=2)
+    ureaamount= models.DecimalField(max_digits=10, decimal_places=2)
+    toll= models.DecimalField(max_digits=10, decimal_places=2)
+    totalamount= models.DecimalField(max_digits=10, decimal_places=2)
+    
+
+    def save(self, *args, **kwargs):
+        # Calculate total price for the item
+        self.total_price = self.quantity * self.unit_price
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.description
+    
 
 
 

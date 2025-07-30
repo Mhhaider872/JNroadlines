@@ -81,7 +81,7 @@ admin.site.register(ALLANAInvoice)
 admin.site.register(ALLANAItem)
 admin.site.register(AAKDEInvoice)
 admin.site.register(MOR_Invoice)
-
+admin.site.register(AAKRMItem)
 
 
 
