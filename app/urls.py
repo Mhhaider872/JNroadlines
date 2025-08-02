@@ -414,7 +414,7 @@ urlpatterns =[
     #===========================AAK INDIA  ( DETENTION ) MULTI BILL=============================================
     path('aak_detention_bill/', views.AAKdetention_bill, name='aakdt_bill'),
     path('aak_detention_invoices/', views.AAKdetention_list, name='aakdt_list'),
-    path('aak_detention_invoice/<int:invoice_id>/', views.AAKdetention_detail, name='allana_detail'),
+    path('aak_detention_invoice/<int:invoice_id>/', views.AAKdetention_detail, name='aakd_detail'),
 
 
 
@@ -430,6 +430,8 @@ urlpatterns =[
     path('AAK_reimbures_invoices/', views.AAKREM_list, name='AAK_reimbures_list'),
     path('AAK_reimbures_invoice/<int:invoice_id>/', views.AAKREM_detail, name='AAK_reimbures_detail'),
 
+
+    path('AAK_reimbures/', views.aakreim_bill, name='AAK_reimbures'),
 
 
 

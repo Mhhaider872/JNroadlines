@@ -75,7 +75,7 @@
       <td colspan="2"><strong>Delivery Note Date</strong></td> {% endcomment %}
     </tr>
     <tr>
-       <td colspan="2"><strong>Vehicle No : {{invoice.tanker}}</strong></td>
+       <td colspan="2"><strong>HSN / SAC CODE : {{invoice.sac}}</strong></td>
       <td colspan="2"><strong>LR No : {{invoice.lr_no}}</strong></td>
       
     </tr> 
@@ -103,7 +103,7 @@
               <th style="font-weight:600;" >Dispatch Date</th>
               
                 <th>LR No.</th> 
-                 <th  style="font-weight:600;">HSN/SAC Code</th>
+                 {% comment %} <th  style="font-weight:600;">HSN/SAC Code</th> {% endcomment %}
                   <th style="font-weight:600;">Chargable QTY (KG)</th>
                     <th width="200px" style="font-weight:200;">Loaded QTY(KG)</th>
                     <th width="200px" style="font-weight:200;">Unloaded QTY(KG)</th>
@@ -125,14 +125,14 @@
             <td width="200px">{{item.date_dis|date:"d/m/Y"  }}</td>
             
              <td width="200px">{{item.lr_no}}</td> 
-            <td width="200px">{{invoice.sac}}</td>
-            <td width="200px">{{ item.qty }}</td>
-          <td width="200px">{{item.load}} </td> 
-           <td width="200px">{{ item.unload }}</td>
-            <td width="200px">{{ item.short }}</td>
-            <td width="200px">{{ item.retn }}</td> 
+            {% comment %} <td width="200px">-</td> {% endcomment %}
+            <td width="200px"></td>
+          <td width="200px"></td> 
+           <td width="200px"></td>
+            <td width="200px"></td>
+            <td width="200px"></td> 
              
-            <td width="200px">{{ item.rate }}</td>
+            <td width="200px"></td>
              <td width="300px">{{item.From_add}}</td>
             <td width="300px">{{item.To_add}}</td>  
             <td width="200px">-</td>
@@ -154,7 +154,7 @@
               <td></td>
             <td></td>
             <td></td>
-            <td></td>
+           
            
            
           
@@ -164,7 +164,7 @@
      
        
             <td></td>
-            <td colspan=12>{% if invoice.Fo_date %}<strong>{% else %}
+            <td colspan=11>{% if invoice.Fo_date %}<strong>{% else %}
     <strong></strong>
 ( {{ item.Fo_date|date:"d/m/Y"}} To {{ item.To_date|date:"d/m/Y"}} = {{item.quantity}} Day )  (Rs. {{ item.unit_price}} / Per Day * {{item.quantity}} )</strong>{% endif %}</td>
            
@@ -192,7 +192,7 @@
               <td></td>
             <td></td>
             <td></td>
-            <td></td>
+         
            
            
           
@@ -201,7 +201,7 @@
 
         
                     <tr>
-         <td></td>
+
                <td></td>
             <td></td>
             
@@ -222,7 +222,7 @@
         </tr>
       
                     <tr>
-         <td></td>
+
                <td></td>
             <td></td>
             <td></td>
@@ -241,7 +241,7 @@
         
         </tr>
         <tr>
-         <td></td>
+
                <td></td>
             <td></td>
             <td></td>
@@ -257,7 +257,7 @@
             <td>₹{{ invoice.sgst }}</td>
         </tr>
          <tr>
-         <td></td>
+       
                <td></td>
             <td></td>
             <td></td>
@@ -273,7 +273,7 @@
             <td>₹{{ invoice.igst }}</td>
         </tr>
         <tr>
-         <td></td>
+
                <td></td>
             <td></td>
             <td></td>
@@ -294,7 +294,7 @@
 
 
           <tr>
-          <td></td> 
+      
             <td></td>
             <td></td>
             <td></td>

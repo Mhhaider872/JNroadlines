@@ -2944,7 +2944,7 @@ class AAKDEItem(models.Model):
     retn=models.IntegerField(null=True, blank=True)
     From_add=models.CharField(max_length=200, null=True, blank=True)
     To_add=models.CharField(max_length=200,null=True, blank=True)
-    date_dis=models.DateField(null=True, blank=True)
+    date_dis=models.DateField(null=True,blank=True)
     lr_no=models.CharField(max_length=200, null=True, blank=True)
     Fo_date=models.DateField(null=True, blank=True)
     To_date=models.DateField(null=True, blank=True)
@@ -3064,7 +3064,15 @@ class AAKRMInvoice(models.Model):
     i_gst = models.FloatField(default=0.0,null=True, blank=True)
     g_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_sum = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_mt=models.CharField(max_length=300, null=True, blank=True)
+    f_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    Scharges=models.CharField(max_length=300, null=True, blank=True)
+    Stotal_d=models.DecimalField(max_digits=10, decimal_places=2, default=0) 
+    Shsac=models.IntegerField(null=True, blank=True)
+    SFo_date=models.DateField(null=True, blank=True)
+    
 
 
     def __str__(self):

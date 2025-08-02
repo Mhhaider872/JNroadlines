@@ -9475,8 +9475,8 @@ def allana_bill(request):
 
 
 def allana_list(request):
-    aainvoice = ALLANAInvoice.objects.all().order_by('date')
-    return render(request, 'bills/ALLANA_KHOP/allana_list.html', {'aainvoice': aainvoice})
+    ainvoice = ALLANAInvoice.objects.all().order_by('date')
+    return render(request, 'bills/ALLANA_KHOP/allana_list.html', {'ainvoice': ainvoice})
 
 
 
@@ -9564,7 +9564,7 @@ def AAKdetention_bill(request):
                     lr_no=lr_no_list[i] if i < len(lr_no_list) else '0',
                     From_add=from_add_list[i] if i < len(from_add_list) else '',
                     To_add=to_add_list[i] if i < len(to_add_list) else '',
-                    date_dis = to_date_dis[i] if i < len(to_date_dis) and to_date_dis[i] else 'None',
+                    date_dis = to_date_dis[i] if i < len(to_date_dis) and to_date_dis[i] else None,
                     load=float(to_load_list[i]) if i < len(to_load_list) and to_load_list[i] else 0,
                     unload=float(to_unload_list[i]) if i < len(to_unload_list) and to_unload_list[i] else 0,
                     short=float(to_short_list[i]) if i < len(to_short_list) and to_short_list[i] else 0,
@@ -9649,6 +9649,8 @@ def AAKdetention_detail(request, invoice_id):
     invoice = get_object_or_404(AAKDEInvoice, id=invoice_id)
     items = AAKDEItem.objects.filter(invoice=invoice)
     return render(request, 'bills/AAK_DETENTION/detention_details.html', {'invoice': invoice, 'items': items})
+
+
 
 
 #===================================MORDE FOODS PVT LTD====================================================
@@ -9870,8 +9872,8 @@ def morde_detail(request, invoice_id):
 
 
 #===================================AAK INDIA (REIMBURESEMENT ) BILL==================
-# def aakreim_bill(request):
-#     return render(request,'bills/AAK_REIMBURES/AAK.html')
+def aakreim_bill(request):
+    return render(request,'bills/AAK_REIMBURES/aak_india.html')
 
 def AAKREM_bill(request):
     if request.method == "POST":
@@ -9886,15 +9888,19 @@ def AAKREM_bill(request):
         date_to = request.POST.get('date_to')
        
         Fo_date = request.POST.get('Fo_date')
-        # To_date = request.POST.get('To_date')
+        total_mt = request.POST.get('total_mt')
+        f_total = request.POST.get('f_total')
+        
         # d_rate = request.POST.get('d_rate')
         # par_day = request.POST.get('par_day')
         total_d = request.POST.get('total_d')
         sac = request.POST.get('sac')
         charges = request.POST.get('charges')
         hsac = request.POST.get('hsac')
-        # unloadcharge = request.POST.get('unloadcharge')
-        # unloadrate = request.POST.get('unloadrate')
+        Scharges = request.POST.get('Scharges')
+        Stotal_d = request.POST.get('Stotal_d')
+        Shsac = request.POST.get('Shsac')
+        SFo_date = request.POST.get('SFo_date')
 
         # Fo_dateD = parse_date(request.POST.get('Fo_dateD'))
         # To_dateD = parse_date(request.POST.get('To_dateD'))
@@ -9923,6 +9929,8 @@ def AAKREM_bill(request):
             pan=pan,
             tanker=tanker,
             sac=sac if sac else 0,
+            total_mt=total_mt if total_mt else 0,
+            f_total=f_total if f_total else 0,
             # unloadcharge=unloadcharge if total_d else None,
             # unloadrate=unloadrate if total_d else None,
             charges=charges if total_d else None,
@@ -9932,10 +9940,10 @@ def AAKREM_bill(request):
             total_amount=0.0,
             date_from= date_from if  date_from else 0,
             date_to= date_to if  date_to else 0,
-            # sacD=sacD if sacD else 0,
-            # Fo_dateD=Fo_dateD if Fo_dateD else 0,
-            # To_dateD=To_dateD if To_dateD else 0,
-            # d_rateD=d_rateD if d_rateD else 0,
+            Scharges=Scharges if Scharges else 0,
+            Stotal_d=Stotal_d if Stotal_d else 0,
+            Shsac=Shsac if Shsac else 0,
+            SFo_date=SFo_date if SFo_date else 0,
             # par_dayD=par_dayD if par_dayD else 0,
             # totalD=totalD if totalD else 0,
             #  date_from= date_from if  date_from else 0,
@@ -9974,9 +9982,8 @@ def AAKREM_bill(request):
                     description=item_data[i],
                     quantity=quantity,
                     unit_price=unit_price,
-
                     tanker_no=tanker_no_list[i] if i < len(tanker_no_list) else '',
-                    date=date_list[i] if i < len(date_list) else '',
+                    date=date_list[i] if i < len(date_list) else None,
                     From_add=from_add_list[i] if i < len(from_add_list) else '',
                     To_add=to_add_list[i] if i < len(to_add_list) else '',
                     lrno = to_lrno_list[i] if i < len(to_lrno_list) and to_lrno_list[i] else None,
@@ -9995,33 +10002,8 @@ def AAKREM_bill(request):
         
         g_amount = float(total_d or 0)  # or Decimal(total_d)   + float( totalD or 0)
 
-        # #Step 5: Calculate tax
-        # cgst_r = 0.09
-        # sgst_r = 0.09
-        # igst_r = 0.18
-
-        # # GST-based logic
-        # company_gst = "27XXXXX0000Z5A"  # Set your own company's GST number here (hardcoded or from DB)
-        # from_gst_code = extract_gst_code(company_gst)  # Your GST
-        # to_gst_code = extract_gst_code(gst)  # Customer GST
-
-        # if from_gst_code == '27' and to_gst_code == '27':
-        #     # Intra-state (Maharashtra)
-        #     c_gst = round(g_amount * cgst_r, 2)
-        #     s_gst = round(g_amount * sgst_r, 2)
-        #     i_gst = 0.0
-        # else:
-        #     # Inter-state
-        #     c_gst = 0.0
-        #     s_gst = 0.0
-        #     i_gst = round(g_amount * igst_r, 2)
-
-        # g_total = round(g_amount + c_gst + s_gst + i_gst, 2)
-     
-
-        
-
-        basic_amount = subtotal + float(total_d or 0) 
+        freight=float(f_total or 0) + float(Stotal_d or 0)
+        basic_amount = freight + float(total_d or 0) 
 
         cgst_rate = 0.09
         sgst_rate = 0.09
@@ -10044,7 +10026,7 @@ def AAKREM_bill(request):
             igst = round(basic_amount * igst_rate, 2)
 
         fright_total = round(basic_amount + cgst + sgst + igst, 2)
-        grand_total = round(basic_amount + cgst + sgst + igst , 2)
+        grand_total = round(basic_amount + cgst + sgst + igst, 2)
 
             # Check decimal part
         decimal_part = grand_total - int(grand_total)
@@ -10070,7 +10052,6 @@ def AAKREM_bill(request):
         invoice.cgst = cgst
         invoice.sgst = sgst
         invoice.igst = igst
-        invoice.g_amount = g_amount
         invoice.total_d = total_d 
         # invoice.g_total = g_total
         invoice.fright_total = fright_total 
@@ -10099,7 +10080,15 @@ def AAKREM_list(request):
 def AAKREM_detail(request, invoice_id):
     invoice = get_object_or_404(AAKRMInvoice, id=invoice_id)
     items = AAKRMItem.objects.filter(invoice=invoice)
-    return render(request, 'bills/AAK_REIMBURES/AAK_details.html', {'invoice': invoice, 'items': items})
+    total_sum = items.aggregate(Sum('totalamount'))['totalamount__sum'] or 0
+    integer_part = int(total_sum)
+    decimal_part = total_sum - integer_part
+
+    if decimal_part > 0.50:
+        total_sum = integer_part + 1
+    else:
+        total_sum = integer_part
+    return render(request, 'bills/AAK_REIMBURES/AAK_details.html', {'invoice': invoice, 'items': items,'total_sum':total_sum})
 
 #=======================INVENTORY MANAGEMENT SYSTEM=============================================
 

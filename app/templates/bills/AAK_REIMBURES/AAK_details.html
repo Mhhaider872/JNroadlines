@@ -15,7 +15,7 @@
 
     <!-- End Page Title -->
     <section class="section-invoice">
-    <div class="invoice" style="min-height:700px" >
+    <div class="invoice" style="min-height:900px" >
         <table class="table table-bordered m-0">
  
      <tbody>
@@ -116,10 +116,12 @@
         </tr>
     </thead>
     <tbody >
-        {% for item in items %}
+   
         <tr>
             <td >{{ forloop.counter}}</td>
-              <td colspan="2" width="100px">{{invoice.tanker}}</td> 
+              <td colspan="2" width="100px">{% if invoice.tanker %}<strong>{{invoice.tanker}}</strong>{% else %}
+    <strong></strong>
+{% endif %}</td> 
               <td colspan="2" width="100px">{{invoice.sac}}</td>
     
     
@@ -134,12 +136,12 @@
             <td width="100px">{{ invoice.short }}</td>
             <td width="100px">{{ invoice.retn }}</td> {% endcomment %}
              
-            <td colspan="2" width="100px">{{ item.unit_price }}</td>
+            <td colspan="2" width="100px">{{invoice.f_total }}</td>
             {% comment %} <td width="200px">{{invoice.From_add}}</td>
             <td width="200px">{{invoice.To_add}}</td>  {% endcomment %}
-            <td colspan="1" width="100px">₹{{ item.total_price }}</td>
+            <td colspan="1" width="100px">₹{{invoice.f_total}}</td>
         </tr>
-        {% endfor %}
+ 
       
                 <tr>
   <td></td>
@@ -224,8 +226,8 @@
 
 <tr>
          <td></td>
-            <td colspan="3"><strong>{{ invoice.charges }}</strong></td>
-            <td colspan="2">{% if invoice.charges %}<strong>  SAC Code-</strong> {{invoice.hsac}}{% else %}
+            <td colspan="3"><strong>{{ invoice.Scharges }}</strong></td>
+            <td colspan="2">{% if invoice.Scharges %}<strong>  SAC Code-</strong> {{invoice.Shsac}}{% else %}
     <strong></strong>
 {% endif %}</td>
            
@@ -245,8 +247,8 @@
 
         <tr>
                    <td></td>
-                     <td colspan="3">{% if invoice.Fo_date %}
-     <strong>Date :- {{invoice.Fo_date|date:"d/m/Y"}}</strong>
+                     <td colspan="3">{% if invoice.SFo_date %}
+     <strong>Date :- {{invoice.SFo_date|date:"d/m/Y"}}</strong>
 {% else %}
 
 {% endif %} </td> 
@@ -261,7 +263,7 @@
                   <td></td>
                    <td></td>
                    <td></td>
-                     <td colspan="1">{% if invoice.charges %}<strong>₹{{invoice.total_d}}</strong>{% else %}
+                     <td colspan="1">{% if invoice.Scharges %}<strong>₹{{invoice.Stotal_d}}</strong>{% else %}
     <strong></strong>
 {% endif %}</td>
 
@@ -374,23 +376,7 @@
              <td colspan="1" class="fw-bold"><strong>₹{{ invoice.fright_total }}</strong></td>
         </tr>
 
-          
-              
-          <tr>
-          <td></td> 
-          <td colspan="3" ></td>
-          <td></td>
-               <td></td>
-                <td></td>
-                 <td></td>
-                  <td></td>
-                    <td></td>
-                    <td></td>
-    
-            <td colspan="2" ><strong>ROUNDED TO RS:</strong></td> 
-       
-            <td colspan="1" class="fw-bold"><strong>₹{{ invoice.grand_total }}</strong></td>
-        </tr>
+
          <tr>
           <td></td>
           <td></td>
@@ -415,10 +401,10 @@
                   <th width="100px" style="font-weight:600;">Total K.M</th>
                    
                        <th  style="font-weight:600;">Diesel</th>
-                        <th width="100px" style="font-weight:600;">Diesel Rate</th>
-                        <th width="100px" style="font-weight:600;">Diesel Amount</th>
-                        <th width="100px"  style="font-weight:600;">Urea Rate</th>
-                        <th width="100px" style="font-weight:600;">Urea Amount</th>
+                        <th width="200px" style="font-weight:600;">Diesel Rate</th>
+                        <th width="200px" style="font-weight:600;">Diesel Amount</th>
+                        <th width="200px"  style="font-weight:600;">Urea Rate</th>
+                        <th width="200px" style="font-weight:600;">Urea Amount</th>
                         <th  style="font-weight:600;">TollTax</th>
                  
             <th  style="font-weight:600;">Total</th>
@@ -426,16 +412,16 @@
         {% for item in items %}
         <tr>
             <td >{{ forloop.counter}}</td>
-              <td  width="100px">{{item.tanker_no}}</td> 
+              <td  width="500px">{{item.tanker_no}}</td> 
               <td  width="100px">{{item.date|date:"d/m/Y"}}</td>
               <td  width="100px">{{item.lrno}}</td>
               <td width="200px">{{item.From_add}}</td>
             <td width="200px">{{item.To_add}}</td>
-            <td width="200px">{{item.totalkm}}</td>
+            <td width="200px">{{item.quantity}}</td>
             <td width="200px">{{item.diesel}}</td>
             <td width="200px">{{item.dieselrate}}</td>
             <td width="200px">{{item.dieselamount}}</td>
-            <td width="200px">{{item.urearate}}</td>
+            <td width="200px">{{item.unit_price}}</td>
             <td width="200px">{{item.ureaamount}}</td>
             <td width="200px">{{item.toll}}</td>
             <td width="200px">{{item.totalamount}}</td>
@@ -450,8 +436,10 @@
           <td></td>
           <td></td>
           <td></td>
-        </tr>
+                  
+              
           <tr>
+                  <tr>
           <td></td>
           <td></td>
           <td></td>
@@ -460,6 +448,48 @@
           <td></td>
           <td></td>
           <td></td>
+                 <tr>
+          <td></td> 
+          <td colspan="3" ></td>
+          <td></td>
+               <td></td>
+                <td></td>
+                 <td></td>
+                  <td></td>
+                    <td></td>
+                    <td></td>
+    
+            <td colspan="2" ><strong>Total:</strong></td> 
+       
+            <td colspan="1" class="fw-bold"><strong>₹{{total_sum|floatformat:2}}</strong></td>
+        </tr>
+              
+          {% comment %} <tr>
+                  <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+                  
+              
+          <tr> {% endcomment %}
+          <td></td> 
+          <td colspan="3" ></td>
+          <td></td>
+               <td></td>
+                <td></td>
+                 <td></td>
+                  <td></td>
+                    <td></td>
+                    <td></td>
+    
+            <td colspan="2" ><strong>ROUNDED TO RS:</strong></td> 
+       
+            <td colspan="1" class="fw-bold"><strong>₹{{ invoice.grand_total }}</strong></td>
         </tr>
     </tbody>
 </table>

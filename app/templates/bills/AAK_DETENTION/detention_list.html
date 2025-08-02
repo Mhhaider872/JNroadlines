@@ -6,7 +6,7 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle py-3">
-      <h1>AAK INDIA PVT ( DETENTION ) Lists</h1>
+      <h1>AAK INDIA & ALLANA PVT LTD( DETENTION ) Lists</h1>
       {% comment %} <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
@@ -49,7 +49,7 @@
     <td>{{ invoice.company }}</td>
     <td>{{ invoice.grand_total }}</td>
     <td>
-      <a href="{% url 'allana_detail' invoice.id %}">View Bill</a>
+      <a href="{% url 'aakd_detail' invoice.id %}">View Bill</a>
     </td>
   </tr>
   {% endfor %}

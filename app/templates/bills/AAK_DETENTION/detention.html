@@ -8,7 +8,7 @@
   <body>
     <main id="main" class="main">
       <div class="pagetitle py-3">
-        <h1>AAK INDIA PVT ( DETENTION )</h1>
+        <h1>AAK INDIA & ALLANA PVT LTD( DETENTION )</h1>
         {% comment %} <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -22,7 +22,7 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title text-center">AAK INDIA PVT ( DETENTION ) Invoice</h5>
+                <h5 class="card-title text-center">AAK INDIA & ALLANA PVT LTD( DETENTION ) Invoice</h5>
                  {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
@@ -110,28 +110,28 @@
             </div>
             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">HSN/SAC :</label>
-            <input type="number" class="form-control border-2" name="sac" value="996749">
+            <input type="number" class="form-control border-2" name="sac" >
             </div>
             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Chargable QTY K.G :</label>
-            <input type="text" class="form-control border-2" name="item_qty" value="0">
+            <input type="text" class="form-control border-2" name="item_qty">
             </div>
              <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Loaded QTY K.G :</label>
-            <input type="number" class="form-control border-2" name="item_load"  id="disqty" oninput="calculateTotalShort()" value="0" >
+            <input type="number" class="form-control border-2" name="item_load"  id="disqty" oninput="calculateTotalShort()"  >
             </div>
              <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Unloaded QTY K.G :</label>
-            <input type="number" class="form-control border-2" name="item_unload" id="unlodqty" oninput="calculateTotalShort()" value="0">
+            <input type="number" class="form-control border-2" name="item_unload" id="unlodqty" oninput="calculateTotalShort()" >
             </div>
              <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">
 Shortages / Excess Qty K.G :</label>
-            <input type="number" class="form-control border-2" id="totalshort" name="item_short" value="0">
+            <input type="number" class="form-control border-2" id="totalshort" name="item_short" >
             </div>
             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Return QTY K.G :</label>
-            <input type="number" class="form-control border-2" name="item_retn" value="0">
+            <input type="number" class="form-control border-2" name="item_retn" >
             </div>
             {% comment %} <div class="col-lg-3 mb-3">
             <label for="item_quantity" class="form-label fw-bold">Quantity:</label>
@@ -139,13 +139,13 @@ Shortages / Excess Qty K.G :</label>
             </div> {% endcomment %}
             <div class="col-lg-3 mb-3">
             <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
-            <input type="number" step="any" name="item_rate" class="form-control border-2" value="0" >
+            <input type="number" step="any" name="item_rate" class="form-control border-2"  >
             </div>
                <div class="col-lg-4 mb-3">
             <label for="item_description" class="form-label fw-bold"></label>
             <input type="hidden" class="form-control border-2" name="item_description" value="mutliitem">
             </div>
-            <h5 class="card-title">Detention</h5>
+            <h5 class="card-title">1. Detention Description</h5>
              <div class="col-lg-3 mb-3">
             <label for="Fo" class="form-label fw-bold"
               >Detention Description :</label
@@ -305,28 +305,28 @@ Shortages / Excess Qty K.G :</label>
             </div>
              <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">HSN/SAC :</label>
-            <input type="number" class="form-control border-2" name="sac" value="996749">
+            <input type="number" class="form-control border-2" name="sac" >
             </div>
             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Chargable QTY K.G :</label>
-            <input type="text" class="form-control border-2" name="item_qty" value="0">
+            <input type="text" class="form-control border-2" name="item_qty" >
             </div>
              <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Loaded QTY K.G :</label>
-            <input type="number" class="form-control border-2 disqty_row" name="item_load"  oninput="calculateShort()" value="0" >
+            <input type="number" class="form-control border-2 disqty_row" name="item_load"  oninput="calculateShort()"  >
             </div>
              <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Unloaded QTY K.G :</label>
-            <input type="number" class="form-control border-2 unlodqty_row" name="item_unload"  oninput="calculateShort()" value="0">
+            <input type="number" class="form-control border-2 unlodqty_row" name="item_unload"  oninput="calculateShort()" >
             </div>
              <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">
 Shortages / Excess Qty K.G :</label>
-            <input type="number" class="form-control border-2 totalshort_row"  name="item_short" value="0">
+            <input type="number" class="form-control border-2 totalshort_row"  name="item_short" >
             </div>
             <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold">Return QTY K.G :</label>
-            <input type="number" class="form-control border-2" name="item_retn" value="0">
+            <input type="number" class="form-control border-2" name="item_retn" >
             </div>
             {% comment %} <div class="col-lg-3 mb-3">
             <label for="item_quantity" class="form-label fw-bold">Quantity:</label>
@@ -334,7 +334,7 @@ Shortages / Excess Qty K.G :</label>
             </div> {% endcomment %}
             <div class="col-lg-3 mb-3">
             <label for="item_unit_price" class="form-label fw-bold">Rate Per K.G:</label>
-            <input type="number" step="any" name="item_rate" class="form-control border-2" value="0" >
+            <input type="number" step="any" name="item_rate" class="form-control border-2"  >
             </div>
              <div class="col-lg-3 mb-3">
             <label for="item_description" class="form-label fw-bold"></label>
