@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reached Confirmation</title>
+</head>
+<body>
+  <h2>Driver {{ driver.name }} | Tanker No: {{ driver.tanker_number }}</h2>
+
+  <button onclick="sendLocation()">📍 I Have Reached (Once)</button>
+  {% comment %} <button onclick="startLiveTracking()">🚀 Start Live Tracking</button>
+  <button onclick="stopLiveTracking()">⛔ Stop Tracking</button> {% endcomment %}
+
+  <p id="status"></p>
+
+  <script>
+    // ONE-TIME LOCATION (on button click)
+    function sendLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const data = new FormData();
+          data.append('driver_id', '{{ driver.id }}');
+          data.append('latitude', position.coords.latitude);
+          data.append('longitude', position.coords.longitude);
+
+          fetch("{% url 'submit_location' %}", {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: data
+          })
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById("status").innerText = "📍 Location sent successfully!";
+          });
+        }, function(error) {
+          alert("Error fetching location: " + error.message);
+        });
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    // LIVE LOCATION TRACKING
+    let watchId = null;
+
+    function startLiveTracking() {
+      if (navigator.geolocation) {
+        watchId = navigator.geolocation.watchPosition(function(position) {
+          const data = new FormData();
+          data.append('driver_id', '{{ driver.id }}');
+          data.append('latitude', position.coords.latitude);
+          data.append('longitude', position.coords.longitude);
+
+          fetch("{% url 'submit_location' %}", {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: data
+          })
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById("status").innerText =
+              `📡 Live location updated at ${new Date().toLocaleTimeString()}`;
+          });
+        }, function(error) {
+          alert("Error: " + error.message);
+        }, {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        });
+
+        document.getElementById("status").innerText = "🛰️ Live tracking started...";
+      } else {
+        alert("Geolocation not supported.");
+      }
+    }
+
+    function stopLiveTracking() {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        document.getElementById("status").innerText = "⛔ Live tracking stopped.";
+      }
+    }
+  </script>
+</body>
+</html>

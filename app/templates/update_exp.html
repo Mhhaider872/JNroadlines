@@ -201,7 +201,7 @@
        <div class="col-lg-3 mb-3">
          <label for="datalistOptions4" class="form-label fw-bold">Paid To</label>
          <input class="form-control border-2" list="datalistOptions4" name="paid_to"  value="{{exp.paid_to}}">
-               {% comment %} <datalist id="datalistOptions4">
+            <datalist id="datalistOptions4">
     
                  <option value="Cash">Cash</option>
                  <option value="BanK">BanK</option>
@@ -211,7 +211,7 @@
                 {% for d in dname %}
                  <option value="{{d.name}}">{{d.name }}</option>
                  {% endfor %}
-                </datalist> {% endcomment %}
+                </datalist> 
     </div>
     <div class="col-lg-3 mb-3">
       <label for="subCategory" class="form-label fw-bold">Paid By</label>

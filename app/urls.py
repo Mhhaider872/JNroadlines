@@ -198,6 +198,7 @@ urlpatterns =[
     #======================Billing ULRs===========================================
     path('Billing_page/', views.Billing, name='bill-page'),
     path('Multi_Billing/', views.Multi_bill, name='multi-page'),
+    path('Detention_Billing/', views.detention_bill, name='detention-page'),
 
 
     #=======================Adani Bill=============================================
@@ -479,7 +480,10 @@ urlpatterns =[
     path('tally-bill/', views.tally, name='tally_bill'),
     path('api/get-driver-shortage/', views.get_driver_shortage, name='get-driver-shortage'),
     
-
+    #================================DRIVER LOCATION==========================================
+    path('reached/<int:driver_id>/', views.reached_view, name='reached'),
+    path('submit_location/', views.submit_location, name='submit_location'),
+    path('track/<int:driver_id>/', views.track_driver_view, name='track_driver'),
     
 ]
 

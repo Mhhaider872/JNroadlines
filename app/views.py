@@ -2275,6 +2275,13 @@ def Multi_bill(request):
     # context={'adani':adani,'gemini':gemini,'akkinword':akkinword}
     return render(request,'multi_bill.html')
 
+def detention_bill(request):
+    # adani=Invoice.objects.count()
+    # gemini=GInvoice.objects.count()
+    # akkinword=Aak_in_Invoice.objects.count()
+    # context={'adani':adani,'gemini':gemini,'akkinword':akkinword}
+    return render(request,'detention_bill.html')
+
 
 
 
@@ -10437,3 +10444,29 @@ def Showprofit(request):
 
 def tally(request):
     return render(request,'Tally_bill.html')
+
+
+
+#====================================DRIVER LOCATION =====================================================
+def reached_view(request, driver_id):
+    driver = get_object_or_404(Driver, id=driver_id)
+    return render(request, 'reached.html', {'driver': driver})
+
+def submit_location(request):
+    if request.method == 'POST':
+        driver_id = request.POST.get('driver_id')
+        lat = request.POST.get('latitude')
+        lon = request.POST.get('longitude')
+        
+        driver = get_object_or_404(Driver, id=driver_id)
+        LocationLog.objects.create(driver=driver, latitude=lat, longitude=lon)
+        return JsonResponse({'status': 'success'})
+    
+def track_driver_view(request, driver_id):
+    driver = get_object_or_404(Driver, id=driver_id)
+    latest_log = LocationLog.objects.filter(driver=driver).order_by('-timestamp').first()
+    context = {
+        'driver': driver,
+        'latest_log': latest_log
+    }
+    return render(request, 'track_driver.html', context)

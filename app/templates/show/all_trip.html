@@ -92,7 +92,12 @@
           <td>{{ts.To_id}}</td> 
           <td><span class="badge text-bg-info">{{ts.pending_trip}}</span></td> 
           <td class="text-center"><strong>{{ts.total_expense}}</strong> </td> 
-          <td><strong>{{ts.end_trip}}</strong> </td>
+          <td><strong>{% if end_date %}
+        <span class="badge text-bg-danger">{{ end_date|date:"d-m-y" }}</span>
+    {% else %}
+        <!-- You can add alternative content here or leave empty -->
+        <span class="text-muted">No end date</span>
+    {% endif %}</strong> </td>
           <td class="text-center"><strong>{{ts.f_trip|default_if_none:"0"}}</strong> </td> 
           <td><strong>00</strong> </td> 
           <td><strong>00 </strong> </td>

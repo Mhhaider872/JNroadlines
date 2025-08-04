@@ -3195,3 +3195,18 @@ class Profit(models.Model):
     expese=models.DecimalField(max_digits=10, decimal_places=2, default=0)
     bill_amount=models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total=models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+#=============================DRIVER LOCATION FIND======================================================
+
+class Driver(models.Model):
+    name = models.CharField(max_length=100)
+    tanker_number = models.CharField(max_length=50)
+    source = models.CharField(max_length=100)
+    destination = models.CharField(max_length=100)
+
+class LocationLog(models.Model):
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, default="Reached")

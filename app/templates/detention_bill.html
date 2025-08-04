@@ -8,7 +8,7 @@
    
     <main id="main" class="main">
       <div class="pagetitle">
-      <h1 class="text-center py-3">Multi Items Bills</h1> 
+      <h1 class="text-center py-3">Detention Bills</h1> 
         {% comment %} <h1>Dashboard</h1> {% endcomment %}
         {% comment %} <nav>
           <ol class="breadcrumb">
@@ -24,8 +24,40 @@
           <div class="col-lg-12">
             <div class="row">
                <!-- Sales Card -->
-              <div class="col-lg-3 col-md-12">
-                <div class="card info-card sales-card">
+             
+           
+
+              <!-- Revenue Card -->
+              <div class="col-lg-4 col-md-12">
+                <div class="card info-card revenue-card">
+                  <div class="filter">
+                    <a class="icon" href="{% url "aakdt_bill" %}" 
+                      ><i class="bi bi-three-dots"></i
+                    >
+                  </div>
+
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      AAK India Pvt Ltd (DETENTION BILL)
+                    </h5>
+
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                      <i class="bi bi-receipt"></i>
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
+                      </div>
+                      <div class="ps-3">
+                        <h6>0</h6>
+                      </div>
+                    </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+                <div class="col-lg-4 col-md-12">
+                <div class="card info-card revenue-card">
                   <div class="filter">
                     <a class="icon" href="{% url "allana_bill" %}" 
                       ><i class="bi bi-three-dots"></i
@@ -33,39 +65,16 @@
                   </div>
 
                   <div class="card-body">
-                    <h5 class="card-title">Frigorifico Allana Pvt (Khopoli)</h5>
+                    <h5 class="card-title">
+                      M/S Frigorifico Allana (DETENTION BILL)
+                    </h5>
 
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-receipt"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>0</h6>
-                      </div>
-                    </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <!-- End Sales Card -->
-                <div class="col-lg-3 col-md-12">
-                <div class="card info-card sales-card">
-                  <div class="filter">
-                    <a class="icon" href="#" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">VVF INDIA LTD (TALOJA)</h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                        <i class="bi bi-receipt"></i>
+                      <i class="bi bi-receipt"></i>
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
                       <div class="ps-3">
                         <h6>0</h6>
@@ -76,58 +85,41 @@
                 </div>
               </div>
 
-              <div class="col-lg-3 col-md-12">
-                <div class="card info-card sales-card">
+
+
+              <!-- End Revenue Card -->
+                 <div class="col-lg-4 col-md-12">
+                 <div class="card info-card revenue-card">
                   <div class="filter">
-                    <a class="icon" href="{% url "baddi_bill" %}" 
+                    <a class="icon" href="{% url "morde_bill" %}" 
                       ><i class="bi bi-three-dots"></i
                     >
                   </div>
 
                   <div class="card-body">
-                    <h5 class="card-title">VVF INDIA LTD ( BADDI )</h5>
+                    <h5 class="card-title">
+                      Morde Foods (DETENTION BILL)
+                    </h5>
 
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-receipt"></i>
+                      <i class="bi bi-receipt"></i>
+                        {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
+                      
                       <div class="ps-3">
                         <h6>0</h6>
                       </div>
+                      
                     </div>
                     </a>
-                  </div>
-                </div>
+                   </div>
+                 </div>
               </div>
-              <!-- Order Card -->
-              <div class="col-lg-3 col-md-12">
-                <div class="card info-card sales-card">
-                  <div class="filter">
-                    <a class="icon" href="{% url "vertex_bill" %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
 
-                  <div class="card-body">
-                    <h5 class="card-title">Vertex Sales Pvt Ltd</h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                            <i class="bi bi-receipt"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>{{gemini}}</h6>
-                      </div>
-                    </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <!-- End Order Card -->
+              
       </div>
   </section>
 
