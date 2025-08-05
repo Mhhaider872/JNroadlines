@@ -117,6 +117,7 @@ urlpatterns =[
     path('loan_delete/<int:id>',views.deleteloan,name='loan-delete'),
     path('driverloan_update/<int:id>',views.updriverloan,name='update-dloan'),
     path('dloan_update/<int:id>',views.do_update_dloan,name='updatedloan'),
+    
    
    
     path('all_bills/',views.all_bill,name='all-bill'),

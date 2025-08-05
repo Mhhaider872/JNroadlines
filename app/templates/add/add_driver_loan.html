@@ -231,7 +231,7 @@
               name="loan_amount"
               min="0"
               id="label21"
-              value={{shortage.actual_amount|default:"0"}}
+             
               oninput="calculateTotalShort()"
             />
         </div>
@@ -297,7 +297,6 @@
     </script> {% endcomment %}
 <script>
 function calculateTotalShort() {
-    // Input fields with default 0
     var disqty = parseFloat(document.getElementById("disqty").value) || 0;
     var unlodqty = parseFloat(document.getElementById("unlodqty").value) || 0;
     var shortallow = parseFloat(document.getElementById("shortallow").value) || 0;
@@ -305,29 +304,24 @@ function calculateTotalShort() {
     var deductedLoan = parseFloat(document.getElementById("label21").value) || 0; // Trip Loan
     var previousLoan = parseFloat(document.getElementById("pervious").value) || 0;
     var driverLoan = parseFloat(document.getElementById("driverloan").value) || 0;
+    var label211 = parseFloat(document.getElementById("label211").value) || 0;
 
-    // 1. Shortage
     var totalshort = disqty - unlodqty;
     document.getElementById("totalshort").value = totalshort.toFixed(2);
 
-    // 2. Allowed Shortage in Qty
     var loadedQtyPercent = (disqty * shortallow) / 100;
     document.getElementById("loadedQtyPercent").value = loadedQtyPercent.toFixed(2);
 
-    // 3. Final shortage (chargeable)
     var short_allow_rate = totalshort - loadedQtyPercent;
     document.getElementById("short_allow_rate").value = short_allow_rate.toFixed(2);
 
-    // 4. Shortage amount to be deducted
     var shortageAmount = short_allow_rate * rate;
     document.getElementById("as_amount").value = shortageAmount.toFixed(2);
 
-    // 5. Actual amount = previous loan + shortage amount
     var actualAmount = previousLoan + shortageAmount;
     document.getElementById("label211").value = actualAmount.toFixed(2);
 
-    // 6. Total = driver loan + previous - trip loan
-    var finalTotal = (driverLoan + previousLoan) - deductedLoan;
+    var finalTotal = actualAmount - deductedLoan; // FIXED here
     document.getElementById("total_loan").value = finalTotal.toFixed(2);
 }
 </script>

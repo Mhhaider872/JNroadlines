@@ -614,7 +614,7 @@ class Addloan(models.Model):
 
 
 
-class DriverLoan(models.Model):
+class DriverL(models.Model):
     tankerno=models.CharField(max_length=100)
     From_address=models.CharField(max_length=200,null=True)
     To_address=models.CharField(max_length=200,null=True)
@@ -3072,6 +3072,7 @@ class AAKRMInvoice(models.Model):
     Stotal_d=models.DecimalField(max_digits=10, decimal_places=2, default=0) 
     Shsac=models.IntegerField(null=True, blank=True)
     SFo_date=models.DateField(null=True, blank=True)
+    
     
 
 

@@ -1481,7 +1481,7 @@ def add_expense(request, trip_id):
                 end_date= end_date if end_date else None,
 
             )
-            messages.success(request, 'Trip Add successfully !!')
+            messages.success(request, 'Trip Expense Add successfully !!')
             trip.calculate_total_expense()  # Recalculate total expense after adding a new expense
             return redirect('add_expense', trip_id=trip.trip_id)
     
@@ -1808,11 +1808,11 @@ def AddDriverLoan(request):
       loan_amount = request.POST['loan_amount']
       driverloan=request.POST['driverloan']
       total = request.POST['total']
-      if  DriverLoan.objects.filter(tankerno=tankerno).exists():
+      if  DriverL.objects.filter(date=date).exists():
           messages.error(request, 'Driver Loan exists !!')
           return redirect('drivers-loan')
       else:
-          d_loan=DriverLoan.objects.create(
+          d_loan=DriverL.objects.create(
           tankerno= tankerno if tankerno else None,
           From_address=From_address if From_address else None,
           To_address=From_address if To_address else None,
@@ -1845,16 +1845,16 @@ def AddDriverLoan(request):
 
 
 def ShowLoan(request):
-    Loan=DriverLoan.objects.all()
+    Loan=DriverL.objects.all()
     return render(request,'show/show_driver_loan.html',{'Loan':Loan})
 
 def deleteloan(request,id):
-    d=DriverLoan.objects.get(pk=id)
+    d=DriverL.objects.get(pk=id)
     d.delete()
     return redirect('show-loan')
 
 def updriverloan(request,id):
-    updatedl=DriverLoan.objects.get(pk=id)
+    updatedl=DriverL.objects.get(pk=id)
     context={'updatedl':updatedl}
     return render(request,'update_driver_loan.html',context)
 
@@ -1875,7 +1875,7 @@ def do_update_dloan(request,id):
       previous_loan = request.POST.get('previous_loan')
       loan_amount = request.POST.get('loan_amount')
       total = request.POST.get('total')
-      updatedl=DriverLoan.objects.get(pk=id)
+      updatedl=DriverL.objects.get(pk=id)
 
       updatedl.tankerno=tankerno
       updatedl.From_address=From_address
@@ -1904,11 +1904,12 @@ def get_driver_shortage(request):
 
     if driver_name:
         # Filter latest shortage for this driver
-        latest_loan = DriverLoan.objects.filter(drivername=driver_name).order_by('-id').first()
+        latest_loan = DriverL.objects.filter(drivername=driver_name).order_by('-id').first()
         if latest_loan:
-            shortage_amount = latest_loan.short_amount or 0
+            shortage_amount = latest_loan.total or 0
 
     return JsonResponse({'shortage': shortage_amount})
+
 #========================END DRIVER LOAN===================================
 
 
@@ -10006,7 +10007,20 @@ def AAKREM_bill(request):
                 )
             except (ValueError, IndexError):
                 continue
-        
+        # Step 5: Calculate items' totalamount sum
+        items_total_sum = AAKRMItem.objects.filter(invoice=invoice).aggregate(
+        Sum('totalamount')
+        )['totalamount__sum'] or 0
+
+        # Optional: round it up like before
+        items_integer_part = int(items_total_sum)
+        items_decimal_part = items_total_sum - items_integer_part
+
+        if items_decimal_part > 0.50:
+            items_total_sum = items_integer_part + 1
+        else:
+            items_total_sum = items_integer_part
+
         g_amount = float(total_d or 0)  # or Decimal(total_d)   + float( totalD or 0)
 
         freight=float(f_total or 0) + float(Stotal_d or 0)
@@ -10033,7 +10047,8 @@ def AAKREM_bill(request):
             igst = round(basic_amount * igst_rate, 2)
 
         fright_total = round(basic_amount + cgst + sgst + igst, 2)
-        grand_total = round(basic_amount + cgst + sgst + igst, 2)
+        grand_total = round(basic_amount + cgst + sgst + igst + items_total_sum, 2)
+
 
             # Check decimal part
         decimal_part = grand_total - int(grand_total)
