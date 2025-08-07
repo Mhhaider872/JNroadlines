@@ -290,27 +290,26 @@ def do_updatetrip(request,id):
     # Fetch the existing plan details to update
     update_t = AddTrips.objects.get(pk=id)
 
-    # Update the fields
+        # ✅ Remove trailing commas
     update_t.tankerno = tankerno
     update_t.drivername = drivername
     update_t.From_address = From_address
     update_t.To_address = To_address
     update_t.tank_capacity = tank_capacity
-    update_t.arrival_time=arrival_time if freight_bill else None
-    update_t.dispatch_time = dispatch_time if freight_bill else None
-    update_t.reach_time = reach_time if freight_bill else None
-    update_t.unload_time = unload_time if freight_bill else None
-    update_t.loaded_qty = loaded_qty if freight_bill else 0
-    update_t.percent = percent if freight_bill else 0
-    update_t.unload_qty = unload_qty if freight_bill else 0
-    update_t.short_qty = short_qty if freight_bill else 0
-    update_t.short_allow = short_allow if freight_bill else 0
-    update_t.return_qty = return_qty if freight_bill else 0
-    update_t.lr_num = lr_num if freight_bill else 0
-    update_t.return_qty = return_qty if freight_bill else 0
-    update_t.freight_bill = freight_bill if freight_bill else 0
-    update_t.freight_date = freight_date if freight_date else 0
-    update_t.lr_date = lr_date if lr_date else 0
+    update_t.arrival_time = arrival_time if arrival_time else None
+    update_t.dispatch_time = dispatch_time if dispatch_time else None
+    update_t.reach_time = reach_time if reach_time else None
+    update_t.unload_time = unload_time if unload_time else None
+    update_t.loaded_qty = loaded_qty if loaded_qty else 0
+    update_t.percent = percent if percent else 0
+    update_t.unload_qty = unload_qty if unload_qty else 0
+    update_t.short_qty = short_qty if short_qty else 0
+    update_t.short_allow = short_allow if short_allow else 0
+    update_t.return_qty = return_qty if return_qty else 0
+    update_t.lr_num = lr_num if lr_num else ""
+    update_t.lr_date = lr_date if lr_date else None
+    update_t.freight_bill = freight_bill if freight_bill else ""
+    update_t.freight_date = freight_date if freight_date else None
 
     # Save the changes
     update_t.save()
@@ -404,7 +403,7 @@ def Trip_Adani(request):
                          return_qty=return_qty if return_qty else None,
                          remark=remark if remark else None)
           trip.save()
-          messages.success(request, 'Trip added successfully !!') 
+          messages.success(request, 'Adani Trip added successfully !!') 
           
           
           
@@ -462,19 +461,19 @@ def do_upadani(request,id):
     up_adani.From_address=From_address
     up_adani.To_address=To_address
     up_adani.tank_capacity=tank_capacity
-    up_adani.arrival_time=arrival_time
-    up_adani.dispatch_time=dispatch_time
-    up_adani.reach_time=reach_time
-    up_adani.unload_time=unload_time
-    up_adani.loaded_qty=loaded_qty
-    up_adani.unload_qty=unload_qty
-    up_adani.short_qty=short_qty
-    up_adani.short_allow=short_allow
-    up_adani.return_qty=return_qty
-    up_adani.lr_num=lr_num
-    up_adani.lr_date=lr_date
-    up_adani.freight_bill=freight_bill
-    up_adani.freight_date=freight_date
+    up_adani.arrival_time=arrival_time  if arrival_time else None
+    up_adani.dispatch_time=dispatch_time  if dispatch_time else None
+    up_adani.reach_time=reach_time if reach_time else None
+    up_adani.unload_time=unload_time if unload_time else None
+    up_adani.loaded_qty=loaded_qty if loaded_qty else 0
+    up_adani.unload_qty=unload_qty if unload_qty else 0
+    up_adani.short_qty=short_qty if short_qty else 0
+    up_adani.short_allow=short_allow if short_allow else 0
+    up_adani.return_qty=return_qty if return_qty else 0
+    up_adani.lr_num=lr_num  if lr_num else 0
+    up_adani.lr_date=lr_date if lr_date else None
+    up_adani.freight_bill=freight_bill  if freight_bill else 0
+    up_adani.freight_date=freight_date if freight_date else None
 
     up_adani.save()
 
@@ -556,7 +555,7 @@ def Trip_Gemini(request):
                          remark=remark if remark else None
                          )
           trip.save()
-          messages.success(request, 'Trip added successfully !!') 
+          messages.success(request, 'Gemini Trip added successfully !!') 
           return redirect('show-gemini-details')
     
     # Get the list of plans for the dropdown
@@ -715,7 +714,7 @@ def aaklocal(request):
                          trip_mama= trip_mama if  trip_mama else None,
                         )
             trip.save()
-            messages.success(request, 'Trip added successfully !!')
+            messages.success(request, 'Trip Aak India Local added successfully !!')
      # Get the list of plans for the dropdown
     plans = plandetails.objects.all()
 
@@ -765,6 +764,7 @@ def doupdateAak(request,id):
     returned= request.POST.get('returned')
     trip_ganesh= request.POST.get('trip_ganesh')
     trip_mama= request.POST.get('trip_mama')
+    percent= request.POST.get('percent')
     
     
     Aakupdate=AakLocal.objects.get(pk=id)
@@ -774,29 +774,30 @@ def doupdateAak(request,id):
     Aakupdate.To_address=To_address
     Aakupdate.drivername=drivername
     Aakupdate.tank_capacity=tank_capacity
-    Aakupdate.arrival_time=arrival_time
-    Aakupdate.dispatch_time=dispatch_time
-    Aakupdate.reach_time=reach_time
-    Aakupdate.lr_num=lr_num
-    Aakupdate.lr_date=lr_date
-    Aakupdate.freight_bill=freight_bill
-    Aakupdate.freight_date=freight_date
-    Aakupdate.loaded_qty=loaded_qty
-    Aakupdate.unload_qty=unload_qty
-    Aakupdate.short_qty=short_qty
-    Aakupdate.short_allow=short_allow
-    Aakupdate.return_qty=return_qty
-    Aakupdate.remark=remark
-    Aakupdate.time_Loading=time_Loading
-    Aakupdate.time_Loading_mama=time_Loading_mama
-    Aakupdate.unloading_ganesh=unloading_ganesh
-    Aakupdate.unloading_mama=unloading_mama
-    Aakupdate.returned=returned
-    Aakupdate.trip_ganesh=trip_ganesh
-    Aakupdate.trip_mama=trip_mama
+    Aakupdate.arrival_time=arrival_time if arrival_time else None
+    Aakupdate.dispatch_time=dispatch_time if dispatch_time else None
+    Aakupdate.reach_time=reach_time if reach_time else None
+    Aakupdate.lr_num=lr_num if lr_num else 0
+    Aakupdate.lr_date=lr_date if lr_date else None
+    Aakupdate.freight_bill=freight_bill if freight_bill else 0
+    Aakupdate.freight_date=freight_date if freight_date else None
+    Aakupdate.loaded_qty=loaded_qty if loaded_qty else 0
+    Aakupdate.unload_qty=unload_qty if unload_qty else 0
+    Aakupdate.short_qty=short_qty if short_qty else 0
+    Aakupdate.short_allow=short_allow if short_allow else 0
+    Aakupdate.return_qty=return_qty if return_qty else 0
+    Aakupdate.remark=remark if remark else None
+    Aakupdate.time_Loading=time_Loading if time_Loading else None
+    Aakupdate.time_Loading_mama=time_Loading_mama if unloading_ganesh else None
+    Aakupdate.unloading_ganesh=unloading_ganesh if unloading_ganesh else 0
+    Aakupdate.unloading_mama=unloading_mama if unloading_mama else 0
+    Aakupdate.returned=returned if returned else None
+    Aakupdate.trip_ganesh=trip_ganesh if trip_ganesh else None
+    Aakupdate.trip_mama=trip_mama if trip_mama else None
+    Aakupdate.percent=percent if percent else 0
 
     Aakupdate.save()
-    messages.success(request, 'Trip updated successfully!')
+    messages.success(request, 'Trip Aak India Local updated successfully!')
     return redirect('Aak-Local')
 
 

@@ -27,7 +27,11 @@ h5,
 h6 {
   font-family: "Nunito", sans-serif;
 }
-
+.datatable-search{
+  position: absolute !important;
+  top: -5%;
+  right: 0%;
+}
 /*--------------------------------------------------------------
 # Main
 --------------------------------------------------------------*/

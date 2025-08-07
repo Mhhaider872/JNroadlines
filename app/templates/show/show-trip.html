@@ -4,7 +4,7 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>Add Trip </h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -19,7 +19,7 @@
           <div class="card">
             <div class="table-responsive">
               <div class="card-body">
-                <h5 class="card-title">Datatables</h5>
+                {% comment %} <h5 class="card-title">Datatables</h5> {% endcomment %}
                 {% if messages %}
                 <div class="container mt-3">
                   {% for message in messages %}
@@ -83,9 +83,9 @@
                       <td>{{s.drivername }}</td>
                       <td>{{s.tank_capacity }}</td>
                       <td>{{s.arrival_time|date:"d/m/y h:i A" }}</td>
-                      <td>{{s.dispatch_time|date:"d/m/y P" }}</td>
-                      <td>{{s.reach_time|date:"d/m/y P" }}</td>
-                      <td>{{s.unload_time|date:"d/m/y P" }}</td>
+                      <td>{{s.dispatch_time|date:"d/m/y h:i A" }}</td>
+                      <td>{{s.reach_time|date:"d/m/y h:i A" }}</td>
+                      <td>{{s.unload_time|date:"d/m/y h:i A" }}</td>
                       <td>{{s.lr_num }}</td>
                       <td>{{s.lr_date |date:"d/m/Y" }}</td>
                       <td>{{s.freight_bill}}</td>

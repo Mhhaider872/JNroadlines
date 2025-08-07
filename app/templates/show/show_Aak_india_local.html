@@ -88,7 +88,7 @@
                       <td>{{s.To_address}}</td>
                       <td>{{s.drivername}}</td>
                       <td>{{s.arrival_time|date:"d/m/y h:i A" }}</td>
-                      <td>{{s.dispatch_time|date:"d/m/y P" }}</td>
+                      <td>{{s.dispatch_time|date:"d/m/y h:i A" }}</td>
                       {% comment %} <td>{{s.drivername }}</td> {% endcomment %}
                       <td>{{s.tank_capacity }}</td>
 
@@ -101,6 +101,7 @@
                       <td>{{s.returned|date:"d/m/y P" |default_if_none:"0" }}</td>
                       <td>{{s.trip_ganesh|default_if_none:"0" }}</td>
                       <td>{{s.trip_mama|default_if_none:"0" }}</td>
+                      
 
 
                       <td>{{s.lr_num|default_if_none:"0" }}</td>
