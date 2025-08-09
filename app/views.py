@@ -613,19 +613,20 @@ def do_upgemini(request,id):
     geminiup.From_address=From_address
     geminiup.To_address=To_address
     geminiup.tank_capacity=tank_capacity
-    geminiup.arrival_time=arrival_time
-    geminiup.dispatch_time=dispatch_time
-    geminiup.reach_time=reach_time
-    geminiup.unload_time=unload_time
-    geminiup.loaded_qty=loaded_qty
-    geminiup.unload_qty=unload_qty
-    geminiup.short_qty=short_qty
-    geminiup.short_allow=short_allow
-    geminiup.return_qty=return_qty
-    geminiup.lr_num=lr_num
-    geminiup.lr_date=lr_date
-    geminiup.freight_bill=freight_bill
-    geminiup.freight_date=freight_date
+    geminiup.arrival_time=arrival_time if arrival_time else None
+    geminiup.dispatch_time=dispatch_time if dispatch_time else None
+    geminiup.reach_time=reach_time if reach_time else None
+    geminiup.unload_time=unload_time if unload_time else None
+    geminiup.loaded_qty=loaded_qty if loaded_qty else 0
+    
+    geminiup.unload_qty=unload_qty if unload_qty else 0
+    geminiup.short_qty=short_qty if short_qty else 0
+    geminiup.short_allow=short_allow if short_allow else 0
+    geminiup.return_qty=return_qty if return_qty else 0
+    geminiup.lr_num=lr_num if lr_num else 0
+    geminiup.lr_date=lr_date if lr_date else None
+    geminiup.freight_bill=freight_bill if freight_bill else 0
+    geminiup.freight_date=freight_date if freight_date else None
 
     geminiup.save()
 
