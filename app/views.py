@@ -10487,3 +10487,10 @@ def track_driver_view(request, driver_id):
         'latest_log': latest_log
     }
     return render(request, 'track_driver.html', context)
+
+
+
+def vouchar(request):
+    
+
+    return render(request, 'cash_vouchar.html')

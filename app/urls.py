@@ -485,6 +485,8 @@ urlpatterns =[
     path('reached/<int:driver_id>/', views.reached_view, name='reached'),
     path('submit_location/', views.submit_location, name='submit_location'),
     path('track/<int:driver_id>/', views.track_driver_view, name='track_driver'),
+
+    path('cash_vouchar', views.vouchar, name='vouchar_cash'),
     
 ]
 

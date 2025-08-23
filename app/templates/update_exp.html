@@ -183,19 +183,19 @@
  
       <div class="col-lg-3 mb-3">
          <label for="category" class="form-label fw-bold">Diesel</label>
-         <input
+         {% comment %} <input
               type="text"
               name="category"
               class="form-control border-2"
               id="category"
               value="{{exp.category.name}}"
-            />
-          {% comment %} <select id="category" name="category" onchange="updateSubCategory()" class="form-select border-2" value="{{exp.toll_amount}}">
+            /> {% endcomment %}
+          <select id="category" name="category" onchange="updateSubCategory()" class="form-select border-2" value="{{exp.toll_amount}}">
          <option value="">Select</option>
          {% for category in categories %}
          <option value="{{ category.name }}">{{ category.name }}</option>
          <!-- Populate categories dynamically -->
-        {% endfor %} {% endcomment %}
+        {% endfor %}
         </select>
       </div>
        <div class="col-lg-3 mb-3">
@@ -215,17 +215,18 @@
     </div>
     <div class="col-lg-3 mb-3">
       <label for="subCategory" class="form-label fw-bold">Paid By</label>
-      {% comment %} <select id="subCategory" name="subCategory" class="form-select border-2">
+      <select id="subCategory" name="subCategory" class="form-select border-2">
         <option value="">Select</option>
+        <option value="{{ subCategory.name }}">{{ subCategory.name }}</option>
         <!-- Initial empty subcategory dropdown -->
-      </select> {% endcomment %}
-      <input
+      </select>
+      {% comment %} <input
               type="text"
               name="subCategory"
               class="form-control border-2"
               id="subCategory"
               value="{{exp.subCategory}}"
-            />
+            /> {% endcomment %}
     </div>
    
         <div class="col-lg-3 mb-3">
@@ -578,7 +579,7 @@
     document.getElementById('total').value = total.toFixed(2);
 }
 </script>
-   <script>
+<script>
       // This function is called when the category is selected
       function updateSubCategory() {
         var categoryId = document.getElementById("category").value; // Get selected category ID
@@ -608,5 +609,5 @@
             console.error("Error fetching subcategories:", error)
           );
       }
-    </script>
+  </script>
   </body>
