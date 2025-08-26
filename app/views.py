@@ -231,9 +231,11 @@ def addtrip(request):
 
     # Get the list of plans for the dropdown
     plans = plandetails.objects.all()
-
+    
+    # STEP: Get saved tanker IDs (that are already in trips)
+    saved_plan_ids = AddTrips.objects.values_list('plan_id', flat=True)
     # Return to the template with the plans
-    context = {'plans': plans}
+    context = {'plans': plans, 'saved_plan_ids': list(saved_plan_ids),}
     return render(request, 'add/add_trip_all.html', context)
 
 
@@ -290,7 +292,7 @@ def do_updatetrip(request,id):
     # Fetch the existing plan details to update
     update_t = AddTrips.objects.get(pk=id)
 
-        # ✅ Remove trailing commas
+ 
     update_t.tankerno = tankerno
     update_t.drivername = drivername
     update_t.From_address = From_address
