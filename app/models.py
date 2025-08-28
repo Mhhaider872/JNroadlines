@@ -3211,3 +3211,14 @@ class LocationLog(models.Model):
     longitude = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, default="Reached")
+
+
+class CashVoucher(models.Model):
+    tankerno=models.CharField(max_length=150, null=True, blank=True)
+    from_add=models.CharField(max_length=150, null=True, blank=True)
+    To=models.CharField(max_length=150, null=True, blank=True)
+    cashname=models.CharField(max_length=150, null=True, blank=True)
+    cashdate=models.DateField(null=False, blank=False)
+    cashamount=models.DecimalField(max_digits=10, decimal_places=2, default=0,null=True, blank=True)
+    loadingdate=models.DateField(null=True, blank=True)
+    remark=models.CharField(max_length=150, null=True, blank=True)

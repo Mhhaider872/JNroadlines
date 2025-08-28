@@ -487,7 +487,12 @@ urlpatterns =[
     path('track/<int:driver_id>/', views.track_driver_view, name='track_driver'),
 
     path('cash_vouchar', views.vouchar, name='vouchar_cash'),
+    path('show_cash_vouchar', views.showvouchar, name='show_voucher'),
+    path('vouchar/<int:id>', views.deletevouchar, name='delete_voucher'),
     
+
+    path('get_subcategories/<int:category_id>/', views.get_subcategories, name='get_subcategories'),
+
 ]
 
 

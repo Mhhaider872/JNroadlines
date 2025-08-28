@@ -40,44 +40,91 @@
         <form  method="POST" autocomplete="off">
           {% csrf_token %}
           <div class="row">
-          <div class="col-lg-4 mb-3">
-            <label for="capacity_output" class="form-label fw-bold"
-              >Name
-            </label>
-           <div class="input-group mb-3">
-            <input
-              type="text"
-              name="name"
-              class="form-control border-2"
-              id="capacity_output"
-            />
-                
-              </div>
-          </div>
-          <div class="col-lg-4 mb-3">
+            <div class="col-lg-3 mb-3">
             <label for="label11" class="form-label fw-bold"
               >Date</label
             >
             <input
               type="date"
-              name="dispatch_Date"
+              name="cashdate"
               class="form-control border-2"
             />
           </div>
-           <div class="col-lg-4 mb-3">
+            <div class="col-lg-3 mb-3">
+            <label for="tanker_number" class="form-label fw-bold">Vehicle No</label>
+             <input class="form-control border-2" name="tankerno" list="datalistOptions" id="tanker_number" onchange="fetchCapacity()" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions" class="shadow-sm border-0" >
+                {% for v in vehicle %}
+                 <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
+                 {% endfor %}
+                </datalist>
+          </div>
+        <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
+             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="cashname" placeholder="Search to drivers..." required>
+               <datalist id="driverslist" class="shadow-sm border-0" >
+                  {% for d in dname %}
+                 <option value="{{d.name}}">{{d.fname }}</option>
+                {% endfor %}
+                </datalist>
+             </div>
+           <div class="col-lg-3 mb-3">
+            <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
+             <input class="form-control border-2" name="from_add" list="datalistOptions1" id="exampleDataList1" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions1" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+            
+  
+
+          <div class="col-lg-3 mb-3">
+            <label for="exampleDataList2" class="form-label fw-bold">To Address</label>
+             <input class="form-control border-2" name="To" list="datalistOptions2" id="exampleDataList2" placeholder="Search to vehicle no...">
+               <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Loading Date</label
+            >
+            <input
+              type="date"
+              name="loadingdate"
+              class="form-control border-2"
+            />
+          </div>
+           <div class="col-lg-3 mb-3">
             <label for="label11" class="form-label fw-bold"
               >Amount</label
             >
             <input
               type="number"
-              name="dispatch_Date"
+              name="cashamount"
               class="form-control border-2"
-              id="dateInput"
+         
+            />
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="label11" class="form-label fw-bold"
+              >Remark</label
+            >
+            <input
+              type="text"
+              name="remark"
+              class="form-control border-2"
+              placeholder="Enter why pay amount"
+          
             />
           </div>
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-success px-4">Add</button>
-            <a href="#" class="btn btn-info px-4">View</a>
+            <a href="{% url "show_voucher" %}" class="btn btn-info px-4">View</a>
           </div>
         </form>
       </div>

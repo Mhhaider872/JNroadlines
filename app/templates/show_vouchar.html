@@ -42,42 +42,40 @@
                 <thead>
                   <tr>
                     <th>Sr_No.</th>
+                    <th>Date </th>
                     <th>Tanker_No</th>
+                    <th>Driver_Name</th>
                     <th>From_Address</th>
                     <th>To_Address</th>
-                    <th>Trip_Date</th>
-                    <th>Bill_Date</th>
-                    <th>Company</th>
-                    <th>Expense_Amount</th>
-                    <th>Bill_Amount</th>
-                    <th>Profit_&_Loss</th>
+                 
+                    <th>Amount</th>
+                    <th>Remark</th>
+               
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% comment %} {% for p in showprofit %}
+              {% for v in voucher %}
                   <tr>
                     <td>{{forloop.counter }}</td>
-                    <td>{{p.tanker}}</td>
-                    <td>{{p.from_add}}</td>
-                    <td>{{p.to_add }}</td>
+                    <td>{{v.cashdate|date:"d/m/Y"}}</td>
+                    <td>{{v.tankerno}}</td>
+                    <td>{{v.cashname}}</td>
+                    <td>{{v.from_add}}</td>
+                    <td>{{v.To }}</td>
+                    <td>{{v.cashamount }}</td>
+                    <td>{{v.remark }}</td>
 
-                    <td>{{ p.trip|date:"d/m/Y" }}</td>
-                    <td>{{ p.bill|date:"d/m/Y" }}</td>
-                     <td>{{p.company}}</td>
-                      <td>{{p.expese}}</td>
-                       <td>{{p.bill_amount }}</td>
-                        <td>{{p.total}}</td>
                   
                     
                     <td>
                       <a
-                        href="{% url 'update-plan' p.id %}"
+                        href="#"
                         class="text-success mx-2"
                         ><i class="bi bi-pencil-square fs-5"></i
                       ></a>
                       <a
-                        href="{% url 'delete-plan' p.id %}"
+                        href="{% url "delete_voucher" v.id %}"
                         class="text-danger"
                         onclick="return confirmDelete()"
                         ><i class="bi bi-trash3-fill fs-5"></i
@@ -86,7 +84,7 @@
                     </td>
                     
                   </tr>
-                  {% endfor %} {% endcomment %}
+                  {% endfor %} 
                   
                   {% comment %}
                   <tr>

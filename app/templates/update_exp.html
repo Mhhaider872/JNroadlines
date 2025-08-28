@@ -190,13 +190,15 @@
               id="category"
               value="{{exp.category.name}}"
             /> {% endcomment %}
-          <select id="category" name="category" onchange="updateSubCategory()" class="form-select border-2" value="{{exp.toll_amount}}">
-         <option value="">Select</option>
-         {% for category in categories %}
-         <option value="{{ category.name }}">{{ category.name }}</option>
-         <!-- Populate categories dynamically -->
-        {% endfor %}
-        </select>
+         <select id="category" name="category" onchange="updateSubCategory()" class="form-select border-2">
+  <option value="">Select</option>
+  {% for category in categories %}
+    <option value="{{ category.id }}" {% if exp.category.id == category.id %}selected{% endif %}>
+      {{ category.name }}
+    </option>
+  {% endfor %}
+</select>
+
       </div>
        <div class="col-lg-3 mb-3">
          <label for="datalistOptions4" class="form-label fw-bold">Paid To</label>
@@ -215,11 +217,12 @@
     </div>
     <div class="col-lg-3 mb-3">
       <label for="subCategory" class="form-label fw-bold">Paid By</label>
+      <input type="hidden" id="currentSubCategory" value="{{ exp.subCategory }}">
+
       <select id="subCategory" name="subCategory" class="form-select border-2">
-        <option value="">Select</option>
-        <option value="{{ subCategory.name }}">{{ subCategory.name }}</option>
-        <!-- Initial empty subcategory dropdown -->
-      </select>
+  <option value="">Select</option>
+</select>
+
       {% comment %} <input
               type="text"
               name="subCategory"
@@ -580,34 +583,33 @@
 }
 </script>
 <script>
-      // This function is called when the category is selected
-      function updateSubCategory() {
-        var categoryId = document.getElementById("category").value; // Get selected category ID
-        var subCategoryDropdown = document.getElementById("subCategory");
+function updateSubCategory() {
+    var categoryId = document.getElementById("category").value;
+    var subCategoryDropdown = document.getElementById("subCategory");
+    var currentSub = document.getElementById("currentSubCategory")?.value;
 
-        // Clear previous subcategory options
-        subCategoryDropdown.innerHTML =
-          "<option value=''>Select</option>";
+    subCategoryDropdown.innerHTML = "<option value=''>Select</option>";
 
-        if (!categoryId) {
-          return; // Exit if no category is selected
-        }
+    if (!categoryId) return;
 
-        // Fetch subcategories from Django backend using Fetch API
-        fetch(`/get_subcategories/${categoryId}/`)
-          .then((response) => response.json()) // Parse the JSON response
-          .then((data) => {
-            // Add subcategory options to the subcategory dropdown
-            data.forEach(function (subcategory) {
-              var option = document.createElement("option");
-              option.value = subcategory;
-              option.text = subcategory;
-              subCategoryDropdown.appendChild(option);
-            });
-          })
-          .catch((error) =>
-            console.error("Error fetching subcategories:", error)
-          );
-      }
-  </script>
+    fetch(`/get_subcategories/${categoryId}/`)
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(function (subcategory) {
+          var option = document.createElement("option");
+          option.value = subcategory;
+          option.text = subcategory;
+
+          // Check if it's the currently selected subcategory (edit form case)
+          if (subcategory === currentSub) {
+            option.selected = true;
+          }
+
+          subCategoryDropdown.appendChild(option);
+        });
+      })
+      .catch(error => console.error("Error fetching subcategories:", error));
+}
+</script>
+
   </body>

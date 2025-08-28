@@ -99,7 +99,6 @@ def plan(request):
           messages.success(request, 'Plan details added successfully !!')
           return redirect('showplan')
     vehicle=Add_Vehicle.objects.all()
-    # dname=DriverName.objects.all()
     company=companydetails.objects.all()
     dname=NewDriver_Details.objects.all()
     context={'vehicle':vehicle,'company':company,'dname':dname}
@@ -1522,7 +1521,7 @@ def do_update(request,id):
      toll_amount = request.POST.get('toll_amount')
      toll_name = request.POST.get('toll_name')
      category = request.POST.get('category')
-     subCategory = request.POST.get('subCategor')
+     subCategory = request.POST.get('subCategory')
      paid_to = request.POST.get('paid_to')
      amount_given = request.POST.get('amount_given')
      liters = request.POST.get('liters')
@@ -10493,6 +10492,40 @@ def track_driver_view(request, driver_id):
 
 
 def vouchar(request):
-    
+    if request.method=="POST":
+      tankerno=request.POST.get("tankerno")
+      from_add=request.POST.get("from_add")
+      To=request.POST.get("To")
+      loadingdate=request.POST.get("loadingdate")
+      cashname=request.POST.get("cashname")
+      cashdate=request.POST.get("cashdate")
+      cashamount=request.POST.get("cashamount")
+      remark=request.POST.get("remark")
+   
+      cash=CashVoucher.objects.create(tankerno=tankerno,from_add=from_add,To=To if To else "",loadingdate=loadingdate if loadingdate else None,cashname=cashname,cashdate=cashdate,cashamount=cashamount,remark=remark if remark else "")
+      cash.save()
+      messages.success(request,"Cash Voucher Add Successfuly !")
+      return redirect('show_voucher')
+    vehicle=Add_Vehicle.objects.all()
+    company=companydetails.objects.all()
+    dname=NewDriver_Details.objects.all()
+    context={'vehicle':vehicle,'company':company,'dname':dname}
+    return render(request, 'cash_vouchar.html',context)
 
-    return render(request, 'cash_vouchar.html')
+
+
+def showvouchar(request):
+    voucher=CashVoucher.objects.all()
+    context={'voucher':voucher}
+    return render(request, 'show_vouchar.html',context)
+
+
+def deletevouchar(request,id):
+    voucher=CashVoucher.objects.get(pk=id)
+    voucher.delete()
+    return redirect('show_voucher')
+
+
+def get_subcategories(request, category_id):
+    subcategories = SubCategory.objects.filter(category_id=category_id).values_list('name', flat=True)
+    return JsonResponse(list(subcategories), safe=False)
