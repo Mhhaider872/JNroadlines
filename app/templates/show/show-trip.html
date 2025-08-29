@@ -77,7 +77,6 @@
                     <tr>
                       <td>{{forloop.counter }}</td>
                       <td>{{s.plan.tankerno }}</td>
-
                       <td>{{s.From_address }}</td>
                       <td>{{s.To_address}}</td>
                       <td>{{s.drivername }}</td>
@@ -86,10 +85,18 @@
                       <td>{{s.dispatch_time|date:"d/m/y h:i A" }}</td>
                       <td>{{s.reach_time|date:"d/m/y h:i A" }}</td>
                       <td>{{s.unload_time|date:"d/m/y h:i A" }}</td>
-                      <td>{{s.lr_num }}</td>
-                      <td>{{s.lr_date |date:"d/m/Y" }}</td>
-                      <td>{{s.freight_bill}}</td>
-                      <td>{{s.freight_date |date:"d/m/Y" }}</td> 
+                      <td>{{s.lr_num }} {% if s.dolr_num %}<strong><br>{{ s.dolr_num}}</strong>{% else %}
+    <strong></strong>
+{% endif %} </td>
+                      <td>{{s.lr_date |date:"d/m/Y" }} {% if s.dolr_date %}<strong>{{ s.dolr_date |date:"d/m/Y"}}</strong>{% else %}
+    <strong></strong>
+{% endif %}</td>
+                      <td>{{s.freight_bill}} {% if s.dofreight_bill %}<strong><br>{{ s.dofreight_bill}}</strong>{% else %}
+    <strong></strong>
+{% endif %} </td>
+                      <td>{{s.freight_date |date:"d/m/Y" }} {% if s.dofreight_date %}<strong>{{ s.dofreight_date|date:"d/m/Y"}}</strong>{% else %}
+    <strong></strong>
+{% endif %}</td> 
                       <td>{{s.loaded_qty}}</td>
                       <td>{{s.unload_qty}}</td>
                       <td>{{s.short_qty}}</td>

@@ -186,9 +186,13 @@ def addtrip(request):
         reach_time = parse_datetime(request.POST.get('reach_time')) if request.POST.get('reach_time') else None
         unload_time = parse_datetime(request.POST.get('unload_time')) if request.POST.get('unload_time') else None
         lr_num = request.POST.get('lr_num')
+        dolr_num = request.POST.get('dolr_num')
         lr_date = request.POST.get('lr_date')
+        dolr_date = request.POST.get('dolr_date')
         freight_bill = request.POST.get('freight_bill')
+        dofreight_bill = request.POST.get('dofreight_bill')
         freight_date = request.POST.get('freight_date')
+        dofreight_date = request.POST.get('dofreight_date')
         loaded_qty = request.POST.get('loaded_qty')
         unload_qty = request.POST.get('unload_qty')
         percent = request.POST.get('percent')
@@ -214,9 +218,13 @@ def addtrip(request):
             reach_time=reach_time,
             unload_time=unload_time,
             lr_num=lr_num if lr_num else None,
+            dolr_num=dolr_num if dolr_num else None,
             lr_date=lr_date if lr_date else None,
+            dolr_date=dolr_date if dolr_date else None,
             freight_bill=freight_bill if freight_bill else None,
+            dofreight_bill=dofreight_bill if dofreight_bill else None,
             freight_date=freight_date if freight_date else None,
+            dofreight_date=dofreight_date if dofreight_date else None,
             loaded_qty=loaded_qty if loaded_qty else None,
             unload_qty=unload_qty if unload_qty else None,
             percent=percent if percent else None,
@@ -412,9 +420,10 @@ def Trip_Adani(request):
     # Pass the values to the template
     # Get the list of plans for the dropdown
     plans = plandetails.objects.all()
-
+    
+    saved_plan_ids = AddTrips.objects.values_list('plan_id', flat=True)
     # Return to the template with the plans
-    context = {'plans': plans}
+    context = {'plans': plans,'saved_plan_ids':saved_plan_ids}
     return render(request, 'add/add_trip_adani.html',context)
 
 def ShowAdani(request):
@@ -562,8 +571,10 @@ def Trip_Gemini(request):
     # Get the list of plans for the dropdown
     plans = plandetails.objects.all()
 
+    saved_plan_ids = AddTrips.objects.values_list('plan_id', flat=True)
+
     # Return to the template with the plans
-    context = {'plans': plans}
+    context = {'plans': plans,'saved_plan_ids':saved_plan_ids}
     return render(request, 'add/add_trip_gemini.html',context)
 
 def Showgemini(request):
@@ -720,8 +731,10 @@ def aaklocal(request):
      # Get the list of plans for the dropdown
     plans = plandetails.objects.all()
 
+    saved_plan_ids = AddTrips.objects.values_list('plan_id', flat=True)
+
     # Return to the template with the plans
-    context = {'plans': plans}
+    context = {'plans': plans,'saved_plan_ids':saved_plan_ids}
     return render(request,'AAK-india-local.html',context)
 
 def ShowAakLocal(request):

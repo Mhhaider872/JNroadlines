@@ -40,15 +40,19 @@
         <form  method="POST">
         {% csrf_token %}
           <div class="row">
-           <div class="col-lg-4 mb-3">
-            <label for="tankerno" class="form-label fw-bold">Tanker No</label>
-            <input list="tankers" id="tankerno" name="tankerno" class="form-control" placeholder="Search Tanker No" />
-            <datalist id="tankers">
-            {% for plan in plans %}
-            <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
-           {% endfor %}
-           </datalist>
-          </div>
+                  <div class="col-lg-4 mb-3">
+  <label for="tankerno" class="form-label fw-bold">Tanker No</label>
+<input list="tankers" id="tankerno" name="tankerno" class="form-control" placeholder="Search Tanker No" />
+<datalist id="tankers">
+  {% for plan in plans %}
+    {% if plan.id in saved_plan_ids %}
+      <option value="{{ plan.id }}">✔ {{ plan.tankerno }} - Trip already saved</option>
+    {% else %}
+      <option value="{{ plan.id }}">{{ plan.tankerno }}</option>
+    {% endif %}
+  {% endfor %}
+</datalist>
+</div>
 
 
             <div class="col-lg-4 mb-3">
