@@ -291,9 +291,13 @@ def do_updatetrip(request,id):
     short_allow = request.POST.get('short_allow')
     return_qty = request.POST.get('return_qty')
     lr_num = request.POST.get('lr_num')
+    dolr_num = request.POST.get('dolr_num')
     lr_date = request.POST.get('lr_date')
+    dolr_date = request.POST.get('dolr_date')
     freight_bill = request.POST.get('freight_bill')
+    dofreight_bill = request.POST.get('dofreight_bill')
     freight_date = request.POST.get('freight_date')
+    dofreight_date = request.POST.get('dofreight_date')
      
 
     # Fetch the existing plan details to update
@@ -316,9 +320,13 @@ def do_updatetrip(request,id):
     update_t.short_allow = short_allow if short_allow else 0
     update_t.return_qty = return_qty if return_qty else 0
     update_t.lr_num = lr_num if lr_num else ""
+    update_t.dolr_num = dolr_num if dolr_num else ""
     update_t.lr_date = lr_date if lr_date else None
+    update_t.dolr_date = dolr_date if dolr_date else None
     update_t.freight_bill = freight_bill if freight_bill else ""
+    update_t.dofreight_bill = dofreight_bill if dofreight_bill else ""
     update_t.freight_date = freight_date if freight_date else None
+    update_t.dofreight_date = dofreight_date if dofreight_date else None
 
     # Save the changes
     update_t.save()
