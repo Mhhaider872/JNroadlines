@@ -1045,11 +1045,16 @@ def report(request):
             trips = trips.filter(trip_date__range=(from_date_obj, to_date_obj))
         except ValueError:
             pass  # Invalid date format, ignore the filter
-    trips = Trip.objects.all()
+
+    # Do NOT overwrite the filtered trips
     expenses = Expense.objects.all()
     total_expense_sum = trips.aggregate(Sum('total_expense'))['total_expense__sum']
     combined = zip(trips, expenses)
-    context={'combined':combined,'grand_total': total_expense_sum or 0,}  
+    
+    context = {
+        'combined': combined,
+        'grand_total': total_expense_sum or 0,
+    }
 
     return render(request, 'reports.html', context)
 
@@ -1508,7 +1513,13 @@ def add_expense(request, trip_id):
             messages.success(request, 'Trip Expense Add successfully !!')
             trip.calculate_total_expense()  # Recalculate total expense after adding a new expense
             return redirect('add_expense', trip_id=trip.trip_id)
-    
+        
+    food_allowance_sum = trip.expenses.aggregate(Sum('food_allowance'))['food_allowance__sum'] or 0
+    bhatta_sum = trip.expenses.aggregate(Sum('bhatta'))['bhatta__sum'] or 0
+    toll_amount_sum = trip.expenses.aggregate(Sum('toll_amount'))['toll_amount__sum'] or 0
+    total_diesel_sum = trip.expenses.aggregate(Sum('total_diesel'))['total_diesel__sum'] or 0
+    urea_total_sum = trip.expenses.aggregate(Sum('urea_total'))['urea_total__sum'] or 0
+    r_amount_sum = trip.expenses.aggregate(Sum('r_amount'))['r_amount__sum'] or 0
     # Get all expenses related to the trip
     expenses = trip.expenses.all()
     categories = Category.objects.all()
@@ -1516,8 +1527,9 @@ def add_expense(request, trip_id):
     petrol = AddPetrolPump.objects.all()
     company = companydetails.objects.all()
     # Return the response
+
     context = {'categories': categories, 'dname': dname, 'petrol': petrol,'trip': trip,
-        'expenses': expenses,'company':company}
+        'expenses': expenses,'company':company,'food_allowance_sum':food_allowance_sum,'bhatta_sum':bhatta_sum,'toll_amount_sum':toll_amount_sum,'total_diesel_sum':total_diesel_sum,'urea_total_sum':urea_total_sum,'r_amount_sum':r_amount_sum}
     return render(request, 'exp/add_expense.html',context)
 
 

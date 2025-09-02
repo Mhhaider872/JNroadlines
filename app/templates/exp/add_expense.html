@@ -493,12 +493,27 @@
 <hr>
     <!-- Show expenses table -->
     <h2>Expenses</h2>
+<div class="row">
     <div class="col-lg-3 mb-3">
   <input type="text" id="expenseSearchInput" class="form-control" placeholder="Search (Tanker No, Date, Allowance, etc.)..." onkeyup="filterExpensesTable()">
-   
+   </div>
+
+     <div class="col-lg-3 mb-3">
+    {% comment %} <label for="fromDate" class="form-label fw-bold">From Date:</label> {% endcomment %}
+    <input type="date"  class="form-control" id="fromDate">
+     </div>
+   <div class="col-lg-3 mb-3">
+    {% comment %} <label for="toDate" style="margin-left: 10px;" class="form-label fw-bold">To Date:</label> {% endcomment %}
+    <input type="date" class="form-control" id="toDate">
+   </div>
+      <div class="col-lg-3 mb-3">
+    <button onclick="filterTable()" class="btn btn-sm btn-primary mx-3 px-3">Filter</button>
+    <button onclick="resetFilter()" class="btn btn-sm btn-danger mx-3 px-3">Reset</button>
 </div>
 
-    <div class="table-responsive">
+</div>
+
+    <div class="table-responsive" style="overflow-x: auto; white-space: nowrap;">
 
 
     <table class="table table-hover">
@@ -554,7 +569,7 @@
                 <td> {{ exp.from_via }}</td>
                 <td> {{ exp.To_via }}</td>
                
-                <td><strong>{{ exp.date |date:"d/m/Y" }}</strong></td>
+                <td  class="filter-date"><strong>{{ exp.date |date:"d/m/Y" }}</strong></td>
                  <td>{{exp.trip_general_expenses}}</td>
                       <td>{{exp.food_allowance}}</td>
                       <td>{{exp.bhatta}}</td>
@@ -753,6 +768,49 @@
       }
     }
   }
+</script>
+
+<script>
+function parseDDMMYYYY(dateStr) {
+    // Expects "dd/mm/yyyy"
+    const [day, month, year] = dateStr.split('/');
+    return new Date(`${year}-${month}-${day}`); // Converts to yyyy-mm-dd
+}
+
+function filterTable() {
+    const fromDateInput = document.getElementById('fromDate').value;
+    const toDateInput = document.getElementById('toDate').value;
+
+    const fromDate = fromDateInput ? new Date(fromDateInput) : null;
+    const toDate = toDateInput ? new Date(toDateInput) : null;
+
+    const rows = document.querySelectorAll("table tbody tr");
+
+    rows.forEach(row => {
+        const dateCell = row.querySelector(".filter-date");
+        if (!dateCell) return;
+
+        const dateText = dateCell.textContent.trim(); // "03/06/2025"
+        const rowDate = parseDDMMYYYY(dateText);
+
+        let show = true;
+
+        if (fromDate && rowDate < fromDate) show = false;
+        if (toDate && rowDate > toDate) show = false;
+
+        row.style.display = show ? "" : "none";
+    });
+}
+
+function resetFilter() {
+    document.getElementById('fromDate').value = "";
+    document.getElementById('toDate').value = "";
+
+    const rows = document.querySelectorAll("table tbody tr");
+    rows.forEach(row => {
+        row.style.display = "";
+    });
+}
 </script>
 
   </body>

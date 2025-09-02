@@ -228,12 +228,20 @@
         <input type="file" name="puc_img" class="form-control border-2" id="label16" accept=".pdf" >
       </div>
           
-            <div class="col-lg-4 mb-3">
+            {% comment %} <div class="col-lg-4 mb-3">
               <label for="lables" class="form-label fw-bold"
                 >Status</label
               >
               <input type="text" name="status" id="lables" class="form-control border-2" value="{{upvehicle.status}}" >
-            </div>
+            </div> {% endcomment %}
+            <div class="col-lg-4 mb-3">
+  <label for="status" class="form-label fw-bold">Status</label>
+  <select name="status" id="status" class="form-select border-2">
+    <option value="Running" >Running</option>
+    <option value="Sold">Sold</option>
+  </select>
+</div>
+
 
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-info px-4">Update</button>
