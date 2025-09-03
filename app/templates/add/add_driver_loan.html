@@ -7,8 +7,8 @@
         <h1>Add Drivers Loan</h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            {% comment %} <li class="breadcrumb-item active">back</li> {% endcomment %}
           </ol>
         </nav>
       </div>
@@ -23,15 +23,17 @@
     {% endfor %}
   </div>
 {% endif %}
+
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body py-4">
-               
+              <div class="text-end">
+                <a href="{% url "payment_cash" %}" class="btn btn-info px-3 text-light">Repayment</a>
+              </div>
                 
     <section class="main-sec">
-
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
@@ -69,7 +71,7 @@
           </div>
               <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
-             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
+             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" onchange="fetchCapacity()" placeholder="Search to drivers...">
                <datalist id="driverslist">
                   {% for d in dname %}
                  <option value="{{d.name}}">{{d.fname }}</option>
@@ -223,7 +225,7 @@
         </div>
         <div class="col-lg-4 mb-3">
             <label for="label21" class="form-label fw-bold"
-              >Trip Loan Amount</label
+              >Pay Loan Amount</label
             >
             <input
               type="number"
@@ -352,6 +354,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+<script>
+function fetchCapacity() {
+  const driverName = document.querySelector('input[name="drivername"]').value;
 
+  if (driverName) {
+    fetch(`/get_payment/?name=${encodeURIComponent(driverName)}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log("Response:", data); // Debugging ke liye
+        document.getElementById("label21").value = data.amount || 0;
+        calculateTotalShort(); // agar baki calculation karni hai
+      })
+      .catch(err => console.error("Error fetching payment:", err));
+  }
+}
+
+
+</script>
   </body>
 

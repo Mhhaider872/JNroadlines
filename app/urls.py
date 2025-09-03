@@ -489,9 +489,13 @@ urlpatterns =[
     path('cash_vouchar', views.vouchar, name='vouchar_cash'),
     path('show_cash_vouchar', views.showvouchar, name='show_voucher'),
     path('vouchar/<int:id>', views.deletevouchar, name='delete_voucher'),
+
+    path('Repayment/', views.repayment, name='payment_cash'),
     
 
     path('get_subcategories/<int:category_id>/', views.get_subcategories, name='get_subcategories'),
+    path('get_payment/', views.get_payment, name='get_payment'),
+
 
 ]
 

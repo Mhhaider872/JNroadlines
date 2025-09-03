@@ -16,7 +16,7 @@ from decimal import Decimal, InvalidOperation
 from django.contrib.auth.decorators import login_required
 
 
-
+@login_required(login_url="log-in")
 def userdash(request):
      plan=plandetails.objects.count()
      bill_count = Gemini.objects.count()
@@ -50,7 +50,7 @@ def userloan(request):
 
 
 # Create your views here.
-@login_required
+@login_required(login_url="log-in")
 def dashboard(request):
     plan=plandetails.objects.count()
     bill_count = Gemini.objects.count()
@@ -81,6 +81,7 @@ def dashboard(request):
     }
     return render(request,'index.html',context)
 
+@login_required(login_url="log-in")
 def plan(request):
     if request.method =="POST":
       tankerno  = request.POST['tankerno']
@@ -159,7 +160,7 @@ def deleteplan(request,id):
 
 
 
-
+@login_required(login_url="log-in")
 def addtrip(request):
     if request.method == "POST":
         # Get tankerno_id from the form
@@ -348,7 +349,7 @@ def deltrip(request,id):
 
 
 
-
+@login_required(login_url="log-in")
 def Trip_Adani(request):
     # plan = plandetails.objects.earliest('tankerno')  
     # if plan:
@@ -10562,3 +10563,34 @@ def deletevouchar(request,id):
 def get_subcategories(request, category_id):
     subcategories = SubCategory.objects.filter(category_id=category_id).values_list('name', flat=True)
     return JsonResponse(list(subcategories), safe=False)
+
+
+
+def repayment(request):
+    if request.method=="POST":
+      name=request.POST.get("name")
+      date=request.POST.get("date")
+      amount=request.POST.get("amount")
+
+   
+      payment=Payment.objects.create(name=name,date=date,amount=amount)
+      payment.save()
+      messages.success(request,"Repayment Add Successfuly !")
+    #   return redirect('show_voucher')
+    dname=NewDriver_Details.objects.all()
+    context={'dname':dname}
+    return render(request, 'repayment.html',context)
+
+
+def get_payment(request):
+    name = request.GET.get('name')
+    if not name:
+        return JsonResponse({'amount': 0})
+
+    # last payment of driver (date ke hisaab se latest)
+    last_payment = Payment.objects.filter(name=name).order_by('-id').first()
+
+    if last_payment:
+        return JsonResponse({'amount': last_payment.amount})
+    else:
+        return JsonResponse({'amount': 0})

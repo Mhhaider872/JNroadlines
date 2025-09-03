@@ -3226,3 +3226,12 @@ class CashVoucher(models.Model):
     cashamount=models.DecimalField(max_digits=10, decimal_places=2, default=0,null=True, blank=True)
     loadingdate=models.DateField(null=True, blank=True)
     remark=models.CharField(max_length=150, null=True, blank=True)
+
+
+
+
+
+class Payment(models.Model):
+    date=models.DateField(null=False, blank=False)
+    name=models.CharField(max_length=150, null=True, blank=True)
+    amount=models.DecimalField(max_digits=10, decimal_places=2, default=0,null=True, blank=True)
