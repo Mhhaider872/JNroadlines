@@ -636,6 +636,8 @@ class DriverL(models.Model):
     loan_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
     driverloan = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
+    short_allow_rate=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
+    repayment=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
 
 
 

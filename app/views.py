@@ -1935,17 +1935,28 @@ def do_update_dloan(request,id):
       return redirect('show-loan')
 
 
+# def get_driver_shortage(request):
+#     driver_name = request.GET.get('driver_name')
+#     shortage_amount = 0
+
+#     if driver_name:
+#         # Filter latest shortage for this driver
+#         latest_loan = DriverL.objects.filter(drivername=driver_name).order_by('-id').first()
+#         if latest_loan:
+#             shortage_amount = latest_loan.total or 0
+
+#     return JsonResponse({'shortage': shortage_amount})
+
 def get_driver_shortage(request):
     driver_name = request.GET.get('driver_name')
     shortage_amount = 0
 
     if driver_name:
-        # Filter latest shortage for this driver
-        latest_loan = DriverL.objects.filter(drivername=driver_name).order_by('-id').first()
-        if latest_loan:
-            shortage_amount = latest_loan.total or 0
+        # Sum all loan amounts for this driver
+        total_loan = DriverL.objects.filter(drivername__iexact=driver_name).aggregate(total=Sum('loan_amount'))['total']
+        shortage_amount = total_loan or 0
 
-    return JsonResponse({'shortage': shortage_amount})
+    return JsonResponse({'shortage': float(shortage_amount)})
 
 #========================END DRIVER LOAN===================================
 
@@ -10566,20 +10577,26 @@ def get_subcategories(request, category_id):
 
 
 
-def repayment(request):
-    if request.method=="POST":
-      name=request.POST.get("name")
-      date=request.POST.get("date")
-      amount=request.POST.get("amount")
 
-   
-      payment=Payment.objects.create(name=name,date=date,amount=amount)
-      payment.save()
-      messages.success(request,"Repayment Add Successfuly !")
-    #   return redirect('show_voucher')
-    dname=NewDriver_Details.objects.all()
-    context={'dname':dname}
-    return render(request, 'repayment.html',context)
+def repayment(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        date = request.POST.get("date")
+        amount = request.POST.get("amount")
+
+        # Check if payment already exists
+        if Payment.objects.filter(date=date, name=name).exists():
+            messages.error(request, 'Repayment already exists !!')
+            return redirect('payment_cash')
+        else:
+            # Create and save new payment
+            payment = Payment.objects.create(name=name, date=date, amount=amount if amount else 0)
+            messages.success(request, "Repayment added successfully!")
+
+    # Fetch data to show in the form/page
+    dname = NewDriver_Details.objects.all()
+    context = {'dname': dname}
+    return render(request, 'repayment.html', context)
 
 
 def get_payment(request):
@@ -10594,3 +10611,11 @@ def get_payment(request):
         return JsonResponse({'amount': last_payment.amount})
     else:
         return JsonResponse({'amount': 0})
+    
+
+
+def showrepayment(request):
+    payment=Payment.objects.all()
+    context={'payment':payment}
+    return render(request,'show_repayment.html',context)
+    

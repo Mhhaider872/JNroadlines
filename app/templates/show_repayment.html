@@ -4,7 +4,7 @@
 <body>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Driver Loan Details</h1>
+      <h1>Repayment Details</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
@@ -17,7 +17,6 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="card">
-          <div class="table-responsive">
             <div class="card-body">
               {% comment %} <h5 class="card-title">Datatables</h5> {% endcomment %}
               {% if messages %}
@@ -41,67 +40,38 @@
               <table class="table datatable" id="Record" style="overflow-x: auto; white-space: nowrap;">
                 <thead>
                   <tr>
-                    <th>Sr_No.</th>
-                    <th>Tanker_No</th>
-                    <th>From Address</th>
-                    <th>To Address</th>
-                    <th>Driver_Name</th>
-                    <th>Trip_Date</th>
+                    <th>Sr No.</th>
                     <th>Date</th>
-                    <th>Loaded_Qty</th>
-                    <th>Unloaded_Qty</th>
-                    <th>Shortage_Qty</th>
-                    <th>Allow_Qty_in K.G</th>
-                    <th>Actual_Shortage Amount</th>
-                    <th>Rate</th>
-                    <th>Shortage_Amount</th>
-                    <th>Previous_Loan</th>
-                    <th>Actual_Loan_Amount</th>
-                    <th>Driver_Loan</th>
-                    <th>Total Loan</th>
-                     <th>Actual_Loan_Amount</th>
+                    <th>Driver Name</th>
+                    <th>Amount</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for l in Loan %}
+                {% for p in payment %}
                   <tr>
                     <td>{{forloop.counter }}</td>
-                    <td>{{l.tankerno }}</td>
-                    <td>{{l.From_address }}</td>
-                    <td>{{l.To_address}}</td>
-                    <td>{{l.drivername }}</td>
-                    <td>{{l.trip_date|date:"d/m/Y" }}</td>
-                    <td>{{l.date|date:"d/m/Y" }}</td>
-                    <td>{{l.load }}</td>
-                     <td>{{l.unload }}</td>
-                     <td>{{l.short_kg }}</td>
-                     <td>{{l.allow_kg }}</td>
-                      <td>{{l.actual_short }}</td>
-                      <td>{{l.rate }}</td>
-                      <td>{{l.short_amount }}</td>
-                      <td>{{l.previous_loan }}</td>
-                      <td>{{l.loan_amount }}</td>
-                      <td>{{l.driverloan }}</td>
-                      <td>{{l.total }}</td>
-                       <td>{{l.loan_amount }}</td>
-                 
+                    <td>{{p.date|date:"d/m/Y" }}</td>
+                    <td>{{p.name }}</td>
+                    <td>{{p.amount }}</td>
+                    
                     <td>
                       <a
-                        href="{% url 'update-dloan' l.id %}"
+                        href="#"
                         class="text-success mx-2"
                         ><i class="bi bi-pencil-square fs-5"></i
                       ></a>
                       <a
-                        href="{% url 'loan-delete' l.id %}"
+                        href="#"
                         class="text-danger"
                         onclick="return confirmDelete()"
                         ><i class="bi bi-trash3-fill fs-5"></i
                       ></a>
                       
                     </td>
-                  </tr>
-                  {% endfor %} {% comment %}
+                     </tr>
+                  {% endfor %}
+                   {% comment %}
                   <tr>
                     <td colspan="5">Total Amount</td>
                   </tr>
@@ -109,7 +79,6 @@
                 </tbody>
               </table>
             </div>
-          </div>
           </div>
         </div>
       </div>

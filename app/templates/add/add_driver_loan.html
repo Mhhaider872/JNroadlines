@@ -211,7 +211,7 @@
         </div>
         <div class="col-lg-4 mb-3">
             <label for="label211" class="form-label fw-bold"
-              >Actual Amount</label
+              >Actual Loan Amount</label
             >
             <input
               type="number"
@@ -230,7 +230,7 @@
             <input
               type="number"
               class="form-control border-2"
-              name="loan_amount"
+              name="repayment"
               min="0"
               id="label21"
              
@@ -239,7 +239,7 @@
         </div>
          <div class="col-lg-4 mb-3">
             <label for="label22" class="form-label fw-bold"
-              >Total</label
+              >Total Loan</label
             >
             <input
               type="number"
@@ -308,6 +308,7 @@ function calculateTotalShort() {
     var previousLoan = parseFloat(document.getElementById("pervious").value) || 0;
     var driverLoan = parseFloat(document.getElementById("driverloan").value) || 0;
     var label211 = parseFloat(document.getElementById("label211").value) || 0;
+    var driverLoan = parseFloat(document.getElementById("driverloan").value) || 0;
 
     var totalshort = disqty - unlodqty;
     document.getElementById("totalshort").value = totalshort.toFixed(2);
@@ -326,6 +327,13 @@ function calculateTotalShort() {
 
     var finalTotal = actualAmount - deductedLoan; // FIXED here
     document.getElementById("total_loan").value = finalTotal.toFixed(2);
+
+        // ✅ Final remaining loan = total loan - repayment
+    var totalAfterRepayment = driverLoan - deductedLoan;
+     // 👇 Yahan validation
+   
+
+    document.getElementById("total_loan").value = totalAfterRepayment.toFixed(2);
 }
 </script>
 
