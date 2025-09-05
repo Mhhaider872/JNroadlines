@@ -56,10 +56,12 @@
                     <th>Rate</th>
                     <th>Shortage_Amount</th>
                     <th>Previous_Loan</th>
-                    <th>Actual_Loan_Amount</th>
                     <th>Driver_Loan</th>
+                       <th>Remaining_Loan</th> 
                     <th>Total Loan</th>
                      <th>Actual_Loan_Amount</th>
+                      <th>On Driver Loan</th>      
+                     <th>Repayment</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -81,10 +83,13 @@
                       <td>{{l.rate }}</td>
                       <td>{{l.short_amount }}</td>
                       <td>{{l.previous_loan }}</td>
-                      <td>{{l.loan_amount }}</td>
+                      {% comment %} <td>{{l.loan_amount }}</td> {% endcomment %}
                       <td>{{l.driverloan }}</td>
+                      <td>{{l.remaining_amo }}</td>
                       <td>{{l.total }}</td>
                        <td>{{l.loan_amount }}</td>
+                        <td>{{l.short_allow_rate }}</td>                      
+                        <td>{{l.repayment }}</td>
                  
                     <td>
                       <a

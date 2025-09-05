@@ -1845,7 +1845,10 @@ def AddDriverLoan(request):
       loan_amount = request.POST['loan_amount']
       driverloan=request.POST['driverloan']
       total = request.POST['total']
-      if  DriverL.objects.filter(date=date).exists():
+      repayment = request.POST['repayment']
+      short_allow_rate  = request.POST['short_allow_rate']
+      remaining_amo = request.POST['remaining_amo']
+      if  DriverL.objects.filter(date=date,drivername=drivername).exists():
           messages.error(request, 'Driver Loan exists !!')
           return redirect('drivers-loan')
       else:
@@ -1867,6 +1870,9 @@ def AddDriverLoan(request):
           loan_amount=loan_amount if loan_amount else None,
           driverloan=driverloan if driverloan else None,
           total = total if total else None,
+          short_allow_rate = short_allow_rate  if short_allow_rate else None,
+          repayment = repayment if repayment else None,
+          remaining_amo= remaining_amo if remaining_amo else None,
         )
       d_loan.save()
       messages.success(request, 'Driver Loan Add successfully!')
@@ -10618,4 +10624,11 @@ def showrepayment(request):
     payment=Payment.objects.all()
     context={'payment':payment}
     return render(request,'show_repayment.html',context)
+
+
+def deletepayment(request,id):
+    pay=Payment.objects.get(pk=id)
+    pay.delete()
+    return redirect('show_payment')
+
     

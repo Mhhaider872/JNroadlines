@@ -92,6 +92,17 @@
               readonly
             />
         </div>
+        <div class="col-lg-4 mb-3">
+    <label for="remaining_driverloan" class="form-label fw-bold">Remaining Driver Loan</label>
+    <input
+        type="number"
+        class="form-control border-2"
+        id="remaining_driverloan"
+        name="remaining_amo"
+        readonly
+    />
+</div>
+
            <div class="col-lg-4 mb-3">
             <label for="label6" class="form-label fw-bold"
               >Trip Date</label
@@ -103,6 +114,8 @@
               min="0"
               id="label6"
       
+
+
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -193,8 +206,7 @@
               id="label16"
             />
         </div> {% endcomment %}
-         
-          
+      
         <div class="col-lg-4 mb-3">
             <label for="label21" class="form-label fw-bold"
               >Previous Loan</label
@@ -334,6 +346,7 @@ function calculateTotalShort() {
    
 
     document.getElementById("total_loan").value = totalAfterRepayment.toFixed(2);
+    
 }
 </script>
 
@@ -376,6 +389,23 @@ function fetchCapacity() {
       })
       .catch(err => console.error("Error fetching payment:", err));
   }
+}
+
+
+</script>
+<script>
+function calculateTotalShort() {
+    var driverLoan = parseFloat(document.getElementById("driverloan").value) || 0;
+    var payLoan = parseFloat(document.getElementById("label21").value) || 0;
+
+    // ✅ Calculate Remaining Driver Loan
+    var remainingLoan = driverLoan - payLoan;
+
+    // ✅ Show in remaining_driverloan input
+    document.getElementById("remaining_driverloan").value = remainingLoan.toFixed(2);
+
+    // You can keep the rest of your existing logic here
+    // e.g. shortage calculations etc...
 }
 
 

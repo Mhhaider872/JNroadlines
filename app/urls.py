@@ -492,6 +492,7 @@ urlpatterns =[
 
     path('Repayment/', views.repayment, name='payment_cash'),
     path('Show_Repayment/', views.showrepayment, name='show_payment'),
+    path('Delete_Repayment/<int:id>', views.deletepayment, name='delete_payment'),
     
 
     path('get_subcategories/<int:category_id>/', views.get_subcategories, name='get_subcategories'),
