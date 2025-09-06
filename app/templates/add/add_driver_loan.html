@@ -346,6 +346,9 @@ function calculateTotalShort() {
    
 
     document.getElementById("total_loan").value = totalAfterRepayment.toFixed(2);
+
+
+    
     
 }
 </script>
@@ -393,8 +396,8 @@ function fetchCapacity() {
 
 
 </script>
-<script>
-function calculateTotalShort() {
+{% comment %} <script>
+function calculateTotalShort2() {
     var driverLoan = parseFloat(document.getElementById("driverloan").value) || 0;
     var payLoan = parseFloat(document.getElementById("label21").value) || 0;
 
@@ -409,6 +412,6 @@ function calculateTotalShort() {
 }
 
 
-</script>
+</script>  {% endcomment %}
   </body>
 

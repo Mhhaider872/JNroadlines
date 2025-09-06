@@ -1958,9 +1958,18 @@ def get_driver_shortage(request):
     shortage_amount = 0
 
     if driver_name:
-        # Sum all loan amounts for this driver
-        total_loan = DriverL.objects.filter(drivername__iexact=driver_name).aggregate(total=Sum('loan_amount'))['total']
-        shortage_amount = total_loan or 0
+        # Total loan amount for the driver
+        total_loan = DriverL.objects.filter(drivername__iexact=driver_name).aggregate(
+            total=Sum('loan_amount')
+        )['total'] or 0
+
+        # Total repayment amount for the driver
+        total_repayment = DriverL.objects.filter(drivername__iexact=driver_name).aggregate(
+            total=Sum('repayment')
+        )['total'] or 0
+
+        # Net shortage = loan - repayment
+        shortage_amount = total_loan - total_repayment
 
     return JsonResponse({'shortage': float(shortage_amount)})
 
