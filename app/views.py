@@ -1847,7 +1847,6 @@ def AddDriverLoan(request):
       total = request.POST['total']
       repayment = request.POST['repayment']
       short_allow_rate  = request.POST['short_allow_rate']
-      remaining_amo = request.POST['remaining_amo']
       if  DriverL.objects.filter(date=date,drivername=drivername).exists():
           messages.error(request, 'Driver Loan exists !!')
           return redirect('drivers-loan')
@@ -1872,7 +1871,6 @@ def AddDriverLoan(request):
           total = total if total else None,
           short_allow_rate = short_allow_rate  if short_allow_rate else None,
           repayment = repayment if repayment else None,
-          remaining_amo= remaining_amo if remaining_amo else None,
         )
       d_loan.save()
       messages.success(request, 'Driver Loan Add successfully!')
