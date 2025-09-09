@@ -497,6 +497,7 @@ urlpatterns =[
 
     path('get_subcategories/<int:category_id>/', views.get_subcategories, name='get_subcategories'),
     path('get_payment/', views.get_payment, name='get_payment'),
+    path('get-trip-details/', views.get_trip_details, name='get_trip_details'),
     
 
 

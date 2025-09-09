@@ -10596,6 +10596,7 @@ def repayment(request):
         name = request.POST.get("name")
         date = request.POST.get("date")
         amount = request.POST.get("amount")
+        driverid = request.POST.get("driverid")
 
         # Check if payment already exists
         if Payment.objects.filter(date=date, name=name).exists():
@@ -10603,12 +10604,13 @@ def repayment(request):
             return redirect('payment_cash')
         else:
             # Create and save new payment
-            payment = Payment.objects.create(name=name, date=date, amount=amount if amount else 0)
+            payment = Payment.objects.create(driverid=driverid,name=name, date=date, amount=amount if amount else 0)
             messages.success(request, "Repayment added successfully!")
 
     # Fetch data to show in the form/page
+    trip = Trip.objects.all()
     dname = NewDriver_Details.objects.all()
-    context = {'dname': dname}
+    context = {'dname': dname,'trip':trip}
     return render(request, 'repayment.html', context)
 
 
@@ -10639,3 +10641,16 @@ def deletepayment(request,id):
     return redirect('show_payment')
 
     
+def get_trip_details(request):
+    trip_id = request.GET.get('trip_id')
+    if trip_id:
+        try:
+            trip = Trip.objects.get(trip_id=trip_id)
+            data = {
+                'date': trip.trip_date.strftime('%Y-%m-%d'),  # ya desired format
+                'driver_name': trip.drivername,  # model field adjust karein
+            }
+            return JsonResponse(data)
+        except Trip.DoesNotExist:
+            return JsonResponse({'error': 'Trip not found'}, status=404)
+    return JsonResponse({'error': 'No trip ID provided'}, status=400)

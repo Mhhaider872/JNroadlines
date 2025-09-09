@@ -2,6 +2,7 @@
 
 {% include 'base.html' %}
 {% load static %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
     <main id="main" class="main">
       <div class="pagetitle">
@@ -40,9 +41,29 @@
         <form  method="POST" autocomplete="off">
           {% csrf_token %}
           <div class="row">
-          <div class="col-lg-4 mb-3">
+            <div class="col-lg-3 mb-3">
+  <label for="driversSelect" class="form-label fw-bold">Trip Id</label>
+  <select class="form-control border-2" id="trip_id" name="driverid">
+    <option value="" disabled selected>Select a Trip Id...</option>
+    {% for t in trip %}
+      <option value="{{ t.trip_id }}">{{ t.trip_id }}</option>
+    {% endfor %}
+  </select>
+</div>
+ <div class="col-lg-3 mb-3">
+  <label for="driversSelect" class="form-label fw-bold">Trip Date</label>
+  <input type="text" id="trip_date" name="date" readonly class="form-control border-2" placeholder="Trip Date">
+
+  {% comment %} <select class="form-control border-2" id="trip_date" name="date">
+    <option value="" disabled selected>Select a Trip Date...</option>
+    {% for t in trip %}
+      <option value="{{ t.trip_date }}">{{ t.trip_date|date:"d/m/Y" }}</option>
+    {% endfor %}
+  </select> {% endcomment %}
+</div>
+          {% comment %} <div class="col-lg-3 mb-3">
             <label for="petrol" class="form-label fw-bold"
-              >Date
+              >Trip Date
             </label>
            <div class="input-group mb-3">
             <input
@@ -52,18 +73,21 @@
               id="petrol"
             />
           </div>
-             </div>
-           <div class="col-lg-4 mb-3">
-            <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
-             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="name" placeholder="Search to drivers...">
+             </div> {% endcomment %}
+           <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Driver Name</label>
+            <input type="text" id="driver_name" name="name" readonly class="form-control border-2" placeholder="Driver Name">
+
+             {% comment %} <input class="form-control border-2" list="driverslist" id="driver_name"  name="name" placeholder="Search to drivers...">
                <datalist id="driverslist">
-                  {% for d in dname %}
-                 <option value="{{d.name}}">{{d.fname }}</option>
+                  {% for d in trip %}
+                 <option value="{{d.drivername}}">{{d.drivername }}</option>
                 {% endfor %}
-                </datalist>
+                
+                </datalist> {% endcomment %}
              </div>
              
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-3 mb-3">
             <label for="petrol" class="form-label fw-bold"
               >Amount
             </label>
@@ -84,6 +108,7 @@
         </form>
       </div>
     </div>
+
   </div>
 </section>
               </div>
@@ -110,4 +135,38 @@
       class="back-to-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
+
+    <script>
+  $('#trip_id').on('change', function() {
+    var tripId = $(this).val();
+    if(tripId) {
+      $.ajax({
+        url: '{% url "get_trip_details" %}',
+        data: {
+          'trip_id': tripId
+        },
+        dataType: 'json',
+        success: function(data) {
+          if(data.error) {
+            alert(data.error);
+            $('#trip_date').val('');
+            $('#driver_name').val('');
+          } else {
+            $('#trip_date').val(data.date);
+            $('#driver_name').val(data.driver_name);
+          }
+        },
+
+        error: function() {
+          alert('Trip date & Driver name not Fill !!');
+          $('#trip_date').val('');
+          $('#driver_name').val('');
+        }
+      });
+    } else {
+      $('#trip_date').val('');
+      $('#driver_name').val('');
+    }
+  });
+</script>
 </body>

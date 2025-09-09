@@ -40,7 +40,7 @@
               <table class="table datatable" id="Record" style="overflow-x: auto; white-space: nowrap;">
                 <thead>
                   <tr>
-                    <th>Sr No.</th>
+                    <th>Trip Id</th>
                     <th>Date</th>
                     <th>Driver Name</th>
                     <th>Amount</th>
@@ -50,7 +50,7 @@
                 <tbody>
                 {% for p in payment %}
                   <tr>
-                    <td>{{forloop.counter }}</td>
+                    <td>{{p.driverid }}</td>
                     <td>{{p.date|date:"d/m/Y" }}</td>
                     <td>{{p.name }}</td>
                     <td>{{p.amount }}</td>
