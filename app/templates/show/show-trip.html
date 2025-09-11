@@ -12,6 +12,26 @@
         </ol>
       </nav>
     </div>
+                    <form method="get" class="row g-3 mb-5">
+  <div class="col-md-3">
+    <label for="from_date" class="form-label fw-bold">From Date</label>
+    <input type="date" name="from_date" id="from_date" class="form-control" value="{{ request.GET.from_date }}">
+  </div>
+  <div class="col-md-3">
+    <label for="to_date" class="form-label fw-bold">To Date</label>
+    <input type="date" name="to_date" id="to_date" class="form-control" value="{{ request.GET.to_date }}">
+  </div>
+  <div class="col-md-3 d-flex align-items-end">
+    <button type="submit" class="btn btn-sm btn-primary mx-3 px-5">Filter</button>
+    <a href="{% url 'showtrip' %}" class="btn btn-sm btn-danger px-5">Clear</a>
+  </div>
+   <!-- Export Button -->
+                <div class="col-md-3 d-flex align-items-end">
+                  <button class="btn btn-success btn-sm mx-3 px-4" onclick="exportToExcel()">
+                    Export to Excel
+                  </button>
+                </div>
+</form>
     <!-- End Page Title -->
     <section class="section">
       <div class="row">
@@ -38,12 +58,8 @@
                   {% endfor %}
                 </div>
                 {% endif %}
-                <!-- Export Button -->
-                <div class="col-md-7 d-flex align-items-end">
-                  <button class="btn btn-success" onclick="exportToExcel()">
-                    Export to Excel
-                  </button>
-                </div>
+
+               
                 <table class="table datatable" id="dataTable" style="overflow-x: auto; white-space: nowrap;">
                   <thead>
                     <tr>

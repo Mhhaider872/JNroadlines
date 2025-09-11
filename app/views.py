@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.contrib.auth import authenticate, login,logout
 from django.utils.timezone import now
 import random
-from datetime import datetime, timedelta
+from datetime import datetime,time
 from django.core.mail import send_mail
 from django.utils.dateparse import parse_datetime
 from num2words import num2words
@@ -106,7 +106,19 @@ def plan(request):
     return render(request,'add/add-plans.html', context)
 
 def showplan(request):
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+
     showplans=plandetails.objects.all()
+    if from_date and to_date:
+        try:
+            from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
+            to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
+            showplans = showplans.filter(dispatch_Date__range=(from_date_obj, to_date_obj))
+        except ValueError:
+            pass  # Invalid date format
+
+
     context={'showplans':showplans}
     return render(request,'show/show-plan.html',context)
 
@@ -264,9 +276,28 @@ def get_plan_details(request):
         return JsonResponse({'error': 'Plan not found'}, status=404)
    
 def showtrip(request):
-    show=AddTrips.objects.all()
-    context={'show':show}
-    return render(request,'show/show-trip.html',context)
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+
+    show = AddTrips.objects.all()
+
+    if from_date and to_date:
+        try:
+            # Sirf date mil raha hai: "2025-09-11"
+            from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
+            to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
+
+            # Din ki starting aur ending time set karo:
+            from_datetime = datetime.combine(from_date_obj.date(), time.min)  # 00:00:00
+            to_datetime = datetime.combine(to_date_obj.date(), time.max)      # 23:59:59.999999
+
+            # Filter karo dispatch_time ke range par
+            show = show.filter(dispatch_time__range=(from_datetime, to_datetime))
+        except ValueError:
+            pass  # Agar galat format ho to skip karo
+
+    context = {'show': show}
+    return render(request, 'show/show-trip.html', context)
 
 def updatetrip(request,id):
     uptrip=AddTrips.objects.get(pk=id)
@@ -436,7 +467,25 @@ def Trip_Adani(request):
     return render(request, 'add/add_trip_adani.html',context)
 
 def ShowAdani(request):
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+
     adani=TripAdani.objects.all()
+
+    if from_date and to_date:
+        try:
+            # Sirf date mil raha hai: "2025-09-11"
+            from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
+            to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
+
+            # Din ki starting aur ending time set karo:
+            from_datetime = datetime.combine(from_date_obj.date(), time.min)  # 00:00:00
+            to_datetime = datetime.combine(to_date_obj.date(), time.max)      # 23:59:59.999999
+
+            # Filter karo dispatch_time ke range par
+            adani = adani.filter(dispatch_time__range=(from_datetime, to_datetime))
+        except ValueError:
+            pass  # Agar galat format ho to skip karo
     context={'adani':adani}
     return render(request,'show/show_adani.html',context)
 
@@ -10597,6 +10646,7 @@ def repayment(request):
         date = request.POST.get("date")
         amount = request.POST.get("amount")
         driverid = request.POST.get("driverid")
+        tanker = request.POST.get("tanker")
 
         # Check if payment already exists
         if Payment.objects.filter(date=date, name=name).exists():
@@ -10604,7 +10654,7 @@ def repayment(request):
             return redirect('payment_cash')
         else:
             # Create and save new payment
-            payment = Payment.objects.create(driverid=driverid,name=name, date=date, amount=amount if amount else 0)
+            payment = Payment.objects.create(tanker=tanker,driverid=driverid,name=name, date=date, amount=amount if amount else 0)
             messages.success(request, "Repayment added successfully!")
 
     # Fetch data to show in the form/page
@@ -10648,7 +10698,8 @@ def get_trip_details(request):
             trip = Trip.objects.get(trip_id=trip_id)
             data = {
                 'date': trip.trip_date.strftime('%Y-%m-%d'),  # ya desired format
-                'driver_name': trip.drivername,  # model field adjust karein
+                'driver_name': trip.drivername,
+                'tanker' :trip.tanker, # model field adjust karein
             }
             return JsonResponse(data)
         except Trip.DoesNotExist:

@@ -3236,6 +3236,7 @@ class CashVoucher(models.Model):
 
 class Payment(models.Model):
     driverid=models.CharField(max_length=150, null=True, blank=True)
+    tanker=models.CharField(max_length=150, null=True, blank=True)
     date=models.DateField(null=False, blank=False)
     name=models.CharField(max_length=150, null=True, blank=True)
     amount=models.DecimalField(max_digits=10, decimal_places=2, default=0,null=True, blank=True)

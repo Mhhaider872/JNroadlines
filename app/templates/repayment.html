@@ -19,6 +19,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
+              
               <div class="card-body py-4">
               
                 {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
@@ -60,6 +61,13 @@
       <option value="{{ t.trip_date }}">{{ t.trip_date|date:"d/m/Y" }}</option>
     {% endfor %}
   </select> {% endcomment %}
+</div>
+
+ <div class="col-lg-3 mb-3">
+  <label for="driversSelect" class="form-label fw-bold">Tanker No</label>
+  <input type="text" id="tanker" name="tanker" readonly class="form-control border-2" placeholder="Tanker No">
+
+
 </div>
           {% comment %} <div class="col-lg-3 mb-3">
             <label for="petrol" class="form-label fw-bold"
@@ -136,10 +144,10 @@
       ><i class="bi bi-arrow-up-short"></i
     ></a>
 
-    <script>
+<script>
   $('#trip_id').on('change', function() {
     var tripId = $(this).val();
-    if(tripId) {
+    if (tripId) {
       $.ajax({
         url: '{% url "get_trip_details" %}',
         data: {
@@ -147,26 +155,30 @@
         },
         dataType: 'json',
         success: function(data) {
-          if(data.error) {
+          if (data.error) {
             alert(data.error);
             $('#trip_date').val('');
             $('#driver_name').val('');
+            $('#tanker').val('');
           } else {
             $('#trip_date').val(data.date);
             $('#driver_name').val(data.driver_name);
+            $('#tanker').val(data.tanker); // 👈 Add this line
           }
         },
-
         error: function() {
-          alert('Trip date & Driver name not Fill !!');
+          alert('Trip date, Driver name & Tanker not filled!');
           $('#trip_date').val('');
           $('#driver_name').val('');
+          $('#tanker').val('');
         }
       });
     } else {
       $('#trip_date').val('');
       $('#driver_name').val('');
+      $('#tanker').val('');
     }
   });
 </script>
+
 </body>
