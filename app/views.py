@@ -14,7 +14,8 @@ from num2words import num2words
 import os
 from decimal import Decimal, InvalidOperation
 from django.contrib.auth.decorators import login_required
-
+from django.db.models.functions import ExtractMonth 
+from django.db.models import Count 
 
 @login_required(login_url="log-in")
 def userdash(request):
@@ -52,34 +53,54 @@ def userloan(request):
 # Create your views here.
 @login_required(login_url="log-in")
 def dashboard(request):
-    plan=plandetails.objects.count()
+    plan = plandetails.objects.count()
     bill_count = Gemini.objects.count()
-    vehicle_c=Add_Vehicle.objects.count()
-    dname=NewDriver_Details.objects.count()
-    trip=AddTrips.objects.count()
-    tripgemini=TripGemini.objects.count()
-    tripadani=TripAdani.objects.count()
-    triplocal=AakLocal.objects.count()
-    trip_exp=Trip.objects.count()
-    salary=Driver_salary.objects.count()
-    company=companydetails.objects.count()
-    driver=NewDriver_Details.objects.count()
+    vehicle_c = Add_Vehicle.objects.count()
+    dname = NewDriver_Details.objects.count()
+    trip = AddTrips.objects.count()
+    tripgemini = TripGemini.objects.count()
+    tripadani = TripAdani.objects.count()
+    triplocal = AakLocal.objects.count()
+    trip_exp = Trip.objects.count()
+    salary = Driver_salary.objects.count()
+    company = companydetails.objects.count()
+    driver = NewDriver_Details.objects.count()
+
+    # Monthly trips for chart (all months)
+    data = (
+        AddTrips.objects.filter(dispatch_time__isnull=False)
+        .annotate(month=ExtractMonth("dispatch_time"))
+        .values("month")
+        .annotate(total=Count("id"))
+        .order_by("month")
+    )
+
+    trips_dict = {i:0 for i in range(1,13)}
+    for row in data:
+        trips_dict[row["month"]] = row["total"]
+
+    months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+    trips_monthly = [trips_dict[i] for i in range(1,13)]
 
     context = {
-        'plan':plan,
+        'plan': plan,
         'bill_count': bill_count,
         'vehicle_c': vehicle_c,
-        'dname':dname,
-        'trip':trip,
-        'trip_exp':trip_exp,
-        'salary':salary,
-        'tripgemini':tripgemini,
-        'tripadani':tripadani,
-        'triplocal':triplocal,
-        'company':company,
-        'driver':driver
+        'dname': dname,
+        'trip': trip,
+        'trip_exp': trip_exp,
+        'salary': salary,
+        'tripgemini': tripgemini,
+        'tripadani': tripadani,
+        'triplocal': triplocal,
+        'company': company,
+        'driver': driver,
+        'months': months,
+        'trips_monthly': trips_monthly,
     }
+
     return render(request,'index.html',context)
+
 
 @login_required(login_url="log-in")
 def plan(request):
@@ -636,7 +657,26 @@ def Trip_Gemini(request):
     return render(request, 'add/add_trip_gemini.html',context)
 
 def Showgemini(request):
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+
     gemeni=TripGemini.objects.all()
+
+    if from_date and to_date:
+        try:
+            # Sirf date mil raha hai: "2025-09-11"
+            from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
+            to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
+
+            # Din ki starting aur ending time set karo:
+            from_datetime = datetime.combine(from_date_obj.date(), time.min)  # 00:00:00
+            to_datetime = datetime.combine(to_date_obj.date(), time.max)      # 23:59:59.999999
+
+            # Filter karo dispatch_time ke range par
+            gemeni =  gemeni.filter(dispatch_time__range=(from_datetime, to_datetime))
+        except ValueError:
+            pass  # Agar galat format ho to skip karo
+    
     context={'gemeni':gemeni}
     return render(request,'show/show_gemini.html',context)
 
@@ -796,7 +836,27 @@ def aaklocal(request):
     return render(request,'AAK-india-local.html',context)
 
 def ShowAakLocal(request):
+    
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+
     Aak=AakLocal.objects.all()
+
+    if from_date and to_date:
+        try:
+            # Sirf date mil raha hai: "2025-09-11"
+            from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
+            to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
+
+            # Din ki starting aur ending time set karo:
+            from_datetime = datetime.combine(from_date_obj.date(), time.min)  # 00:00:00
+            to_datetime = datetime.combine(to_date_obj.date(), time.max)      # 23:59:59.999999
+
+            # Filter karo dispatch_time ke range par
+            Aak =Aak.filter(dispatch_time__range=(from_datetime, to_datetime))
+        except ValueError:
+            pass  # Agar galat format ho to skip karo
+    
     context={'Aak':Aak}
     return render(request,'show/show_Aak_india_local.html',context)
 
@@ -10705,3 +10765,50 @@ def get_trip_details(request):
         except Trip.DoesNotExist:
             return JsonResponse({'error': 'Trip not found'}, status=404)
     return JsonResponse({'error': 'No trip ID provided'}, status=400)
+
+
+
+
+import requests
+def get_weather(request):
+    url = "http://track.ansitindia.com/webservice?token=getLiveData&user=jnr&pass=jnr123&format=json"
+    params = {
+        "latitude": 19.0760,
+        "longitude": 72.8777,
+        "current_weather": "true"
+    }
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        data = response.json()
+        return JsonResponse(data)
+    else:
+        return JsonResponse({"error": "API request failed"}, status=500)
+
+
+
+
+def trips_chart(request):
+    # Month wise trips ka count nikalna
+    data = (
+        AddTrips.objects.annotate(month=ExtractMonth("dispatch_time"))
+        .values("month")
+        .annotate(total=Count("id"))
+        .order_by("month")
+    )
+
+    # Python list banani frontend ke liye
+    months = []
+    trips = []
+
+    month_names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+
+    for row in data:
+        if row["month"]:  # dispatch_time null ho sakta hai
+            months.append(month_names[row["month"] - 1])
+            trips.append(row["total"])
+
+    return render(request, "trips_chart.html", {
+        "months": months,
+        "trips": trips
+    })

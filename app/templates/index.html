@@ -22,22 +22,21 @@
           <div class="col-lg-12">
             <div class="row">
               <!-- Order Card -->
-              <div class="col-lg-3 col-md-12">
+              {% comment %} <div class="col-lg-3 col-md-12">
                 <div class="card info-card sales-card">
-                  <div class="filter">
                     <a class="icon" href="{% url 'com-order' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">Fresh Order</h5>
-
+                      >
+                  <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
                             <i class="bi bi-bag"></i>
+                      </div>
+                      
+
+                      <div>
+                       <h5 class="card-title">Fresh Order</h5>
                       </div>
                       <div class="ps-3">
                         <h6>0</h6>
@@ -46,25 +45,23 @@
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> {% endcomment %}
               <!-- End Order Card -->
               <!-- Sales Card -->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card sales-card">
-                  <div class="filter">
+          
                     <a class="icon" href="{% url 'showplan' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">Planning</h5>
-
+                      >
+                  <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-journal-text"></i>
+                        <i class="bi bi-journal-text text-warning"></i>
+                      </div>
+                      <div>
+                         <h5 class="card-title">Planning</h5>
                       </div>
                       <div class="ps-3">
                         <h6>{{plan}}</h6>
@@ -79,23 +76,21 @@
               <!-- Revenue Card -->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card revenue-card">
-                  <div class="filter">
                     <a class="icon" href="{% url 'showtrip' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Active Trips
-                    </h5>
-
+                      >
+                  <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-skip-start-circle"></i>
+                      <i class="bi bi-arrow-down-up text-success"></i>
+                     
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
+                      </div>
+                      <div>
+                       <h5 class="card-title">
+                      Active Trips
+                    </h5>
                       </div>
                       <div class="ps-3">
                         <h6>{{trip}}</h6>
@@ -106,28 +101,24 @@
                 </div>
               </div>
 
-
+              <!-- Card -->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card revenue-card">
-                  <div class="filter">
                     <a class="icon" href="{% url 'Aak-Local' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Active Trips Aak India Local
-                    </h5>
-
+                      >
+                  <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-skip-start-circle"></i>
+                      <i class="bi bi-arrow-down-up text-pramiry"></i>
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
-                      
+                      <div>
+                        <h5 class="card-title">
+                      Aak India Trips
+                    </h5>
+                      </div>
                       <div class="ps-3">
                         <h6>{{triplocal}}</h6>
                       </div>
@@ -137,29 +128,25 @@
                    </div>
                  </div>
               </div>
-              <!-- End Revenue Card -->
+              <!-- Card -->
 
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card revenue-card">
-                  <div class="filter">
                     <a class="icon" href="{% url 'show-gemini-details' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Active Trips Gemini
-                    </h5>
-
+                      >
+                  <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-skip-start-circle"></i>
+                      <i class="bi bi-arrow-down-up text-success"></i>
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
-                      
+                      <div>
+                         <h5 class="card-title">
+                      Gemini Trips 
+                    </h5>
+                      </div>
                       <div class="ps-3">
                         <h6>{{tripgemini}}</h6>
                       </div>
@@ -169,25 +156,23 @@
                    </div>
                  </div>
               </div>
-             <div class="col-lg-3 col-md-12">
-                <div class="card info-card revenue-card">
-                  <div class="filter">
+                <!-- Card -->
+                <div class="col-lg-3 col-md-12">
+                   <div class="card info-card revenue-card">
                     <a class="icon" href="{% url 'show-gemini-details' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Active Trips Adani
-                    </h5>
-
+                      >
+                   <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-skip-start-circle"></i>
+                      <i class="bi bi-arrow-down-up text-success"></i>
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
+                      </div>
+                      <div>
+                         <h5 class="card-title">
+                    Adani Trips
+                    </h5>
                       </div>
                       
                       <div class="ps-3">
@@ -200,28 +185,22 @@
                  </div>
               </div>
 
-
+              <!-- Card -->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card revenue-card">
-                  <div class="filter">
-                    {% comment %} <a class="icon" href="{% url 'all-trip' %}"  {% endcomment %}
                     <a class="icon" href="{% url 'trip' %}"
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Trip Expenses
-                    </h5>
-
+                      >
+                  <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-folder-plus"></i>
+                      <i class="bi bi-cash-stack text-danger"></i>
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
+                      <div><h5 class="card-title">
+                      Trip Expenses
+                    </h5> </div>
                       <div class="ps-3">
                         <h6>{{trip_exp}}</h6>
                       </div>
@@ -230,59 +209,25 @@
                   </div>
                 </div>
               </div>
-              <!-- End R Card -->
-   
-              {% comment %} <div class="col-lg-3 col-md-12">
-                <div class="card info-card revenue-card">
-                  <div class="filter">
-                    <a class="icon" href="{% url 'add-trip-end' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Trip End
-                    </h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                     <i class="bi bi-sign-stop"></i>
-                        <i class="bi bi-currency-rupee"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>0</h6>
-                      </div>
-                    </div>
-                    </a>
-                  </div>
-                </div>
-              </div> {% endcomment %}
+              <!--Card -->
+  
        
 
               <!-- vehicle Card -->
-
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
-                  <div class="filter">
                     <a class="icon" href="{% url 'show-vehicle' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                 <div class="card-body">
-                    <h5 class="card-title">
-                      Vehicle Details 
-                    </h5>
-
+                      >
+                 <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
                        <i class="bi bi-truck"></i>
                       </div>
+                      <div> <h5 class="card-title">
+                      Vehicle Details 
+                    </h5> </div>
                       <div class="ps-3">
                         <h6>{{vehicle_c}}</h6>
                       </div>
@@ -291,25 +236,22 @@
                   </div>
                 </div>
               </div>
-              <!-- End vehicle Card -->
+              <!--Card -->
                <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
-                  <div class="filter">
                     <a class="icon" href="{% url "showdrivers" %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                 <div class="card-body">
-                    <h5 class="card-title">
-                      Driver Details 
-                    </h5>
-
+                      >
+                 <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-people"></i>
+                      <i class="bi bi-people text-success"></i>
+                      </div>
+                      <div>
+                      <h5 class="card-title">
+                      Driver Details 
+                     </h5>
                       </div>
                       <div class="ps-3">
                         <h6>{{driver}}</h6>
@@ -319,25 +261,21 @@
                   </div>
                 </div>
               </div>
+                  <!--Card -->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
-                  <div class="filter">
                     <a class="icon" href="{% url "s-company" %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                 <div class="card-body">
-                    <h5 class="card-title">
-                      Company Details 
-                    </h5>
-
+                      >
+                 <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                       <i class="bi bi-building"></i>
+                       <i class="bi bi-building text-warning"></i>
                       </div>
+                      <div>   <h5 class="card-title">
+                      Company Details 
+                    </h5> </div>
                       <div class="ps-3">
                         <h6>{{company}}</h6>
                       </div>
@@ -350,23 +288,19 @@
                <!--  Loan -->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
-                  <div class="filter">
                     <a class="icon" href="{% url 'loandetails' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Loan
-                    </h5>
-
+                      >
+                  <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-person-vcard"></i>
+                      <i class="bi bi-person-vcard text-danger"></i>
                         
                       </div>
+                      <div>   <h5 class="card-title">
+                      Loan
+                    </h5> </div>
                       <div class="ps-3">
                         <h6>0</h6>
                       </div>
@@ -375,26 +309,21 @@
                   </div>
                 </div>
               </div>
-              <!-- End Loan-->
+              <!-- Loan-->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
-                  <div class="filter">
                    <a class="icon" href="{% url 'report-show' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                     Reports
-                    </h5>
-
+                      >
+                  <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-receipt"></i>
+                        <i class="bi bi-journal-text"></i>
                       </div>
+                      <div>  <h5 class="card-title">
+                     Reports
+                    </h5> </div>
                       <div class="ps-3">
                         <h6>{{trip_exp}}</h6>
                         
@@ -404,25 +333,22 @@
                   </a>
                 </div>
               </div>
+
+                <!-- Card-->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
-                  <div class="filter">
                    <a class="icon" href="{% url 'add-toll' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                     Add Toll
-                    </h5>
-
+                      >
+                  <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-align-start"></i>
+                        <i class="bi bi-align-start text-success"></i>
                       </div>
+                      <div><h5 class="card-title">
+                     Add Toll
+                    </h5>   </div>
                       <div class="ps-3">
                         <h6>0</h6>
                         
@@ -432,54 +358,46 @@
                   </a>
                 </div>
               </div>
+              <!-- Card--> 
+              <div class="col-lg-3 col-md-12">
+                <div class="card info-card customers-card">
+                   <a class="icon" href="{% url "vouchar_cash" %}" 
+                      >
+                  <div class="card-body py-3">
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                        <i class="bi bi-receipt text-warning"></i>
+                      </div>
+                      <div><h5 class="card-title">
+                     Cash Vouchar
+                    </h5></div>
+                      <div class="ps-3">
+                        <h6>0</h6>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  </a>
+                </div>
+              </div>
+                <!-- Card-->
                <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
-                  <div class="filter">
                    <a class="icon" href="{% url 'vehicle-track' %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
+                      >
 
-                  <div class="card-body">
-                    <h5 class="card-title">
+                  <div class="card-body p-3">
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                        <i class="bi bi-geo text-danger"></i>
+                      </div>
+                      <div><h5 class="card-title">
                      Vehicle Tracking
-                    </h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                        <i class="bi bi-map"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>0</h6>
-                        
-                      </div>
-                    </div>
-                  </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-md-12">
-                <div class="card info-card customers-card">
-                  <div class="filter">
-                   <a class="icon" href="{% url "vouchar_cash" %}" 
-                      ><i class="bi bi-three-dots"></i
-                    >
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                     Cash Vouchar
-                    </h5>
-
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                        <i class="bi bi-receipt"></i>
-                      </div>
+                    </h5> </div>
                       <div class="ps-3">
                         <h6>0</h6>
                         
@@ -491,212 +409,57 @@
               </div>
       </div>
   </section>
-      <section class="section dashboard  sec-2">
-        <div class="row">
-           <!-- Reports -->
-              <div class="col-lg-12 col-md-12">
-                <div class="card">
-                  <div class="filter">
-                    <a class="icon" href="#" data-bs-toggle="dropdown"
-                      ><i class="bi bi-three-dots"></i
-                    ></a>
-                    <ul
-                      class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"
-                    >
-                      <li class="dropdown-header text-start">
-                        <h6>Filter</h6>
-                      </li>
+<section class="section dashboard sec-2">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Monthly <span>/Trips</span></h5>
 
-                      <li><a class="dropdown-item" href="#">Today</a></li>
-                      <li><a class="dropdown-item" href="#">This Month</a></li>
-                      <li><a class="dropdown-item" href="#">This Year</a></li>
-                    </ul>
-                  </div>
+          <!-- ApexCharts Chart -->
+          <div id="tripsChart"></div>
 
-                  <div class="card-body">
-                    <h5 class="card-title">Monthly<span>/Reports </span></h5>
-
-                    <!-- Line Chart -->
-                    <div id="reportsChart"></div>
-
-                    <script>
-                      document.addEventListener("DOMContentLoaded", () => {
-                        new ApexCharts(
-                          document.querySelector("#reportsChart"),
-                          {
-                            series: [
-                              {
-                                name: "Revenue",
-                                data: [11, 32, 45, 32, 34, 52, 41] ,
-                              },
-                              {
-                                name: "Profit",
-                                data: [31, 40, 28, 51, 42, 82, 56],
-                              },
-                              
-                            ],
-                            chart: {
-                              height: 350,
-                              type: "area",
-                              toolbar: {
-                                show: false,
-                              },
-                            },
-                            markers: {
-                              size: 4,
-                            },
-                            colors: ["#4154f1", "#2eca6a", "#ff771d"],
-                            fill: {
-                              type: "gradient",
-                              gradient: {
-                                shadeIntensity: 1,
-                                opacityFrom: 0.3,
-                                opacityTo: 0.4,
-                                stops: [0, 90, 100],
-                              },
-                            },
-                            dataLabels: {
-                              enabled: false,
-                            },
-                            stroke: {
-                              curve: "smooth",
-                              width: 2,
-                            },
-                            xaxis: {
-                              type: "datetime",
-                              categories: [
-                                "2025-01-19T00:00:00.000Z",
-                                "2025-02-19T01:30:00.000Z",
-                                "2025-03-19T02:30:00.000Z",
-                                "2025-04-19T03:30:00.000Z",
-                                "2025-05-19T04:30:00.000Z",
-                                "2025-06-19T05:30:00.000Z",
-                                "2025-07-19T06:30:00.000Z",
-                              ],
-                            },
-                            tooltip: {
-                              x: {
-                                format: "dd/MM/yy HH:mm",
-                              },
-                            },
-                          }
-                        ).render();
-                      });
-                    </script>
-                    <!-- End Line Chart -->
-                  </div>
-                </div>
-              </div>
-              <!-- End Reports -->
-
-              <!-- Recent Sales -->
-              {% comment %} <div class="col-lg-6 col-md-12">
-                <div class="card recent-sales overflow-auto">
-                  <div class="filter">
-                    <a class="icon" href="#" data-bs-toggle="dropdown"
-                      ><i class="bi bi-three-dots"></i
-                    ></a>
-                    <ul
-                      class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"
-                    >
-                      <li class="dropdown-header text-start">
-                        <h6>Filter</h6>
-                      </li>
-
-                      <li><a class="dropdown-item" href="#">Today</a></li>
-                      <li><a class="dropdown-item" href="#">This Month</a></li>
-                      <li><a class="dropdown-item" href="#">This Year</a></li>
-                    </ul>
-                  </div>
-
-                  <div class="card-body">
-                    <h5 class="card-title">
-                      Recent Sales <span>| Today</span>
-                    </h5>
-
-                    <table class="table table-borderless datatable">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Customer</th>
-                          <th scope="col">Product</th>
-                          <th scope="col">Price</th>
-                          <th scope="col">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row"><a href="#">#2457</a></th>
-                          <td>Brandon Jacob</td>
-                          <td>
-                            <a href="#" class="text-primary"
-                              >At praesentium minu</a
-                            >
-                          </td>
-                          <td>$64</td>
-                          <td>
-                            <span class="badge bg-success">Approved</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row"><a href="#">#2147</a></th>
-                          <td>Bridie Kessler</td>
-                          <td>
-                            <a href="#" class="text-primary"
-                              >Blanditiis dolor omnis similique</a
-                            >
-                          </td>
-                          <td>$47</td>
-                          <td><span class="badge bg-warning">Pending</span></td>
-                        </tr>
-                        <tr>
-                          <th scope="row"><a href="#">#2049</a></th>
-                          <td>Ashleigh Langosh</td>
-                          <td>
-                            <a href="#" class="text-primary"
-                              >At recusandae consectetur</a
-                            >
-                          </td>
-                          <td>$147</td>
-                          <td>
-                            <span class="badge bg-success">Approved</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row"><a href="#">#2644</a></th>
-                          <td>Angus Grady</td>
-                          <td>
-                            <a href="#" class="text-primar"
-                              >Ut voluptatem id earum et</a
-                            >
-                          </td>
-                          <td>$67</td>
-                          <td><span class="badge bg-danger">Rejected</span></td>
-                        </tr>
-                        <tr>
-                          <th scope="row"><a href="#">#2644</a></th>
-                          <td>Raheem Lehner</td>
-                          <td>
-                            <a href="#" class="text-primary"
-                              >Sunt similique distinctio</a
-                            >
-                          </td>
-                          <td>$165</td>
-                          <td>
-                            <span class="badge bg-success">Approved</span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div> {% endcomment %}
-              <!-- End Recent Sales -->
-            </div>
-          </div>
-          <!-- End Left side columns -->
+          <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              new ApexCharts(document.querySelector("#tripsChart"), {
+                series: [{
+                  name: "Trips",
+                  data: {{ trips_monthly|safe }},  // ✅ backend me yahi variable hai
+                }],
+                chart: {
+                  height: 350,
+                  type: "area",
+                  toolbar: { show: false },
+                },
+                markers: { size: 4 },
+                colors: ["#4154f1"],
+                fill: {
+                  type: "gradient",
+                  gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.3,
+                    opacityTo: 0.4,
+                    stops: [0, 90, 100],
+                  },
+                },
+                dataLabels: { enabled: false },
+                stroke: { curve: "smooth", width: 2 },
+                xaxis: {
+                  categories: {{ months|safe }},
+                },
+              }).render();
+            });
+          </script>
+          <!-- End Chart -->
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
     </main>
     <!-- End #main -->
 
