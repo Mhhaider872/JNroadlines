@@ -5,12 +5,12 @@
 
   <body>
     <main id="main" class="main">
-      <div class="pagetitle">
-        <h1 class="py-4">Add Trip Aak India Local </h1>
+      <div class="pagetitle bg-white p-2">
+        <h1 class="py-2"> Aak India Local Trip </h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="{% url 'dashboard' %}">Home</a></li>
-            <li class="breadcrumb-item "><a href="{% url 'addtrip' %}">Add Trip Page</a></li>
+            <li class="breadcrumb-item active"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'addtrip' %}">Back</a></li>
           </ol>
         </nav>
       </div>
@@ -18,7 +18,7 @@
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card bg-light">
               <div class="card-body py-5">
                 {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
 <section class="main-sec">
@@ -51,7 +51,7 @@
 
                    <div class="col-lg-4 mb-3">
   <label for="tankerno" class="form-label fw-bold">Tanker No</label>
-<input list="tankers" id="tankerno" name="tankerno" class="form-control" placeholder="Search Tanker No" />
+<input list="tankers" id="tankerno" name="tankerno" class="form-control border-0 shadow-sm py-3 rounded-0" placeholder="Search Tanker No" />
 <datalist id="tankers">
   {% for plan in plans %}
     {% if plan.id in saved_plan_ids %}
@@ -69,25 +69,25 @@
 
             <div class="col-lg-4 mb-3">
             <label for="fadd" class="form-label fw-bold">From Address</label>
-            <input type="text" class="form-control" id="From_address" name="From_address" readonly>
+            <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0" id="From_address" name="From_address" readonly>
               
             </div>
             <div class="col-lg-4 mb-3">
               <label for="toadd" class="form-label fw-bold">To Address</label>
-              <input type="text" class="form-control" id="To_address" name="To_address" readonly>
+              <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0" id="To_address" name="To_address" readonly>
             </div>
              <div class="col-lg-4 mb-3">
              <label for="driver" class="form-label fw-bold">Driver Name</label>
-             <input type="text" class="form-control" id="drivername" name="drivername" readonly>
+             <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0" id="drivername" name="drivername" readonly>
             </div>
           <div class="col-lg-4 mb-3">
            <label for="tanker" class="form-label fw-bold">Tanker Capacity</label>
-            <input type="text" class="form-control" id="tanker_capacity" name="tank_capacity" readonly>
+            <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0" id="tanker_capacity" name="tank_capacity" readonly>
           </div>
           <div class="col-lg-4 mb-3">
            <label for="tdate" class="form-label fw-bold">Trip Date</label>
 
-            <input type="text" class="form-control" id="dispatch_Date" name="dispatch_Date" readonly>
+            <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0" id="dispatch_Date" name="dispatch_Date" readonly>
            
           </div>
           <div class="col-lg-4 mb-3">
@@ -97,7 +97,7 @@
               <input
                type="datetime-local"
                name="arrival_time"
-               class="form-control"
+               class="form-control border-0 shadow-sm py-3 rounded-0"
                id="label4"
                 min="2025-01-01T00:00"
                 max="2030-12-31T23:59"
@@ -111,7 +111,7 @@
             <input
               type="datetime-local"
               name="dispatch_time"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label5"
                min="2025-01-01T00:00"
                 max="2030-12-31T23:59"
@@ -124,7 +124,7 @@
             <input
               type="datetime-local"
               name="reach_time"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label9"
                min="2025-01-01T00:00"
                 max="2030-12-31T23:59"
@@ -137,7 +137,7 @@ the time of Loading at AAK India, Khopoli plant (As Per Ganesh Sir )</label
             >
             <input
               type="number"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="time_Loading"
               min="0"
               id="loadganesh"
@@ -147,11 +147,11 @@ the time of Loading at AAK India, Khopoli plant (As Per Ganesh Sir )</label
           <div class="col-lg-4 mb-3">
             <label for="loadmama" class="form-label fw-bold"
               >Vehicle Kilometer at 
-the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
+the time of Loading at AAK India, Khopoli plant(As per Ashok Mama )
             </label>
             <input
               type="number"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="time_Loading_mama"
               min="0"
               id="loadmama"
@@ -165,7 +165,7 @@ the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
             <label for="unloadganesh" class="form-label fw-bold">Vehicle Kilometer when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  (As per Ganesh Sir )</label>
             <input
               type="number"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="unloading_ganesh"
               min="0"
               id="unloadganesh"
@@ -179,7 +179,7 @@ the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
             <input
               type="number"
               name="unloading_mama"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="unloadmama"
               oninput="calculateTotalShort()"
             />
@@ -188,7 +188,7 @@ the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
             <label for="label12" class="form-label fw-bold">Vehicle Date & Time when the vehicle returned at AAK India, Khopoli plant after unloading at Consignee plant  </label>
             <input
               type="datetime-local"
-              class="form-control"
+             class="form-control border-0 shadow-sm py-3 rounded-0"
               name="returned"
               min="0"
               id="label2"
@@ -202,7 +202,7 @@ the time of Loading at AAK India, Khopoli plant (As per Ashok Mama )
 Per Trip (As per Ganesh Sir)</label>
             <input
               type="number"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="trip_ganesh"
               id="totalganesh"
               oninput="calculateTotalShort()"
@@ -214,7 +214,7 @@ Per Trip (As per Ganesh Sir)</label>
 Per Trip (As per Ashok Mama )</label>
             <input
               type="number"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="trip_mama"
               id="totalmama"
               oninput="calculateTotalShort()"
@@ -227,7 +227,7 @@ Per Trip (As per Ashok Mama )</label>
             <label for="label15" class="form-label fw-bold">LR No</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="lr_num"
               min="0"
               id="label15"
@@ -240,7 +240,7 @@ Per Trip (As per Ashok Mama )</label>
             <input
               type="date"
               name="lr_date"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label16"
               min="2025-01-01"
               max="2030-12-31"
@@ -253,7 +253,7 @@ Per Trip (As per Ashok Mama )</label>
             <input
               type="text"
               name="freight_bill"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label17"
                min="0"
             />
@@ -264,7 +264,7 @@ Per Trip (As per Ashok Mama )</label>
             >
             <input
               type="date"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="freight_date"
               id="label18"
               min="2025-01-01"
@@ -273,21 +273,21 @@ Per Trip (As per Ashok Mama )</label>
         </div>
         <div class="col-lg-4 mb-3">
             <label for="label13" class="form-label fw-bold">Loaded Qty</label>
-            <input type="number" class="form-control" id="disqty" name="loaded_qty" value="{{t.totalshort}}" oninput="calculateTotalShort()">
+            <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" id="disqty" name="loaded_qty" value="{{t.totalshort}}" oninput="calculateTotalShort()">
         </div>
      <div class="col-lg-4 mb-3">
             <label for="label13" class="form-label fw-bold">Allow Percentage</label>
-            <input type="number" class="form-control" id="shortallow" name="percent" value="{{t.totalshort}}" oninput="calculateTotalShort()" step="0.01">
+            <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" id="shortallow" name="percent" value="{{t.totalshort}}" oninput="calculateTotalShort()" step="0.01">
         </div> 
           <div class="col-lg-4 mb-3">
             <label for="label13" class="form-label fw-bold">Unloaded Qty</label>
-            <input type="number" class="form-control" id="unlodqty" name="unload_qty" value="{{t.totalshort}}" oninput="calculateTotalShort()">
+            <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" id="unlodqty" name="unload_qty" value="{{t.totalshort}}" oninput="calculateTotalShort()">
         </div>
         <div class="col-lg-4 mb-3">
             <label for="label14" class="form-label fw-bold"
               >Shortages / Excess Qty</label
             >
-            <input type="number" class="form-control" id="totalshort" name="short_qty" readonly>
+            <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" id="totalshort" name="short_qty" readonly>
         </div>
         <div class="col-lg-4 mb-3">
             <label for="label15" class="form-label fw-bold"
@@ -295,7 +295,7 @@ Per Trip (As per Ashok Mama )</label>
             >
             <input
               type="number"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="short_allow"
               min="0"
               id="loadedQtyPercent" name="loadedQtyPercent" oninput="calculateTotalShort()" readonly
@@ -305,7 +305,7 @@ Per Trip (As per Ashok Mama )</label>
             <label for="label19" class="form-label fw-bold">Return Qty</label>
             <input
               type="number"
-              class="form-control"
+             class="form-control border-0 shadow-sm py-3 rounded-0"
               name="return_qty"
               min="0"
               id="label19"
@@ -320,7 +320,7 @@ Per Trip (As per Ashok Mama )</label>
             >
             <input
               type="text"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="remark"
               min="0"
               id="label20"

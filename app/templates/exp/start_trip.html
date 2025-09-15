@@ -24,12 +24,12 @@
 {% load static %}
   <body>
 <main id="main" class="main">
-      <div class="pagetitle">
-        <h1>Add Start Trip</h1>
+      <div class="pagetitle bg-white p-2">
+        <h1>Start Trip Expenses</h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            {% comment %} <li class="breadcrumb-item active">Back</li> {% endcomment %}
           </ol>
         </nav>
       </div>
@@ -37,7 +37,7 @@
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card bg-light">
               <div class="card-body">
                {% if messages %}
                 <div class="container mt-3">
@@ -57,7 +57,7 @@
                   {% endfor %}
                 </div>
                 {% endif %}
-                <h5 class="card-title">Start a New Trip</h5>
+                <h5 class="card-title">Add Trip Expenses</h5>
 
     <form method="POST">
      {% csrf_token %}
@@ -68,11 +68,11 @@
         <div class="row">
           <div class="col-lg-3 mb-3">
             <label for="trip_id" class="form-label fw-bold">Trip id</label>
-             <input type="text" class="form-control"  id="trip_id" name="trip_id"  min="0" step="Trip" required>
+             <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0"  id="trip_id" name="trip_id"  min="0" step="Trip" required>
              </div>
          <div class="col-lg-3 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Tanker No</label>
-             <input class="form-control" list="datalistOptions" id="tanker" name="tanker"   placeholder="Search to vehicle no..." >
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" list="datalistOptions" id="tanker" name="tanker"   placeholder="Search to vehicle no..." >
                <datalist id="datalistOptions" class="shadow-sm border-0">
                  {% for v in vehicle %}
                  <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
@@ -81,7 +81,7 @@
           </div>
           <div class="col-lg-3 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
-             <input class="form-control border-2" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
                <datalist id="driverslist" class="shadow-sm border-0" >
                   {% for d in dname %}
                  <option value="{{d.name}}"></option>
@@ -90,7 +90,7 @@
              </div>
           <div class="col-lg-3 mb-3">
             <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
-             <input class="form-control border-2" name="from_id" list="datalistOptions1" id="exampleDataList1" placeholder="Search to...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" name="from_id" list="datalistOptions1" id="exampleDataList1" placeholder="Search to...">
                <datalist id="datalistOptions1">
                 {% for c in company %}
                  <option value="{{c.name}}, {{c.short_name}}"></option>
@@ -99,7 +99,7 @@
           </div>
 <div class="col-lg-3 mb-3">
             <label for="exampleDataList2" class="form-label fw-bold">To Address</label>
-             <input class="form-control border-2" name="To_id" list="datalistOptions2" id="exampleDataList2" placeholder="Search to...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" name="To_id" list="datalistOptions2" id="exampleDataList2" placeholder="Search to...">
                <datalist id="datalistOptions2">
                 {% for c in company %}
                  <option value="{{c.name}}, {{c.short_name}}"></option>
@@ -113,7 +113,7 @@
             <input
               type="date"
               name="trip_date"
-              class="form-control  border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
           </div>
@@ -121,7 +121,7 @@
             <label for="status" class="form-label fw-bold"
               >Pending Trip </label
             >
-            <select id="status" name="pending_trip" class="form-control border-2">
+            <select id="status" name="pending_trip" class="form-control border-0 shadow-sm py-3 rounded-0">
             <option value="" selected>Select</option>
             <option value="Empty" >Empty</option>
             <option value="Pending">Pending</option>
@@ -135,7 +135,7 @@
             <input
               type="number"
               name="f_trip"
-              class="form-control  border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label13"
               min="0"
               value="0"
@@ -143,8 +143,8 @@
             />
           </div>
           </div>
-        <button type="submit" class="btn btn-success my-3">Start Trip</button>
-        <a  class="btn btn-info mx-2" href="{% url 'trip'  %}">View Trip</a>
+        <button type="submit" class="btn btn-success my-3">Add & View Trip</button>
+        <a  class="btn btn-info mx-2" href="{% url 'trip'  %}">View All Trip </a>
         
     </form>
 

@@ -10769,24 +10769,6 @@ def get_trip_details(request):
 
 
 
-import requests
-def get_weather(request):
-    url = "http://track.ansitindia.com/webservice?token=getLiveData&user=jnr&pass=jnr123&format=json"
-    params = {
-        "latitude": 19.0760,
-        "longitude": 72.8777,
-        "current_weather": "true"
-    }
-    response = requests.get(url, params=params)
-    
-    if response.status_code == 200:
-        data = response.json()
-        return JsonResponse(data)
-    else:
-        return JsonResponse({"error": "API request failed"}, status=500)
-
-
-
 
 def trips_chart(request):
     # Month wise trips ka count nikalna
@@ -10812,3 +10794,17 @@ def trips_chart(request):
         "months": months,
         "trips": trips
     })
+
+
+import requests
+def vehicle_data_view(request):
+    try:
+        response = requests.get("http://track.ansitindia.com/webservice?token=getLiveData&user=jnr&pass=jnr123&format=json")
+        response.raise_for_status()  # Raises exception for HTTP errors
+        data = response.json()
+        vehicles = data.get("root", {}).get("VehicleData", [])
+    except Exception as e:
+        print("Error fetching data:", e)
+        vehicles = []
+
+    return render(request, "gps.html", {"vehicles": vehicles})
