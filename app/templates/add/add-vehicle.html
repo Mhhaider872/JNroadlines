@@ -6,7 +6,7 @@
 
   <body>
     <main id="main" class="main">
-      <div class="pagetitle">
+      <div class="pagetitle bg-white p-2">
         <h1>Add Vehicle</h1>
         <nav>
           <ol class="breadcrumb">
@@ -19,7 +19,7 @@
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card bg-light">
               <div class="card-body py-4">
                 {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
 
@@ -43,12 +43,12 @@
           <div class="row">
           <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Tanker No.</label>
-             <input input="text" class="form-control border-2" name="vehicle_name"  id="exampleDataList">
+             <input input="text" class="form-control border-0 shadow-sm py-3 rounded-0" name="vehicle_name"  id="exampleDataList">
                
           </div>
           <div class="col-lg-4 mb-3">
             <label for="example" class="form-label fw-bold">Tanker Capacity</label>
-             <input input="text" class="form-control border-2" name="tankercap"  id="example">
+             <input input="text" class="form-control border-0 shadow-sm py-3 rounded-0" name="tankercap"  id="example">
                
           </div>
             <div class="col-lg-4 mb-3">
@@ -56,7 +56,7 @@
                 >Owner Name</label
               >
               <div class="input-group mb-3">
-                <select class="form-select border-2" name="owner_name" id="lable1">
+                <select class="form-control border-0 shadow-sm py-3 rounded-0" name="owner_name" id="lable1">
                 <option>Select</option>
                   <option value="Namrata Vijay Makhija">Namrata Vijay Makhija</option>
                   <option value="Jay Vijay Makhija">Jay Vijay Makhija</option>
@@ -74,18 +74,18 @@
               <input
               type="date"
               name="making_year"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label2"
             />
           </div>
           <div class="col-lg-4 mb-3">
             <label for="label3" class="form-label fw-bold">Chassis No.</label>
-             <input input="text" class="form-control border-2" name="chassise_no"  id="label3">
+             <input input="text" class="form-control border-0 shadow-sm py-3 rounded-0" name="chassise_no"  id="label3">
                
           </div>
           <div class="col-lg-4 mb-3">
             <label  for="label4" class="form-label fw-bold">Engine No.</label>
-             <input input="text" class="form-control border-2" name="engine_no"  id="label4">
+             <input input="text" class="form-control border-0 shadow-sm py-3 rounded-0" name="engine_no"  id="label4">
                
           </div>
 
@@ -97,7 +97,7 @@
            <input
               type="date"
               name="insurance_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label5"
             />
           </div>
@@ -106,7 +106,7 @@
                 >Insurance Paper</label
               >
               {% comment %} <input type="file" name="img" class="form-control" accept=".pdf"> {% endcomment %}
-           <input type="file" name="insurance_img" class="form-control border-2" id="label6" accept=".pdf">
+           <input type="file" name="insurance_img" class="form-control border-0 shadow-sm py-3 rounded-0" id="label6" accept=".pdf">
          </div>
           <div class="col-lg-3 mb-3">
             <label for="label7" class="form-label fw-bold"
@@ -115,7 +115,7 @@
            <input
               type="date"
               name="state_permit"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label7"
             />
           </div>
@@ -123,7 +123,7 @@
            <label for="lable8" class="form-label fw-bold"
                 >State Permit Paper</label
               >
-           <input type="file" name="state_img" class="form-control border-2" id="label8" accept=".pdf">
+           <input type="file" name="state_img" class="form-control border-0 shadow-sm py-3 rounded-0" id="label8" accept=".pdf">
          </div>
           <div class="col-lg-3 mb-3">
             <label for="label9" class="form-label fw-bold"
@@ -132,7 +132,7 @@
             <input
               type="date"
               name="national_permit"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label9"
             />
           </div>
@@ -140,7 +140,7 @@
            <label for="lable10" class="form-label fw-bold"
                 >National Permit Paper</label
               >
-           <input type="file" name="national_img" class="form-control border-2" id="label10" accept=".pdf" >
+           <input type="file" name="national_img" class="form-control border-0 shadow-sm py-3 rounded-0" id="label10" accept=".pdf" >
          </div>
           <div class="col-lg-3 mb-3">
             <label for="label11" class="form-label fw-bold"
@@ -149,7 +149,7 @@
             <input
               type="date"
               name="fitness_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
           </div>
@@ -157,7 +157,7 @@
            <label for="lable12" class="form-label fw-bold"
                 >Fitness Paper</label
               >
-           <input type="file" name="fitness_img" class="form-control border-2" id="label12" accept=".pdf">
+           <input type="file" name="fitness_img" class="form-control border-0 shadow-sm py-3 rounded-0" id="label12" accept=".pdf">
          </div>
           <div class="col-lg-3 mb-3">
             <label for="label13" class="form-label fw-bold"
@@ -166,7 +166,7 @@
             <input
               type="date"
               name="tax_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label13"
             />
           </div>
@@ -174,7 +174,7 @@
            <label for="lable14" class="form-label fw-bold"
                 >Tax Paper</label
               >
-           <input type="file" name="tax_img" class="form-control border-2" id="label14" accept=".pdf">
+           <input type="file" name="tax_img" class="form-control border-0 shadow-sm py-3 rounded-0" id="label14" accept=".pdf">
          </div>
           <div class="col-lg-3 mb-3">
             <label for="label15" class="form-label fw-bold"
@@ -183,7 +183,7 @@
             <input
               type="date"
               name="puc_date"
-              class="form-control border-2" 
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label15"
             />
           </div>
@@ -191,15 +191,15 @@
         <label for="lable16" class="form-label fw-bold"
                 >PUC Paper</label
               >
-        <input type="file" name="puc_img" class="form-control border-2" id="label16" accept=".pdf">
+        <input type="file" name="puc_img" class="form-control border-0 shadow-sm py-3 rounded-0" id="label16" accept=".pdf">
       </div>
 
-       <div class="col-lg-4 mb-3">
+       <div class="col-lg-3 mb-3">
               <label for="lables" class="form-label fw-bold"
                 >Status</label
               >
               <div class="input-group mb-3">
-                <select class="form-select border-2" name="status" id="lables">
+                <select class="form-control border-0 shadow-sm py-3 rounded-0" name="status" id="lables">
                 <option>Select</option>
                   <option value="Running">Running</option>
                   <option value="Sold">Sold</option>

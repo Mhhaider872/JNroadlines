@@ -1,61 +1,14 @@
-{% comment %} <!-- add_expense.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Expense for Trip {{ trip.trip_id }}</title>
-</head>
-<body>
-    <h1>Add Expense for Trip {{ trip.trip_id }}</h1>
 
-    <!-- Form to add new expense -->
-    <form method="POST">
-        {% csrf_token %}
-        <label for="amount">Amount:</label>
-        <input type="number" step="0.01" id="amount" name="amount" required>
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description" required>
-        <button type="submit">Add Expense</button>
-    </form>
-
-    <!-- Show expenses table -->
-    <h2>Expenses</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for expense in expenses %}
-            <tr>
-                <td>{{ expense.amount }}</td>
-                <td>{{ expense.description }}</td>
-                <td>{{ expense.timestamp }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <p>Total Expense: {{ trip.total_expense }}</p>
-
-    <a href="{% url 'end_trip' trip_id=trip.trip_id %}">End Trip</a>
-    <a href="{% url 'start_trip'  %}">Home</a>
-</body>
-</html> {% endcomment %}
 {% include 'base.html' %}
 {% load static %}
   <body>
 <main id="main" class="main">
-      <div class="pagetitle">
+      <div class="pagetitle bg-white p-2">
          <h1>Add Expense</h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Back</li>
           </ol>
         </nav>
       </div>
@@ -63,9 +16,9 @@
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card bg-light">
               <div class="card-body">
-                <h5 class="card-title">Start a Expense for  Trip_id -: {{ trip.trip_id }} </h5>
+                <h5 class="card-title">Expense for  Trip_id -: {{ trip.trip_id }} </h5>
 <section class="main-sec">
  {% if messages %}
   <div class="container mt-3">
@@ -89,16 +42,16 @@
        <div class="row py-3">   
 <div class="col-lg-3 mb-3">
         <label for="amount" class="form-label fw-bold"> Date :</label>
-        <input type="date" class="form-control border-2"  id="date" name="date">
+        <input type="date" class="form-control border-0 shadow-sm py-3 rounded-0"  id="date" name="date">
        </div>
 <div class="col-lg-3 mb-3">
         <label for="amount" class="form-label fw-bold">Amount :</label>
-        <input type="number" class="form-control border-2" step="any" id="total" name="amount" oninput="calculateTotal()" required>
+        <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" step="any" id="total" name="amount" oninput="calculateTotal()" required>
        </div>
        
 <div class="col-lg-3 mb-3">
             <label for="exampleDataList3" class="form-label fw-bold">( From via) Address </label>
-             <input class="form-control border-2" name="from_via" list="datalistOptions3" id="exampleDataList3" placeholder="Search to...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" name="from_via" list="datalistOptions3" id="exampleDataList3" placeholder="Search to...">
                <datalist id="datalistOptions3">
                 {% for c in company %}
                  <option value="{{c.name}}, {{c.short_name}}"></option>
@@ -107,7 +60,7 @@
           </div>
           <div class="col-lg-3 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">( To via ) Address </label>
-             <input class="form-control border-2" name="To_via" list="datalistOptions" id="exampleDataList" placeholder="Search to...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" name="To_via" list="datalistOptions" id="exampleDataList" placeholder="Search to...">
                <datalist id="datalistOptions">
                 {% for c in company %}
                  <option value="{{c.name}}, {{c.short_name}}"></option>
@@ -116,7 +69,7 @@
           </div> 
           <div class="col-lg-3 mb-3">
         <label for="date" class="form-label fw-bold">End Trip Date :</label>
-        <input type="date" class="form-control border-2"  id="date" name="end_date">
+        <input type="date" class="form-control border-0 shadow-sm py-3 rounded-0"  id="date" name="end_date">
        </div>
         <hr>
         <h5 class="card-title">General Expense</h5>
@@ -128,7 +81,7 @@
             <input
               type="number"
               name="trip_general_expenses"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="allowance1"
               min="0"
               oninput="calculateTotal()"
@@ -141,7 +94,7 @@
             <input
               type="number"
               name="food_allowance"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="allowance2"
               min="0"
               oninput="calculateTotal()"
@@ -154,7 +107,7 @@
             <input
               type="number"
               name="bhatta"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="allowance3"
               min="0"
               oninput="calculateTotal()"
@@ -167,7 +120,7 @@
             <input
               type="number"
               name="washing_charges_tank"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="allowance4"
               min="0"
               oninput="calculateTotal()"
@@ -181,7 +134,7 @@
             <input
               type="number"
               name="actual_amount"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="loanamount"
               min="0"
               oninput="calculateTotal()"
@@ -195,7 +148,7 @@
             <input
               type="number"
               name="total_amount"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="totalAllowance"
               min="0"
               oninput="calculateTotal()"
@@ -233,7 +186,7 @@
             <input
               type="number"
               name="toll_amount"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="toll"
               oninput="calculateTotal()"
               step="any"
@@ -244,7 +197,7 @@
  
       <div class="col-lg-3 mb-3">
          <label for="category" class="form-label fw-bold">Diesel</label>
-          <select id="category" name="category" onchange="updateSubCategory()" class="form-select border-2">
+          <select id="category" name="category" onchange="updateSubCategory()" class="form-control border-0 shadow-sm py-3 rounded-0">
          <option value="">Select</option>
          {% for category in categories %}
          <option value="{{ category.id }}">{{ category.name }}</option>
@@ -254,7 +207,7 @@
       </div>
        <div class="col-lg-3 mb-3">
          <label for="datalistOptions4" class="form-label fw-bold">Paid To</label>
-         <input class="form-control border-2" list="datalistOptions4" name="paid_to"  placeholder="Search...">
+         <input class="form-control border-0 shadow-sm py-3 rounded-0" list="datalistOptions4" name="paid_to"  placeholder="Search...">
                <datalist id="datalistOptions4">
     
                  <option value="Cash">Cash</option>
@@ -269,7 +222,7 @@
     </div>
     <div class="col-lg-3 mb-3">
       <label for="subCategory" class="form-label fw-bold">Paid By</label>
-      <select id="subCategory" name="subCategory" class="form-select border-2">
+      <select id="subCategory" name="subCategory" class="form-control border-0 shadow-sm py-3 rounded-0">
         <option value="">Select</option>
         <option value="{{ subCategory.name }}">{{ subCategory.name }}</option>
         <!-- Initial empty subcategory dropdown -->
@@ -283,7 +236,7 @@
              <input
               type="number"
               name="amount_given"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
                step="any"
               id="additionalAmount"
               oninput="calculateTotal()"
@@ -296,7 +249,7 @@
              <input
               type="number"
               name="liters"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="liter"
               min="0"
               oninput="calculateTotal()"
@@ -309,7 +262,7 @@
             <input
               type="number"
               name="rate"
-               class="form-control border-2"
+               class="form-control border-0 shadow-sm py-3 rounded-0"
                id="rate"
                min="0"
                step="any"
@@ -323,7 +276,7 @@
             <input
               type="number"
               name="total_diesel"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="totalDiesel"
               min="0"
               step="any"
@@ -341,7 +294,7 @@
              <input
               type="date"
               name="paid_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
         </div> 
@@ -352,7 +305,7 @@
              <input
               type="date"
               name="bill_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
         </div>
@@ -364,7 +317,7 @@
              <input
               type="number"
               name="urea_liter"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="Uliter"
               min="0"
               step="any"
@@ -378,7 +331,7 @@
             <input
               type="number"
               name="urea_rate"
-               class="form-control border-2"
+               class="form-control border-0 shadow-sm py-3 rounded-0"
                id="Urate"
                min="0"
                step="any"
@@ -392,7 +345,7 @@
             <input
               type="number"
               name="urea_total"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="totalUrea"
               min="0"
               step="any"
@@ -407,7 +360,7 @@
              <input
               type="date"
               name="r_paid_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
         </div>
@@ -419,7 +372,7 @@
              <input
               type="date"
               name="r_bill_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
         </div>
@@ -453,7 +406,7 @@
             <input
               type="text"
               name="part_name"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="totalamot"
               min="0"
             />
@@ -465,7 +418,7 @@
             <input
               type="number"
               name="no_piece"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="#"
               min="0"
             />
@@ -477,7 +430,7 @@
              <input
                ype="number"
                name="r_amount"
-               class="form-control border-2"
+               class="form-control border-0 shadow-sm py-3 rounded-0"
                id="totalamount"
                min="0"
                oninput="calculateTotal()"
@@ -495,16 +448,16 @@
     <h2>Expenses</h2>
 <div class="row">
     <div class="col-lg-3 mb-3">
-  <input type="text" id="expenseSearchInput" class="form-control" placeholder="Search (Tanker No, Date, Allowance, etc.)..." onkeyup="filterExpensesTable()">
+  <input type="text" id="expenseSearchInput" class="form-control border-0 shadow-sm py-2 rounded-0" placeholder="Search (Tanker No, Date, Allowance, etc.)..." onkeyup="filterExpensesTable()">
    </div>
 
      <div class="col-lg-3 mb-3">
     {% comment %} <label for="fromDate" class="form-label fw-bold">From Date:</label> {% endcomment %}
-    <input type="date"  class="form-control" id="fromDate">
+    <input type="date"  class="form-control border-0 shadow-sm py-2 rounded-0" id="fromDate">
      </div>
    <div class="col-lg-3 mb-3">
     {% comment %} <label for="toDate" style="margin-left: 10px;" class="form-label fw-bold">To Date:</label> {% endcomment %}
-    <input type="date" class="form-control" id="toDate">
+    <input type="date" class="form-control border-0 shadow-sm py-2 rounded-0" id="toDate">
    </div>
       <div class="col-lg-3 mb-3">
     <button onclick="filterTable()" class="btn btn-sm btn-primary mx-3 px-3">Filter</button>
