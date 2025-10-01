@@ -16,6 +16,7 @@ from decimal import Decimal, InvalidOperation
 from django.contrib.auth.decorators import login_required
 from django.db.models.functions import ExtractMonth 
 from django.db.models import Count 
+from django.db.models import Q
 
 @login_required(login_url="log-in")
 def userdash(request):
@@ -126,24 +127,32 @@ def plan(request):
     context={'vehicle':vehicle,'company':company,'dname':dname}
     return render(request,'add/add-plans.html', context)
 
+
 def showplan(request):
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
+    search = request.GET.get('search')
 
-    showplans=plandetails.objects.all()
+    showplans = plandetails.objects.all()
+
+    # Filter by date range if provided
     if from_date and to_date:
         try:
             from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
             to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
             showplans = showplans.filter(dispatch_Date__range=(from_date_obj, to_date_obj))
         except ValueError:
-            pass  # Invalid date format
+            pass  # Invalid date format, ignore filtering
 
+    # Filter by tanker number or driver name
+    if search:
+        showplans = showplans.filter(
+            Q(tankerno__icontains=search) |
+            Q(drivername__icontains=search)  # adjust field name
+        )
 
-    context={'showplans':showplans}
-    return render(request,'show/show-plan.html',context)
-
-
+    context = {'showplans': showplans}
+    return render(request, 'show/show-plan.html', context)
 
 
 def updateplan(request,id):
@@ -1507,7 +1516,8 @@ def start_trip(request):
 
 
 def update_trip(request, trip_id):
-    trip = get_object_or_404(Trip, trip_id=trip_id)
+    # trip = get_object_or_404(Trip, trip_id=trip_id)
+    trip = Trip.objects.get(id=trip_id)
 
     if request.method == 'POST':
         try:
@@ -1630,6 +1640,28 @@ def add_expense(request, trip_id):
     total_diesel_sum = trip.expenses.aggregate(Sum('total_diesel'))['total_diesel__sum'] or 0
     urea_total_sum = trip.expenses.aggregate(Sum('urea_total'))['urea_total__sum'] or 0
     r_amount_sum = trip.expenses.aggregate(Sum('r_amount'))['r_amount__sum'] or 0
+
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+    search = request.GET.get('search')
+
+    showplans = trip.expenses.all()
+
+     # Apply date filter
+    if from_date and to_date:
+       try:
+         from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
+         to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
+         showplans = showplans.filter(dispatch_Date__range=(from_date_obj, to_date_obj))
+       except ValueError:
+            pass
+
+    # Apply search filter
+    if search:
+        showplans = showplans.filter(
+         Q(tankerno__icontains=search) |
+         Q(drivername__icontains=search)
+    )
     # Get all expenses related to the trip
     expenses = trip.expenses.all()
     categories = Category.objects.all()
@@ -1639,7 +1671,7 @@ def add_expense(request, trip_id):
     # Return the response
 
     context = {'categories': categories, 'dname': dname, 'petrol': petrol,'trip': trip,
-        'expenses': expenses,'company':company,'food_allowance_sum':food_allowance_sum,'bhatta_sum':bhatta_sum,'toll_amount_sum':toll_amount_sum,'total_diesel_sum':total_diesel_sum,'urea_total_sum':urea_total_sum,'r_amount_sum':r_amount_sum}
+        'expenses': expenses,'company':company,'food_allowance_sum':food_allowance_sum,'bhatta_sum':bhatta_sum,'toll_amount_sum':toll_amount_sum,'total_diesel_sum':total_diesel_sum,'urea_total_sum':urea_total_sum,'r_amount_sum':r_amount_sum,'showplans': showplans}
     return render(request, 'exp/add_expense.html',context)
 
 
@@ -1780,18 +1812,24 @@ def end_trip(request, trip_id):
 #===================End Modify file================================
 
 def AllTrip(request):
-    # Fetch all trip records from the database
     t = Trip.objects.all()
 
-    # Fetch all expense records from the database
-    expense = Expense.objects.all()
-    # Pass the trip, expense, and profit/loss data to the template
+    trip_data = []
+
+    for trip in t:
+        # Latest expense ke end_date fetch karo
+        latest_expense = trip.expenses.order_by('-end_date').first()  # related_name "expenses" use kiya
+        trip_data.append({
+            'trip': trip,
+            'end_date': latest_expense.end_date if latest_expense else None
+        })
+
     context = {
-        't': t,
-        'expense': expense,
+        't': trip_data,
     }
 
     return render(request, 'show/all_trip.html', context)
+
 
 
 

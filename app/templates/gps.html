@@ -99,15 +99,14 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
   <!-- Initialize Map -->
+    <!-- Initialize Map -->
   <script>
-    var map = L.map('map').setView([22.9734, 78.6569], 5); // Centered over India
+    var map = L.map('map').setView([22.9734, 78.6569], 5);
 
-    // Tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Loop through vehicle data
     {% for v in vehicles %}
       {% if v.Latitude and v.Longitude %}
         var marker = L.marker([{{ v.Latitude }}, {{ v.Longitude }}]).addTo(map);
@@ -122,4 +121,13 @@
       {% endif %}
     {% endfor %}
   </script>
+
+  <!-- 🔁 Auto-refresh script -->
+  <script>
+    setTimeout(function(){
+      location.reload();
+    }, 300000);
+  </script>
+</body>
+
 </body>

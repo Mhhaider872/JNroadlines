@@ -1,6 +1,26 @@
 <!-- @format -->
 
 {% include 'base2.html' %} {% load static %}
+<style>
+  .table-responsive {
+    max-height: 500px; /* or adjust as needed */
+    overflow-y: auto;
+  }
+
+  table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* or any background to hide content underneath */
+    z-index: 2;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+.datatable-search{
+  display: none !important;
+}
+
+</style>
+
 <body>
   <main id="main" class="main">
     <div class="pagetitle">
@@ -21,16 +41,18 @@
     <label for="to_date" class="form-label fw-bold">To Date</label>
     <input type="date" name="to_date" id="to_date" class="form-control" value="{{ request.GET.to_date }}">
   </div>
+   <div class="col-md-3">
+      <label for="search" class="form-label fw-bold">Search...</label>
+      <input type="text" name="search" class="form-control" placeholder="Tanker, Driver">
+    </div>
   <div class="col-md-3 d-flex align-items-end">
-    <button type="submit" class="btn btn-sm btn-primary mx-3 px-5">Filter</button>
-    <a href="{% url 'showtrip' %}" class="btn btn-sm btn-danger px-5">Clear</a>
-  </div>
-   <!-- Export Button -->
-                <div class="col-md-3 d-flex align-items-end">
-                  <button class="btn btn-success btn-sm mx-3 px-4" onclick="exportToExcel()">
-                    Export to Excel
+    <button type="submit" class="btn btn-sm btn-primary mx-3 px-3">Filter</button>
+    <a href="{% url 'showtrip' %}" class="btn btn-sm btn-danger px-3">Clear</a>
+    <button class="btn btn-success btn-sm mx-3 px-4" onclick="exportToExcel()">
+                    Excel
                   </button>
-                </div>
+  </div>
+ 
 </form>
     <!-- End Page Title -->
     <section class="section">

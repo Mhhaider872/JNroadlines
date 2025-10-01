@@ -1,6 +1,25 @@
 <!-- @format -->
 
 {% include 'base2.html' %} {% load static %}
+<style>
+  .table-responsive {
+    max-height: 500px; /* or adjust as needed */
+    overflow-y: auto;
+  }
+
+  table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* or any background to hide content underneath */
+    z-index: 2;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+.datatable-search{
+  display: none !important;
+}
+
+</style>
 <body>
   <main id="main" class="main">
     <div class="pagetitle">

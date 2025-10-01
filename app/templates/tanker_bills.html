@@ -1,0 +1,13 @@
+<h2>Bills for Tanker: {{ tanker.tankerno }}</h2>
+
+{% if from_date and to_date %}
+  <p>Date Range: {{ from_date }} to {{ to_date }}</p>
+{% endif %}
+
+{% if total_bills > 0 %}
+  <p><strong>{{ total_bills }}</strong> bill(s) found for this tanker.</p>
+{% else %}
+  <p>No bills found for this tanker in the selected date range.</p>
+{% endif %}
+
+<a href="{% url 'some_view_to_go_back' %}">Back</a>

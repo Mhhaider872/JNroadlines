@@ -1,6 +1,11 @@
 <!-- @format -->
 
 {% include 'base2.html' %} {% load static %}
+<style>
+.datatable-search{
+  display: none !important;
+}
+</style>
 <body>
   <main id="main" class="main">
     <div class="pagetitle bg-white p-2">
@@ -12,16 +17,8 @@
         </ol>
       </nav>
     </div>
-  <div class="accordion pb-5" id="accordionExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header bg-white" id="headingOne">
-      <button class="accordion-button fw-bold fs-5 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        Filter
-      </button>
-    </h2>
-    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <strong><form method="get" class="row g-3 mb-5">
+     <form method="get" class="row g-3 mb-5">
+      
   <div class="col-md-3">
     <label for="from_date" class="form-label fw-bold">From Date</label>
     <input type="date" name="from_date" id="from_date" class="form-control" value="{{ request.GET.from_date }}">
@@ -30,14 +27,16 @@
     <label for="to_date" class="form-label fw-bold">To Date</label>
     <input type="date" name="to_date" id="to_date" class="form-control" value="{{ request.GET.to_date }}">
   </div>
+        <div class="col-md-3">
+      <label for="search" class="form-label fw-bold">Search...</label>
+      <input type="text" name="search" class="form-control" placeholder="Tanker, Driver">
+    </div>
   <div class="col-md-2 d-flex align-items-end">
     <button type="submit" class="btn btn-sm btn-primary mx-3 px-5">Filter</button>
     <a href="{% url 'showplan' %}" class="btn btn-sm btn-danger px-5">Clear</a>
   </div>
 </form>
-      </div>
-    </div>
-  </div>
+  
     <!-- End Page Title -->
     <section class="section">
       <div class="row">

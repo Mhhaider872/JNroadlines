@@ -1,6 +1,20 @@
 
 {% include 'base.html' %}
 {% load static %}
+<style>
+  .table-responsive {
+    max-height: 500px; /* or adjust as needed */
+    overflow-y: auto;
+  }
+
+  table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* or any background to hide content underneath */
+    z-index: 2;
+    border-bottom: 2px solid #dee2e6;
+  }
+</style>
   <body>
 <main id="main" class="main">
       <div class="pagetitle bg-white p-2">
@@ -447,9 +461,7 @@
     <!-- Show expenses table -->
     <h2>Expenses</h2>
 <div class="row">
-    <div class="col-lg-3 mb-3">
-  <input type="text" id="expenseSearchInput" class="form-control border-0 shadow-sm py-2 rounded-0" placeholder="Search (Tanker No, Date, Allowance, etc.)..." onkeyup="filterExpensesTable()">
-   </div>
+  
 
      <div class="col-lg-3 mb-3">
     {% comment %} <label for="fromDate" class="form-label fw-bold">From Date:</label> {% endcomment %}
@@ -459,17 +471,24 @@
     {% comment %} <label for="toDate" style="margin-left: 10px;" class="form-label fw-bold">To Date:</label> {% endcomment %}
     <input type="date" class="form-control border-0 shadow-sm py-2 rounded-0" id="toDate">
    </div>
+     <div class="col-lg-3 mb-3">
+  <input type="text" name="search"  class="form-control border-0 shadow-sm py-2 rounded-0" placeholder="Search (Tanker No, Date, Allowance, etc.)..." onkeyup="filterExpensesTable()">
+   </div>
       <div class="col-lg-3 mb-3">
-    <button onclick="filterTable()" class="btn btn-sm btn-primary mx-3 px-3">Filter</button>
-    <button onclick="resetFilter()" class="btn btn-sm btn-danger mx-3 px-3">Reset</button>
-</div>
+    <button onclick="filterTable()" class="btn btn-sm btn-primary mx-0 px-2">Filter</button>
+    <button onclick="resetFilter()" class="btn btn-sm btn-danger mx-0 px-2">Reset</button>
+    <button class="btn btn-sm btn-success  mx-0 px-2" onclick="exportTableToExcel('expenseTable', 'Trip_Expenses')">
+    Export 
+</button>
 
 </div>
 
-    <div class="table-responsive" style="overflow-x: auto; white-space: nowrap;">
+</div>
+
+  <div class="table-responsive" style="overflow-x: auto; white-space: nowrap;">
 
 
-    <table class="table table-hover">
+    <table class="table table-hover" id="expenseTable">
         <thead>
             <tr>
             <th width="200px">Tanker_No</th> 
@@ -544,9 +563,9 @@
                       <td><strong>{{exp.r_paid_date |date:"d/m/Y"}}</strong></td>
                       <td><strong>{{exp.r_bill_date |date:"d/m/Y"}}</strong></td>
                       <td>{{exp.spare_part}}</td>
-                      <td>{{exp.r_amount}}</td>
                       <td>{{exp.part_name}}</td>
                       <td>{{exp.no_piece}}</td>
+                      <td>{{exp.r_amount}}</td>
                       <td><strong>{{exp.end_date|date:"d/m/Y"}}</strong></td>
                 <td><b>₹ {{ exp.amount }}</b></td>
                 <td>
@@ -579,7 +598,7 @@
         <td colspan="4"></td>
         <td ><strong>{{urea_total_sum}}</strong></td>
         <td colspan="5"></td>
-        <td ><strong>{{urea_total_sum}}</strong></td>
+        <td ><strong>{{r_amount_sum}}</strong></td>
             </tr>
         </tbody>
     </table>
@@ -780,5 +799,38 @@ function resetFilter() {
     });
 }
 </script>
+<script>
+function exportTableToExcel(tableID, filename = ''){
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById(tableID);
+    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
 
-  </body>
+    // Specify file name
+    filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+    // Create download link
+    downloadLink = document.createElement("a");
+
+    document.body.appendChild(downloadLink);
+
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTML], {
+            type: dataType
+        });
+        navigator.msSaveOrOpenBlob(blob, filename);
+    } else{
+        // Create a link to the file
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+        // Setting the file name
+        downloadLink.download = filename;
+
+        // Triggering the function
+        downloadLink.click();
+    }
+}
+</script>
+
+
+</body>
