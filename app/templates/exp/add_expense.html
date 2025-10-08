@@ -494,10 +494,11 @@
             <th width="200px">Tanker_No</th> 
             <th>Driver_Name</th>
             <th>Trip_Date</th>
-             <th>From_Address</th>
-            <th>To_Address</th>
             <th>(From_via)_Address </th>
             <th>(To_via)_Address </th>
+             <th>From_Address</th>
+            <th>To_Address</th>
+            
             
             <th>Trip_Expense_Date</th>
             <th>Trip_General_Expenses</th>
@@ -536,10 +537,11 @@
                  <td> {{ trip.tanker }}</td> 
                  <td> {{ trip.drivername }}</td> 
                  <td><strong> {{ trip.trip_date |date:"d/m/Y" }}</strong></td>
+                  <td> {{ exp.from_via }}</td>
+                 <td> {{ exp.To_via }}</td>
                  <td> {{ trip.from_id }}</td>
                 <td> {{ trip.To_id }}</td>
-                <td> {{ exp.from_via }}</td>
-                <td> {{ exp.To_via }}</td>
+               
                
                 <td  class="filter-date"><strong>{{ exp.date |date:"d/m/Y" }}</strong></td>
                  <td>{{exp.trip_general_expenses}}</td>

@@ -8,7 +8,7 @@
 
     <main id="main" class="main">
 
-      <div class="pagetitle">
+      <div class="pagetitle bg-white p-2">
         <h1>Add Loan</h1>
         <nav>
           <ol class="breadcrumb">
@@ -21,7 +21,7 @@
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card bg-light">
             <div class="pb-4 p-2">
                 
                 <a  href="{% url 'add-bank' %}" class="btn btn-primary px-4">Add Banks</a>
@@ -48,7 +48,7 @@
           <div class="row">
           <div class="col-lg-3 mb-3">
             <label for="tanker_number" class="form-label fw-bold">Tanker No</label>
-             <input class="form-control border-2" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Search to vehicle no...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" name="tankerno" list="datalistOptions" id="tanker_number" placeholder="Search to vehicle no...">
                <datalist id="datalistOptions" class="shadow-sm border-0" >
                 {% for v in vehicle %}
                  <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
@@ -57,7 +57,7 @@
           </div>
             <div class="col-lg-3 mb-3">
              <label for="number" class="form-label fw-bold">Loan Contract No</label>
-             <input type="text" class="form-control border-2" name="loan_contract"  id="number">
+             <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0" name="loan_contract"  id="number">
            </div>
 
           </div>
@@ -70,7 +70,7 @@
               <input
               type="text"
               name="finance_by"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
              
             />
@@ -83,7 +83,7 @@
               <input
               type="text"
               name="pamount"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="principal" oninput="calculateFinance()" 
               min="0"
              
@@ -96,7 +96,7 @@
               <input
               type="text"
               name="iamount"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               min="0"
               id="interest" oninput="calculateFinance()"
              
@@ -109,7 +109,7 @@
               <input
               type="number"
               name="famount"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               
               id="finance" readonly 
              
@@ -123,7 +123,7 @@
               <input
               type="number"
               name="amount"
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               min="0"
               id="label11"
              
@@ -136,7 +136,7 @@
               <input
               type="date"
               name="ddate"
-              class="form-control "
+              class="form-control border-0 shadow-sm py-3 rounded-0 "
               id="dueDate"
               onchange="calculateOverdue()"
             />
@@ -148,7 +148,7 @@
               <input
               type="date"
               name="pdate"
-              class="form-control "
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="paidDate"
               onchange="calculateOverdue()"
             />
@@ -160,7 +160,7 @@
               <input
               type="text"
               name="days"
-              class="form-control "
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="overdueResult"
               onchange="calculateOverdue()"
               readonly
@@ -170,7 +170,7 @@
               <label for="exampleDataList0" class="form-label fw-bold"
                 >Bank Name</label
               >
-               <input class="form-control border-2" list="datalistOptions0" name="bank" id="exampleDataList0" placeholder="Search Bank...">
+               <input class="form-control border-0 shadow-sm py-3 rounded-0" list="datalistOptions0" name="bank" id="exampleDataList0" placeholder="Search Bank...">
                <datalist id="datalistOptions0" >
                 {% for b in bname %}
                  <option value="{{b.name}}"></option>
@@ -184,7 +184,7 @@
               <input
               type="number"
               name="ramount"
-              class="form-control "
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
               min="0"
               step=0.00

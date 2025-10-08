@@ -437,8 +437,8 @@ class Trip(models.Model):
     trip_id = models.CharField(max_length=50, unique=True)
     tanker= models.CharField(max_length=50, null=True, blank=True)
     trip_date=models.DateField(null=True, blank=True)
-    from_id = models.CharField(max_length=50, null=True, blank=True )
-    To_id = models.CharField(max_length=50, null=True, blank=True )
+    from_id = models.CharField(max_length=250, null=True, blank=True )
+    To_id = models.CharField(max_length=250, null=True, blank=True )
     drivername = models.CharField(max_length=50, null=True, blank=True )
     pending_trip = models.CharField(max_length=50, null=True, blank=True )
     f_trip =models.IntegerField(null=True, blank=True)
@@ -488,8 +488,8 @@ class Expense(models.Model):
     r_amount=models.IntegerField(null=True, blank=True)
     part_name=models.CharField(max_length=200, null=True, blank=True)
     no_piece = models.IntegerField(null=True, blank=True)
-    from_via = models.CharField(max_length=50, null=True, blank=True )
-    To_via = models.CharField(max_length=50, null=True, blank=True )
+    from_via = models.CharField(max_length=250, null=True, blank=True )
+    To_via = models.CharField(max_length=250, null=True, blank=True )
     end_date= models.DateField(null=True,blank=True)
 
     def __str__(self):

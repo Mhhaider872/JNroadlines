@@ -4,7 +4,7 @@
 {% load static %}
   <body>
     <main id="main" class="main">
-      <div class="pagetitle">
+      <div class="pagetitle bg-white p-2">
         <h1>Add Drivers</h1>
         <nav>
           <ol class="breadcrumb">
@@ -17,7 +17,7 @@
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card bg-light">
               <div class="card-body py-4">
                 {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
 
@@ -41,7 +41,7 @@
           <div class="row">
            <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Driver Name</label>
-             <input class="form-control border-2" list="datalistOptions" name="name" id="exampleDataList" placeholder="Add Driver..." required>
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" list="datalistOptions" name="name" id="exampleDataList" placeholder="Add Driver..." required>
            <datalist id="datalistOptions" class="shadow-sm border-0">
                 {% for d in dname %}
                  <option value="{{d.name}}">{{d.name }}</option>
@@ -55,7 +55,7 @@
               <input
               type="text"
               name="fname"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="fname"
               min="0" 
               
@@ -68,7 +68,7 @@
               <input
               type="number"
               name="adharnumber"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="aadhar"
               min="0" maxlength="10"
               required
@@ -81,7 +81,7 @@
               <input
               type="text"
               name="licencenumber"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
               maxlength="15"
               required
@@ -94,7 +94,7 @@
            <input
               type="date"
               name="issuedates"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
         </div>
@@ -105,7 +105,7 @@
            <input
               type="date"
               name="trdates"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
         </div>
@@ -114,7 +114,7 @@
         <label  class="form-label fw-bold"
                 >Upload Image</label
               >
-        <input type="file" name="img" class="form-control" accept=".pdf">
+        <input type="file" name="img" class="form-control border-0 shadow-sm py-3 rounded-0" accept=".pdf">
       </div>
           <div class="btn-div text-center py-2">
             <button type="submit" class="btn btn-success px-4">Save</button>

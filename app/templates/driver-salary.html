@@ -8,7 +8,7 @@
 
 
     <main id="main" class="main">
-      <div class="pagetitle">
+      <div class="pagetitle bg-white p-2">
         <h1>Add Driver Salary</h1>
         <nav>
           <ol class="breadcrumb">
@@ -21,7 +21,7 @@
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card bg-light">
               <div class="card-body py-4">
                 {% comment %} <h5 class="card-title">Form</h5> {% endcomment %}
 
@@ -45,7 +45,7 @@
           <div class="row">
          <div class="col-lg-4 mb-3">
             <label for="exampleDataList1" class="form-label fw-bold">Tanker No</label>
-             <input class="form-control" list="datalistOptions1" id="exampleDataList1" name="tankerno" placeholder="Search to vehicle no..." required>
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" list="datalistOptions1" id="exampleDataList1" name="tankerno" placeholder="Search to vehicle no..." required>
                <datalist id="datalistOptions1" class="border-2">
                 {% for v in vehicle %}
                  <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
@@ -54,7 +54,7 @@
               </div>
         <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
-             <input class="form-control" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" list="driverslist" id="exampleDataList" name="drivername" placeholder="Search to drivers...">
                <datalist id="driverslist" class="border-2" >
                   {% for d in dname %}
                  <option value="{{d.name}}">S/O {{d.fname }}</option>
@@ -63,7 +63,7 @@
         </div>
         <div class="col-lg-4 mb-3">
                <label for="exampleDataList" class="form-label fw-bold">Driver Salary</label>
-              <select class="form-select" id="inputGroupSelect01" name="salary_driver">
+              <select class="form-control border-0 shadow-sm py-3 rounded-0" id="inputGroupSelect01" name="salary_driver">
               <option  value="Salary">Salary</option>
               <option value="Bhatta">Bhatta</option>
     
@@ -77,7 +77,7 @@
             <input
               type="date"
               name="f_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
          </div>
@@ -88,7 +88,7 @@
             <input
               type="date"
               name="t_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
         </div>
@@ -99,7 +99,7 @@
             <input
               type="date"
               name="p_date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="label11"
             />
         </div>
@@ -112,7 +112,7 @@
             <input
               type="number"
               name="amount"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               id="totalamount"
               min="0"
               oninput="calculateTotal()"

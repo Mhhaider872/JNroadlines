@@ -306,28 +306,39 @@ def get_plan_details(request):
         return JsonResponse({'error': 'Plan not found'}, status=404)
    
 def showtrip(request):
+    from datetime import datetime, time
+    from django.db.models import Q
+
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
+    search = request.GET.get('search')
 
     show = AddTrips.objects.all()
 
     if from_date and to_date:
         try:
-            # Sirf date mil raha hai: "2025-09-11"
             from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
             to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
 
-            # Din ki starting aur ending time set karo:
-            from_datetime = datetime.combine(from_date_obj.date(), time.min)  # 00:00:00
-            to_datetime = datetime.combine(to_date_obj.date(), time.max)      # 23:59:59.999999
+            from_datetime = datetime.combine(from_date_obj.date(), time.min)
+            to_datetime = datetime.combine(to_date_obj.date(), time.max)
 
-            # Filter karo dispatch_time ke range par
             show = show.filter(dispatch_time__range=(from_datetime, to_datetime))
         except ValueError:
-            pass  # Agar galat format ho to skip karo
+            pass
+
+    if search:
+        show = show.filter(
+            Q(tankerno__icontains=search) |
+            Q(drivername__icontains=search)
+        )
+
+    # 👇 Order by dispatch_time descending
+    show = show.order_by('-dispatch_time')
 
     context = {'show': show}
     return render(request, 'show/show-trip.html', context)
+
 
 def updatetrip(request,id):
     uptrip=AddTrips.objects.get(pk=id)
@@ -1750,6 +1761,8 @@ def do_update(request,id):
      upexpense.no_piece = no_piece or None
      upexpense.date = date or None
      upexpense.amount = amount or None
+     upexpense.from_via = from_via or None
+     upexpense.To_via = To_via or None
      upexpense.end_date=end_date or None
 
      upexpense.save()
