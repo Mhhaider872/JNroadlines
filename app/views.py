@@ -133,7 +133,7 @@ def showplan(request):
     to_date = request.GET.get('to_date')
     search = request.GET.get('search')
 
-    showplans = plandetails.objects.all()
+    showplans = plandetails.objects.all().order_by('-dispatch_Date')
 
     # Filter by date range if provided
     if from_date and to_date:
@@ -329,7 +329,7 @@ def showtrip(request):
 
     if search:
         show = show.filter(
-            Q(tankerno__icontains=search) |
+            Q(plan__tankerno__icontains=search) |
             Q(drivername__icontains=search)
         )
 
@@ -1825,7 +1825,7 @@ def end_trip(request, trip_id):
 #===================End Modify file================================
 
 def AllTrip(request):
-    t = Trip.objects.all()
+    t = Trip.objects.all().order_by('-id')
 
     trip_data = []
 
