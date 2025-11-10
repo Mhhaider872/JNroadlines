@@ -640,6 +640,16 @@ class DriverL(models.Model):
     repayment=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
     remaining_amo=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
 
+    driverid=models.CharField(max_length=150, null=True, blank=True)
+    tanker=models.CharField(max_length=150, null=True, blank=True)
+    rdate=models.DateField(null=True, blank=True)
+    name=models.CharField(max_length=150, null=True, blank=True)
+    amount=models.DecimalField(max_digits=10, decimal_places=2, default=0,null=True, blank=True)
+    
+    
+    @property
+    def total_loan(self):
+        return (self.loan_amount or 0) + (self.driverloan or 0)
 
 
 class Tracking(models.Model):

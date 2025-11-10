@@ -805,10 +805,11 @@ h6 {
 }
 
 .dashboard .card-icon {
+  margin: 0px 6px;
   font-size: 32px;
   line-height: 0;
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   flex-shrink: 0;
   flex-grow: 0;
 }
@@ -818,15 +819,15 @@ h6 {
   background: #f6f6fe;
 }
 
-.dashboard .revenue-card .card-icon {
-  /* color: #2eca6a; */
+/* .dashboard .revenue-card .card-icon {
+  color: #2eca6a;
   background: #f6f6fe;
-}
+} */
 
-.dashboard .customers-card .card-icon {
-  /* color: #ff771d; */
+/* .dashboard .customers-card .card-icon {
+  color: #ff771d;
   background: #f6f6fe;
-}
+} */
 
 /* Activity */
 .dashboard .activity {

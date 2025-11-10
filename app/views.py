@@ -2007,6 +2007,12 @@ def AddDriverLoan(request):
       total = request.POST['total']
       repayment = request.POST['repayment']
       short_allow_rate  = request.POST['short_allow_rate']
+      name = request.POST.get('name')
+      rdate = request.POST.get('rdate')
+      amount = request.POST.get('amount')
+      driverid = request.POST.get('driverid')
+      tanker = request.POST.get('tanker')
+
       if  DriverL.objects.filter(date=date,drivername=drivername).exists():
           messages.error(request, 'Driver Loan exists !!')
           return redirect('drivers-loan')
@@ -2031,6 +2037,11 @@ def AddDriverLoan(request):
           total = total if total else None,
           short_allow_rate = short_allow_rate  if short_allow_rate else None,
           repayment = repayment if repayment else None,
+          name = name if name else None,
+          rdate = rdate if rdate else None,
+          amount = amount if amount else None,
+          driverid = driverid if driverid else None,
+          tanker = tanker if tanker else None,
         )
       d_loan.save()
       messages.success(request, 'Driver Loan Add successfully!')
@@ -2040,7 +2051,8 @@ def AddDriverLoan(request):
     dname=NewDriver_Details.objects.all()
     company=companydetails.objects.all()
     dname=NewDriver_Details.objects.all()
-    context={'vehicle':vehicle,'company':company,'dname':dname,'shortage':shortage,'company':company}
+    trip = Trip.objects.all()
+    context={'vehicle':vehicle,'company':company,'dname':dname,'shortage':shortage,'company':company,'trip':trip}
     return render(request,'add/add_driver_loan.html',context)
 
 

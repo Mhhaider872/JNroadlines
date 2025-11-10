@@ -58,7 +58,8 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-journal-text text-warning"></i>
+                        {% comment %} <i class="bi bi-journal-text text-warning"></i> {% endcomment %}
+                        <img src="{% static 'img/work-plan.png' %}" width="100%"/>
                       </div>
                       <div>
                          <h5 class="card-title">Planning</h5>
@@ -83,7 +84,8 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-arrow-down-up text-success"></i>
+                      {% comment %} <i class="bi bi-arrow-down-up text-success"></i> {% endcomment %}
+                      <img src="{% static 'img/order-tracking.png' %}" width="100%"/>
                      
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
                       </div>
@@ -111,8 +113,9 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-arrow-down-up text-pramiry"></i>
+                      {% comment %} <i class="bi bi-arrow-down-up text-pramiry"></i> {% endcomment %}
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
+                        <img src="{% static 'img/destination.png' %}" width="100%"/>
                       </div>
                       <div>
                         <h5 class="card-title">
@@ -139,8 +142,9 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-arrow-down-up text-success"></i>
+                      {% comment %} <i class="bi bi-arrow-down-up text-success"></i> {% endcomment %}
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
+                        <img src="{% static 'img/destination.png' %}" width="100%"/>
                       </div>
                       <div>
                          <h5 class="card-title">
@@ -166,8 +170,9 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-arrow-down-up text-success"></i>
+                      {% comment %} <i class="bi bi-arrow-down-up text-success"></i> {% endcomment %}
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
+                        <img src="{% static 'img/destination.png' %}" width="100%"/>
                       </div>
                       <div>
                          <h5 class="card-title">
@@ -195,8 +200,9 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-cash-stack text-danger"></i>
+                      {% comment %} <i class="bi bi-cash-stack text-danger"></i> {% endcomment %}
                         {% comment %} <i class="bi bi-currency-rupee"></i> {% endcomment %}
+                        <img src="{% static 'img/expenses.png' %}" width="100%"/>
                       </div>
                       <div><h5 class="card-title">
                       Trip Expenses
@@ -223,7 +229,8 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                       <i class="bi bi-truck"></i>
+                       {% comment %} <i class="bi bi-truck"></i> {% endcomment %}
+                       <img src="{% static 'img/water.png' %}" width="100%"/>
                       </div>
                       <div> <h5 class="card-title">
                       Vehicle Details 
@@ -246,7 +253,8 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-people text-success"></i>
+                      {% comment %} <i class="bi bi-people text-success"></i> {% endcomment %}
+                      <img src="{% static 'img/driver.png' %}" width="100%"/>
                       </div>
                       <div>
                       <h5 class="card-title">
@@ -261,7 +269,31 @@
                   </div>
                 </div>
               </div>
-                  <!--Card -->
+              <!--Card -->
+              <div class="col-lg-3 col-md-12">
+                <div class="card info-card customers-card">
+                    <a class="icon" href="{% url 'loandetails' %}" 
+                      >
+                  <div class="card-body py-3">
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                      {% comment %} <i class="bi bi-person-vcard text-danger"></i> {% endcomment %}
+                      <img src="{% static '/img/loan-officer.png' %}" width="100%"/>
+                        
+                      </div>
+                      <div>   <h5 class="card-title">
+                      Driver Loan
+                    </h5> </div>
+                      <div class="ps-3">
+                        <h6>0</h6>
+                      </div>
+                    </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
                     <a class="icon" href="{% url "s-company" %}" 
@@ -271,7 +303,8 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                       <i class="bi bi-building text-warning"></i>
+                       {% comment %} <i class="bi bi-building text-warning"></i> {% endcomment %}
+                      <img src="{% static '/img/office-building.png' %}" width="100%"/>
                       </div>
                       <div>   <h5 class="card-title">
                       Company Details 
@@ -295,7 +328,9 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                      <i class="bi bi-person-vcard text-danger"></i>
+                      {% comment %} <i class="bi bi-person-vcard text-danger"></i> {% endcomment %}
+                      <img src="{% static '/img/home-loan.png' %}" width="100%"/>
+                      
                         
                       </div>
                       <div>   <h5 class="card-title">
@@ -309,32 +344,9 @@
                   </div>
                 </div>
               </div>
-              <!-- Loan-->
-              <div class="col-lg-3 col-md-12">
-                <div class="card info-card customers-card">
-                   <a class="icon" href="{% url 'report-show' %}" 
-                      >
-                  <div class="card-body py-3">
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                        <i class="bi bi-journal-text"></i>
-                      </div>
-                      <div>  <h5 class="card-title">
-                     Reports
-                    </h5> </div>
-                      <div class="ps-3">
-                        <h6>{{trip_exp}}</h6>
-                        
-                      </div>
-                    </div>
-                  </div>
-                  </a>
-                </div>
-              </div>
+             
 
-                <!-- Card-->
+                <!-- Toll-->
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
                    <a class="icon" href="{% url 'add-toll' %}" 
@@ -344,7 +356,8 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-align-start text-success"></i>
+                        {% comment %} <i class="bi bi-align-start text-success"></i> {% endcomment %}
+                         <img src="{% static '/img/toll-road.png' %}" width="100%"/>
                       </div>
                       <div><h5 class="card-title">
                      Add Toll
@@ -358,7 +371,7 @@
                   </a>
                 </div>
               </div>
-              <!-- Card--> 
+              <!-- Cash Vouchar--> 
               <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
                    <a class="icon" href="{% url "vouchar_cash" %}" 
@@ -368,7 +381,8 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-receipt text-warning"></i>
+                        {% comment %} <i class="bi bi-receipt text-warning"></i> {% endcomment %}
+                          <img src="{% static '/img/cash-on-delivery.png' %}" width="100%"/>
                       </div>
                       <div><h5 class="card-title">
                      Cash Vouchar
@@ -382,7 +396,7 @@
                   </a>
                 </div>
               </div>
-                <!-- Card-->
+                <!--Tracking-->
                <div class="col-lg-3 col-md-12">
                 <div class="card info-card customers-card">
                    <a class="icon" href="{% url 'vehicle-track' %}" 
@@ -393,13 +407,39 @@
                       <div
                         class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                       >
-                        <i class="bi bi-geo text-danger"></i>
+                        {% comment %} <i class="bi bi-geo text-danger"></i> {% endcomment %}
+                        <img src="{% static '/img/live-tracking.png' %}" width="100%"/>
                       </div>
                       <div><h5 class="card-title">
                      Vehicle Tracking
                     </h5> </div>
                       <div class="ps-3">
                         <h6>0</h6>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  </a>
+                </div>
+              </div>
+               <!-- Reports-->
+              <div class="col-lg-3 col-md-12">
+                <div class="card info-card customers-card">
+                   <a class="icon" href="{% url 'report-show' %}" 
+                      >
+                  <div class="card-body py-3">
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                      >
+                        {% comment %} <i class="bi bi-journal-text"></i> {% endcomment %}
+                      <img src="{% static '/img/accounting.png' %}" width="100%"/>
+                      </div>
+                      <div>  <h5 class="card-title">
+                     Reports
+                    </h5> </div>
+                      <div class="ps-3">
+                        <h6>{{trip_exp}}</h6>
                         
                       </div>
                     </div>
