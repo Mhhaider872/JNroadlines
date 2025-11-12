@@ -32,7 +32,12 @@
           <div class="col-lg-12">
             <div class="card bg-light">
               <div class="card-body">
-                <h5 class="card-title">Expense for  Trip_id -: {{ trip.trip_id }} </h5>
+                <div class="d-flex justify-content-between">
+                 <h5 class="card-title">Expense for  Trip_id -: {{ trip.trip_id }} </h5>
+                 <div class="pt-2">
+                   <a href="{% url 'drivers-loan' %}" class="btn btn-info px-3 btn-sm text-white">Driver Loan</a>
+                 </div>
+               </div>
 <section class="main-sec">
  {% if messages %}
   <div class="container mt-3">
@@ -58,11 +63,16 @@
         <label for="amount" class="form-label fw-bold"> Date :</label>
         <input type="date" class="form-control border-0 shadow-sm py-3 rounded-0"  id="date" name="date">
        </div>
-<div class="col-lg-3 mb-3">
-        <label for="amount" class="form-label fw-bold">Amount :</label>
-        <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" step="any" id="total" name="amount" oninput="calculateTotal()" required>
-       </div>
-       
+       <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Change Driver</label>
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" list="driverslist" id="exampleDataList" name="drname" placeholder="Search to drivers...">
+               <datalist id="driverslist" class="shadow-sm border-0" >
+                  {% for d in dname %}
+                 <option value="{{d.name}}"></option>
+                {% endfor %}
+                </datalist>
+             </div>
+
 <div class="col-lg-3 mb-3">
             <label for="exampleDataList3" class="form-label fw-bold">( From via) Address </label>
              <input class="form-control border-0 shadow-sm py-3 rounded-0" name="from_via" list="datalistOptions3" id="exampleDataList3" placeholder="Search to...">
@@ -81,6 +91,10 @@
                  {% endfor %}
                 </datalist>
           </div> 
+          <div class="col-lg-3 mb-3">
+        <label for="amount" class="form-label fw-bold">Amount :</label>
+        <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" step="any" id="total" name="amount" oninput="calculateTotal()" required>
+       </div>
           <div class="col-lg-3 mb-3">
         <label for="date" class="form-label fw-bold">End Trip Date :</label>
         <input type="date" class="form-control border-0 shadow-sm py-3 rounded-0"  id="date" name="end_date">
@@ -535,7 +549,11 @@
             {% for exp in expenses %}
             <tr>
                  <td> {{ trip.tanker }}</td> 
-                 <td> {{ trip.drivername }}</td> 
+                 <td> {{ trip.drivername }}
+                      <br>
+                      {% if exp.drname %} <strong><span class="badge text-bg-success">{{exp.drname}}</span></strong>{% else %}
+                       {% endif %}
+                 </td> 
                  <td><strong> {{ trip.trip_date |date:"d/m/Y" }}</strong></td>
                   <td> {{ exp.from_via }}</td>
                  <td> {{ exp.To_via }}</td>

@@ -490,6 +490,7 @@ class Expense(models.Model):
     no_piece = models.IntegerField(null=True, blank=True)
     from_via = models.CharField(max_length=250, null=True, blank=True )
     To_via = models.CharField(max_length=250, null=True, blank=True )
+    drname = models.CharField(max_length=250, null=True, blank=True )
     end_date= models.DateField(null=True,blank=True)
 
     def __str__(self):
@@ -649,7 +650,13 @@ class DriverL(models.Model):
     
     @property
     def total_loan(self):
-        return (self.loan_amount or 0) + (self.driverloan or 0)
+        # agar koi field None hai to usse 0 treat kare
+        actual_loan = self.loan_amount or 0
+        driver_loan = self.driverloan or 0
+        repayment = self.repayment or 0
+
+        # total loan = actual + driver - repayment
+        return (actual_loan + driver_loan) - repayment
 
 
 class Tracking(models.Model):

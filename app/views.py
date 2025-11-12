@@ -32,6 +32,8 @@ def userdash(request):
      salary=Driver_salary.objects.count()
      
 
+     
+
      context = {
         'plan':plan,
         'bill_count': bill_count,
@@ -43,6 +45,7 @@ def userdash(request):
         'tripgemini':tripgemini,
         'tripadani':tripadani,
         'triplocal':triplocal
+        
     }
      return render(request,'userdash.html',context)
 
@@ -66,6 +69,7 @@ def dashboard(request):
     salary = Driver_salary.objects.count()
     company = companydetails.objects.count()
     driver = NewDriver_Details.objects.count()
+    driverl = DriverL.objects.values('drivername').distinct().count()
 
     # Monthly trips for chart (all months)
     data = (
@@ -98,6 +102,7 @@ def dashboard(request):
         'driver': driver,
         'months': months,
         'trips_monthly': trips_monthly,
+        'driverl':driverl
     }
 
     return render(request,'index.html',context)
@@ -1600,6 +1605,7 @@ def add_expense(request, trip_id):
         no_piece = request.POST.get('no_piece')
         from_via = request.POST.get('from_via')
         To_via = request.POST.get('To_via')
+        drname = request.POST.get('drname')
         end_date = request.POST.get('end_date')
         
 
@@ -1637,7 +1643,8 @@ def add_expense(request, trip_id):
                 part_name=part_name if part_name else None, 
                 no_piece=no_piece if no_piece else None,
                 from_via=from_via if from_via else None,
-                To_via= To_via if To_via else None,
+                To_via = To_via if To_via else None,
+                drname  = drname if drname else "",
                 end_date= end_date if end_date else None,
 
             )
@@ -1835,6 +1842,7 @@ def AllTrip(request):
         trip_data.append({
             'trip': trip,
             'end_date': latest_expense.end_date if latest_expense else None
+            
         })
 
     context = {

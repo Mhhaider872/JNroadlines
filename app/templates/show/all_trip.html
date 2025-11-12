@@ -52,7 +52,11 @@
                     <tr>
                       <td>{{ ts.trip.trip_id }}</td>
                       <td>{{ ts.trip.tanker }}</td>
-                      <td>{{ ts.trip.drivername }}</td>
+                      <td>{{ ts.trip.drivername }}
+                        <br>
+                      {% if ts.trip.drname %} <strong><span class="badge text-bg-success">{{ts.trip.drname}}</span></strong>{% else %}
+                       {% endif %}
+                      </td>
                       <td>{{ ts.trip.trip_date|date:"d-m-Y" }}</td>
                       <td>{{ ts.trip.from_id }}</td>
                       <td>{{ ts.trip.To_id }}</td>

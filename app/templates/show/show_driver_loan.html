@@ -56,8 +56,9 @@
                     <th>Rate</th>
                     <th>Shortage_Amount</th>
                     <th>Previous_Loan</th>
-                     <th>Actual_Loan_Amount</th>
-                      <th>On Driver Loan</th>     
+                     
+                      <th>On Driver Loan</th>   
+                      <th>Actual_Loan_Amount</th>  
                       <th>Driver_Loan</th> 
                      <th>Repayment</th>
                      <th>Total Loan</th>
@@ -83,12 +84,10 @@
                       <td>{{l.short_amount }}</td>
                       <td>{{l.previous_loan }}</td>
                       {% comment %} <td>{{l.loan_amount }}</td> {% endcomment %}
-                    
-                  
-                       <td>{{l.loan_amount }}</td>
                         <td>{{l.short_allow_rate }}</td> 
+                        <td>{{l.loan_amount }}</td>
                         <td>{{l.driverloan }}</td>                     
-                        <td>{{l.repayment }},{{l.name }},{{l.rdate}}</td>
+                        <td>{{l.repayment }} <br>{{l.driverid}},{{l.name }},{{ l.rdate|date:"d/m/Y" }}</td>
                         <td>{{ l.total_loan }}</td>
                  
                     <td>

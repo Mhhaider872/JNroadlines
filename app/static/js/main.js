@@ -44,11 +44,23 @@
   /**
    * Sidebar toggle
    */
+  // if (select(".toggle-sidebar-btn")) {
+  //   on("click", ".toggle-sidebar-btn", function (e) {
+  //     select("body").classList.toggle("toggle-sidebar");
+  //   });
+  // }
   if (select(".toggle-sidebar-btn")) {
-    on("click", ".toggle-sidebar-btn", function (e) {
-      select("body").classList.toggle("toggle-sidebar");
-    });
-  }
+  on("click", ".toggle-sidebar-btn", function (e) {
+    const body = select("body");
+    // Check agar class lagi hui hai to remove (hide), nahi to add (show)
+    if (body.classList.contains("toggle-sidebar")) {
+      body.classList.remove("toggle-sidebar"); // menu hide
+    } else {
+      body.classList.add("toggle-sidebar"); // menu show
+    }
+  });
+}
+
 
   /**
    * Navbar links active state on scroll

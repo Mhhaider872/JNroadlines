@@ -30,9 +30,9 @@
           <div class="col-lg-12">
             <div class="card bg-light">
               <div class="card-body py-4">
-              <div class="text-end">
+              {% comment %} <div class="text-end">
                 <a href="{% url "payment_cash" %}" class="btn btn-info px-3 text-light">Repayment</a>
-              </div>
+              </div> {% endcomment %}
                 
     <section class="main-sec">
   <div class="container">
@@ -251,11 +251,11 @@
             />
         </div>
          <div class="col-lg-4 mb-3">
-            <label for="label22" class="form-label fw-bold"
+            {% comment %} <label for="label22" class="form-label fw-bold"
               >Total Loan</label
-            >
+            > {% endcomment %}
             <input
-              type="number"
+              type="hidden"
               class="form-control border-0 shadow-sm py-3 rounded-0"
               name="total"
               min="0"
@@ -266,7 +266,12 @@
         </div>
         <hr>
       <div class="container pt-3">
-        <h5 class="pb-2 fw-bold">Loan Repayment</h5>
+       <div class="d-flex justify-content-between">
+         <h5 class="pb-2 fw-bold">Loan Repayment</h5>
+        <div>
+          <a href="{% url 'start_trip' %}" class="btn btn-info px-4 btn-sm text-white">View Trip</a>
+        </div>
+       </div>
        <div class="row">
        <div class="col-lg-12 form-div">
         {% comment %} <form  method="POST" autocomplete="off">
@@ -274,7 +279,7 @@
           <div class="row">
             <div class="col-lg-3 mb-3">
              <label for="driversSelect" class="form-label fw-bold">Trip Id</label>
-             <select class="form-control border-2" id="trip_id" name="driverid">
+             <select class="form-control border-0 shadow-sm py-3 rounded-0" id="trip_id" name="driverid">
               <option value="" disabled selected>Select a Trip Id...</option>
               {% for t in trip %}
               <option value="{{ t.trip_id }}">{{ t.trip_id }}</option>
@@ -283,7 +288,7 @@
               </div>
              <div class="col-lg-3 mb-3">
              <label for="driversSelect" class="form-label fw-bold">Trip Date</label>
-             <input type="date" id="trip_date" name="rdate" readonly class="form-control border-2" placeholder="Trip Date">
+             <input type="date" id="trip_date" name="rdate" readonly class="form-control border-0 shadow-sm py-3 rounded-0" placeholder="Trip Date">
 
   {% comment %} <select class="form-control border-2" id="trip_date" name="date">
     <option value="" disabled selected>Select a Trip Date...</option>
@@ -295,7 +300,7 @@
 
  <div class="col-lg-3 mb-3">
   <label for="driversSelect" class="form-label fw-bold">Tanker No</label>
-  <input type="text" id="tanker" name="tanker" readonly class="form-control border-2" placeholder="Tanker No">
+  <input type="text" id="tanker" name="tanker" readonly class="form-control border-0 shadow-sm py-3 rounded-0" placeholder="Tanker No">
 
 
 </div>
@@ -314,7 +319,7 @@
              </div> {% endcomment %}
            <div class="col-lg-3 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Driver Name</label>
-            <input type="text" id="driver_name" name="name" readonly class="form-control border-2" placeholder="Driver Name">
+            <input type="text" id="driver_name" name="name" readonly class="form-control border-0 shadow-sm py-3 rounded-0" placeholder="Driver Name">
 
              {% comment %} <input class="form-control border-2" list="driverslist" id="driver_name"  name="name" placeholder="Search to drivers...">
                <datalist id="driverslist">
@@ -326,12 +331,12 @@
              </div>
              
           <div class="col-lg-3 mb-3">
-            <label for="petrol" class="form-label fw-bold"
+            {% comment %} <label for="petrol" class="form-label fw-bold"
               >Amount
-            </label>
+            </label> {% endcomment %}
            <div class="input-group mb-3">
             <input
-              type="text"
+              type="hidden"
               name="amount"
               class="form-control border-2"
               id="petrol"
