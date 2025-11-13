@@ -84,7 +84,9 @@
                   <tr>
                     <td>{{p.id}}</td>
                     <td>{{p.tankerno }}</td>
-                    <td>{{p.drivername }}</td>
+                    <td>{{p.drivername }} <br>
+                      {%if p.ddriver%} <strong> {{p.ddriver }}</strong>{% else %}
+                       {% endif %}</td>
                     <td>{{p.From_address }}</td>
                     <td>{{p.To_address}}</td>
                     <td>{{p.tanker_capacity }}</td>

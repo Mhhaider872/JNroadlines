@@ -44,7 +44,7 @@
                 >Vehicle No</label
               >
            
-               <input class="form-control" value="{{uptrip.plan.tankerno}}" name="tankerno" id="exampleDataList" placeholder="Search to vehicle no..." >
+               <input class="form-control border-0 shadow-sm py-3 rounded-0" value="{{uptrip.plan.tankerno}}" name="tankerno" id="exampleDataList" placeholder="Search to vehicle no..." >
             </div>
 
 
@@ -53,48 +53,46 @@
                 >From Address</label
               >
               <div class="input-group mb-3">
-                 <input
-              
-              class="form-control"
-              name="From_address"
-              min="0"
-              id="label6"
-              value="{{uptrip.From_address}}"
-              Readonly
-               
-            />
+                <input class="form-control border-0 shadow-sm py-3 rounded-0" id="label6"  name="From_address" list="datalistOptions1" id="exampleDataList1"  value="{{uptrip.From_address}}">
+               <datalist id="datalistOptions1" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist> 
               </div>
             </div>
             <div class="col-lg-4 mb-3">
               <label for="lable3" class="form-label fw-bold"
                 >To Address</label
               >
-      
-               <input
-              
-              class="form-control"
-              name="To_address"
-              min="0"
-              id="label6"
-               value="{{uptrip.To_address}}"
-               Readonly
-              
-            />
+              <input class="form-control border-0 shadow-sm py-3 rounded-0" id="label6" name="To_address" list="datalistOptions2" id="exampleDataList2"  value="{{uptrip.To_address}}">
+               <datalist id="datalistOptions2" class="shadow-sm border-0" >
+                {% for c in company %}
+                 <option value="{{c.name}}, {{c.short_name}}"></option>
+                 {% endfor %}
+                </datalist>
             </div>
              <div class="col-lg-4 mb-3">
             <label for="label" class="form-label fw-bold"
               >Driver Name</label
             >
-            <input
-           
-              class="form-control"
-              name="drivername"
-              min="0"
-              id="label"
-              value="{{uptrip.drivername}}"
-              Readonly
-              
-            />
+            <input class="form-control border-0 shadow-sm py-3 rounded-0" list="driverslist" id="exampleDataList" name="drivername" value="{{uptrip.drivername}}">
+               <datalist id="driverslist" class="shadow-sm border-0" >
+                  {% for d in dname %}
+                 <option value="{{d.name}}">{{d.fname }}</option>
+                {% endfor %}
+                </datalist>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="label" class="form-label fw-bold"
+              >Double Driver</label
+            >
+            <input class="form-control border-0 shadow-sm py-3 rounded-0" list="driverslist" id="exampleDataList" name="drivername" value="{{uptrip.ddriver}}">
+               <datalist id="driverslist" class="shadow-sm border-0" >
+                  {% for d in dname %}
+                 <option value="{{d.name}}">{{d.fname }}</option>
+                {% endfor %}
+                </datalist>
           </div>
            <div class="col-lg-4 mb-3">
             <label for="label6" class="form-label fw-bold"
@@ -102,7 +100,7 @@
             >
             <input
            
-              class="form-control"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="tank_capacity"
               min="0"
               id="label6"

@@ -48,6 +48,7 @@ class plandetails(models.Model):
   
     tankerno = models.CharField(max_length=200)
     drivername=models.CharField(max_length=200, null=True)
+    ddriver=models.CharField(max_length=200, null=True)
     # driver = models.ForeignKey(NewDriver_Details, on_delete=models.CASCADE, null=True)
     From_address=models.CharField(max_length=200)
     To_address=models.CharField(max_length=200)
@@ -70,6 +71,7 @@ class AddTrips(models.Model):
     From_address=models.CharField(max_length=200)
     To_address=models.CharField(max_length=200)
     drivername=models.CharField(max_length=100)
+    ddriver=models.CharField(max_length=100, null=True)
     tank_capacity=models.CharField(max_length=100)
     arrival_time=models.DateTimeField(null=True, blank=True)
     dispatch_time=models.DateTimeField(null=True, blank=True)

@@ -90,6 +90,10 @@
              <label for="driver" class="form-label fw-bold">Driver Name</label>
              <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0" id="drivername" name="drivername" readonly>
             </div>
+            <div class="col-lg-4 mb-3">
+             <label for="driver" class="form-label fw-bold">Double Driver</label>
+             <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0" id="ddriver" name="ddriver" readonly>
+            </div>
           <div class="col-lg-4 mb-3">
            <label for="tanker" class="form-label fw-bold">Tanker Capacity</label>
             <input type="text" class="form-control border-0 shadow-sm py-3 rounded-0" id="tanker_capacity" name="tank_capacity" readonly>
@@ -429,6 +433,7 @@ document.getElementById("tankerno").addEventListener("change", function() {
             .then(response => response.json())
             .then(data => {
                 document.getElementById("drivername").value = data.drivername || '';
+                document.getElementById("ddriver").value = data.ddriver || '';
                 document.getElementById("From_address").value = data.From_address || '';
                 document.getElementById("To_address").value = data.To_address || '';
                 document.getElementById("tanker_capacity").value = data.tanker_capacity || '';
@@ -443,6 +448,7 @@ document.getElementById("tankerno").addEventListener("change", function() {
             });
     } else {
         document.getElementById("drivername").value = '';
+        document.getElementById("ddriver").value = '';
         document.getElementById("From_address").value = '';
         document.getElementById("To_address").value = '';
         document.getElementById("tanker_capacity").value = '';

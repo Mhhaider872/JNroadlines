@@ -57,6 +57,15 @@
                 {% endfor %}
                 </datalist>
              </div>
+             <div class="col-lg-4 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Double Drivers</label>
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" list="driverslist" id="exampleDataList" name="ddriver" placeholder="Search to drivers..." required>
+               <datalist id="driverslist" class="shadow-sm border-0" >
+                  {% for d in dname %}
+                 <option value="{{d.name}}">{{d.fname }}</option>
+                {% endfor %}
+                </datalist>
+             </div>
            <div class="col-lg-4 mb-3">
             <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
              <input class="form-control border-0 shadow-sm py-3 rounded-0" name="From_address" list="datalistOptions1" id="exampleDataList1" placeholder="Search to vehicle no...">

@@ -113,6 +113,7 @@ def plan(request):
     if request.method =="POST":
       tankerno  = request.POST['tankerno']
       drivername = request.POST['drivername']
+      ddriver = request.POST['ddriver']
       From_address = request.POST['From_address']
       To_address = request.POST['To_address']
       tanker_capacity = request.POST['tanker_capacity']
@@ -122,7 +123,7 @@ def plan(request):
           messages.error(request, 'Plan already exists !!')
           return redirect('plan')
       else:
-          plan=plandetails(tankerno=tankerno,drivername=drivername,From_address=From_address,To_address=To_address,tanker_capacity=tanker_capacity,dispatch_Date=dispatch_Date,status=status)
+          plan=plandetails(tankerno=tankerno,drivername=drivername,ddriver=ddriver if ddriver else "",From_address=From_address,To_address=To_address,tanker_capacity=tanker_capacity,dispatch_Date=dispatch_Date,status=status)
           plan.save()
           messages.success(request, 'Plan details added successfully !!')
           return redirect('showplan')
@@ -228,6 +229,7 @@ def addtrip(request):
         From_address = request.POST.get('From_address')
         To_address = request.POST.get('To_address')
         drivername = request.POST.get('drivername')
+        ddriver = request.POST.get('ddriver')
         tank_capacity = request.POST.get('tank_capacity')
         arrival_time = parse_datetime(request.POST.get('arrival_time')) if request.POST.get('arrival_time') else None
         dispatch_time = parse_datetime(request.POST.get('dispatch_time')) if request.POST.get('dispatch_time') else None
@@ -260,6 +262,7 @@ def addtrip(request):
             From_address=From_address,
             To_address=To_address,
             drivername=drivername if drivername else None,
+            ddriver=ddriver if ddriver else "",
             tank_capacity=tank_capacity if tank_capacity else None,
             arrival_time=arrival_time,
             dispatch_time=dispatch_time,
@@ -301,6 +304,7 @@ def get_plan_details(request):
         plan = plandetails.objects.get(id=plan_id)
         data = {
             'drivername': plan.drivername,
+            'ddriver': plan.ddriver,
             'From_address': plan.From_address,
             'To_address': plan.To_address,
             'tanker_capacity': plan.tanker_capacity,
@@ -348,7 +352,9 @@ def showtrip(request):
 def updatetrip(request,id):
     uptrip=AddTrips.objects.get(pk=id)
     plans = plandetails.objects.all()
-    context={'uptrip':uptrip,'plans':plans}
+    company=companydetails.objects.all()
+    dname=NewDriver_Details.objects.all()
+    context={'uptrip':uptrip,'plans':plans,'company':company,'dname':dname}
     return render (request,'update-add-trip.html',context)
 
 

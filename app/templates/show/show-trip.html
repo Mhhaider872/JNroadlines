@@ -117,7 +117,9 @@
                       <td>{{s.plan.tankerno }}</td>
                       <td>{{s.From_address }}</td>
                       <td>{{s.To_address}}</td>
-                      <td>{{s.drivername }}</td>
+                      <td>{{s.drivername }} <br>
+                      {%if s.ddriver%} <strong> {{s.ddriver }}</strong>{% else %}
+                       {% endif %}</td>
                       <td>{{s.tank_capacity }}</td>
                       <td>{{s.arrival_time|date:"d/m/y h:i A" }}</td>
                       <td>{{s.dispatch_time|date:"d/m/y h:i A" }}</td>
