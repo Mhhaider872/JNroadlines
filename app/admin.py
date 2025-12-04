@@ -81,7 +81,7 @@ admin.site.register(AAKRMInvoice)
 
 
 
-# admin.site.register(Driver)
+admin.site.register(Party)
 # admin.site.register(LocationLog)
 
 

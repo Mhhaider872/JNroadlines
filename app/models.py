@@ -92,6 +92,7 @@ class AddTrips(models.Model):
     short_allow=models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     return_qty=models.IntegerField(null=True, blank=True)
     remark=models.CharField(max_length=200, null=True, blank=True)
+    is_archived = models.BooleanField(default=False)
 
 
 class AakLocal(models.Model):
@@ -3259,3 +3260,37 @@ class Payment(models.Model):
     date=models.DateField(null=False, blank=False)
     name=models.CharField(max_length=150, null=True, blank=True)
     amount=models.DecimalField(max_digits=10, decimal_places=2, default=0,null=True, blank=True)
+
+
+
+#===================================
+# New Planning Page
+#===================================
+
+class Party(models.Model):
+    name = models.CharField(max_length=100)
+
+    def total_trips(self):
+        return self.trips.count()
+
+    def total_load(self):
+        return self.trips.aggregate(models.Sum('load_mt'))['load_mt__sum'] or 0
+
+    def __str__(self):
+        return self.name
+
+class PlanTrip(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('confirm', 'Confirm'),
+    )
+
+    party = models.ForeignKey(Party, related_name='trips', on_delete=models.CASCADE)
+    date = models.DateField()
+    tanker_no = models.CharField(max_length=50)
+    driver = models.CharField(max_length=100)
+    load_mt = models.FloatField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+
+    def __str__(self):
+        return f"{self.party.name} - {self.tanker_no}"

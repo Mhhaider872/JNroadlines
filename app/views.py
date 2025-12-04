@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.functions import ExtractMonth 
 from django.db.models import Count 
 from django.db.models import Q
+from datetime import date
 
 @login_required(login_url="log-in")
 def userdash(request):
@@ -382,6 +383,7 @@ def do_updatetrip(request,id):
     dofreight_bill = request.POST.get('dofreight_bill')
     freight_date = request.POST.get('freight_date')
     dofreight_date = request.POST.get('dofreight_date')
+    remark = request.POST.get('remark')
      
 
     # Fetch the existing plan details to update
@@ -411,6 +413,7 @@ def do_updatetrip(request,id):
     update_t.dofreight_bill = dofreight_bill if dofreight_bill else ""
     update_t.freight_date = freight_date if freight_date else None
     update_t.dofreight_date = dofreight_date if dofreight_date else None
+    update_t.remark = remark if remark else ""
 
     # Save the changes
     update_t.save()
@@ -10845,35 +10848,8 @@ def get_trip_details(request):
 
 
 
-
-
-def trips_chart(request):
-    # Month wise trips ka count nikalna
-    data = (
-        AddTrips.objects.annotate(month=ExtractMonth("dispatch_time"))
-        .values("month")
-        .annotate(total=Count("id"))
-        .order_by("month")
-    )
-
-    # Python list banani frontend ke liye
-    months = []
-    trips = []
-
-    month_names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-
-    for row in data:
-        if row["month"]:  # dispatch_time null ho sakta hai
-            months.append(month_names[row["month"] - 1])
-            trips.append(row["total"])
-
-    return render(request, "trips_chart.html", {
-        "months": months,
-        "trips": trips
-    })
-
-
 import requests
+
 def vehicle_data_view(request):
     try:
         response = requests.get("http://track.ansitindia.com/webservice?token=getLiveData&user=jnr&pass=jnr123&format=json")
@@ -10885,3 +10861,158 @@ def vehicle_data_view(request):
         vehicles = []
 
     return render(request, "gps.html", {"vehicles": vehicles})
+
+
+
+#===================================
+# New Planning Page
+#===================================
+
+def party_list(request):
+    parties = Party.objects.all()
+    return render(request, "party_list.html", {"parties": parties})
+
+
+def add_multiple_trips(request, party_id):
+    party = get_object_or_404(Party, id=party_id)
+    
+    if request.method == "POST":
+        dates = request.POST.getlist('date')
+        tankers = request.POST.getlist('tanker_no')
+        drivers = request.POST.getlist('driver')
+        loads = request.POST.getlist('load_mt')
+        statuses = request.POST.getlist('status')
+        
+        for i in range(len(dates)):
+            PlanTrip.objects.create(
+                party=party,
+                date=dates[i],
+                tanker_no=tankers[i],
+                driver=drivers[i],
+                load_mt=loads[i],
+                status=statuses[i]
+            )
+        return redirect('trip_list', party_id=party.id)
+
+    return render(request, "add_multiple_trips.html", {"party": party, "today": date.today()})
+
+
+
+def trip_list(request, party_id):
+    party = get_object_or_404(Party, id=party_id)
+    trips = PlanTrip.objects.filter(party=party).order_by('-date')
+    return render(request, "trip_list.html", {"party": party, "trips": trips})
+
+
+
+def confirm_trip(request, trip_id):
+    trip = get_object_or_404(PlanTrip, id=trip_id)
+    trip.status = "confirm"  
+    trip.save()
+    return redirect("trip_list", party_id=trip.party.id)
+
+
+
+
+
+
+
+
+
+
+
+
+#=====================================
+# Profit & Loss 
+#=====================================
+
+
+def tanker_wise_expense(request):
+    tankers = Trip.objects.values('tanker').distinct()
+
+    result = []
+
+    for t in tankers:
+        tanker_no = t['tanker']
+        total_exp = Expense.objects.filter(trip__tanker=tanker_no)\
+                                   .aggregate(total=Sum('total_amount'))['total'] or 0
+
+        result.append({
+            'tanker': tanker_no,
+            'expense': total_exp
+        })
+
+    return render(request, "tanker_wise_expense.html", {'result': result})
+
+
+from django.db.models.functions import TruncMonth
+def monthly_expense(request):
+    report = (
+        Expense.objects
+        .annotate(month=TruncMonth('date'))
+        .values('month')
+        .annotate(total=Sum('total_amount'))
+        .order_by('-month')
+    )
+
+    return render(request, "monthly_expense.html", {'report': report})
+
+
+
+def driver_wise_expense(request):
+    report = (
+        Expense.objects
+        .values('trip__drivername')  # Trip model से drivername
+        .annotate(total=Sum('total_amount'))
+        .order_by('-total')
+    )
+    for r in report:
+        r['drivername'] = r.pop('trip__drivername')  
+    return render(request, "driver_wise_expense.html", {'report': report})
+
+
+
+def income_expense_chart(request):
+    trips = Trip.objects.all().order_by('trip_id')
+    labels = []
+    income = []
+    expense = []
+    trip_data = []
+
+    for trip in trips:
+        labels.append(str(trip.trip_id))
+
+        # Income calculation from all bill models
+        trip_income = 0
+        # ADANI KAKINADA
+        trip_income += AKInvioce.objects.filter(tanker=trip.tanker).aggregate(total=Sum('grand_total'))['total'] or 0
+        # ADANI MUNDRA
+        trip_income += ADMInvioce.objects.filter(tanker=trip.tanker).aggregate(total=Sum('grand_total'))['total'] or 0
+        # ASHLAND
+        trip_income += ASL_Invoice.objects.filter(tanker=trip.tanker).aggregate(total=Sum('grand_total'))['total'] or 0
+        # CARGILL
+        trip_income += CRInvoice.objects.filter(tanker=trip.tanker).aggregate(total=Sum('grand_total'))['total'] or 0
+        # AAK OUT WORD
+        trip_income += Aak_in_Invoice.objects.filter(tanker=trip.tanker).aggregate(total=Sum('grand_total'))['total'] or 0
+        # Expense calculation
+        total_exp = trip.expenses.aggregate(total=Sum('total_amount'))['total'] or 0
+
+        # Profit calculation
+        trip_profit = float(trip_income) - float(total_exp)
+
+        income.append(float(trip_income))
+        expense.append(float(total_exp))
+
+         # Add trip data including profit
+        trip_data.append((trip.trip_id, float(trip_income), float(total_exp), trip_profit))
+
+
+    context = {
+        'labels': labels,
+        'income': income,
+        'expense': expense,
+        'trip_data': trip_data
+    }
+
+    return render(request, "income_expense_chart.html", context)
+

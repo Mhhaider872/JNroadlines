@@ -44,7 +44,7 @@
                 >Vehicle No</label
               >
            
-               <input class="form-control border-0 shadow-sm py-3 rounded-0" value="{{uptrip.plan.tankerno}}" name="tankerno" id="exampleDataList" placeholder="Search to vehicle no..." >
+               <input class="form-control border-0 shadow-sm py-3 rounded-0" value="{{uptrip.plan.tankerno}}" name="tankerno" id="exampleDataList" placeholder="Search to vehicle no..." readonly>
             </div>
 
 
@@ -87,7 +87,7 @@
             <label for="label" class="form-label fw-bold"
               >Double Driver</label
             >
-            <input class="form-control border-0 shadow-sm py-3 rounded-0" list="driverslist" id="exampleDataList" name="drivername" value="{{uptrip.ddriver}}">
+            <input class="form-control border-0 shadow-sm py-3 rounded-0" list="driverslist" id="exampleDataList" name="ddriver" value="{{uptrip.ddriver}}">
                <datalist id="driverslist" class="shadow-sm border-0" >
                   {% for d in dname %}
                  <option value="{{d.name}}">{{d.fname }}</option>

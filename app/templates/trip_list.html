@@ -1,0 +1,32 @@
+<table border="1" cellpadding="10">
+    <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Tanker No</th>
+        <th>Driver</th>
+        <th>Load (MT)</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for t in trips %}
+    <tr>
+        <td>{{ t.id }}</td>
+        <td>{{ t.date }}</td>
+        <td>{{ t.tanker_no }}</td>
+        <td>{{ t.driver }}</td>
+        <td>{{ t.load_mt }}</td>
+        <td>{{ t.status }}</td>
+
+        <td>
+            {% if t.status == "pending" %}
+                <a href="{% url 'confirm_trip' t.id %}">
+                    <button style="background: orange;">Confirm</button>
+                </a>
+            {% else %}
+                <button disabled style="background: green; color:white;">Confirmed</button>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

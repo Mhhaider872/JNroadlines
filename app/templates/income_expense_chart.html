@@ -1,0 +1,77 @@
+{% include 'base2.html' %}
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Income vs Expense (Trip Wise)</h1>
+    </div>
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+
+                <!-- Chart.js -->
+                <canvas id="incomeExpenseChart" style="height: 300px;"></canvas>
+
+                <hr>
+
+                <h5 class="mt-3">Trip Wise Summary</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Trip ID</th>
+                            <th>Income</th>
+                            <th>Expense</th>
+                            <th>Profits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       {% for trip_id, inc, exp, prof in trip_data %}
+                         <tr>
+                            <td>{{ trip_id }}</td>
+                            <td>{{ inc }}</td>
+                            <td>{{ exp }}</td>
+                            <td>{{ prof }}</td>
+                           </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('incomeExpenseChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels|safe }},
+            datasets: [
+                {
+                    label: 'Income',
+                    data: {{ income|safe }},
+                    backgroundColor: 'rgba(40, 167, 69, 0.7)',
+                    borderColor: 'rgba(40, 167, 69, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Expense',
+                    data: {{ expense|safe }},
+                    backgroundColor: 'rgba(220, 53, 69, 0.7)',
+                    borderColor: 'rgba(220, 53, 69, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,36 @@
+{% include 'base2.html' %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Monthly Expense Report</h1>
+    </div>
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Total Expense (₹)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in report %}
+                        <tr>
+                            <td>{{ row.month|date:"F Y" }}</td>
+                            <td><strong>{{ row.total }}</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </section>
+
+</main>

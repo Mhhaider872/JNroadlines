@@ -501,6 +501,23 @@ urlpatterns =[
     path('vehicles/', views.vehicle_data_view, name='vehicle_data'),
     
     
+    path('party/', views.party_list, name="party_list"),
+    path('party/<int:party_id>/add-trips/', views.add_multiple_trips, name='add_multiple_trips'),
+    path("party/<int:party_id>/trips/", views.trip_list, name="trip_list"),
+    path("trip/<int:trip_id>/confirm/", views.confirm_trip, name="confirm_trip"),
+
+
+    path('tanker-expense/', views.tanker_wise_expense, name='tanker_wise_expense'),
+    path('monthly-expense/', views.monthly_expense, name='monthly_expense'),
+    path('driver-expense/', views.driver_wise_expense, name='driver_wise_expense'),
+    path('income-expense-chart/', views.income_expense_chart, name='income_expense_chart'),
+
+
+
+
+
+
+    
 
 
 ]

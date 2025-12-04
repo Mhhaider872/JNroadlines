@@ -1,0 +1,23 @@
+<h2>Party List</h2>
+
+<div style="display:flex; gap:20px; flex-wrap:wrap;">
+    {% for p in parties %}
+    <div style="border:1px solid #999; padding:20px; width:200px; border-radius:10px;">
+        <h3>{{ p.name }}</h3>
+
+        <p><b>Total Trips:</b> {{ p.total_trips }}</p>
+        <p><b>Total Load:</b> {{ p.total_load }} MT</p>
+
+        <!-- View Trips button -->
+        <a href="{% url 'trip_list' p.id %}">
+            <button>View Trips</button>
+        </a>
+
+        <!-- Add Trip button -->
+        <a href="{% url 'add_multiple_trips' p.id %}">
+            <button>Add Trip</button>
+        </a>
+
+    </div>
+    {% endfor %}
+</div>

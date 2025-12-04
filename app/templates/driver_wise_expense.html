@@ -1,0 +1,35 @@
+{% include 'base2.html' %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Driver-wise Expense Report</h1>
+    </div>
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+
+               <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Driver Name</th>
+            <th>Total Expense</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in report %}
+        <tr>
+            <td>{{ row.drivername }}</td>
+            <td>{{ row.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+            </div>
+        </div>
+    </section>
+
+</main>

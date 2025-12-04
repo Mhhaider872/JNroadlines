@@ -1,0 +1,60 @@
+<h2>Add Trips - {{ party.name }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <table border="1" cellpadding="5" id="trips_table">
+        <tr>
+            <th>Date</th>
+            <th>Tanker No</th>
+            <th>Driver</th>
+            <th>Load (MT)</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        <!-- Initial 1 row -->
+        <tr>
+            <td><input type="date" name="date" value="{{ today }}" required></td>
+            <td><input type="text" name="tanker_no" required></td>
+            <td><input type="text" name="driver" required></td>
+            <td><input type="number" step="0.01" name="load_mt" required></td>
+            <td>
+                <select name="status">
+                    <option value="pending">Pending</option>
+                    <option value="confirm">Confirm</option>
+                </select>
+            </td>
+            <td><button type="button" onclick="removeRow(this)">Remove</button></td>
+        </tr>
+    </table>
+
+    <br>
+    <button type="button" onclick="addRow()">Add Row</button>
+    <button type="submit">Save Trips</button>
+</form>
+
+<script>
+function addRow() {
+    let table = document.getElementById('trips_table');
+    let row = table.insertRow(-1); // insert at the end
+    row.innerHTML = `
+        <td><input type="date" name="date" value="{{ today }}" required></td>
+        <td><input type="text" name="tanker_no" required></td>
+        <td><input type="text" name="driver" required></td>
+        <td><input type="number" step="0.01" name="load_mt" required></td>
+        <td>
+            <select name="status">
+                <option value="pending">Pending</option>
+                <option value="confirm">Confirm</option>
+            </select>
+        </td>
+        <td><button type="button" onclick="removeRow(this)">Remove</button></td>
+    `;
+}
+
+function removeRow(button) {
+    let row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
+</script>
