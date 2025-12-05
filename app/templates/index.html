@@ -457,7 +457,45 @@
           <h5 class="card-title">Monthly <span>/Trips</span></h5>
 
           <!-- ApexCharts Chart -->
- 
+          {% comment %} <table class="table">
+            <thead>
+             <tr>
+               <th>Sr_No</th>
+               <th>Tanker_No.</th>
+               <th>Owner</th>
+               <th>Expiring Documents</th>
+               <th>Expiry Dates</th>
+              </tr>
+            </thead>
+           <tbody>
+            {% for vinfo in expiring_vehicles %}
+             <tr>
+               <td>{{ forloop.counter }}</td>
+               <td>{{ vinfo.vehicle.vehicle_name }}</td>
+               <td>{{ vinfo.vehicle.owner_name }}</td>
+               <td>
+                 {% for f in vinfo.expiring_fields %}
+                 <span class="badge bg-danger">{{ f }}</span>
+                 {% endfor %}
+               </td>
+               <td>
+                  {% for f in vinfo.expiring_fields %}
+                    {% if f == 'Insurance' %} <span class="badge bg-danger">{{ vinfo.vehicle.insurance_date|date:"d/m/Y" }}</span>{% endif %}
+                    {% if f == 'Fitness' %} <span class="badge bg-danger">{{ vinfo.vehicle.fitness_date|date:"d/m/Y" }}</span>{% endif %}
+                    {% if f == 'Tax' %} <span class="badge bg-danger">{{ vinfo.vehicle.tax_date|date:"d/m/Y" }}</span>{% endif %}
+                    {% if f == 'PUC' %} <span class="badge bg-danger">{{ vinfo.vehicle.puc_date|date:"d/m/Y" }}</span>{% endif %}
+                    {% if f == 'State Permit' %} <span class="badge bg-danger">{{ vinfo.vehicle.state_permit|date:"d/m/Y" }}</span>{% endif %}
+                    {% if f == 'National Permit' %} <span class="badge bg-danger">{{ vinfo.vehicle.national_permit|date:"d/m/Y" }}</span>{% endif %}
+                    {% if not forloop.last %}{% endif %}
+                 {% endfor %}
+                </td>
+
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+         </table> {% endcomment %}
+
           <!-- End Chart -->
         </div>
       </div>

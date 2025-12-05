@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.functions import ExtractMonth 
 from django.db.models import Count 
 from django.db.models import Q
-from datetime import date
+from datetime import date,timedelta
 
 @login_required(login_url="log-in")
 def userdash(request):
@@ -72,22 +72,32 @@ def dashboard(request):
     driver = NewDriver_Details.objects.count()
     driverl = DriverL.objects.values('drivername').distinct().count()
 
-    # Monthly trips for chart (all months)
-    data = (
-        AddTrips.objects.filter(dispatch_time__isnull=False)
-        .annotate(month=ExtractMonth("dispatch_time"))
-        .values("month")
-        .annotate(total=Count("id"))
-        .order_by("month")
-    )
+    today = date.today()
+    one_week = today + timedelta(days=7)
+    
+    vehicles = Add_Vehicle.objects.all()
+    expiring_vehicles = []
 
-    trips_dict = {i:0 for i in range(1,13)}
-    for row in data:
-        trips_dict[row["month"]] = row["total"]
+    for v in vehicles:
+        expiring_fields = []
+        if v.insurance_date and today <= v.insurance_date <= one_week:
+            expiring_fields.append('Insurance')
+        if v.fitness_date and today <= v.fitness_date <= one_week:
+            expiring_fields.append('Fitness')
+        if v.tax_date and today <= v.tax_date <= one_week:
+            expiring_fields.append('Tax')
+        if v.puc_date and today <= v.puc_date <= one_week:
+            expiring_fields.append('PUC')
+        if v.state_permit and today <= v.state_permit <= one_week:
+            expiring_fields.append('State Permit')
+        if v.national_permit and today <= v.national_permit <= one_week:
+            expiring_fields.append('National Permit')
 
-    months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-    trips_monthly = [trips_dict[i] for i in range(1,13)]
-
+        if expiring_fields:
+            expiring_vehicles.append({
+                'vehicle': v,
+                'expiring_fields': expiring_fields
+            })
     context = {
         'plan': plan,
         'bill_count': bill_count,
@@ -101,12 +111,12 @@ def dashboard(request):
         'triplocal': triplocal,
         'company': company,
         'driver': driver,
-        'months': months,
-        'trips_monthly': trips_monthly,
-        'driverl':driverl
+        'driverl':driverl,
+        'expiring_vehicles': expiring_vehicles
     }
 
     return render(request,'index.html',context)
+
 
 
 @login_required(login_url="log-in")
@@ -1264,43 +1274,6 @@ def vehicledetails(request):
         vehicle_details.save()
         messages.success(request, 'Vehicle details added successfully!!')
         return redirect('show-vehicle')
-
-        # === Alert generation for near-expiry dates ===
-        # alerts = []
-        # today = datetime.today().date()
-        # threshold = today + timedelta(days=5)
-
-        # date_fields = {
-        #     'Insurance': insurance_date,
-        #     'State Permit': state_permit,
-        #     'National Permit': national_permit,
-        #     'Fitness Certificate': fitness_date,
-        #     'Road Tax': tax_date,
-        #     'PUC': puc_date
-        # }
-
-        # for label, date_str in date_fields.items():
-        #     try:
-        #         exp_date = datetime.strptime(date_str, '%Y-%m-%d').date()
-        #         if today <= exp_date <= threshold:
-        #             alerts.append(f"🔔 {label} is expiring on {exp_date}")
-        #     except ValueError:
-        #         alerts.append(f"⚠️ Invalid date for {label}: {date_str}")
-
-        # if alerts:
-        #     alert_msg = "\n".join(alerts)
-
-        #     # ✉️ Send email
-        #     send_test_email(
-        #         subject='Upcoming Vehicle Document Expiry Alerts',
-        #         message=alert_msg,
-        #         from_email='your@email.com',  # 👈 Replace with real sender
-        #         recipient_list=[user_email],
-        #         fail_silently=False,
-        #     )
-
-        # messages.success(request, 'Vehicle details added successfully (Email sent if any expiry alert) !!')
-        # return redirect('show-vehicle')
 
     return render(request, 'add/add-vehicle.html')
 
@@ -10935,7 +10908,7 @@ def tanker_wise_expense(request):
     for t in tankers:
         tanker_no = t['tanker']
         total_exp = Expense.objects.filter(trip__tanker=tanker_no)\
-                                   .aggregate(total=Sum('total_amount'))['total'] or 0
+                                   .aggregate(total=Sum('amount'))['total'] or 0
 
         result.append({
             'tanker': tanker_no,
@@ -10995,7 +10968,7 @@ def income_expense_chart(request):
         # AAK OUT WORD
         trip_income += Aak_in_Invoice.objects.filter(tanker=trip.tanker).aggregate(total=Sum('grand_total'))['total'] or 0
         # Expense calculation
-        total_exp = trip.expenses.aggregate(total=Sum('total_amount'))['total'] or 0
+        total_exp = trip.expenses.aggregate(total=Sum('amount'))['total'] or 0
 
         # Profit calculation
         trip_profit = float(trip_income) - float(total_exp)
@@ -11015,4 +10988,28 @@ def income_expense_chart(request):
     }
 
     return render(request, "income_expense_chart.html", context)
+
+
+
+
+
+
+#=================================================
+#   import math
+#   @property
+#     def total_loan(self):
+#         actual_loan = self.loan_amount or 0
+#         driver_loan = self.driverloan or 0
+#         repayment = self.repayment or 0
+
+#         total = (actual_loan + driver_loan) - repayment
+
+#         decimal_part = total - math.floor(total)
+#         if decimal_part > 0.50:
+#             total = math.floor(total) + 1 
+#         else:
+#             total = math.floor(total) + decimal_part  
+#         return total
+
+#====================================================
 

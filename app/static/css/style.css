@@ -30,8 +30,8 @@ h6 {
 .datatable-search{
   position: absolute !important;
   top: -6%;
-  
   right: 0%;
+  display: none !important;
 }
 /*--------------------------------------------------------------
 # Main
