@@ -11015,3 +11015,8 @@ def income_expense_chart(request):
 
 #====================================================
 
+
+
+
+def web(request):
+    return render(request, "web.html")

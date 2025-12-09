@@ -514,6 +514,10 @@ urlpatterns =[
 
 
 
+    path('website/', views.web, name="web"),
+
+
+
 
 
 
