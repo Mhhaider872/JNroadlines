@@ -278,14 +278,19 @@
           {% csrf_token %} {% endcomment %}
           <div class="row">
             <div class="col-lg-3 mb-3">
-             <label for="driversSelect" class="form-label fw-bold">Trip Id</label>
-             <select class="form-control border-0 shadow-sm py-3 rounded-0" id="trip_id" name="driverid">
-              <option value="" disabled selected>Select a Trip Id...</option>
-              {% for t in trip %}
-              <option value="{{ t.trip_id }}">{{ t.trip_id }}</option>
-               {% endfor %}
-              </select>
-              </div>
+    <label for="trip_id" class="form-label fw-bold">Trip Id</label>
+    <input class="form-control border-0 shadow-sm py-3 rounded-0" 
+           list="tripList" 
+           id="trip_id" 
+           name="driverid" 
+           placeholder="Select a Trip Id...">
+    <datalist id="tripList">
+        {% for t in trip %}
+        <option value="{{ t.trip_id }}"></option>
+        {% endfor %}
+    </datalist>
+</div>
+
              <div class="col-lg-3 mb-3">
              <label for="driversSelect" class="form-label fw-bold">Trip Date</label>
              <input type="date" id="trip_date" name="rdate" readonly class="form-control border-0 shadow-sm py-3 rounded-0" placeholder="Trip Date">

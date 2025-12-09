@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logistic Chatbot</title>
+</head>
+<body>
+
+<h2>Logistic Chatbot</h2>
+
+<div>
+    <input id="msg" placeholder="Message..." style="width: 300px;">
+    <button onclick="send()">Send</button>
+</div>
+
+<div id="chat"></div>
+
+<script>
+function send() {
+    let text = document.getElementById("msg").value;
+
+    fetch("/logistic-chat/", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: text})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("chat").innerHTML += 
+            "<p><b>You:</b> " + text + "</p>";
+        document.getElementById("chat").innerHTML += 
+            "<p><b>Bot:</b> " + data.reply + "</p>";
+    });
+}
+</script>
+
+</body>
+</html>

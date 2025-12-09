@@ -18,6 +18,7 @@ from django.db.models.functions import ExtractMonth
 from django.db.models import Count 
 from django.db.models import Q
 from datetime import date,timedelta
+from django.db.models.functions import TruncMonth
 
 @login_required(login_url="log-in")
 def userdash(request):
@@ -1640,6 +1641,8 @@ def add_expense(request, trip_id):
     total_diesel_sum = trip.expenses.aggregate(Sum('total_diesel'))['total_diesel__sum'] or 0
     urea_total_sum = trip.expenses.aggregate(Sum('urea_total'))['urea_total__sum'] or 0
     r_amount_sum = trip.expenses.aggregate(Sum('r_amount'))['r_amount__sum'] or 0
+    washing_charges_tank__sum = trip.expenses.aggregate(Sum('washing_charges_tank'))['washing_charges_tank__sum'] or 0
+    liters__sum= trip.expenses.aggregate(Sum('liters'))['liters__sum'] or 0
 
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
@@ -1671,7 +1674,7 @@ def add_expense(request, trip_id):
     # Return the response
 
     context = {'categories': categories, 'dname': dname, 'petrol': petrol,'trip': trip,
-        'expenses': expenses,'company':company,'food_allowance_sum':food_allowance_sum,'bhatta_sum':bhatta_sum,'toll_amount_sum':toll_amount_sum,'total_diesel_sum':total_diesel_sum,'urea_total_sum':urea_total_sum,'r_amount_sum':r_amount_sum,'showplans': showplans}
+        'expenses': expenses,'company':company,'food_allowance_sum':food_allowance_sum,'bhatta_sum':bhatta_sum,'toll_amount_sum':toll_amount_sum,'total_diesel_sum':total_diesel_sum,'urea_total_sum':urea_total_sum,'r_amount_sum':r_amount_sum,'showplans': showplans,'washing_charges_tank__sum':washing_charges_tank__sum,'liters__sum':liters__sum}
     return render(request, 'exp/add_expense.html',context)
 
 
@@ -10918,13 +10921,12 @@ def tanker_wise_expense(request):
     return render(request, "tanker_wise_expense.html", {'result': result})
 
 
-from django.db.models.functions import TruncMonth
 def monthly_expense(request):
     report = (
         Expense.objects
         .annotate(month=TruncMonth('date'))
         .values('month')
-        .annotate(total=Sum('total_amount'))
+        .annotate(total=Sum('amount'))
         .order_by('-month')
     )
 

@@ -464,18 +464,40 @@
             </li>
           </ul>
         </li>
+
+
         <li class="nav-item">
           <a
-            class="nav-link "
-            
-            href="{% url 'profit' %}"
+            class="nav-link collapsed"
+            data-bs-target="#profit"
+            data-bs-toggle="collapse"
           >
             <i class="bi bi-receipt"></i><span>Profit & Loss</span
-            >
-            {% comment %} <i class="bi bi-chevron-down ms-auto"></i> {% endcomment %}
+            ><i class="bi bi-chevron-down ms-auto"></i>
           </a>
-        
+          <ul
+            id="profit"
+            class="nav-content collapse"
+            data-bs-parent="#sidebar-nav"
+          >
+            {% comment %} <li>
+              <a href="{% url 'create_bill' %}"> <i class="bi bi-circle"></i><span>All Bills </span> </a>
+            </li> {% endcomment %}
+            <li>
+              <a href="{% url 'tanker_wise_expense' %}"> <i class="bi bi-circle"></i><span>Tanker wise</span> </a>
+            </li>
+              <li>
+              <a href="{% url 'multi-page' %}"> <i class="bi bi-circle"></i><span>Driver wise</span> </a>
+            </li>
+            <li>
+              <a href="{% url 'detention-page' %}"> <i class="bi bi-circle"></i><span>Months wise</span> </a>
+            </li>
+            <li>
+              <a href="{% url 'detention-page' %}"> <i class="bi bi-circle"></i><span>Trip wise</span> </a>
+            </li>
+          </ul>
         </li>
+        
         <hr />
 
         <!-- End Login Page Nav -->
