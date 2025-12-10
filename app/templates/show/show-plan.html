@@ -17,25 +17,7 @@
         </ol>
       </nav>
     </div>
-     <form method="get" class="row g-3 mb-5">
-      
-  <div class="col-md-3">
-    <label for="from_date" class="form-label fw-bold">From Date</label>
-    <input type="date" name="from_date" id="from_date" class="form-control" value="{{ request.GET.from_date }}">
-  </div>
-  <div class="col-md-3">
-    <label for="to_date" class="form-label fw-bold">To Date</label>
-    <input type="date" name="to_date" id="to_date" class="form-control" value="{{ request.GET.to_date }}">
-  </div>
-        <div class="col-md-3">
-      <label for="search" class="form-label fw-bold">Search...</label>
-      <input type="text" name="search" class="form-control" placeholder="Tanker, Driver">
-    </div>
-  <div class="col-md-2 d-flex align-items-end">
-    <button type="submit" class="btn btn-sm btn-primary mx-3 px-5">Filter</button>
-    <a href="{% url 'showplan' %}" class="btn btn-sm btn-danger px-5">Clear</a>
-  </div>
-</form>
+     
   
     <!-- End Page Title -->
     <section class="section">
@@ -62,7 +44,26 @@
                 </div>
                 {% endfor %}
               </div>
-              {% endif %}    
+              {% endif %}
+              <form method="get" class="row g-3 mb-5">
+      
+  <div class="col-md-3">
+    <label for="from_date" class="form-label fw-bold">From Date</label>
+    <input type="date" name="from_date" id="from_date" class="form-control border-0 shadow-sm py-2 rounded-0" value="{{ request.GET.from_date }}">
+  </div>
+  <div class="col-md-3">
+    <label for="to_date" class="form-label fw-bold">To Date</label>
+    <input type="date" name="to_date" id="to_date" class="form-control border-0 shadow-sm py-2 rounded-0" value="{{ request.GET.to_date }}">
+  </div>
+        <div class="col-md-3">
+      <label for="search" class="form-label fw-bold">Search...</label>
+      <input type="text" name="search" class="form-control border-0 shadow-sm py-2 rounded-0" placeholder="Tanker, Driver">
+    </div>
+  <div class="col-md-2 d-flex align-items-end">
+    <button type="submit" class="btn btn-sm btn-primary mx-3 px-5">Filter</button>
+    <a href="{% url 'showplan' %}" class="btn btn-sm btn-danger px-5">Clear</a>
+  </div>
+</form>    
               <table class="table  datatable" id="Record" style="overflow-x: auto; white-space: nowrap; font-weight:500;">
                 <thead>
                   <tr>

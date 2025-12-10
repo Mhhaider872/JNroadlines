@@ -28,6 +28,60 @@
               {% endfor %}
             </div>
             {% endif %}
+            <form method="get" class="row g-2 p-3 bg-light rounded">
+                  <!-- DATE RANGE -->
+  <div class="col-md-2">
+    <label>Start Date</label>
+    <input type="date" name="start_date" class="form-control border-0 shadow-sm py-2 rounded-0" value="{{ request.GET.start_date }}">
+  </div>
+
+  <div class="col-md-2">
+    <label>End Date</label>
+    <input type="date" name="end_date" class="form-control border-0 shadow-sm py-2 rounded-0" value="{{ request.GET.end_date }}">
+  </div>
+
+  <div class="col-md-2">
+     <label></label>
+    <input type="text" name="trip_id" class="form-control border-0 shadow-sm py-2 rounded-0" placeholder="Trip ID" value="{{ request.GET.trip_id }}">
+  </div>
+   
+     <div class="col-md-2">
+     <label></label>
+    <input type="text" name="from_address" class="form-control border-0 shadow-sm py-2 rounded-0" placeholder="From Address" value="{{ request.GET.from_address }}">
+  </div>
+
+  <div class="col-md-2">
+     <label></label>
+    <input type="text" name="to_address" class="form-control border-0 shadow-sm py-2 rounded-0" placeholder="To Address" value="{{ request.GET.to_address }}">
+  </div>
+
+
+  <div class="col-md-2">
+     <label></label>
+    <input type="text" name="tankerno" class="form-control border-0 shadow-sm py-2 rounded-0" placeholder="Tanker No" value="{{ request.GET.tankerno }}">
+  </div>
+
+  <div class="col-md-2">
+     <label></label>
+    <input type="text" name="drivername" class="form-control border-0 shadow-sm py-2 rounded-0" placeholder="Driver Name" value="{{ request.GET.drivername }}">
+  </div>
+<div class="col-md-2 mt-4">
+</div>
+<div class="col-md-2 mt-4">
+</div>
+<div class="col-md-2 mt-4">
+</div>
+<div class="col-md-2 mt-4">
+</div>
+  <div class="col-md-2 mt-4">
+    <button type="submit" class="btn btn-primary btn-sm px-4">Filter</button>
+     <a href="{% url "trip" %}" class="btn btn-danger btn-sm px-4">Reset</a>
+  </div>
+
+
+
+</form>
+
 
             <div class="table-responsive" style="overflow-x: auto; white-space: nowrap;">
               <div class="card-body">

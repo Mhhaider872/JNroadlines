@@ -145,7 +145,7 @@ def plan(request):
     context={'vehicle':vehicle,'company':company,'dname':dname}
     return render(request,'add/add-plans.html', context)
 
-
+@login_required(login_url="log-in")
 def showplan(request):
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
@@ -327,15 +327,15 @@ def get_plan_details(request):
         return JsonResponse({'error': 'Plan not found'}, status=404)
    
 def showtrip(request):
-    from datetime import datetime, time
-    from django.db.models import Q
-
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
-    search = request.GET.get('search')
+
+    tanker = request.GET.get('tanker')   # separate field
+    driver = request.GET.get('driver')   # separate field
 
     show = AddTrips.objects.all()
 
+    # -------- DATE FILTER --------
     if from_date and to_date:
         try:
             from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
@@ -344,15 +344,17 @@ def showtrip(request):
             from_datetime = datetime.combine(from_date_obj.date(), time.min)
             to_datetime = datetime.combine(to_date_obj.date(), time.max)
 
-            show = show.filter(dispatch_time__range=(from_datetime, to_datetime))
+            show = show.filter(dispatch_time__range=[from_datetime, to_datetime])
         except ValueError:
             pass
 
-    if search:
-        show = show.filter(
-            Q(plan__tankerno__icontains=search) |
-            Q(drivername__icontains=search)
-        )
+    # -------- TANKER FILTER --------
+    if tanker:
+        show = show.filter(plan__tankerno__icontains=tanker)
+
+    # -------- DRIVER FILTER --------
+    if driver:
+        show = show.filter(drivername__icontains=driver)
 
     # 👇 Order by dispatch_time descending
     show = show.order_by('-dispatch_time')
@@ -536,22 +538,31 @@ def ShowAdani(request):
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
 
+    tanker = request.GET.get('tanker')   # separate field
+    driver = request.GET.get('driver')   # separate field
+
     adani=TripAdani.objects.all()
 
+    # -------- DATE FILTER --------
     if from_date and to_date:
         try:
-            # Sirf date mil raha hai: "2025-09-11"
             from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
             to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
 
-            # Din ki starting aur ending time set karo:
-            from_datetime = datetime.combine(from_date_obj.date(), time.min)  # 00:00:00
-            to_datetime = datetime.combine(to_date_obj.date(), time.max)      # 23:59:59.999999
+            from_datetime = datetime.combine(from_date_obj.date(), time.min)
+            to_datetime = datetime.combine(to_date_obj.date(), time.max)
 
-            # Filter karo dispatch_time ke range par
-            adani = adani.filter(dispatch_time__range=(from_datetime, to_datetime))
+            adani = adani.filter(dispatch_time__range=[from_datetime, to_datetime])
         except ValueError:
-            pass  # Agar galat format ho to skip karo
+            pass
+
+    # -------- TANKER FILTER --------
+    if tanker:
+        adani = adani.filter(plan__tankerno__icontains=tanker)
+
+    # -------- DRIVER FILTER --------
+    if driver:
+        adani = adani.filter(drivername__icontains=driver)
     context={'adani':adani}
     return render(request,'show/show_adani.html',context)
 
@@ -615,7 +626,7 @@ def do_upadani(request,id):
     return redirect('show-adani')
 
 
-
+@login_required(login_url="log-in")
 def Trip_Gemini(request):
     # plan = plandetails.objects.earliest('tankerno')  
     # if plan:
@@ -705,22 +716,31 @@ def Showgemini(request):
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
 
+    tanker = request.GET.get('tanker')   # separate field
+    driver = request.GET.get('driver')   # separate field
+
     gemeni=TripGemini.objects.all()
 
+    # -------- DATE FILTER --------
     if from_date and to_date:
         try:
-            # Sirf date mil raha hai: "2025-09-11"
             from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
             to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
 
-            # Din ki starting aur ending time set karo:
-            from_datetime = datetime.combine(from_date_obj.date(), time.min)  # 00:00:00
-            to_datetime = datetime.combine(to_date_obj.date(), time.max)      # 23:59:59.999999
+            from_datetime = datetime.combine(from_date_obj.date(), time.min)
+            to_datetime = datetime.combine(to_date_obj.date(), time.max)
 
-            # Filter karo dispatch_time ke range par
-            gemeni =  gemeni.filter(dispatch_time__range=(from_datetime, to_datetime))
+            gemeni = gemeni.filter(dispatch_time__range=[from_datetime, to_datetime])
         except ValueError:
-            pass  # Agar galat format ho to skip karo
+            pass
+
+    # -------- TANKER FILTER --------
+    if tanker:
+        gemeni = gemeni.filter(plan__tankerno__icontains=tanker)
+
+    # -------- DRIVER FILTER --------
+    if driver:
+        gemeni = gemeni.filter(drivername__icontains=driver)
     
     context={'gemeni':gemeni}
     return render(request,'show/show_gemini.html',context)
@@ -790,7 +810,7 @@ def do_upgemini(request,id):
 
 
 
-
+@login_required(login_url="log-in")
 def aaklocal(request):
     
     if request.method =="POST":
@@ -881,26 +901,35 @@ def aaklocal(request):
     return render(request,'AAK-india-local.html',context)
 
 def ShowAakLocal(request):
-    
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
 
+    tanker = request.GET.get('tanker')   # separate field
+    driver = request.GET.get('driver')   # separate field
+
     Aak=AakLocal.objects.all()
 
+    # -------- DATE FILTER --------
     if from_date and to_date:
         try:
-            # Sirf date mil raha hai: "2025-09-11"
             from_date_obj = datetime.strptime(from_date, "%Y-%m-%d")
             to_date_obj = datetime.strptime(to_date, "%Y-%m-%d")
 
-            # Din ki starting aur ending time set karo:
-            from_datetime = datetime.combine(from_date_obj.date(), time.min)  # 00:00:00
-            to_datetime = datetime.combine(to_date_obj.date(), time.max)      # 23:59:59.999999
+            from_datetime = datetime.combine(from_date_obj.date(), time.min)
+            to_datetime = datetime.combine(to_date_obj.date(), time.max)
 
-            # Filter karo dispatch_time ke range par
-            Aak =Aak.filter(dispatch_time__range=(from_datetime, to_datetime))
+            Aak = Aak.filter(dispatch_time__range=[from_datetime, to_datetime])
         except ValueError:
-            pass  # Agar galat format ho to skip karo
+            pass
+
+    # -------- TANKER FILTER --------
+    if tanker:
+        Aak = Aak.filter(plan__tankerno__icontains=tanker)
+
+    # -------- DRIVER FILTER --------
+    if driver:
+        Aak = Aak.filter(drivername__icontains=driver)
+    
     
     context={'Aak':Aak}
     return render(request,'show/show_Aak_india_local.html',context)
@@ -985,14 +1014,14 @@ def delete(request,id):
     d.delete()
     return redirect('Aak-Local')
 
-
+@login_required(login_url="log-in")
 def addvehicle(request):
     return render(request,'add/add-vehicle.html')
 
 
 
 
-
+@login_required(login_url="log-in")
 def adddriver(request):
     if request.method =="POST":
       name = request.POST['name']
@@ -1120,6 +1149,7 @@ def get_subcategories(request, category_id):
     subcategories_data = [sub.name for sub in subcategories]  # List of subcategory name
     return JsonResponse(subcategories_data, safe=False)
 
+@login_required(login_url="log-in")
 def  addsalary(request):
     if request.method =="POST":
       tankerno = request.POST['tankerno']
@@ -1186,7 +1216,7 @@ def do_update_salary(request,id):
     return redirect('show-s')
 
 
-
+@login_required(login_url="log-in")
 def report(request):
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
@@ -1376,7 +1406,7 @@ def doupdatevehicle(request, id):
 
  
 
-
+@login_required(login_url="log-in")
 def company_details(request):
     if request.method =="POST":
       name  = request.POST['name']
@@ -1461,7 +1491,7 @@ def all_bill(request):
 
 
 
-
+@login_required(login_url="log-in")
 def start_trip(request):
     if request.method == 'POST':
         try:
@@ -1543,7 +1573,7 @@ def update_trip(request, trip_id):
 
 
 
-
+@login_required(login_url="log-in")
 def add_expense(request, trip_id):
     # Get the trip object based on trip_id, handle the case of multiple trips
     trips = Trip.objects.filter(trip_id=trip_id)  # Use filter() instead of get()
@@ -1817,24 +1847,73 @@ def end_trip(request, trip_id):
 #===================End Modify file================================
 
 def AllTrip(request):
-    t = Trip.objects.all().order_by('-id')
 
+    # ---------------- FILTER INPUTS ----------------
+    trip_id = request.GET.get("trip_id")
+    tankerno = request.GET.get("tankerno")
+    drivername = request.GET.get("drivername")
+    from_address = request.GET.get("from_address")
+    to_address = request.GET.get("to_address")
+    trip_date = request.GET.get("trip_date")
+
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+
+    # ---------------- BASE QUERY ----------------
+    trips = Trip.objects.all().order_by('-id')
+
+    # ---------------- APPLY FILTERS ----------------
+    
+    # Trip ID Filter
+    if trip_id:
+        trips = trips.filter(trip_id=trip_id)
+
+    # Tanker Number
+    if tankerno:
+        trips = trips.filter(tanker__icontains=tankerno)
+
+    # Driver Name
+    if drivername:
+        trips = trips.filter(
+            Q(drivername__icontains=drivername)
+        )
+
+    # From Address
+    if from_address:
+        trips = trips.filter(from_id__icontains=from_address)
+
+    # To Address
+    if to_address:
+        trips = trips.filter(To_id__icontains=to_address)
+
+    # Trip Date exact
+    if trip_date:
+        trips = trips.filter(trip_date=trip_date)
+
+    # Date Range – trip_date
+    if start_date and end_date:
+        trips = trips.filter(trip_date__range=[start_date, end_date])
+
+    # ---------------- TRIP + END DATE MERGED DATA ----------------
     trip_data = []
 
-    for trip in t:
-        # Latest expense ke end_date fetch karo
-        latest_expense = trip.expenses.order_by('-end_date').first()  # related_name "expenses" use kiya
+    for trip in trips:
+        latest_expense = trip.expenses.order_by('-end_date').first()  # related_name="expenses"
+
+        end_date_value = latest_expense.end_date if latest_expense else None
+
         trip_data.append({
             'trip': trip,
-            'end_date': latest_expense.end_date if latest_expense else None
-            
+            'end_date': end_date_value
         })
 
+    # ---------------- CONTEXT ----------------
     context = {
         't': trip_data,
     }
 
     return render(request, 'show/all_trip.html', context)
+
 
 
 
@@ -1890,6 +1969,7 @@ def Logout_user(request):
 
 
 # ---------------------Loan-----------------------#
+@login_required(login_url="log-in")
 def addbank(request):
     if request.method == "POST":
         name = request.POST.get('name')  # Use .get() to avoid KeyError
@@ -1904,7 +1984,7 @@ def addbank(request):
 
     return render(request, 'add/add_bank_name.html')
 
-
+@login_required(login_url="log-in")
 def addloan(request):
     if request.method=="POST":
         tankerno=request.POST.get('tankerno')
@@ -2011,30 +2091,30 @@ def AddDriverLoan(request):
           return redirect('drivers-loan')
       else:
           d_loan=DriverL.objects.create(
-          tankerno= tankerno if tankerno else None,
-          From_address=From_address if From_address else None,
-          To_address=From_address if To_address else None,
-          drivername=drivername if drivername else None,
+          tankerno= tankerno if tankerno else 'N/A',
+          From_address=From_address if From_address else 'N/A',
+          To_address=To_address if To_address else 'N/A',
+          drivername=drivername if drivername else 'N/A',
           trip_date=trip_date if trip_date else None,
           date=date if date else None,
-          load=load if load else None,
-          unload=unload if unload else None,
-          short_kg=short_kg if short_kg else None,
-          allow_kg=allow_kg if allow_kg else None,
-          actual_short=actual_short if actual_short else None,
-          rate=rate if rate else None,
-          short_amount=short_amount if short_amount else None,
-          previous_loan=previous_loan if previous_loan else None,
-          loan_amount=loan_amount if loan_amount else None,
-          driverloan=driverloan if driverloan else None,
-          total = total if total else None,
-          short_allow_rate = short_allow_rate  if short_allow_rate else None,
-          repayment = repayment if repayment else None,
-          name = name if name else None,
+          load=load if load else 0,
+          unload=unload if unload else 0,
+          short_kg=short_kg if short_kg else 0,
+          allow_kg=allow_kg if allow_kg else 0,
+          actual_short=actual_short if actual_short else 0,
+          rate=rate if rate else 0,
+          short_amount=short_amount if short_amount else 0,
+          previous_loan=previous_loan if previous_loan else 0,
+          loan_amount=loan_amount if loan_amount else 0,
+          driverloan=driverloan if driverloan else 0,
+          total = total if total else 0,
+          short_allow_rate = short_allow_rate  if short_allow_rate else 0,
+          repayment = repayment if repayment else 0,
+          name = name if name else 'N/A',
           rdate = rdate if rdate else None,
-          amount = amount if amount else None,
-          driverid = driverid if driverid else None,
-          tanker = tanker if tanker else None,
+          amount = amount if amount else 0,
+          driverid = driverid if driverid else 'N/A',
+          tanker=tanker if tanker else 'N/A',
         )
       d_loan.save()
       messages.success(request, 'Driver Loan Add successfully!')
@@ -2051,8 +2131,41 @@ def AddDriverLoan(request):
 
 
 def ShowLoan(request):
-    Loan=DriverL.objects.all()
-    return render(request,'show/show_driver_loan.html',{'Loan':Loan})
+
+    Loan = DriverL.objects.all()
+
+    # ---- FILTERS ----
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    drivername = request.GET.get('drivername')
+    tankerno = request.GET.get('tankerno')
+
+    # Date Range Filter
+    if start_date and end_date:
+        Loan = Loan.filter(date__range=[start_date, end_date])
+    elif start_date:
+        Loan = Loan.filter(date__gte=start_date)
+    elif end_date:
+        Loan = Loan.filter(date__lte=end_date)
+
+    # Driver name filter
+    if drivername:
+        Loan = Loan.filter(drivername__icontains=drivername)
+
+    # Tanker filter
+    if tankerno:
+        Loan = Loan.filter(tankerno__icontains=tankerno)
+
+    # ---- SUM OF AMOUNTS ----
+    total_expense_sum = Loan.aggregate(Sum('loan_amount'))['loan_amount__sum']
+    repay_sum = Loan.aggregate(Sum('repayment'))['repayment__sum']
+
+    return render(request, 'show/show_driver_loan.html', {
+        'Loan': Loan,
+        'total_expense_sum': total_expense_sum,
+        'repay_sum': repay_sum
+    })
+
 
 def deleteloan(request,id):
     d=DriverL.objects.get(pk=id)
@@ -2061,47 +2174,77 @@ def deleteloan(request,id):
 
 def updriverloan(request,id):
     updatedl=DriverL.objects.get(pk=id)
-    context={'updatedl':updatedl}
+    vehicle=Add_Vehicle.objects.all()
+    dname=NewDriver_Details.objects.all()
+    company=companydetails.objects.all()
+    dname=NewDriver_Details.objects.all()
+    trip = Trip.objects.all()
+    context={'updatedl':updatedl,'vehicle':vehicle,'company':company,'dname':dname,'company':company,'trip':trip}
     return render(request,'update_driver_loan.html',context)
 
-def do_update_dloan(request,id):
-      tankerno=request.POST.get('tankerno')
-      From_address=request.POST.get('From_address')
-      To_address=request.POST.get('To_address')
-      drivername=request.POST.get('drivername')
-      trip_date=request.POST.get('trip_date')
-      date=request.POST.get('date')
-      load=request.POST.get('load')
-      unload=request.POST.get('unload')
-      short_kg=request.POST.get('short_kg')
-      allow_kg = request.POST.get('allow_kg')
-      actual_short = request.POST.get('actual_short')
-      rate = request.POST.get('rate')
-      short_amount = request.POST.get('short_amount')
-      previous_loan = request.POST.get('previous_loan')
-      loan_amount = request.POST.get('loan_amount')
-      total = request.POST.get('total')
-      updatedl=DriverL.objects.get(pk=id)
+def do_update_dloan(request, id):
+    updatedl = get_object_or_404(DriverL, pk=id)
 
-      updatedl.tankerno=tankerno
-      updatedl.From_address=From_address
-      updatedl.To_address=To_address
-      updatedl.drivername=drivername
-      updatedl.trip_date=trip_date
-      updatedl.date=date
-      updatedl.load=load
-      updatedl.unload=unload
-      updatedl.short_kg=short_kg
-      updatedl.allow_kg=allow_kg
-      updatedl.actual_short=actual_short
-      updatedl.rate=rate
-      updatedl.short_amount=short_amount
-      updatedl.previous_loan=previous_loan
-      updatedl.loan_amount=loan_amount
-      updatedl.total=total
-      updatedl.save()
-      messages.success(request, 'Driver Loan Details Update Successfully!')
-      return redirect('show-loan')
+    # GET ALL FORM DATA
+    tankerno = request.POST.get('tankerno')
+    From_address = request.POST.get('From_address')
+    To_address = request.POST.get('To_address')
+    drivername = request.POST.get('drivername')
+    trip_date = request.POST.get('trip_date')
+    date = request.POST.get('date')
+    load = request.POST.get('load')
+    unload = request.POST.get('unload')
+    short_kg = request.POST.get('short_kg')
+    allow_kg = request.POST.get('allow_kg')
+    actual_short = request.POST.get('actual_short')
+    rate = request.POST.get('rate')
+    short_amount = request.POST.get('short_amount')
+    previous_loan = request.POST.get('previous_loan')
+    loan_amount = request.POST.get('loan_amount')
+    driverloan = request.POST.get('driverloan')
+    total = request.POST.get('total')
+    short_allow_rate = request.POST.get('short_allow_rate')
+    repayment = request.POST.get('repayment')
+    name = request.POST.get('name')
+    rdate = request.POST.get('rdate')
+    amount = request.POST.get('amount')
+    driverid = request.POST.get('driverid')
+    tanker = request.POST.get('tanker')
+
+    # UPDATE FIELDS WITH DEFAULT LOGIC
+    updatedl.tankerno = tankerno if tankerno else 'N/A'
+    updatedl.From_address = From_address if From_address else 'N/A'
+    updatedl.To_address = To_address if To_address else 'N/A'
+    updatedl.drivername = drivername if drivername else 'N/A'
+
+    updatedl.trip_date = trip_date if trip_date else None
+    updatedl.date = date if date else None
+
+    updatedl.load = load if load else 0
+    updatedl.unload = unload if unload else 0
+    updatedl.short_kg = short_kg if short_kg else 0
+    updatedl.allow_kg = allow_kg if allow_kg else 0
+    updatedl.actual_short = actual_short if actual_short else 0
+    updatedl.rate = rate if rate else 0
+    updatedl.short_amount = short_amount if short_amount else 0
+
+    updatedl.previous_loan = previous_loan if previous_loan else 0
+    updatedl.loan_amount = loan_amount if loan_amount else 0
+    updatedl.driverloan = driverloan if driverloan else 0
+    updatedl.total = total if total else 0
+    updatedl.short_allow_rate = short_allow_rate if short_allow_rate else 0
+    updatedl.repayment = repayment if repayment else 0
+
+    updatedl.name = name if name else 'N/A'
+    updatedl.rdate = rdate if rdate else None
+    updatedl.amount = amount if amount else 0
+    updatedl.driverid = driverid if driverid else 'N/A'
+    updatedl.tanker = tanker if tanker else 'N/A'
+
+    updatedl.save()
+
+    messages.success(request, "Driver Loan Updated Successfully!")
+    return redirect("show-loan")
 
 
 # def get_driver_shortage(request):
@@ -11019,4 +11162,4 @@ def income_expense_chart(request):
 
 
 def web(request):
-    return render(request, "web.html")
+    return render(request, "website/web.html")

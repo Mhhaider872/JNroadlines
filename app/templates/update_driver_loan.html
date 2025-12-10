@@ -1,10 +1,11 @@
 <!-- @format -->
 {% include 'base.html' %}
 {% load static %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
     <main id="main" class="main">
-      <div class="pagetitle">
-        <h1>Add Drivers Loan</h1>
+      <div class="pagetitle bg-white p-2">
+        <h1>Update Drivers Loan</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
@@ -27,22 +28,22 @@
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card bg-light">
               <div class="card-body py-4">
-              <div class="text-end">
+              {% comment %} <div class="text-end">
                 <a href="{% url "payment_cash" %}" class="btn btn-info px-3 text-light">Repayment</a>
-              </div>
+              </div> {% endcomment %}
                 
     <section class="main-sec">
   <div class="container">
     <div class="row">
       <div class="col-lg-12 form-div">
-        <form action="{% url 'updatedloan' updatedl.id %}" method="POST" autocomplete="off">
+        <form  action="{% url 'updatedloan' updatedl.id %}" method="POST" autocomplete="off">
         {% csrf_token %}
           <div class="row">
            <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Vehicle No</label>
-             <input class="form-control border-2" value="{{updatedl.tankerno}}" name="tankerno" list="datalistOptions" id="exampleDataList" placeholder="Search to vehicle no..." required>
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" value="{{updatedl.tankerno}}" name="tankerno" list="datalistOptions" id="exampleDataList" placeholder="Search to vehicle no..." required>
                <datalist id="datalistOptions" >
                 {% for v in vehicle %}
                  <option value="{{v.vehicle_name}}">{{v.vehicle_name }}</option>
@@ -53,7 +54,7 @@
 
            <div class="col-lg-4 mb-3">
             <label for="exampleDataList1" class="form-label fw-bold">From Address</label>
-             <input class="form-control border-2" value="{{updatedl.From_address}}" name="From_address" list="datalistOptions1" id="exampleDataList1" placeholder="Search...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" value="{{updatedl.From_address}}" name="From_address" list="datalistOptions1" id="exampleDataList1" placeholder="Search...">
                <datalist id="datalistOptions1" >
                 {% for c in company %}
                  <option value="{{c.name}}, {{c.short_name}}"></option>
@@ -62,7 +63,7 @@
           </div>
              <div class="col-lg-4 mb-3">
             <label for="exampleDataList2" class="form-label fw-bold">To Address</label>
-             <input class="form-control border-2" value="{{updatedl.To_address}}" name="To_address" list="datalistOptions2" id="exampleDataList2" placeholder="Search...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" value="{{updatedl.To_address}}" name="To_address" list="datalistOptions2" id="exampleDataList2" placeholder="Search...">
                <datalist id="datalistOptions2">
                 {% for c in company %}
                  <option value="{{c.name}}, {{c.short_name}}"></option>
@@ -71,7 +72,7 @@
           </div>
               <div class="col-lg-4 mb-3">
             <label for="exampleDataList" class="form-label fw-bold">Drivers Name</label>
-             <input class="form-control border-2" list="driverslist" value="{{updatedl.drivername}}" id="exampleDataList" name="drivername" onchange="fetchCapacity()" placeholder="Search to drivers...">
+             <input class="form-control border-0 shadow-sm py-3 rounded-0" list="driverslist" id="exampleDataList" value="{{updatedl.drivername}}" name="drivername" placeholder="Search to drivers...">
                <datalist id="driverslist">
                   {% for d in dname %}
                  <option value="{{d.name}}">{{d.fname }}</option>
@@ -84,28 +85,38 @@
             >
             <input
               type="text"
-              class="form-control border-2"
-              name="driverloan"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               value="{{updatedl.driverloan}}"
+              name="driverloan"
               min="0"
-              id="driverloan"
-              oninput="calculateTotalShort()"
               readonly
             />
         </div>
+        {% comment %} <div class="col-lg-4 mb-3">
+    <label for="remaining_driverloan" class="form-label fw-bold">Remaining Driver Loan</label>
+    <input
+        type="number"
+        class="form-control border-2"
+        id="remaining_driverloan"
+        name="remaining_amo"
+        readonly
+    />
+</div> {% endcomment %}
+
            <div class="col-lg-4 mb-3">
             <label for="label6" class="form-label fw-bold"
               >Trip Date</label
             >
             <input
               type="date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
+              value="{{updatedl.trip_date|date:'Y-m-d'}}"
               name="trip_date"
               min="0"
               id="label6"
-              value="{{ updatedl.trip_date|date:'Y-m-d' }}"
-
       
+
+
             />
           </div>
           <div class="col-lg-4 mb-3">
@@ -114,22 +125,22 @@
             >
             <input
               type="date"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
+              value="{{updatedl.date|date:'Y-m-d'}}"
               name="date"
               min="0"
               id="label7"
-              value="{{ updatedl.date|date:'Y-m-d' }}"
       
             />
           </div>
           
         <div class="col-lg-4 mb-3">
             <label for="label13" class="form-label fw-bold">Loaded Qty</label>
-            <input type="number" class="form-control border-2" id="disqty" name="load" value="{{updatedl.load}}" oninput="calculateTotalShort()">
+            <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" id="disqty" name="load" value="{{updatedl.load}}" oninput="calculateTotalShort()">
         </div>
         <div class="col-lg-4 mb-3">
             <label for="label13" class="form-label fw-bold">Unloaded Qty</label>
-            <input type="number" class="form-control border-2" id="unlodqty" name="unload" value="{{updatedl.unload}}" oninput="calculateTotalShort()">
+            <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" id="unlodqty" name="unload" value="{{updatedl.unload}}" oninput="calculateTotalShort()">
         </div>
   
           
@@ -137,29 +148,30 @@
             <label for="label14" class="form-label fw-bold"
               > Shortage/Excess In K.G</label
             >
-            <input type="number" class="form-control border-2" id="totalshort" value="{{updatedl.short_kg}}" name="short_kg" step="0.01" readonly>
+            <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" id="totalshort" name="short_kg" value="{{updatedl.short_kg}}" step="0.01" readonly>
         </div>
            <div class="col-lg-4 mb-3">
             <label for="label13" class="form-label fw-bold">Allow Percentage</label>
-            <input type="number" class="form-control border-2" id="shortallow" name="allow_kg" value="{{updatedl.allow_kg}}" oninput="calculateTotalShort()" step="0.01">
+            <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0" id="shortallow" name="allow_kg" value="{{updatedl.allow_kg}}" oninput="calculateTotalShort()" step="0.01">
         </div> 
         <div class="col-lg-4 mb-3">
             <label for="label15" class="form-label fw-bold"
               >Allow Percentage in Qty</label
             >
-            <input type="number" class="form-control border-2"
+            <input type="number" class="form-control border-0 shadow-sm py-3 rounded-0"
+            value="{{updatedl.actual_short}}"
        name="actual_short"
        id="loadedQtyPercent"
-       oninput="calculateTotalShort()" step="0.01" value="{{updatedl.actual_short}}" />
+       oninput="calculateTotalShort()" step="0.01" />
 
         </div>
           <div class="col-lg-4 mb-3">
             <label for="label220" class="form-label fw-bold">Total KG On Driver Loan </label>
             <input
               type="number"
-              class="form-control border-2"
-              name="short_allow_rate"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               value="{{updatedl.short_allow_rate}}"
+              name="short_allow_rate"
               min="0"
               id="short_allow_rate"
               oninput="calculateTotalShort()" 
@@ -170,9 +182,9 @@
             <label for="label23" class="form-label fw-bold">Rate For Driver </label>
             <input
               type="number"
-              class="form-control border-2"
-              name="rate"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               value="{{updatedl.rate}}"
+              name="rate"
               min="0"
               id="label22"
               oninput="calculateTotalShort()" step="0.01"
@@ -182,9 +194,9 @@
             <label for="label16" class="form-label fw-bold">Actual Shortage Amount </label>
             <input
               type="number"
-              class="form-control border-2"
-              name="short_amount"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               value="{{updatedl.short_amount}}"
+              name="short_amount"
               min="0"
               id="as_amount"
               oninput="calculateTotalShort()" step="0.01"
@@ -200,17 +212,16 @@
               id="label16"
             />
         </div> {% endcomment %}
-         
-          
+      
         <div class="col-lg-4 mb-3">
             <label for="label21" class="form-label fw-bold"
               >Previous Loan</label
             >
             <input
               type="number"
-              class="form-control border-2"
-              name="previous_loan"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               value="{{updatedl.previous_loan}}"
+              name="previous_loan"
               min="0"
               id="pervious"
              
@@ -219,13 +230,13 @@
         </div>
         <div class="col-lg-4 mb-3">
             <label for="label211" class="form-label fw-bold"
-              >Actual Amount</label
+              >Actual Loan Amount</label
             >
             <input
               type="number"
-              class="form-control border-2"
-              name="loan_amount"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               value="{{updatedl.loan_amount}}"
+              name="loan_amount"
               min="0"
               id="label211"
               oninput="calculateTotalShort()"
@@ -238,9 +249,9 @@
             >
             <input
               type="number"
-              class="form-control border-2"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
+              value="{{updatedl.repayment}}"
               name="repayment"
-               value="{{updatedl.repayment}}"
               min="0"
               id="label21"
              
@@ -248,23 +259,97 @@
             />
         </div>
          <div class="col-lg-4 mb-3">
-            <label for="label22" class="form-label fw-bold"
-              >Total</label
-            >
+            {% comment %} <label for="label22" class="form-label fw-bold"
+              >Total Loan</label
+            > {% endcomment %}
             <input
-              type="number"
-              class="form-control border-2"
+              type="hidden"
+              class="form-control border-0 shadow-sm py-3 rounded-0"
               name="total"
-              value="{{updatedl.total}}"
               min="0"
               id="total_loan"
               step="any"
               oninput="calculateTotalShort()"
             />
         </div>
+        <hr>
+      <div class="container pt-3">
+       <div class="d-flex justify-content-between">
+         <h5 class="pb-2 fw-bold">Loan Repayment</h5>
+       </div>
+       <div class="row">
+       <div class="col-lg-12 form-div">
+        {% comment %} <form  method="POST" autocomplete="off">
+          {% csrf_token %} {% endcomment %}
+          <div class="row">
+            <div class="col-lg-3 mb-3">
+    <label for="trip_id" class="form-label fw-bold">Trip Id</label>
+    <input class="form-control border-0 shadow-sm py-3 rounded-0" 
+           list="tripList" 
+           id="trip_id" 
+           value="{{updatedl.driverid}}"
+           name="driverid" 
+           placeholder="Select a Trip Id...">
+    <datalist id="tripList">
+        {% for t in trip %}
+        <option value="{{ t.trip_id }}"></option>
+        {% endfor %}
+    </datalist>
+</div>
+
+             <div class="col-lg-3 mb-3">
+             <label for="driversSelect" class="form-label fw-bold">Trip Date</label>
+             <input type="date" id="trip_date" value="{{updatedl.rdate|date:'Y-m-d'}}"  name="rdate" readonly class="form-control border-0 shadow-sm py-3 rounded-0" placeholder="Trip Date">
+
+  {% comment %} <select class="form-control border-2" id="trip_date" name="date">
+    <option value="" disabled selected>Select a Trip Date...</option>
+    {% for t in trip %}
+      <option value="{{ t.trip_date }}">{{ t.trip_date|date:"d/m/Y" }}</option>
+    {% endfor %}
+  </select> {% endcomment %}
+              </div>
+
+ <div class="col-lg-3 mb-3">
+  <label for="driversSelect" class="form-label fw-bold">Tanker No</label>
+  <input type="text" id="tanker" value="{{updatedl.tanker}}" name="tanker" readonly class="form-control border-0 shadow-sm py-3 rounded-0" placeholder="Tanker No">
+
+
+</div>
+          {% comment %} <div class="col-lg-3 mb-3">
+            <label for="petrol" class="form-label fw-bold"
+              >Trip Date
+            </label>
+           <div class="input-group mb-3">
+            <input
+              type="date"
+              name="date"
+              class="form-control border-2"
+              id="petrol"
+            />
+          </div>
+             </div> {% endcomment %}
+           <div class="col-lg-3 mb-3">
+            <label for="exampleDataList" class="form-label fw-bold">Driver Name</label>
+            <input type="text" id="driver_name" value="{{updatedl.name}}" name="name" readonly class="form-control border-0 shadow-sm py-3 rounded-0" placeholder="Driver Name">
+
+             {% comment %} <input class="form-control border-2" list="driverslist" id="driver_name"  name="name" placeholder="Search to drivers...">
+               <datalist id="driverslist">
+                  {% for d in trip %}
+                 <option value="{{d.drivername}}">{{d.drivername }}</option>
+                {% endfor %}
+                
+                </datalist> {% endcomment %}
+             </div>
+             
+         
+          
+
+      </div>
+    </div>
+
+  </div>
         <div class="btn-div text-center py-2">
-            <button type="submit" class="btn btn-success px-4">Save</button>
-            <a href="{% url 'show-loan' %}" class="btn btn-info px-4">View</a>
+            <button type="submit" class="btn btn-success px-4">Update</button>
         </div>
         </form>
       </div>
@@ -315,33 +400,37 @@ function calculateTotalShort() {
     var unlodqty = parseFloat(document.getElementById("unlodqty").value) || 0;
     var shortallow = parseFloat(document.getElementById("shortallow").value) || 0;
     var rate = parseFloat(document.getElementById("label22").value) || 0;
-    var deductedLoan = parseFloat(document.getElementById("label21").value) || 0; // Trip Loan
+    var repayment = parseFloat(document.getElementById("label21").value) || 0;
     var previousLoan = parseFloat(document.getElementById("pervious").value) || 0;
-    var driverLoan = parseFloat(document.getElementById("driverloan").value) || 0;
-    var label211 = parseFloat(document.getElementById("label211").value) || 0;
 
+    // KG Shortage
     var totalshort = disqty - unlodqty;
     document.getElementById("totalshort").value = totalshort.toFixed(2);
 
+    // Allow % qty
     var loadedQtyPercent = (disqty * shortallow) / 100;
     document.getElementById("loadedQtyPercent").value = loadedQtyPercent.toFixed(2);
 
+    // Shortage after Allowed KG
     var short_allow_rate = totalshort - loadedQtyPercent;
     document.getElementById("short_allow_rate").value = short_allow_rate.toFixed(2);
 
+    // Short Amount
     var shortageAmount = short_allow_rate * rate;
     document.getElementById("as_amount").value = shortageAmount.toFixed(2);
 
+    // Actual Loan Amount
     var actualAmount = previousLoan + shortageAmount;
     document.getElementById("label211").value = actualAmount.toFixed(2);
 
-    var finalTotal = actualAmount - deductedLoan; // FIXED here
+    // Final Loan – repayment detect
+    var finalTotal = actualAmount - repayment;
     document.getElementById("total_loan").value = finalTotal.toFixed(2);
 }
-</script>
 
 
-<script>
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const driverInput = document.querySelector('input[name="drivername"]');
     const totalLoanInput = document.getElementById('driverloan');
@@ -381,7 +470,45 @@ function fetchCapacity() {
   }
 }
 
-
+ $('#trip_id').on('change', function() {
+    var tripId = $(this).val();
+    if (tripId) {
+      $.ajax({
+        url: '{% url "get_trip_details" %}',
+        data: {
+          'trip_id': tripId
+        },
+        dataType: 'json',
+        success: function(data) {
+          if (data.error) {
+            alert(data.error);
+            $('#trip_date').val('');
+            $('#driver_name').val('');
+            $('#tanker').val('');
+          } else {
+            $('#trip_date').val(data.date);
+            $('#driver_name').val(data.driver_name);
+            $('#tanker').val(data.tanker); // 👈 Add this line
+          }
+        },
+        error: function() {
+          alert('Trip date, Driver name & Tanker not filled!');
+          $('#trip_date').val('');
+          $('#driver_name').val('');
+          $('#tanker').val('');
+        }
+      });
+    } else {
+      $('#trip_date').val('');
+      $('#driver_name').val('');
+      $('#tanker').val('');
+    }
+  });
 </script>
+
+
+
+
+
   </body>
 

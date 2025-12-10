@@ -38,6 +38,36 @@
                 {% endfor %}
               </div>
               {% endif %}
+              <!-- FILTER FORM -->
+<form method="GET" class="row g-2 my-3">
+
+  <div class="col-md-2">
+    <label><strong>Start Date</strong></label>
+    <input type="date" name="start_date" class="form-control"
+           value="{{ request.GET.start_date }}">
+  </div>
+
+  <div class="col-md-2">
+    <label><strong>End Date</strong></label>
+    <input type="date" name="end_date" class="form-control"
+           value="{{ request.GET.end_date }}">
+  </div>
+
+  <div class="col-md-2">
+    <label><strong>Driver Name</strong></label>
+    <input type="text" name="drivername" class="form-control" placeholder="Search Driver Name" value="{{ request.GET.drivername }}">
+  </div>
+
+  <div class="col-md-2">
+    <label><strong>Tanker No</strong></label>
+    <input type="text" name="tankerno" class="form-control" placeholder="Search Tanker" value="{{ request.GET.tankerno }}">
+  </div>
+
+  <div class="col-md-2 mt-4">
+    <button class="btn btn-primary px-4" type="submit">Filter</button>
+     <a href="{% url "show-loan" %}" class="btn btn-danger px-4">Reset</a>
+  </div>
+</form>
               <table class="table datatable" id="Record" style="overflow-x: auto; white-space: nowrap;">
                 <thead>
                   <tr>
@@ -87,8 +117,8 @@
                         <td>{{l.short_allow_rate }}</td> 
                         <td>{{l.loan_amount }}</td>
                         <td>{{l.driverloan }}</td>                     
-                        <td>{{l.repayment }} <br>{{l.driverid}},{{l.name }},{{ l.rdate|date:"d/m/Y" }}</td>
-                        <td>{{ l.total_loan }}</td>
+                        <td><strong>{{l.repayment }}</strong> <br>{{l.driverid}},{{l.name }},{{ l.rdate|date:"d/m/Y" }}</td>
+                        <td><strong>{{ l.total_loan }}</strong></td>
                  
                     <td>
                       <a
@@ -105,7 +135,13 @@
                       
                     </td>
                   </tr>
-                  {% endfor %} {% comment %}
+                  {% endfor %}
+                  <tr>
+                   <td colspan="16"></td>
+                   <td colspan="2"><strong>Total Loan- {{total_expense_sum}}</strong></td>
+                   <td ><strong>Pay- {{repay_sum}}</strong></td>
+                  </tr>
+                  {% comment %}
                   <tr>
                     <td colspan="5">Total Amount</td>
                   </tr>
